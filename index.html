@@ -85,13 +85,6 @@
             text-align: left;
         }
 
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-main);
-        }
-
         .form-control {
             width: 100%;
             padding: 14px;
@@ -290,42 +283,6 @@
             display: flex;
             flex-direction: column;
             gap: 24px;
-        }
-
-        .content-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .filters {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .action-button {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            background-color: var(--action-button);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .action-button:hover {
-            background-color: #2d3748;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         /* Cards Grid */
@@ -530,13 +487,6 @@
 
         .form-group {
             margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-main);
         }
 
         .form-control {
@@ -810,16 +760,6 @@
             z-index: 10;
         }
 
-        .language-selector select {
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background-color: white;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
         .app-language-selector {
             margin-left: 16px;
         }
@@ -940,20 +880,9 @@
             .sector-info {
                 display: none;
             }
-
-            .filters {
-                flex-direction: column;
-                align-items: flex-start;
-            }
         }
 
         @media (max-width: 480px) {
-            .content-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-            
             .action-button {
                 width: 100%;
                 justify-content: center;
@@ -1024,7 +953,7 @@
 
         /* Dropdown estilizado */
         .styled-select {
-            padding: 8px 12px;
+            padding: 8px 30px 8px 12px;
             border-radius: 6px;
             border: 1px solid var(--border-color);
             background-color: white;
@@ -1038,12 +967,16 @@
             background-position: right 8px center;
             background-size: 16px;
             padding-right: 32px;
+            outline: none;
         }
 
         .styled-select:focus {
-            outline: none;
             border-color: var(--accent-green);
             box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+        }
+
+        .styled-select:hover {
+            border-color: var(--accent-green);
         }
 
         /* Container de link de setor */
@@ -1071,6 +1004,170 @@
             color: var(--neutral-gray);
             margin-top: 8px;
         }
+
+        /* Ajustes para tela de login */
+        .login-card .form-group {
+            margin-bottom: 15px;
+        }
+
+        .login-card .form-control::placeholder {
+            color: #94a3b8;
+            opacity: 0.8;
+        }
+
+        .login-card .form-control:focus::placeholder {
+            color: transparent;
+        }
+
+        .language-option {
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .language-option::before {
+            content: '';
+            width: 20px;
+            height: 15px;
+            display: inline-block;
+            background-size: cover;
+            margin-right: 8px;
+        }
+
+        .language-option[data-value="pt-BR"]::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#009b3a"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fedf00" stroke-width="6"/><circle cx="30" cy="15" r="7" fill="#002776"/><path d="M30,15 l-3.5,0 l7,0 z" fill="#fedf00" clip-path="url(#t)"/><circle cx="30" cy="15" r="3.5" fill="#fff" stroke="#002776" stroke-width="1"/></g></svg>');
+        }
+
+        .language-option[data-value="en"]::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>');
+        }
+
+        /* Custom dropdown */
+        .custom-select {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-select select {
+            display: none;
+        }
+
+        .select-selected {
+            background-color: white;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            padding: 8px 30px 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 70px;
+            position: relative;
+        }
+
+        .select-selected:after {
+            position: absolute;
+            content: "";
+            top: 50%;
+            right: 10px;
+            width: 0;
+            height: 0;
+            border: 5px solid transparent;
+            border-color: var(--neutral-gray) transparent transparent transparent;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        .select-selected.select-arrow-active:after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .select-selected:hover {
+            border-color: var(--accent-green);
+        }
+
+        .select-items {
+            position: absolute;
+            background-color: white;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 4px;
+            overflow: hidden;
+            transform: translateY(10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .select-selected.select-arrow-active + .select-items {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .select-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .select-item:hover {
+            background-color: rgba(13, 148, 136, 0.1);
+        }
+
+        .select-item.selected {
+            background-color: rgba(13, 148, 136, 0.15);
+        }
+
+        .flag-icon {
+            width: 20px;
+            height: 15px;
+            display: inline-block;
+            margin-right: 8px;
+            background-size: cover;
+        }
+
+        .flag-pt {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#009b3a"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fedf00" stroke-width="6"/><circle cx="30" cy="15" r="7" fill="#002776"/><path d="M30,15 l-3.5,0 l7,0 z" fill="#fedf00" clip-path="url(#t)"/><circle cx="30" cy="15" r="3.5" fill="#fff" stroke="#002776" stroke-width="1"/></g></svg>');
+        }
+
+        .flag-en {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>');
+        }
+        
+        /* Action buttons */
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background-color: var(--action-button);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-left: auto;
+        }
+
+        .action-button:hover {
+            background-color: #2d3748;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
@@ -1079,10 +1176,21 @@
     <!-- Login Screen -->
     <div id="login-screen" class="login-container">
         <div class="language-selector">
-            <select id="language-select" class="styled-select">
-                <option value="pt-BR">Português</option>
-                <option value="en">English</option>
-            </select>
+            <div class="custom-select">
+                <div class="select-selected">PT</div>
+                <div class="select-items">
+                    <div class="select-item" data-value="pt-BR">
+                        <span class="flag-icon flag-pt"></span> PT
+                    </div>
+                    <div class="select-item" data-value="en">
+                        <span class="flag-icon flag-en"></span> EN
+                    </div>
+                </div>
+                <select id="language-select" class="styled-select">
+                    <option value="pt-BR">PT</option>
+                    <option value="en">EN</option>
+                </select>
+            </div>
         </div>
         
         <div class="login-card">
@@ -1092,14 +1200,12 @@
             <p class="login-subtitle" data-i18n="login.subtitle">Segurança e continuidade das informações clínicas</p>
             
             <div class="form-group">
-                <label class="form-label" data-i18n="login.username">Usuário</label>
-                <input type="text" id="username" class="form-control" placeholder="Digite seu usuário" data-i18n-placeholder="login.usernamePlaceholder">
+                <input type="text" id="username" class="form-control" placeholder="Usuário" data-i18n-placeholder="login.usernamePlaceholder">
             </div>
             <div class="form-group">
-                <label class="form-label" data-i18n="login.password">Senha</label>
-                <input type="password" id="password" class="form-control" placeholder="Digite sua senha" data-i18n-placeholder="login.passwordPlaceholder">
+                <input type="password" id="password" class="form-control" placeholder="Senha" data-i18n-placeholder="login.passwordPlaceholder">
             </div>
-            <button id="login-btn" class="login-btn" data-i18n="login.button">Entrar no Sistema</button>
+            <button id="login-btn" class="login-btn" data-i18n="login.button">Entrar</button>
             <div id="error-message" class="error-message">
                 <span data-i18n="login.error">Usuário ou senha incorretos. Tente novamente.</span>
             </div>
@@ -1130,10 +1236,21 @@
             
             <div class="header-actions">
                 <div class="app-language-selector">
-                    <select id="app-language-select" class="styled-select">
-                        <option value="pt-BR">Português</option>
-                        <option value="en">English</option>
-                    </select>
+                    <div class="custom-select">
+                        <div class="select-selected">PT</div>
+                        <div class="select-items">
+                            <div class="select-item" data-value="pt-BR">
+                                <span class="flag-icon flag-pt"></span> PT
+                            </div>
+                            <div class="select-item" data-value="en">
+                                <span class="flag-icon flag-en"></span> EN
+                            </div>
+                        </div>
+                        <select id="app-language-select" class="styled-select">
+                            <option value="pt-BR">PT</option>
+                            <option value="en">EN</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </header>
@@ -1166,9 +1283,9 @@
                     <i class="fas fa-tasks"></i>
                     <span class="nav-text" data-i18n="nav.pending">Pendências</span>
                 </div>
-                <div class="nav-item" data-view="historico">
+                <div class="nav-item" data-view="logs">
                     <i class="fas fa-history"></i>
-                    <span class="nav-text" data-i18n="nav.history">Histórico</span>
+                    <span class="nav-text" data-i18n="nav.logs">Logs</span>
                 </div>
                 
                 <div class="nav-divider"></div>
@@ -1187,9 +1304,6 @@
             <div class="main-content">
                 <!-- Dashboard View -->
                 <div id="dashboard-view" class="view-content">
-                    <div class="content-header">
-                        <h2 data-i18n="nav.dashboard">Dashboard</h2>
-                    </div>
                     <div class="cards-grid">
                         <div class="card">
                             <div class="card-header">
@@ -1220,7 +1334,6 @@
                 <!-- Altas View -->
                 <div id="alta-view" class="view-content hidden">
                     <div class="content-header">
-                        <h2 data-i18n="nav.discharges">Altas</h2>
                         <button id="add-alta" class="action-button">
                             <i class="fas fa-plus"></i>
                             <span>Adicionar Alta</span>
@@ -1236,7 +1349,6 @@
                 <!-- Intercorrências View -->
                 <div id="intercorrencia-view" class="view-content hidden">
                     <div class="content-header">
-                        <h2 data-i18n="nav.incidents">Intercorrências</h2>
                         <button id="add-intercorrencia" class="action-button">
                             <i class="fas fa-plus"></i>
                             <span>Adicionar Intercorrência</span>
@@ -1252,7 +1364,6 @@
                 <!-- Pendências View -->
                 <div id="pendencia-view" class="view-content hidden">
                     <div class="content-header">
-                        <h2 data-i18n="nav.pending">Pendências</h2>
                         <button id="add-pendencia" class="action-button">
                             <i class="fas fa-plus"></i>
                             <span>Adicionar Pendência</span>
@@ -1295,11 +1406,8 @@
                     </div>
                 </div>
                 
-                <!-- Histórico View -->
-                <div id="historico-view" class="view-content hidden">
-                    <div class="content-header">
-                        <h2 data-i18n="nav.history">Histórico</h2>
-                    </div>
+                <!-- Logs View -->
+                <div id="logs-view" class="view-content hidden">
                     <div class="logs-table">
                         <table>
                             <thead>
@@ -1330,10 +1438,6 @@
                 
                 <!-- Admin View -->
                 <div id="admin-view" class="view-content hidden">
-                    <div class="content-header">
-                        <h2 data-i18n="nav.admin">Administração</h2>
-                    </div>
-                    
                     <div class="admin-section">
                         <h3 class="section-title">Gerenciamento de Setores</h3>
                         <div class="form-group">
@@ -1378,9 +1482,9 @@
                     'login.subtitle': 'Segurança e continuidade das informações clínicas',
                     'login.username': 'Usuário',
                     'login.password': 'Senha',
-                    'login.usernamePlaceholder': 'Digite seu usuário',
-                    'login.passwordPlaceholder': 'Digite sua senha',
-                    'login.button': 'Entrar no Sistema',
+                    'login.usernamePlaceholder': 'Usuário',
+                    'login.passwordPlaceholder': 'Senha',
+                    'login.button': 'Entrar',
                     'login.error': 'Usuário ou senha incorretos. Tente novamente.',
                     'login.testTitle': 'Credenciais de Teste',
                     'login.testUser': 'Usuário:',
@@ -1390,7 +1494,7 @@
                     'nav.discharges': 'Altas',
                     'nav.incidents': 'Intercorrências',
                     'nav.pending': 'Pendências',
-                    'nav.history': 'Histórico',
+                    'nav.logs': 'Logs',
                     'nav.admin': 'Administração',
                     'nav.logout': 'Sair',
                     'toast.welcome': 'Bem-vindo, {username}!',
@@ -1403,8 +1507,8 @@
                     'login.subtitle': 'Safety and continuity of clinical information',
                     'login.username': 'Username',
                     'login.password': 'Password',
-                    'login.usernamePlaceholder': 'Enter your username',
-                    'login.passwordPlaceholder': 'Enter your password',
+                    'login.usernamePlaceholder': 'Username',
+                    'login.passwordPlaceholder': 'Password',
                     'login.button': 'Log In',
                     'login.error': 'Incorrect username or password. Please try again.',
                     'login.testTitle': 'Test Credentials',
@@ -1415,7 +1519,7 @@
                     'nav.discharges': 'Discharges',
                     'nav.incidents': 'Incidents',
                     'nav.pending': 'Pending',
-                    'nav.history': 'History',
+                    'nav.logs': 'Logs',
                     'nav.admin': 'Administration',
                     'nav.logout': 'Logout',
                     'toast.welcome': 'Welcome, {username}!',
@@ -1432,9 +1536,15 @@
                 const browserLang = navigator.language.split('-')[0] === 'pt' ? 'pt-BR' : 'en';
                 this.currentLang = savedLang || browserLang;
                 
+                // Atualizar dropdowns de idioma
                 document.querySelectorAll('#language-select, #app-language-select').forEach(select => {
                     select.value = this.currentLang;
                     select.addEventListener('change', (e) => this.setLanguage(e.target.value));
+                });
+                
+                // Atualizar seleção visual
+                document.querySelectorAll('.select-selected').forEach(el => {
+                    el.textContent = this.currentLang === 'pt-BR' ? 'PT' : 'EN';
                 });
                 
                 this.applyTranslations();
@@ -1444,6 +1554,11 @@
                 this.currentLang = lang;
                 localStorage.setItem('userLang', lang);
                 this.applyTranslations();
+                
+                // Atualizar seleção visual
+                document.querySelectorAll('.select-selected').forEach(el => {
+                    el.textContent = lang === 'pt-BR' ? 'PT' : 'EN';
+                });
             },
             
             applyTranslations() {
@@ -1827,22 +1942,22 @@
             
             setupActionButtons() {
                 document.getElementById('add-alta')?.addEventListener('click', () => {
-                    UI.showToast(i18n.t('toast.addDischarge'), 'info');
+                    UI.showToast('Adicionar alta', 'info');
                 });
                 
                 document.getElementById('add-intercorrencia')?.addEventListener('click', () => {
-                    UI.showToast(i18n.t('toast.addIncident'), 'info');
+                    UI.showToast('Adicionar intercorrência', 'info');
                 });
                 
                 document.getElementById('add-pendencia')?.addEventListener('click', () => {
-                    UI.showToast(i18n.t('toast.addPending'), 'info');
+                    UI.showToast('Adicionar pendência', 'info');
                 });
                 
                 document.querySelectorAll('.card-actions .icon-button').forEach(button => {
                     button.addEventListener('click', function(e) {
                         e.stopPropagation();
                         const action = this.title;
-                        UI.showToast(`${i18n.t('toast.action')}: ${action}`, 'info');
+                        UI.showToast(`Ação: ${action}`, 'info');
                     });
                 });
             }
@@ -1869,14 +1984,38 @@
                     document.getElementById('sidebar').classList.remove('active');
                 });
                 
-                document.querySelectorAll('.plantao-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        ViewManager.switchView('plantao-detail');
+                // Custom dropdown functionality
+                document.querySelectorAll('.custom-select').forEach(select => {
+                    const selected = select.querySelector('.select-selected');
+                    const items = select.querySelector('.select-items');
+                    const options = items.querySelectorAll('.select-item');
+                    
+                    selected.addEventListener('click', function() {
+                        this.classList.toggle('select-arrow-active');
+                        items.style.display = 'block';
+                    });
+                    
+                    options.forEach(option => {
+                        option.addEventListener('click', function() {
+                            const value = this.getAttribute('data-value');
+                            const selectEl = select.querySelector('select');
+                            selectEl.value = value;
+                            selectEl.dispatchEvent(new Event('change'));
+                            
+                            selected.textContent = this.textContent.trim();
+                            selected.classList.remove('select-arrow-active');
+                            items.style.display = 'none';
+                        });
                     });
                 });
                 
-                document.getElementById('back-to-history')?.addEventListener('click', () => {
-                    ViewManager.switchView('historico');
+                document.addEventListener('click', function(e) {
+                    document.querySelectorAll('.select-items').forEach(items => {
+                        if (!e.target.closest('.custom-select')) {
+                            items.style.display = 'none';
+                            items.previousElementSibling.classList.remove('select-arrow-active');
+                        }
+                    });
                 });
                 
                 PatientManager.setupActionButtons();
