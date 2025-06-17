@@ -15,6 +15,10 @@ const UI = {
         // Animate in
         setTimeout(() => toast.classList.add('show'), 10);
         
+        // Animate progress bar
+        const progress = toast.querySelector('.toast-progress');
+        progress.style.animation = `progress ${duration}ms linear forwards`;
+        
         // Animate out and remove
         setTimeout(() => {
             toast.classList.remove('show');
@@ -34,60 +38,3 @@ const UI = {
             });
     }
 };
-
-// Add toast styles dynamically
-(function addToastStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-        #toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .toast {
-            min-width: 250px;
-            background: #333;
-            color: white;
-            border-radius: 8px;
-            padding: 15px 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .toast-info { background: #3b82f6; }
-        .toast-success { background: #10b981; }
-        .toast-warning { background: #f59e0b; }
-        .toast-error { background: #ef4444; }
-        
-        .toast-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 4px;
-            background: rgba(255,255,255,0.5);
-            width: 100%;
-            transform: scaleX(1);
-            transform-origin: left;
-            animation: progress ${duration}ms linear forwards;
-        }
-        
-        @keyframes progress {
-            to { transform: scaleX(0); }
-        }
-    `;
-    document.head.appendChild(style);
-})();

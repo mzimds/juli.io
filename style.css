@@ -158,6 +158,16 @@ header {
     font-weight: 700;
     letter-spacing: -0.5px;
     color: var(--accent-green);
+    display: flex;
+    align-items: center;
+}
+
+.app-logo::after {
+    content: ".";
+    color: var(--accent-green);
+    font-size: 1.8rem;
+    line-height: 1;
+    margin-left: 2px;
 }
 
 .sector-info {
@@ -771,7 +781,115 @@ header {
     background-color: rgba(13, 148, 136, 0.15);
 }
 
+/* Language Selector */
+.language-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+.language-selector select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: white;
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.app-language-selector {
+    margin-left: 16px;
+}
+
+/* Test Credentials */
+.test-credentials {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    font-size: 0.9rem;
+}
+
+.test-credentials h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: var(--text-main);
+}
+
+.test-credentials p {
+    margin: 5px 0;
+}
+
+/* Header Actions */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Toast Container */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    min-width: 250px;
+    background: #333;
+    color: white;
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast-info { background: #3b82f6; }
+.toast-success { background: #10b981; }
+.toast-warning { background: #f59e0b; }
+.toast-error { background: #ef4444; }
+
+.toast-content {
+    margin-bottom: 5px;
+}
+
+.toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: rgba(255,255,255,0.5);
+    width: 100%;
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+@keyframes progress {
+    to { transform: scaleX(0); }
+}
+
 /* Responsive */
+@media (min-width: 769px) {
+    .menu-btn {
+        display: none;
+    }
+}
+
 @media (max-width: 1024px) {
     .sidebar {
         width: 200px;
@@ -859,105 +977,4 @@ header {
     color: var(--neutral-gray);
     max-width: 400px;
     margin: 0 auto;
-}
-
-
-/* Adicionar ao final do arquivo style.css existente */
-
-/* Language Selector */
-.language-selector {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 10;
-}
-
-.language-selector select {
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-    background-color: white;
-    color: var(--text-main);
-    font-size: 0.9rem;
-}
-
-/* Test Credentials */
-.test-credentials {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: var(--bg-card);
-    border-radius: var(--radius);
-    border: 1px solid var(--border-color);
-    font-size: 0.9rem;
-}
-
-.test-credentials h3 {
-    font-size: 1rem;
-    margin-bottom: 10px;
-    color: var(--text-main);
-}
-
-.test-credentials p {
-    margin: 5px 0;
-}
-
-/* Header Actions */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-/* Toast Container (already added via JS, but just in case) */
-#toast-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 10000;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.toast {
-    min-width: 250px;
-    background: #333;
-    color: white;
-    border-radius: 8px;
-    padding: 15px 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transform: translateY(100px);
-    opacity: 0;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.toast.show {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.toast-info { background: #3b82f6; }
-.toast-success { background: #10b981; }
-.toast-warning { background: #f59e0b; }
-.toast-error { background: #ef4444; }
-
-.toast-content {
-    margin-bottom: 5px;
-}
-
-.toast-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 4px;
-    background: rgba(255,255,255,0.5);
-    width: 100%;
-    transform: scaleX(1);
-    transform-origin: left;
-}
-
-@keyframes progress {
-    to { transform: scaleX(0); }
 }
