@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juli - Passagem de Plantão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <span>Juli</span>
+            </div>
+            <p class="login-subtitle">Segurança e continuidade das informações clínicas</p>
+            
+            <div class="form-group">
+                <label class="form-label">Usuário</label>
+                <input type="text" id="username" class="form-control" placeholder="Digite seu usuário">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Senha</label>
+                <input type="password" id="password" class="form-control" placeholder="Digite sua senha">
+            </div>
+            <button id="login-btn" class="login-btn">Entrar no Sistema</button>
+            <div id="error-message" class="error-message">
+                Usuário ou senha incorretos. Tente novamente.
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app-container" class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="logo-container">
+                <button class="menu-btn" id="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="app-logo">Juli</div>
+                <div class="sector-info">
+                    <div class="sector-name" id="current-sector">UTI Adulto</div>
+                    <div class="shift-time" id="current-shift">Plantão Diurno (07:00 - 19:00)</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="app-main">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="user-info">
+                    <div class="user-name" id="current-user">Dr. Silva</div>
+                    <div class="user-role" id="user-role">Médico Plantonista</div>
+                </div>
+                
+                <div class="nav-item active" data-view="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-text">Dashboard</span>
+                </div>
+                <div class="nav-item" data-view="alta">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-text">Altas</span>
+                </div>
+                <div class="nav-item" data-view="intercorrencia">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span class="nav-text">Intercorrências</span>
+                </div>
+                <div class="nav-item" data-view="pendencia">
+                    <i class="fas fa-tasks"></i>
+                    <span class="nav-text">Pendências</span>
+                </div>
+                <div class="nav-item" data-view="historico">
+                    <i class="fas fa-history"></i>
+                    <span class="nav-text">Histórico</span>
+                </div>
+                
+                <div class="nav-divider"></div>
+                
+                <div class="nav-item" data-view="admin">
+                    <i class="fas fa-cog"></i>
+                    <span class="nav-text">Administração</span>
+                </div>
+                <div class="nav-item" data-view="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-text">Sair</span>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Dashboard View -->
+                <div id="dashboard-view" class="view-content">
+                    <div class="content-header">
+                        <button class="action-button" id="add-record">
+                            <i class="fas fa-plus"></i>
+                            Adicionar Registro
+                        </button>
+                    </div>
+                    
+                    <div class="cards-grid">
+                        <!-- Card 1 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Carlos Silva</div>
+                                <div class="card-badge badge-alta">Alta</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-group">
+                                    <div class="info-label">Atendimento</div>
+                                    <div class="info-value">ATD-2023-001</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Leito</div>
+                                    <div class="info-value">302A</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Médico</div>
+                                    <div class="info-value">Dra. Oliveira</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Entrada</div>
+                                    <div class="info-value">10/11/2023</div>
+                                </div>
+                            </div>
+                            <div class="record-list">
+                                <div class="record-item">
+                                    <div class="record-header">
+                                        <div class="record-type badge-alta">Alta</div>
+                                        <div class="record-time">15/11/2023 10:30</div>
+                                    </div>
+                                    <div class="record-content">Alta após recuperação completa da cirurgia cardíaca</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Card 2 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">João Pereira</div>
+                                <div class="card-badge badge-intercorrencia">Intercorrência</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-group">
+                                    <div class="info-label">Atendimento</div>
+                                    <div class="info-value">ATD-2023-007</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Leito</div>
+                                    <div class="info-value">108C</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Médico</div>
+                                    <div class="info-value">Dr. Costa</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Entrada</div>
+                                    <div class="info-value">13/11/2023</div>
+                                </div>
+                            </div>
+                            <div class="record-list">
+                                <div class="record-item">
+                                    <div class="record-header">
+                                        <div class="record-type badge-intercorrencia">Clínica</div>
+                                        <div class="record-time">15/11/2023 08:45</div>
+                                    </div>
+                                    <div class="record-content">Febre persistente (39.2°C), iniciar antibioticoterapia com Ceftriaxona 2g IV 12/12h</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Admin View -->
+                <div id="admin-view" class="view-content hidden">
+                    <div class="admin-section">
+                        <h2 class="section-title">Gestão de Setores</h2>
+                        
+                        <div class="form-grid">
+                            <div>
+                                <h3 class="section-title">Criar Novo Setor</h3>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Nome do Setor</label>
+                                    <input type="text" class="form-control" placeholder="Ex: UTI Adulto" value="UTI Pediátrica">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Horário de Funcionamento</label>
+                                    <div class="time-grid">
+                                        <div class="form-group">
+                                            <label class="form-label">Início</label>
+                                            <input type="time" class="form-control" value="07:00">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Término</label>
+                                            <input type="time" class="form-control" value="19:00">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="action-button">
+                                    <i class="fas fa-save"></i>
+                                    Criar Setor
+                                </button>
+                                
+                                <div class="mt-16">
+                                    <h3 class="section-title">Link de Convite</h3>
+                                    <div class="copy-link">
+                                        <i class="fas fa-copy"></i>
+                                        <span>https://juli.app/convite/uti-pediatrica</span>
+                                    </div>
+                                    <p class="text-muted mt-16">Compartilhe este link via WhatsApp para médicos se cadastrarem neste setor</p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="section-title">Setores Ativos</h3>
+                                
+                                <div class="sector-list">
+                                    <div class="sector-card">
+                                        <div class="sector-header">
+                                            <div class="sector-name">UTI Adulto</div>
+                                            <div class="sector-schedule">07:00 - 19:00</div>
+                                        </div>
+                                        <div class="sector-details">
+                                            <div class="detail-card">
+                                                <div class="detail-title">Médicos</div>
+                                                <div class="detail-value">12</div>
+                                            </div>
+                                            <div class="detail-card">
+                                                <div class="detail-title">Logs (30d)</div>
+                                                <div class="detail-value">248</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="sector-card">
+                                        <div class="sector-header">
+                                            <div class="sector-name">Emergência</div>
+                                            <div class="sector-schedule">24 horas</div>
+                                        </div>
+                                        <div class="sector-details">
+                                            <div class="detail-card">
+                                                <div class="detail-title">Médicos</div>
+                                                <div class="detail-value">8</div>
+                                            </div>
+                                            <div class="detail-card">
+                                                <div class="detail-title">Logs (30d)</div>
+                                                <div class="detail-value">412</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h2 class="section-title">Gestão de Médicos</h2>
+                        
+                        <div class="form-grid">
+                            <div>
+                                <h3 class="section-title">Médicos Pendentes</h3>
+                                
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Dr. Carlos Silva</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="info-group">
+                                            <div class="info-label">E-mail</div>
+                                            <div class="info-value">carlos.silva@hospital.com</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Solicitado em</div>
+                                            <div class="info-value">15/11/2023</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Setor</div>
+                                            <div class="info-value">UTI Adulto</div>
+                                        </div>
+                                    </div>
+                                    <div class="record-actions">
+                                        <button class="action-button" style="background-color: var(--accent-green);">
+                                            <i class="fas fa-check"></i>
+                                            Aprovar
+                                        </button>
+                                        <button class="action-button" style="background-color: var(--accent-red);">
+                                            <i class="fas fa-times"></i>
+                                            Recusar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="section-title">Médicos Aprovados</h3>
+                                
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Dra. Ana Oliveira</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="info-group">
+                                            <div class="info-label">E-mail</div>
+                                            <div class="info-value">ana.oliveira@hospital.com</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Setor</div>
+                                            <div class="info-value">UTI Adulto</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Cadastrado em</div>
+                                            <div class="info-value">10/10/2023</div>
+                                        </div>
+                                    </div>
+                                    <div class="record-actions">
+                                        <button class="action-button" style="background-color: var(--accent-yellow);">
+                                            <i class="fas fa-user-slash"></i>
+                                            Revogar Acesso
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Alta View -->
+                <div id="alta-view" class="view-content hidden">
+                    <div class="content-header">
+                        <button class="action-button" id="add-alta">
+                            <i class="fas fa-plus"></i>
+                            Adicionar Alta
+                        </button>
+                    </div>
+                    
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Maria Oliveira</div>
+                                <div class="card-badge badge-alta">Alta</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-group">
+                                    <div class="info-label">Atendimento</div>
+                                    <div class="info-value">ATD-2023-015</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Leito</div>
+                                    <div class="info-value">210B</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Médico</div>
+                                    <div class="info-value">Dr. Costa</div>
+                                </div>
+                            </div>
+                            <div class="record-list">
+                                <div class="record-item">
+                                    <div class="record-header">
+                                        <div class="record-type badge-alta">Alta</div>
+                                        <div class="record-time">14/11/2023 16:20</div>
+                                    </div>
+                                    <div class="record-content">Alta após tratamento completo de pneumonia</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Intercorrencia View -->
+                <div id="intercorrencia-view" class="view-content hidden">
+                    <div class="content-header">
+                        <button class="action-button" id="add-intercorrencia">
+                            <i class="fas fa-plus"></i>
+                            Adicionar Intercorrência
+                        </button>
+                    </div>
+                    
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Lucas Mendes</div>
+                                <div class="card-badge badge-intercorrencia">Intercorrência</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-group">
+                                    <div class="info-label">Atendimento</div>
+                                    <div class="info-value">ATD-2023-028</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Leito</div>
+                                    <div class="info-value">115D</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Médico</div>
+                                    <div class="info-value">Dr. Silva</div>
+                                </div>
+                            </div>
+                            <div class="record-list">
+                                <div class="record-item">
+                                    <div class="record-header">
+                                        <div class="record-type badge-intercorrencia">Cardíaca</div>
+                                        <div class="record-time">14/11/2023 21:30</div>
+                                    </div>
+                                    <div class="record-content">Taquicardia ventricular, administrada amiodarona 150mg IV</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pendencia View -->
+                <div id="pendencia-view" class="view-content hidden">
+                    <div class="content-header">
+                        <button class="action-button" id="add-pendencia">
+                            <i class="fas fa-plus"></i>
+                            Adicionar Pendência
+                        </button>
+                    </div>
+                    
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Roberto Almeida</div>
+                                <div class="card-badge badge-pendencia">Pendência</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-group">
+                                    <div class="info-label">Atendimento</div>
+                                    <div class="info-value">ATD-2023-003</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Leito</div>
+                                    <div class="info-value">521E</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Médico</div>
+                                    <div class="info-value">Dr. Silva</div>
+                                </div>
+                            </div>
+                            <div class="record-list">
+                                <div class="record-item">
+                                    <div class="record-header">
+                                        <div class="record-type badge-pendencia">Exame Pendente</div>
+                                        <div class="record-time">15/11/2023 09:15</div>
+                                    </div>
+                                    <div class="record-content">Aguardando resultado de tomografia de crânio para definir conduta</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Historico View -->
+                <div id="historico-view" class="view-content hidden">
+                    <div class="plantao-grid">
+                        <div class="plantao-card" data-plantao="diurno-20231115">
+                            <div class="plantao-header">
+                                <div class="plantao-title">Plantão Diurno</div>
+                                <div class="plantao-date">15/11/2023</div>
+                            </div>
+                            <div class="sector-name mb-16">UTI Adulto</div>
+                            
+                            <div class="pacientes-list">
+                                <div class="paciente-item">
+                                    <div class="card-title">Carlos Silva</div>
+                                    <div class="text-muted">Alta médica</div>
+                                </div>
+                                <div class="paciente-item">
+                                    <div class="card-title">João Pereira</div>
+                                    <div class="text-muted">Intercorrência: Febre</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="plantao-card" data-plantao="noturno-20231114">
+                            <div class="plantao-header">
+                                <div class="plantao-title">Plantão Noturno</div>
+                                <div class="plantao-date">14/11/2023</div>
+                            </div>
+                            <div class="sector-name mb-16">UTI Adulto</div>
+                            
+                            <div class="pacientes-list">
+                                <div class="paciente-item">
+                                    <div class="card-title">Maria Oliveira</div>
+                                    <div class="text-muted">Alta médica</div>
+                                </div>
+                                <div class="paciente-item">
+                                    <div class="card-title">Roberto Almeida</div>
+                                    <div class="text-muted">Pendência: Exame</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plantão Detail View -->
+                <div id="plantao-detail-view" class="view-content hidden">
+                    <div class="plantao-detail-header">
+                        <button class="back-button" id="back-to-history">
+                            <i class="fas fa-arrow-left"></i>
+                            Voltar ao Histórico
+                        </button>
+                        <div>
+                            <div class="plantao-title">Plantão Diurno</div>
+                            <div class="plantao-date">15/11/2023 | UTI Adulto</div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-header">
+                        <div class="section-title">Pacientes do Plantão</div>
+                    </div>
+                    
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Carlos Silva</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-group">
+                                    <div class="info-label">Atendimento</div>
+                                    <div class="info-value">ATD-2023-001</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Leito</div>
+                                    <div class="info-value">302A</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Médico</div>
+                                    <div class="info-value">Dra. Oliveira</div>
+                                </div>
+                            </div>
+                            
+                            <div class="record-list">
+                                <div class="record-item">
+                                    <div class="record-header">
+                                        <div class="record-type badge-alta">Alta</div>
+                                        <div class="record-time">15/11/2023 10:30</div>
+                                    </div>
+                                    <div class="record-content">Alta após recuperação completa da cirurgia cardíaca</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">João Pereira</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-group">
+                                    <div class="info-label">Atendimento</div>
+                                    <div class="info-value">ATD-2023-007</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Leito</div>
+                                    <div class="info-value">108C</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Médico</div>
+                                    <div class="info-value">Dr. Costa</div>
+                                </div>
+                            </div>
+                            
+                            <div class="record-list">
+                                <div class="record-item">
+                                    <div class="record-header">
+                                        <div class="record-type badge-intercorrencia">Intercorrência</div>
+                                        <div class="record-time">15/11/2023 08:45</div>
+                                    </div>
+                                    <div class="record-content">Febre persistente (39.2°C), iniciar antibioticoterapia com Ceftriaxona 2g IV 12/12h</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
