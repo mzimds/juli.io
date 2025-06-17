@@ -1,3 +1,4 @@
+// Internationalization module
 const i18n = {
     translations: {
         'pt-BR': {
@@ -23,9 +24,6 @@ const i18n = {
             'toast.welcome': 'Bem-vindo, {username}!',
             'toast.linkCopied': 'Link copiado para a área de transferência!',
             'toast.pendingResolved': 'Pendência resolvida com sucesso!',
-            'toast.addDischarge': 'Adicionar alta médica',
-            'toast.addIncident': 'Adicionar intercorrência',
-            'toast.addPending': 'Adicionar pendência',
             'admin.sectorLink': 'Compartilhe este link via WhatsApp para médicos se cadastrarem neste setor'
         },
         'en': {
@@ -51,9 +49,6 @@ const i18n = {
             'toast.welcome': 'Welcome, {username}!',
             'toast.linkCopied': 'Link copied to clipboard!',
             'toast.pendingResolved': 'Pending issue resolved successfully!',
-            'toast.addDischarge': 'Add medical discharge',
-            'toast.addIncident': 'Add incident',
-            'toast.addPending': 'Add pending task',
             'admin.sectorLink': 'Share this link via WhatsApp for doctors to register in this sector'
         }
     },
@@ -61,10 +56,12 @@ const i18n = {
     currentLang: 'pt-BR',
     
     init() {
+        // Detect user language
         const savedLang = localStorage.getItem('userLang');
         const browserLang = navigator.language.split('-')[0] === 'pt' ? 'pt-BR' : 'en';
         this.currentLang = savedLang || browserLang;
         
+        // Set language selectors
         document.querySelectorAll('#language-select, #app-language-select').forEach(select => {
             select.value = this.currentLang;
             select.addEventListener('change', (e) => this.setLanguage(e.target.value));
@@ -80,11 +77,13 @@ const i18n = {
     },
     
     applyTranslations() {
+        // Update elements with data-i18n attribute
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             el.textContent = this.t(key);
         });
         
+        // Update placeholders
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
             const key = el.getAttribute('data-i18n-placeholder');
             el.placeholder = this.t(key);
@@ -94,6 +93,7 @@ const i18n = {
     t(key, params = {}) {
         let translation = this.translations[this.currentLang][key] || key;
         
+        // Replace dynamic parameters
         for (const [param, value] of Object.entries(params)) {
             translation = translation.replace(`{${param}}`, value);
         }
@@ -102,4 +102,5 @@ const i18n = {
     }
 };
 
+// Initialize i18n
 document.addEventListener('DOMContentLoaded', () => i18n.init());

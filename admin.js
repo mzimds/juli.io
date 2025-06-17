@@ -1,7 +1,11 @@
+// Admin Management Module
 const AdminManager = {
+    // Initialize admin functionality
     init() {
+        // Set up sector selector
         const sectorSelect = document.getElementById('sector-select');
         if (sectorSelect) {
+            // Populate sector selector
             const sectors = DataService.getSectors();
             sectors.forEach(sector => {
                 const option = document.createElement('option');
@@ -10,6 +14,7 @@ const AdminManager = {
                 sectorSelect.appendChild(option);
             });
             
+            // Handle sector change
             sectorSelect.addEventListener('change', function() {
                 const sector = DataService.getSectorById(this.value);
                 Auth.currentSector = sector.name;
@@ -17,11 +22,13 @@ const AdminManager = {
             });
         }
         
+        // Set up copy link functionality
         document.querySelector('.copy-link')?.addEventListener('click', () => {
-            const sector = DataService.getSectors()[0];
+            const sector = DataService.getSectors()[0]; // Get first sector for demo
             UI.copyToClipboard(sector.invitationLink);
         });
         
+        // Set up resolve buttons
         document.querySelectorAll('.resolve-btn').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -34,4 +41,5 @@ const AdminManager = {
     }
 };
 
+// Initialize admin manager
 document.addEventListener('DOMContentLoaded', () => AdminManager.init());
