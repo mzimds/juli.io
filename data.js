@@ -1,6 +1,4 @@
-// Data Service Module (LocalStorage implementation)
 const DataService = {
-    // Initialize data structure
     init() {
         if (!localStorage.getItem('juliData')) {
             const initialData = {
@@ -39,23 +37,40 @@ const DataService = {
                         sector: 'UTI Adulto',
                         registered: '10/10/2023'
                     }
+                ],
+                patients: [
+                    {
+                        id: 'p1',
+                        name: 'Maria Oliveira',
+                        bed: '12A',
+                        age: 67,
+                        diagnosis: 'Pneumonia',
+                        doctor: 'Dr. Silva',
+                        status: 'intercorrencia'
+                    },
+                    {
+                        id: 'p2',
+                        name: 'Carlos Santos',
+                        bed: '8B',
+                        age: 52,
+                        diagnosis: 'Ap. cardíaco',
+                        doctor: 'Dr. Souza',
+                        status: 'alta'
+                    }
                 ]
             };
             localStorage.setItem('juliData', JSON.stringify(initialData));
         }
     },
     
-    // Get all data
     getData() {
         return JSON.parse(localStorage.getItem('juliData'));
     },
     
-    // Save all data
     saveData(data) {
         localStorage.setItem('juliData', JSON.stringify(data));
     },
     
-    // Sector methods
     getSectors() {
         return this.getData().sectors;
     },
@@ -64,7 +79,6 @@ const DataService = {
         return this.getData().sectors.find(s => s.id === id);
     },
     
-    // Doctor methods
     getPendingDoctors() {
         return this.getData().pendingDoctors;
     },
@@ -73,17 +87,17 @@ const DataService = {
         return this.getData().approvedDoctors;
     },
     
-    // WebSocket ready methods (stubs for future implementation)
+    getPatients() {
+        return this.getData().patients;
+    },
+    
     wsConnect() {
         console.log('Connecting to WebSocket server...');
-        // Implementation will be added in next phase
     },
     
     wsSend(data) {
         console.log('Sending data via WebSocket:', data);
-        // Implementation will be added in next phase
     }
 };
 
-// Initialize data
 document.addEventListener('DOMContentLoaded', () => DataService.init());

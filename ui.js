@@ -1,6 +1,4 @@
-// UI Components Module
 const UI = {
-    // Show animated toast notification
     showToast(message, type = 'info', duration = 3000) {
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
@@ -12,17 +10,14 @@ const UI = {
         const container = document.getElementById('toast-container');
         container.appendChild(toast);
         
-        // Animate in
         setTimeout(() => toast.classList.add('show'), 10);
         
-        // Animate out and remove
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => toast.remove(), 300);
         }, duration);
     },
     
-    // Copy text to clipboard
     copyToClipboard(text) {
         navigator.clipboard.writeText(text)
             .then(() => {
@@ -35,7 +30,6 @@ const UI = {
     }
 };
 
-// Add toast styles dynamically
 (function addToastStyles() {
     const style = document.createElement('style');
     style.textContent = `
@@ -51,7 +45,6 @@ const UI = {
         
         .toast {
             min-width: 250px;
-            background: #333;
             color: white;
             border-radius: 8px;
             padding: 15px 20px;
@@ -82,7 +75,7 @@ const UI = {
             width: 100%;
             transform: scaleX(1);
             transform-origin: left;
-            animation: progress ${duration}ms linear forwards;
+            animation: progress 3s linear forwards;
         }
         
         @keyframes progress {
