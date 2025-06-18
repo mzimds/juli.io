@@ -1349,7 +1349,9 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Nome do paciente">
+                    <select class="form-control" id="alta-paciente">
+                        <option>Selecione um paciente</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <select class="form-control">
@@ -1385,9 +1387,8 @@
                     <input type="text" class="form-control" placeholder="Título da pendência">
                 </div>
                 <div class="form-group">
-                    <select class="form-control">
-                        <option>Maria Silva</option>
-                        <option>João Santos</option>
+                    <select class="form-control" id="pendencia-paciente">
+                        <option>Selecione um paciente</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1416,9 +1417,8 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <select class="form-control">
-                        <option>Maria Silva</option>
-                        <option>João Santos</option>
+                    <select class="form-control" id="intercorrencia-paciente">
+                        <option>Selecione um paciente</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1438,6 +1438,41 @@
             <div class="modal-footer">
                 <button class="modal-btn cancel">Cancelar</button>
                 <button class="modal-btn save">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Novo Modal de Paciente -->
+    <div class="modal-overlay" id="paciente-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Paciente</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Nome completo" id="paciente-nome">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" placeholder="Idade" id="paciente-idade">
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="paciente-sexo">
+                        <option value="">Sexo biológico</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Leito" id="paciente-leito">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Número do atendimento" id="paciente-atendimento">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel">Cancelar</button>
+                <button class="modal-btn save" id="save-paciente">Salvar</button>
             </div>
         </div>
     </div>
@@ -1501,17 +1536,17 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="app-logo">Juli</div>
-                <div class="sector-selector">
-                    <select id="sector-switcher">
+                <div class="custom-select">
+                    <div class="select-selected" id="current-sector-display">UTI Adulto</div>
+                    <div class="select-items">
+                        <div class="select-item" data-value="uti-adulto">UTI Adulto</div>
+                        <div class="select-item" data-value="emergencia">Emergência</div>
+                    </div>
+                    <select id="sector-switcher" class="hidden">
                         <option value="uti-adulto">UTI Adulto</option>
                         <option value="emergencia">Emergência</option>
                     </select>
                 </div>
-            </div>
-            
-            <div class="sector-info">
-                <div class="sector-name" id="current-sector">UTI Adulto</div>
-                <div class="shift-time" id="current-shift">Plantão Diurno (07:00 - 19:00)</div>
             </div>
             
             <div class="header-actions">
@@ -1555,6 +1590,10 @@
                     <i class="fas fa-home"></i>
                     <span class="nav-text">Dashboard</span>
                 </div>
+                <div class="nav-item" data-view="pacientes">
+                    <i class="fas fa-user-injured"></i>
+                    <span class="nav-text">Pacientes</span>
+                </div>
                 <div class="nav-item" data-view="alta">
                     <i class="fas fa-sign-out-alt"></i>
                     <span class="nav-text">Altas</span>
@@ -1567,7 +1606,7 @@
                     <i class="fas fa-tasks"></i>
                     <span class="nav-text">Pendências</span>
                 </div>
-                <div class="nav-item" data-view="logs">
+                <div class="nav-item admin-only" data-view="logs">
                     <i class="fas fa-history"></i>
                     <span class="nav-text">Logs</span>
                 </div>
@@ -1615,6 +1654,21 @@
                     </div>
                 </div>
                 
+                <!-- Pacientes View -->
+                <div id="pacientes-view" class="view-content hidden">
+                    <div class="content-header">
+                        <button id="add-paciente" class="action-button">
+                            <i class="fas fa-plus"></i>
+                            <span>Adicionar Paciente</span>
+                        </button>
+                    </div>
+                    <div class="empty-state">
+                        <i class="fas fa-user-injured"></i>
+                        <h3>Nenhum paciente cadastrado</h3>
+                        <p>Cadastre pacientes para vincular informações de altas, intercorrências e pendências.</p>
+                    </div>
+                </div>
+                
                 <!-- Altas View -->
                 <div id="alta-view" class="view-content hidden">
                     <div class="content-header">
@@ -1653,70 +1707,10 @@
                             <span>Adicionar Pendência</span>
                         </button>
                     </div>
-                    <div class="cards-grid">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Medicação Pendente</div>
-                                <div class="card-badge badge-pendencia">Pendente</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="info-group">
-                                    <div class="info-label">Paciente</div>
-                                    <div class="info-value">Maria Silva</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Setor</div>
-                                    <div class="info-value">UTI Adulto</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Descrição</div>
-                                    <div class="info-value">Antibiótico IV pendente</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Data</div>
-                                    <div class="info-value">18/06/2023 14:30</div>
-                                </div>
-                            </div>
-                            <div class="card-actions">
-                                <button class="icon-button" title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="resolve-btn">
-                                    <i class="fas fa-check"></i>
-                                    <span>Resolver</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Logs View -->
-                <div id="logs-view" class="view-content hidden">
-                    <div class="logs-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Data/Hora</th>
-                                    <th>Tipo</th>
-                                    <th>Descrição</th>
-                                    <th>Responsável</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>18/06/2023 08:15</td>
-                                    <td>Plantão</td>
-                                    <td>Início do plantão diurno</td>
-                                    <td>Dr. Silva</td>
-                                </tr>
-                                <tr>
-                                    <td>18/06/2023 10:30</td>
-                                    <td>Intercorrência</td>
-                                    <td>Paciente com febre alta</td>
-                                    <td>Dra. Oliveira</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="empty-state">
+                        <i class="fas fa-tasks"></i>
+                        <h3>Nenhuma pendência registrada</h3>
+                        <p>As pendências registradas durante o plantão aparecerão aqui.</p>
                     </div>
                 </div>
                 
@@ -1743,6 +1737,41 @@
                             <p class="link-description">
                                 Compartilhe este link via WhatsApp para médicos se cadastrarem neste setor
                             </p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Criar Novo Setor</label>
+                            <div class="form-grid">
+                                <div>
+                                    <input type="text" class="form-control" placeholder="Nome do setor">
+                                </div>
+                                <div>
+                                    <button class="action-button">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Criar Setor</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h3 class="section-title">Horário dos Plantões</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Plantão Diurno</label>
+                                <div class="time-grid">
+                                    <input type="time" class="form-control" value="07:00">
+                                    <input type="time" class="form-control" value="19:00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Plantão Noturno</label>
+                                <div class="time-grid">
+                                    <input type="time" class="form-control" value="19:00">
+                                    <input type="time" class="form-control" value="07:00">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -1778,6 +1807,66 @@
                                     </button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h3 class="section-title">Plantões Encerrados</h3>
+                        <div class="plantao-grid">
+                            <div class="plantao-card">
+                                <div class="plantao-header">
+                                    <div class="plantao-title">Plantão Diurno</div>
+                                    <div class="plantao-date">18/06/2023</div>
+                                </div>
+                                <div class="sector-details">
+                                    <div class="detail-card">
+                                        <div class="detail-title">Pacientes Atendidos</div>
+                                        <div class="detail-value">24</div>
+                                    </div>
+                                    <div class="detail-card">
+                                        <div class="detail-title">Altas</div>
+                                        <div class="detail-value">3</div>
+                                    </div>
+                                    <div class="detail-card">
+                                        <div class="detail-title">Intercorrências</div>
+                                        <div class="detail-value">5</div>
+                                    </div>
+                                    <div class="detail-card">
+                                        <div class="detail-title">Pendências</div>
+                                        <div class="detail-value">2</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h3 class="section-title">Logs do Sistema</h3>
+                        <div class="logs-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Data/Hora</th>
+                                        <th>Tipo</th>
+                                        <th>Descrição</th>
+                                        <th>Responsável</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>18/06/2023 08:15</td>
+                                        <td>Plantão</td>
+                                        <td>Início do plantão diurno</td>
+                                        <td>Dr. Silva</td>
+                                    </tr>
+                                    <tr>
+                                        <td>18/06/2023 10:30</td>
+                                        <td>Intercorrência</td>
+                                        <td>Paciente com febre alta</td>
+                                        <td>Dra. Oliveira</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -2037,7 +2126,8 @@
                                 date: '18/06/2023 14:30',
                                 resolved: false
                             }
-                        ]
+                        ],
+                        pacientes: []
                     };
                     localStorage.setItem('juliData', JSON.stringify(initialData));
                 }
@@ -2073,6 +2163,20 @@
             
             getPendencies() {
                 return this.getData().pendencies;
+            },
+            
+            getPacientes() {
+                return this.getData().pacientes;
+            },
+            
+            addPaciente(paciente) {
+                const data = this.getData();
+                data.pacientes.push({
+                    ...paciente,
+                    id: 'paciente-' + Date.now()
+                });
+                this.saveData(data);
+                return true;
             },
             
             approveDoctor(doctorId) {
@@ -2140,7 +2244,6 @@
             
             currentUser: null,
             currentSector: 'UTI Adulto',
-            currentShift: 'Plantão Diurno (07:00 - 19:00)',
             
             init() {
                 // Verificar sessão existente
@@ -2187,8 +2290,7 @@
                 // Atualizar interface
                 document.getElementById('current-user').textContent = this.currentUser.name;
                 document.getElementById('user-role').textContent = this.currentUser.role;
-                document.getElementById('current-sector').textContent = this.currentSector;
-                document.getElementById('current-shift').textContent = this.currentShift;
+                document.getElementById('current-sector-display').textContent = this.currentSector;
                 
                 // Esconder login e mostrar app
                 document.getElementById('login-screen').style.display = 'none';
@@ -2225,7 +2327,7 @@
                 const sector = DataService.getSectorById(sectorId);
                 if (sector) {
                     this.currentSector = sector.name;
-                    document.getElementById('current-sector').textContent = this.currentSector;
+                    document.getElementById('current-sector-display').textContent = this.currentSector;
                     
                     // Atualizar sessão
                     const session = localStorage.getItem('juliSession');
@@ -2277,6 +2379,10 @@
                 if (view === 'logs') {
                     LogManager.renderLogs();
                 }
+                
+                if (view === 'pacientes') {
+                    PacienteManager.renderPacientes();
+                }
             },
             
             refreshViews() {
@@ -2286,6 +2392,10 @@
                 
                 if (document.getElementById('logs-view').classList.contains('hidden') === false) {
                     LogManager.renderLogs();
+                }
+                
+                if (document.getElementById('pacientes-view').classList.contains('hidden') === false) {
+                    PacienteManager.renderPacientes();
                 }
             },
             
@@ -2401,13 +2511,148 @@
             }
         };
 
+        // paciente.js
+        const PacienteManager = {
+            renderPacientes() {
+                const container = document.querySelector('#pacientes-view');
+                if (!container) return;
+                
+                const pacientes = DataService.getPacientes();
+                
+                if (pacientes.length === 0) {
+                    container.innerHTML = `
+                        <div class="content-header">
+                            <button id="add-paciente" class="action-button">
+                                <i class="fas fa-plus"></i>
+                                <span>Adicionar Paciente</span>
+                            </button>
+                        </div>
+                        <div class="empty-state">
+                            <i class="fas fa-user-injured"></i>
+                            <h3>Nenhum paciente cadastrado</h3>
+                            <p>Cadastre pacientes para vincular informações de altas, intercorrências e pendências.</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="content-header">
+                            <button id="add-paciente" class="action-button">
+                                <i class="fas fa-plus"></i>
+                                <span>Adicionar Paciente</span>
+                            </button>
+                        </div>
+                        <div class="cards-grid">
+                            ${pacientes.map(paciente => `
+                                <div class="card" data-id="${paciente.id}">
+                                    <div class="card-header">
+                                        <div class="card-title">${paciente.nome}</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="info-group">
+                                            <div class="info-label">Idade</div>
+                                            <div class="info-value">${paciente.idade}</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Sexo</div>
+                                            <div class="info-value">${paciente.sexo === 'masculino' ? 'Masculino' : 'Feminino'}</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Leito</div>
+                                            <div class="info-value">${paciente.leito}</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Atendimento</div>
+                                            <div class="info-value">${paciente.atendimento}</div>
+                                        </div>
+                                    </div>
+                                    <div class="card-actions">
+                                        <button class="icon-button" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="icon-button" title="Excluir">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('add-paciente')?.addEventListener('click', () => {
+                    UI.openModal('paciente-modal');
+                });
+            },
+            
+            init() {
+                document.getElementById('add-paciente')?.addEventListener('click', () => {
+                    UI.openModal('paciente-modal');
+                });
+                
+                document.getElementById('save-paciente')?.addEventListener('click', () => {
+                    const nome = document.getElementById('paciente-nome').value;
+                    const idade = document.getElementById('paciente-idade').value;
+                    const sexo = document.getElementById('paciente-sexo').value;
+                    const leito = document.getElementById('paciente-leito').value;
+                    const atendimento = document.getElementById('paciente-atendimento').value;
+                    
+                    if (nome && idade && sexo && leito && atendimento) {
+                        DataService.addPaciente({
+                            nome,
+                            idade,
+                            sexo,
+                            leito,
+                            atendimento
+                        });
+                        
+                        UI.closeModal('paciente-modal');
+                        this.renderPacientes();
+                        this.updatePacientesDropdowns();
+                        
+                        DataService.addLog({
+                            timestamp: new Date().toLocaleString(),
+                            type: 'Paciente',
+                            description: `Novo paciente cadastrado: ${nome}`,
+                            user: Auth.currentUser.name
+                        });
+                        
+                        UI.showToast(i18n.t('toast.itemAdded', { type: 'Paciente' }), 'success');
+                    }
+                });
+            },
+            
+            updatePacientesDropdowns() {
+                const pacientes = DataService.getPacientes();
+                const dropdowns = [
+                    document.getElementById('alta-paciente'),
+                    document.getElementById('pendencia-paciente'),
+                    document.getElementById('intercorrencia-paciente')
+                ];
+                
+                dropdowns.forEach(dropdown => {
+                    if (dropdown) {
+                        // Limpar opções existentes (exceto a primeira)
+                        while (dropdown.options.length > 1) {
+                            dropdown.remove(1);
+                        }
+                        
+                        // Adicionar novos pacientes
+                        pacientes.forEach(paciente => {
+                            const option = document.createElement('option');
+                            option.value = paciente.id;
+                            option.textContent = paciente.nome;
+                            dropdown.appendChild(option);
+                        });
+                    }
+                });
+            }
+        };
+
         // pendency.js
         const PendencyManager = {
             renderPendencies() {
-                const container = document.querySelector('#pendencia-view .cards-grid');
+                const container = document.querySelector('#pendencia-view');
                 if (!container) return;
-                
-                container.innerHTML = '';
                 
                 const pendencies = DataService.getPendencies();
                 const currentSector = Auth.currentSector;
@@ -2416,77 +2661,92 @@
                 
                 if (filteredPendencies.length === 0) {
                     container.innerHTML = `
+                        <div class="content-header">
+                            <button id="add-pendencia" class="action-button">
+                                <i class="fas fa-plus"></i>
+                                <span>Adicionar Pendência</span>
+                            </button>
+                        </div>
                         <div class="empty-state">
                             <i class="fas fa-tasks"></i>
                             <h3>Nenhuma pendência registrada</h3>
                             <p>As pendências registradas durante o plantão aparecerão aqui.</p>
                         </div>
                     `;
-                    return;
-                }
-                
-                filteredPendencies.forEach(pendency => {
-                    const card = document.createElement('div');
-                    card.className = `card ${pendency.resolved ? 'resolved' : ''}`;
-                    card.dataset.id = pendency.id;
-                    card.innerHTML = `
-                        <div class="card-header">
-                            <div class="card-title">${pendency.title}</div>
-                            <div class="card-badge ${pendency.resolved ? 'badge-resolvido' : 'badge-pendencia'}">
-                                ${pendency.resolved ? 'Resolvido' : 'Pendente'}
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="info-group">
-                                <div class="info-label">Paciente</div>
-                                <div class="info-value">${pendency.patient}</div>
-                            </div>
-                            <div class="info-group">
-                                <div class="info-label">Setor</div>
-                                <div class="info-value">${pendency.sector}</div>
-                            </div>
-                            <div class="info-group">
-                                <div class="info-label">Descrição</div>
-                                <div class="info-value">${pendency.description}</div>
-                            </div>
-                            <div class="info-group">
-                                <div class="info-label">Data</div>
-                                <div class="info-value">${pendency.date}</div>
-                            </div>
-                        </div>
-                        <div class="card-actions">
-                            <button class="icon-button" title="Editar">
-                                <i class="fas fa-edit"></i>
+                } else {
+                    container.innerHTML = `
+                        <div class="content-header">
+                            <button id="add-pendencia" class="action-button">
+                                <i class="fas fa-plus"></i>
+                                <span>Adicionar Pendência</span>
                             </button>
-                            <button class="resolve-btn" ${pendency.resolved ? 'disabled' : ''}>
-                                <i class="fas fa-check"></i>
-                                <span>Resolver</span>
-                            </button>
+                        </div>
+                        <div class="cards-grid">
+                            ${filteredPendencies.map(pendency => `
+                                <div class="card ${pendency.resolved ? 'resolved' : ''}" data-id="${pendency.id}">
+                                    <div class="card-header">
+                                        <div class="card-title">${pendency.title}</div>
+                                        <div class="card-badge ${pendency.resolved ? 'badge-resolvido' : 'badge-pendencia'}">
+                                            ${pendency.resolved ? 'Resolvido' : 'Pendente'}
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="info-group">
+                                            <div class="info-label">Paciente</div>
+                                            <div class="info-value">${pendency.patient}</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Setor</div>
+                                            <div class="info-value">${pendency.sector}</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Descrição</div>
+                                            <div class="info-value">${pendency.description}</div>
+                                        </div>
+                                        <div class="info-group">
+                                            <div class="info-label">Data</div>
+                                            <div class="info-value">${pendency.date}</div>
+                                        </div>
+                                    </div>
+                                    <div class="card-actions">
+                                        <button class="icon-button" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="resolve-btn" ${pendency.resolved ? 'disabled' : ''}>
+                                            <i class="fas fa-check"></i>
+                                            <span>Resolver</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
                     `;
-                    container.appendChild(card);
-                    
-                    const resolveBtn = card.querySelector('.resolve-btn');
-                    if (resolveBtn) {
-                        resolveBtn.addEventListener('click', function() {
-                            const pendencyId = card.dataset.id;
-                            if (DataService.resolvePendency(pendencyId)) {
-                                card.classList.add('resolved');
-                                resolveBtn.disabled = true;
-                                card.querySelector('.card-badge').className = 'card-badge badge-resolvido';
-                                card.querySelector('.card-badge').textContent = 'Resolvido';
-                                
-                                DataService.addLog({
-                                    timestamp: new Date().toLocaleString(),
-                                    type: 'Pendência',
-                                    description: `Pendência resolvida: ${pendency.title}`,
-                                    user: Auth.currentUser.name
-                                });
-                                
-                                UI.showToast(i18n.t('toast.pendingResolved'), 'success');
-                            }
-                        });
-                    }
+                }
+                
+                document.getElementById('add-pendencia')?.addEventListener('click', () => {
+                    UI.openModal('pendencia-modal');
+                });
+                
+                document.querySelectorAll('.resolve-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const card = this.closest('.card');
+                        const pendencyId = card.dataset.id;
+                        if (DataService.resolvePendency(pendencyId)) {
+                            card.classList.add('resolved');
+                            this.disabled = true;
+                            card.querySelector('.card-badge').className = 'card-badge badge-resolvido';
+                            card.querySelector('.card-badge').textContent = 'Resolvido';
+                            
+                            DataService.addLog({
+                                timestamp: new Date().toLocaleString(),
+                                type: 'Pendência',
+                                description: `Pendência resolvida: ${card.querySelector('.card-title').textContent}`,
+                                user: Auth.currentUser.name
+                            });
+                            
+                            UI.showToast(i18n.t('toast.pendingResolved'), 'success');
+                        }
+                    });
                 });
             },
             
@@ -2528,20 +2788,14 @@
         // log.js
         const LogManager = {
             renderLogs() {
-                const tableBody = document.querySelector('#logs-view tbody');
+                const tableBody = document.querySelector('#admin-view tbody');
                 if (!tableBody) return;
                 
                 tableBody.innerHTML = '';
                 
                 const logs = DataService.getLogs();
-                const currentSector = Auth.currentSector;
                 
-                const filteredLogs = logs.filter(log => 
-                    log.description.includes(currentSector) || 
-                    log.type === 'Sistema'
-                );
-                
-                filteredLogs.forEach(log => {
+                logs.forEach(log => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${log.timestamp}</td>
@@ -2568,7 +2822,7 @@
                 });
                 
                 document.querySelector('#alta-modal .modal-btn.save')?.addEventListener('click', () => {
-                    const patient = document.querySelector('#alta-modal input[type="text"]').value;
+                    const patient = document.querySelector('#alta-modal select').value;
                     const reason = document.querySelector('#alta-modal textarea').value;
                     
                     if (patient && reason) {
@@ -2688,6 +2942,7 @@
             ViewManager.init();
             AdminManager.init();
             PendencyManager.init();
+            PacienteManager.init();
             LogManager.init();
             ModalManager.init();
             App.init();
