@@ -980,6 +980,72 @@
             background-size: 12px;
         }
 
+        /* Pacientes Críticos - Nova formatação */
+        .critical-patients {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .patient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .patient-name {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .patient-info {
+            display: flex;
+            gap: 12px;
+        }
+
+        .patient-info span {
+            padding: 4px 8px;
+            background-color: rgba(59, 130, 246, 0.1);
+            border-radius: 4px;
+            color: var(--accent-blue);
+            font-size: 0.85rem;
+        }
+
+        /* Mensagens quando não há registros */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: white;
+            border-radius: var(--radius);
+            border: 1px dashed var(--border-color);
+            margin-top: 20px;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--neutral-gray);
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .empty-state p {
+            color: var(--neutral-gray);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Cards de Pendências - sem título */
+        .pendency-title {
+            display: none;
+        }
+
         @media (min-width: 769px) {
             .menu-btn {
                 display: none;
@@ -1125,34 +1191,6 @@
             }
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            background-color: white;
-            border-radius: var(--radius);
-            border: 1px dashed var(--border-color);
-            margin-top: 20px;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            color: var(--neutral-gray);
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .empty-state h3 {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .empty-state p {
-            color: var(--neutral-gray);
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
         .app-logo::after {
             content: none;
         }
@@ -1264,7 +1302,7 @@
             border: 1px solid var(--border-color);
             padding: 8px 30px 8px 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             min-width: 70px;
             position: relative;
         }
@@ -1427,36 +1465,6 @@
             border-bottom: none;
         }
         
-        /* Pacientes críticos */
-        .critical-patients {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-        
-        .patient-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        
-        .patient-name {
-            font-weight: 500;
-        }
-        
-        .patient-info {
-            font-size: 0.9rem;
-            color: var(--neutral-gray);
-        }
-        
-        .expand-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--neutral-gray);
-        }
-        
-        /* Horários de plantão */
         .time-pair {
             margin-bottom: 15px;
             padding-bottom: 15px;
@@ -1842,11 +1850,17 @@
                             <div class="critical-patients">
                                 <div class="patient-item">
                                     <div class="patient-name">Maria Silva</div>
-                                    <div class="patient-info">Leito: 12A | Atendimento: 20230619001</div>
+                                    <div class="patient-info">
+                                        <span>12A</span>
+                                        <span>20230619001</span>
+                                    </div>
                                 </div>
                                 <div class="patient-item">
                                     <div class="patient-name">João Santos</div>
-                                    <div class="patient-info">Leito: 8B | Atendimento: 20230618002</div>
+                                    <div class="patient-info">
+                                        <span>8B</span>
+                                        <span>20230618002</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2024,7 +2038,6 @@
                     <div class="cards-grid">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">Medicação Pendente</div>
                                 <div class="card-badge badge-pendencia">Pendente</div>
                             </div>
                             <div class="card-body">
@@ -2061,7 +2074,6 @@
                         </div>
                         <div class="card resolved">
                             <div class="card-header">
-                                <div class="card-title">Exame Pendente</div>
                                 <div class="card-badge badge-resolvido">Resolvido</div>
                             </div>
                             <div class="card-body">
@@ -2346,7 +2358,15 @@
                     'toast.setorCriado': 'Setor criado com sucesso!',
                     'admin.sectorLink': 'Compartilhe este link via WhatsApp para médicos se cadastrarem neste setor',
                     'admin.noPendingDoctors': 'Nenhum médico pendente',
-                    'admin.allDoctorsApproved': 'Todos os médicos estão aprovados neste setor'
+                    'admin.allDoctorsApproved': 'Todos os médicos estão aprovados neste setor',
+                    'empty.pacientes': 'Nenhum paciente cadastrado',
+                    'empty.pacientes.desc': 'Cadastre pacientes para vincular informações.',
+                    'empty.altas': 'Nenhuma alta registrada',
+                    'empty.altas.desc': 'As altas registradas durante o plantão aparecerão aqui.',
+                    'empty.intercorrencias': 'Nenhuma intercorrência registrada',
+                    'empty.intercorrencias.desc': 'As intercorrências registradas durante o plantão aparecerão aqui.',
+                    'empty.pendencias': 'Nenhuma pendência registrada',
+                    'empty.pendencias.desc': 'As pendências registradas durante o plantão aparecerão aqui.'
                 },
                 'en': {
                     'app.name': 'Juli',
@@ -2376,7 +2396,15 @@
                     'toast.setorCriado': 'Sector created successfully!',
                     'admin.sectorLink': 'Share this link via WhatsApp for doctors to register in this sector',
                     'admin.noPendingDoctors': 'No pending doctors',
-                    'admin.allDoctorsApproved': 'All doctors are approved in this sector'
+                    'admin.allDoctorsApproved': 'All doctors are approved in this sector',
+                    'empty.pacientes': 'No patients registered',
+                    'empty.pacientes.desc': 'Register patients to link information.',
+                    'empty.altas': 'No discharges registered',
+                    'empty.altas.desc': 'Discharges registered during the shift will appear here.',
+                    'empty.intercorrencias': 'No incidents registered',
+                    'empty.intercorrencias.desc': 'Incidents registered during the shift will appear here.',
+                    'empty.pendencias': 'No pending issues registered',
+                    'empty.pendencias.desc': 'Pending issues registered during the shift will appear here.'
                 },
                 'es': {
                     'app.name': 'Juli',
@@ -2406,7 +2434,15 @@
                     'toast.setorCriado': '¡Sector creado con éxito!',
                     'admin.sectorLink': 'Comparte este enlace vía WhatsApp para que los médicos se registren en este sector',
                     'admin.noPendingDoctors': 'Ningún médico pendiente',
-                    'admin.allDoctorsApproved': 'Todos los médicos están aprobados en este sector'
+                    'admin.allDoctorsApproved': 'Todos los médicos están aprobados en este sector',
+                    'empty.pacientes': 'No hay pacientes registrados',
+                    'empty.pacientes.desc': 'Registre pacientes para vincular información.',
+                    'empty.altas': 'No hay altas registradas',
+                    'empty.altas.desc': 'Las altas registradas durante el turno aparecerán aquí.',
+                    'empty.intercorrencias': 'No hay intercorrencias registradas',
+                    'empty.intercorrencias.desc': 'Las intercorrencias registradas durante el turno aparecerán aquí.',
+                    'empty.pendencias': 'No hay pendientes registradas',
+                    'empty.pendencias.desc': 'Las pendientes registradas durante el turno aparecerán aquí.'
                 }
             },
             
@@ -2545,10 +2581,10 @@
                 if (infoValue.classList.contains('long-text')) {
                     if (infoValue.style.webkitLineClamp === '3') {
                         infoValue.style.webkitLineClamp = 'unset';
-                        element.textContent = 'Ver menos';
+                        element.textContent = i18n.t('showLess');
                     } else {
                         infoValue.style.webkitLineClamp = '3';
-                        element.textContent = 'Ver mais';
+                        element.textContent = i18n.t('showMore');
                     }
                 }
             }
@@ -3212,8 +3248,8 @@
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-user-injured"></i>
-                            <h3>Nenhum paciente cadastrado</h3>
-                            <p>Cadastre pacientes para vincular informações.</p>
+                            <h3>${i18n.t('empty.pacientes')}</h3>
+                            <p>${i18n.t('empty.pacientes.desc')}</p>
                         </div>
                     `;
                 } else {
@@ -3325,8 +3361,8 @@
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-tasks"></i>
-                            <h3>Nenhuma pendência registrada</h3>
-                            <p>As pendências registradas aparecerão aqui.</p>
+                            <h3>${i18n.t('empty.pendencias')}</h3>
+                            <p>${i18n.t('empty.pendencias.desc')}</p>
                         </div>
                     `;
                 } else {
@@ -3343,7 +3379,6 @@
                         card.dataset.id = pendency.id;
                         card.innerHTML = `
                             <div class="card-header">
-                                <div class="card-title">${pendency.title}</div>
                                 <div class="card-badge ${pendency.resolved ? 'badge-resolvido' : 'badge-pendencia'}">
                                     ${pendency.resolved ? 'Resolvido' : 'Pendente'}
                                 </div>
@@ -3373,9 +3408,11 @@
                                     `Criado por: ${pendency.createdBy} | ${pendency.createdAt}`}
                             </div>
                             <div class="card-actions">
-                                <button class="icon-button" title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </button>
+                                ${!pendency.resolved ? `
+                                    <button class="icon-button" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                ` : ''}
                                 <button class="resolve-btn ${pendency.resolved ? 'resolved' : ''}">
                                     <i class="fas fa-check"></i>
                                     <span>${pendency.resolved ? 'Resolvido' : 'Resolver'}</span>
@@ -3456,8 +3493,8 @@
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-clipboard-list"></i>
-                            <h3>Nenhuma alta registrada</h3>
-                            <p>As altas registradas aparecerão aqui.</p>
+                            <h3>${i18n.t('empty.altas')}</h3>
+                            <p>${i18n.t('empty.altas.desc')}</p>
                         </div>
                     `;
                 } else {
@@ -3550,8 +3587,8 @@
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-exclamation-triangle"></i>
-                            <h3>Nenhuma intercorrência registrada</h3>
-                            <p>As intercorrências registradas aparecerão aqui.</p>
+                            <h3>${i18n.t('empty.intercorrencias')}</h3>
+                            <p>${i18n.t('empty.intercorrencias.desc')}</p>
                         </div>
                     `;
                 } else {
