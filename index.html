@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ESTILOS COMPLETOS - VERIFICADOS E OTIMIZADOS */
         :root {
             --bg-main: #ffffff;
             --bg-card: #f8fafc;
@@ -372,11 +371,12 @@
             color: var(--text-main);
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            white-space: normal;
+            word-wrap: break-word;
+            word-break: break-word; /* Garante quebra de palavras longas */
         }
 
         .info-value.long-text {
-            white-space: normal;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
@@ -388,6 +388,7 @@
             cursor: pointer;
             font-size: 0.85rem;
             margin-top: 4px;
+            display: none; /* Escondido por padrão */
         }
 
         .record-list {
@@ -965,22 +966,7 @@
             border: 1px solid var(--border-color);
         }
 
-        .sector-selector select {
-            background: none;
-            border: none;
-            color: var(--accent-blue);
-            font-weight: 600;
-            cursor: pointer;
-            outline: none;
-            appearance: none;
-            padding: 4px 20px 4px 8px;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            background-size: 12px;
-        }
-
-        /* Pacientes Críticos - Nova formatação */
+        /* Pacientes Críticos */
         .critical-patients {
             display: flex;
             flex-direction: column;
@@ -1020,6 +1006,10 @@
             border-radius: var(--radius);
             border: 1px dashed var(--border-color);
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .empty-state i {
@@ -1415,89 +1405,50 @@
             margin-bottom: 8px;
         }
         
-        /* Correções para o problema de login */
-        .login-card .form-control {
-            margin-bottom: 15px;
+        /* Horário dos Plantões */
+        .shift-entry {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .shift-entry:last-child {
+            border-bottom: none;
+        }
+
+        .remove-shift-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: none;
+            border: none;
+            color: var(--neutral-gray);
+            cursor: pointer;
+        }
+
+        .shift-name-input {
+            margin-bottom: 10px;
         }
         
-        #error-message {
-            margin-top: 15px;
-        }
-        
-        .plantao-expanded {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        
-        .plantao-expanded.active {
-            max-height: 1000px;
-        }
-        
-        .export-btn {
-            padding: 8px 16px;
-            background-color: var(--accent-green);
+        /* Botão Adicionar Período */
+        .add-time-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background-color: var(--action-button);
             color: white;
             border: none;
             border-radius: var(--radius);
             cursor: pointer;
             font-weight: 500;
             transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .plantao-details {
             margin-top: 16px;
-            padding: 16px;
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
         }
-        
-        .plantao-detail-item {
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .plantao-detail-item:last-child {
-            border-bottom: none;
-        }
-        
-        .time-pair {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .time-pair:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        
-        .time-label {
-            font-size: 0.85rem;
-            color: var(--neutral-gray);
-            margin-bottom: 4px;
-        }
-        
-        .add-time-btn {
-            background: none;
-            border: none;
-            color: var(--accent-blue);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 8px;
-        }
-        
-        .audit-info {
-            font-size: 0.8rem;
-            color: var(--neutral-gray);
-            margin-top: 8px;
+
+        .add-time-btn:hover {
+            background-color: #2d3748;
         }
     </style>
 </head>
@@ -1521,7 +1472,7 @@
                     <input type="text" class="form-control" value="UTI Adulto" readonly>
                 </div>
                 <div class="form-group">
-                    <input type="datetime-local" class="form-control">
+                    <input type="datetime-local" class="form-control" placeholder="Data e hora da alta">
                 </div>
                 <div class="form-group">
                     <textarea class="form-control" rows="3" placeholder="Motivo da Alta"></textarea>
@@ -1579,13 +1530,13 @@
                     <input type="text" class="form-control" value="UTI Adulto" readonly>
                 </div>
                 <div class="form-group">
-                    <input type="datetime-local" class="form-control">
+                    <input type="datetime-local" class="form-control" placeholder="Data e hora da intercorrência">
                 </div>
                 <div class="form-group">
                     <textarea class="form-control" rows="3" placeholder="Descreva a intercorrência"></textarea>
                 </div>
                 <div class="form-group">
-                    <select class="form-control">
+                    <select class="form-control" placeholder="Gravidade">
                         <option>Leve</option>
                         <option>Moderada</option>
                         <option>Grave</option>
@@ -1845,7 +1796,6 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">Pacientes Críticos</div>
-                                <button class="expand-btn"><i class="fas fa-chevron-down"></i></button>
                             </div>
                             <div class="critical-patients">
                                 <div class="patient-item">
@@ -1875,75 +1825,8 @@
                             <span>Adicionar Paciente</span>
                         </button>
                     </div>
-                    <div class="cards-grid">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Maria Silva</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="info-group">
-                                    <div class="info-label">Idade</div>
-                                    <div class="info-value">65</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Sexo</div>
-                                    <div class="info-value">Feminino</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Leito</div>
-                                    <div class="info-value">12A</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Atendimento</div>
-                                    <div class="info-value">20230619001</div>
-                                </div>
-                            </div>
-                            <div class="audit-info">
-                                Criado por: Dr. Silva | 19/06/2023 10:15
-                            </div>
-                            <div class="card-actions">
-                                <button class="icon-button" title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="icon-button" title="Excluir">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">João Santos</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="info-group">
-                                    <div class="info-label">Idade</div>
-                                    <div class="info-value">48</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Sexo</div>
-                                    <div class="info-value">Masculino</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Leito</div>
-                                    <div class="info-value">8B</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Atendimento</div>
-                                    <div class="info-value">20230618002</div>
-                                </div>
-                            </div>
-                            <div class="audit-info">
-                                Criado por: Dra. Oliveira | 18/06/2023 14:30
-                            </div>
-                            <div class="card-actions">
-                                <button class="icon-button" title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="icon-button" title="Excluir">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="cards-grid" id="pacientes-container">
+                        <!-- Pacientes serão renderizados aqui -->
                     </div>
                 </div>
                 
@@ -1955,35 +1838,8 @@
                             <span>Adicionar Alta</span>
                         </button>
                     </div>
-                    <div class="cards-grid">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Alta Médica</div>
-                                <div class="card-badge badge-alta">Alta</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="info-group">
-                                    <div class="info-label">Paciente</div>
-                                    <div class="info-value">Carlos Oliveira</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Setor</div>
-                                    <div class="info-value">UTI Adulto</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Motivo</div>
-                                    <div class="info-value long-text">Recuperação completa após tratamento de pneumonia. Paciente estável com saturação de O2 em 98% em ar ambiente.</div>
-                                    <span class="show-more">Ver mais</span>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Data</div>
-                                    <div class="info-value">19/06/2023 10:15</div>
-                                </div>
-                            </div>
-                            <div class="audit-info">
-                                Criado por: Dr. Silva | 19/06/2023 10:20
-                            </div>
-                        </div>
+                    <div class="cards-grid" id="altas-container">
+                        <!-- Altas serão renderizadas aqui -->
                     </div>
                 </div>
                 
@@ -1995,35 +1851,8 @@
                             <span>Adicionar Intercorrência</span>
                         </button>
                     </div>
-                    <div class="cards-grid">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Febre Alta</div>
-                                <div class="card-badge badge-intercorrencia">Grave</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="info-group">
-                                    <div class="info-label">Paciente</div>
-                                    <div class="info-value">Maria Silva</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Setor</div>
-                                    <div class="info-value">UTI Adulto</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Descrição</div>
-                                    <div class="info-value long-text">Paciente apresentou febre de 39.8°C às 14:30. Foi administrado paracetamol 1g IV. Monitorar temperatura a cada 30 minutos.</div>
-                                    <span class="show-more">Ver mais</span>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Data</div>
-                                    <div class="info-value">19/06/2023 14:30</div>
-                                </div>
-                            </div>
-                            <div class="audit-info">
-                                Criado por: Dra. Oliveira | 19/06/2023 14:35
-                            </div>
-                        </div>
+                    <div class="cards-grid" id="intercorrencias-container">
+                        <!-- Intercorrências serão renderizadas aqui -->
                     </div>
                 </div>
                 
@@ -2035,75 +1864,8 @@
                             <span>Adicionar Pendência</span>
                         </button>
                     </div>
-                    <div class="cards-grid">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-badge badge-pendencia">Pendente</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="info-group">
-                                    <div class="info-label">Paciente</div>
-                                    <div class="info-value">Maria Silva</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Setor</div>
-                                    <div class="info-value">UTI Adulto</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Descrição</div>
-                                    <div class="info-value long-text">Antibiótico IV pendente - Vancomicina 1g a cada 12h. Aguardando farmácia liberar medicamento.</div>
-                                    <span class="show-more">Ver mais</span>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Data</div>
-                                    <div class="info-value">18/06/2023 14:30</div>
-                                </div>
-                            </div>
-                            <div class="audit-info">
-                                Criado por: Dr. Silva | 18/06/2023 14:35
-                            </div>
-                            <div class="card-actions">
-                                <button class="icon-button" title="Editar">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="resolve-btn">
-                                    <i class="fas fa-check"></i>
-                                    <span>Resolver</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card resolved">
-                            <div class="card-header">
-                                <div class="card-badge badge-resolvido">Resolvido</div>
-                            </div>
-                            <div class="card-body">
-                                <div class="info-group">
-                                    <div class="info-label">Paciente</div>
-                                    <div class="info-value">João Santos</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Setor</div>
-                                    <div class="info-value">UTI Adulto</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Descrição</div>
-                                    <div class="info-value">Tomografia de tórax agendada</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Data</div>
-                                    <div class="info-value">17/06/2023 09:15</div>
-                                </div>
-                            </div>
-                            <div class="audit-info">
-                                Resolvido por: Dra. Oliveira | 17/06/2023 15:20
-                            </div>
-                            <div class="card-actions">
-                                <button class="resolve-btn resolved">
-                                    <i class="fas fa-check"></i>
-                                    <span>Resolvido</span>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="cards-grid" id="pendencias-container">
+                        <!-- Pendências serão renderizadas aqui -->
                     </div>
                 </div>
                 
@@ -2149,136 +1911,40 @@
                     
                     <div class="admin-section">
                         <h3 class="section-title">Horário dos Plantões</h3>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label">Plantão Diurno</label>
-                                <div class="time-pair">
-                                    <div class="time-grid">
-                                        <div>
-                                            <div class="time-label">Início</div>
-                                            <input type="time" class="form-control" value="07:00">
-                                        </div>
-                                        <div>
-                                            <div class="time-label">Término</div>
-                                            <input type="time" class="form-control" value="19:00">
-                                        </div>
+                        <div id="shifts-container">
+                            <div class="shift-entry">
+                                <div class="form-group shift-name-input">
+                                    <input type="text" class="form-control" placeholder="Nome do período (opcional)">
+                                </div>
+                                <div class="time-grid">
+                                    <div>
+                                        <div class="time-label">Início</div>
+                                        <input type="time" class="form-control" value="07:00">
+                                    </div>
+                                    <div>
+                                        <div class="time-label">Término</div>
+                                        <input type="time" class="form-control" value="19:00">
                                     </div>
                                 </div>
-                                <button class="add-time-btn">
-                                    <i class="fas fa-plus"></i> Adicionar outro período
-                                </button>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Plantão Noturno</label>
-                                <div class="time-pair">
-                                    <div class="time-grid">
-                                        <div>
-                                            <div class="time-label">Início</div>
-                                            <input type="time" class="form-control" value="19:00">
-                                        </div>
-                                        <div>
-                                            <div class="time-label">Término</div>
-                                            <input type="time" class="form-control" value="07:00">
-                                        </div>
-                                    </div>
-                                </div>
+                                <button class="remove-shift-btn"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
+                        <button class="add-time-btn" id="add-shift-btn">
+                            <i class="fas fa-plus"></i> Adicionar outro período
+                        </button>
                     </div>
                     
                     <div class="admin-section">
                         <h3 class="section-title">Médicos Pendentes</h3>
-                        <div class="cards-grid">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">Dr. Carlos Silva</div>
-                                    <div class="card-badge badge-pendencia">Pendente</div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="info-group">
-                                        <div class="info-label">Email</div>
-                                        <div class="info-value">carlos.silva@hospital.com</div>
-                                    </div>
-                                    <div class="info-group">
-                                        <div class="info-label">Setor</div>
-                                        <div class="info-value">UTI Adulto</div>
-                                    </div>
-                                    <div class="info-group">
-                                        <div class="info-label">Solicitado em</div>
-                                        <div class="info-value">15/11/2023</div>
-                                    </div>
-                                </div>
-                                <div class="card-actions">
-                                    <button class="icon-button" title="Recusar">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                    <button class="resolve-btn">
-                                        <i class="fas fa-check"></i>
-                                        <span>Aprovar</span>
-                                    </button>
-                                </div>
-                            </div>
+                        <div class="cards-grid" id="pending-doctors-container">
+                            <!-- Médicos pendentes serão renderizados aqui -->
                         </div>
                     </div>
                     
                     <div class="admin-section">
                         <h3 class="section-title">Plantões Encerrados</h3>
-                        <div class="plantao-grid">
-                            <div class="plantao-card">
-                                <div class="plantao-header">
-                                    <div class="plantao-title">Plantão Diurno</div>
-                                    <div class="plantao-date">18/06/2023</div>
-                                </div>
-                                <div class="sector-details">
-                                    <div class="detail-card">
-                                        <div class="detail-title">Pacientes Atendidos</div>
-                                        <div class="detail-value">24</div>
-                                    </div>
-                                    <div class="detail-card">
-                                        <div class="detail-title">Altas</div>
-                                        <div class="detail-value">3</div>
-                                    </div>
-                                    <div class="detail-card">
-                                        <div class="detail-title">Intercorrências</div>
-                                        <div class="detail-value">5</div>
-                                    </div>
-                                    <div class="detail-card">
-                                        <div class="detail-title">Pendências</div>
-                                        <div class="detail-value">2</div>
-                                    </div>
-                                </div>
-                                <div class="plantao-expanded">
-                                    <div class="plantao-details">
-                                        <h4>Detalhes do Plantão</h4>
-                                        <div class="plantao-detail-item">
-                                            <div class="info-label">Responsável</div>
-                                            <div class="info-value">Dr. Silva</div>
-                                        </div>
-                                        <div class="plantao-detail-item">
-                                            <div class="info-label">Início</div>
-                                            <div class="info-value">18/06/2023 07:00</div>
-                                        </div>
-                                        <div class="plantao-detail-item">
-                                            <div class="info-label">Término</div>
-                                            <div class="info-value">18/06/2023 19:00</div>
-                                        </div>
-                                        <div class="plantao-detail-item">
-                                            <div class="info-label">Ocorrências</div>
-                                            <div class="info-value">2 altas, 3 intercorrências</div>
-                                        </div>
-                                        <button class="export-btn">
-                                            <i class="fas fa-file-export"></i>
-                                            <span>Exportar Relatório</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-actions">
-                                    <button class="show-details-btn">
-                                        <i class="fas fa-chevron-down"></i>
-                                        <span>Detalhes</span>
-                                    </button>
-                                </div>
-                            </div>
+                        <div class="plantao-grid" id="plantoes-container">
+                            <!-- Plantões serão renderizados aqui -->
                         </div>
                     </div>
                     
@@ -2295,28 +1961,8 @@
                                         <th>Setor</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>19/06/2023 08:15</td>
-                                        <td>Plantão</td>
-                                        <td>Início do plantão diurno</td>
-                                        <td>Dr. Silva</td>
-                                        <td>UTI Adulto</td>
-                                    </tr>
-                                    <tr>
-                                        <td>19/06/2023 10:30</td>
-                                        <td>Intercorrência</td>
-                                        <td>Paciente com febre alta</td>
-                                        <td>Dra. Oliveira</td>
-                                        <td>UTI Adulto</td>
-                                    </tr>
-                                    <tr>
-                                        <td>19/06/2023 11:45</td>
-                                        <td>Alta</td>
-                                        <td>Alta médica para Carlos Oliveira</td>
-                                        <td>Dr. Silva</td>
-                                        <td>UTI Adulto</td>
-                                    </tr>
+                                <tbody id="logs-body">
+                                    <!-- Logs serão renderizados aqui -->
                                 </tbody>
                             </table>
                         </div>
@@ -2581,12 +2227,27 @@
                 if (infoValue.classList.contains('long-text')) {
                     if (infoValue.style.webkitLineClamp === '3') {
                         infoValue.style.webkitLineClamp = 'unset';
-                        element.textContent = i18n.t('showLess');
+                        element.textContent = 'Ver menos';
                     } else {
                         infoValue.style.webkitLineClamp = '3';
-                        element.textContent = i18n.t('showMore');
+                        element.textContent = 'Ver mais';
                     }
                 }
+            },
+            
+            // Função para verificar se o texto precisa do botão "Ver mais"
+            checkTextOverflow() {
+                document.querySelectorAll('.info-value.long-text').forEach(el => {
+                    const lineHeight = parseInt(getComputedStyle(el).lineHeight);
+                    const maxHeight = lineHeight * 3;
+                    
+                    if (el.scrollHeight > maxHeight) {
+                        const showMore = el.nextElementSibling;
+                        if (showMore && showMore.classList.contains('show-more')) {
+                            showMore.style.display = 'block';
+                        }
+                    }
+                });
             }
         };
 
@@ -2879,7 +2540,7 @@
             users: {
                 'medico': { 
                     password: 'juli123', 
-                    name: 'Dr. Silva', 
+                    name: 'Dra. Juliana Calvo', 
                     role: 'Médico Plantonista', 
                     sectors: ['UTI Adulto', 'Emergência'] 
                 },
@@ -3011,6 +2672,7 @@
                 if (view === 'admin') {
                     AdminManager.renderPendingDoctors();
                     AdminManager.renderPlantoes();
+                    AdminManager.renderLogs();
                 }
                 
                 if (view === 'pendencia') {
@@ -3028,16 +2690,9 @@
                 if (view === 'pacientes') {
                     PacienteManager.renderPacientes();
                 }
-            },
-            
-            refreshViews() {
-                if (document.getElementById('pendencia-view').classList.contains('hidden') === false) {
-                    PendencyManager.renderPendencies();
-                }
                 
-                if (document.getElementById('logs-view').classList.contains('hidden') === false) {
-                    LogManager.renderLogs();
-                }
+                // Verificar overflow de texto após renderização
+                setTimeout(() => UI.checkTextOverflow(), 100);
             },
             
             init() {
@@ -3082,12 +2737,40 @@
                     }
                 });
                 
+                document.getElementById('add-shift-btn').addEventListener('click', function() {
+                    const container = document.getElementById('shifts-container');
+                    const newEntry = document.createElement('div');
+                    newEntry.className = 'shift-entry';
+                    newEntry.innerHTML = `
+                        <div class="form-group shift-name-input">
+                            <input type="text" class="form-control" placeholder="Nome do período (opcional)">
+                        </div>
+                        <div class="time-grid">
+                            <div>
+                                <div class="time-label">Início</div>
+                                <input type="time" class="form-control" value="07:00">
+                            </div>
+                            <div>
+                                <div class="time-label">Término</div>
+                                <input type="time" class="form-control" value="19:00">
+                            </div>
+                        </div>
+                        <button class="remove-shift-btn"><i class="fas fa-trash"></i></button>
+                    `;
+                    container.appendChild(newEntry);
+                    
+                    newEntry.querySelector('.remove-shift-btn').addEventListener('click', function() {
+                        newEntry.remove();
+                    });
+                });
+                
                 this.renderPendingDoctors();
                 this.renderPlantoes();
+                this.renderLogs();
             },
             
             renderPendingDoctors() {
-                const container = document.querySelector('#admin-view .cards-grid');
+                const container = document.getElementById('pending-doctors-container');
                 if (!container) return;
                 
                 container.innerHTML = '';
@@ -3150,7 +2833,7 @@
             },
             
             renderPlantoes() {
-                const container = document.querySelector('.plantao-grid');
+                const container = document.getElementById('plantoes-container');
                 if (!container) return;
                 
                 container.innerHTML = '';
@@ -3229,13 +2912,34 @@
                         }
                     });
                 });
+            },
+            
+            renderLogs() {
+                const container = document.getElementById('logs-body');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                const logs = DataService.getLogs();
+                
+                logs.forEach(log => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${log.timestamp}</td>
+                        <td>${log.type}</td>
+                        <td>${log.description}</td>
+                        <td>${log.user}</td>
+                        <td>${log.sector}</td>
+                    `;
+                    container.appendChild(row);
+                });
             }
         };
 
         // paciente.js
         const PacienteManager = {
             renderPacientes() {
-                const container = document.querySelector('#pacientes-view .cards-grid');
+                const container = document.getElementById('pacientes-container');
                 if (!container) return;
                 
                 container.innerHTML = '';
@@ -3304,6 +3008,9 @@
                         });
                     });
                 }
+                
+                // Verificar overflow de texto
+                UI.checkTextOverflow();
             },
             
             init() {
@@ -3348,7 +3055,7 @@
         // pendency.js
         const PendencyManager = {
             renderPendencies() {
-                const container = document.querySelector('#pendencia-view .cards-grid');
+                const container = document.getElementById('pendencias-container');
                 if (!container) return;
                 
                 container.innerHTML = '';
@@ -3455,6 +3162,9 @@
                         }
                     });
                 }
+                
+                // Verificar overflow de texto
+                UI.checkTextOverflow();
             },
             
             init() {
@@ -3480,7 +3190,7 @@
         // alta.js
         const AltaManager = {
             renderAltas() {
-                const container = document.querySelector('#alta-view .cards-grid');
+                const container = document.getElementById('altas-container');
                 if (!container) return;
                 
                 container.innerHTML = '';
@@ -3539,6 +3249,9 @@
                         }
                     });
                 }
+                
+                // Verificar overflow de texto
+                UI.checkTextOverflow();
             },
             
             init() {
@@ -3574,7 +3287,7 @@
         // intercorrencia.js
         const IntercorrenciaManager = {
             renderIntercorrencias() {
-                const container = document.querySelector('#intercorrencia-view .cards-grid');
+                const container = document.getElementById('intercorrencias-container');
                 if (!container) return;
                 
                 container.innerHTML = '';
@@ -3633,6 +3346,9 @@
                         }
                     });
                 }
+                
+                // Verificar overflow de texto
+                UI.checkTextOverflow();
             },
             
             init() {
@@ -3744,13 +3460,10 @@
                     });
                 });
 
-                // Botão expandir pacientes críticos
-                document.querySelector('.expand-btn')?.addEventListener('click', function() {
-                    const patients = this.closest('.card').querySelector('.critical-patients');
-                    patients.classList.toggle('expanded');
-                    this.innerHTML = patients.classList.contains('expanded') ? 
-                        '<i class="fas fa-chevron-up"></i>' : 
-                        '<i class="fas fa-chevron-down"></i>';
+                // Botão de copiar link
+                document.querySelector('.copy-link').addEventListener('click', function() {
+                    const link = document.getElementById('sector-link').textContent;
+                    UI.copyToClipboard(link);
                 });
             }
         };
