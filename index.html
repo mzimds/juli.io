@@ -61,6 +61,7 @@
             max-width: 380px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             text-align: center;
+            transition: margin-top 0.3s ease;
         }
 
         .logo {
@@ -915,6 +916,36 @@
             .app-logo {
                 margin-right: 8px;
             }
+
+            .copy-link-container {
+                flex-direction: column;
+            }
+
+            .sector-link {
+                word-break: break-all;
+                white-space: normal;
+                padding: 10px;
+                margin-bottom: 8px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .copy-link-container {
+                flex-direction: row;
+            }
+            
+            .sector-link {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .login-container {
+                align-items: flex-start;
+                padding-top: 20px;
+            }
         }
 
         /* Empty state */
@@ -996,7 +1027,6 @@
             font-size: 0.9rem;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
         .link-description {
@@ -1140,6 +1170,10 @@
         .flag-en {
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>');
         }
+
+        .flag-es {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><g clip-path="url(#s)"><rect width="60" height="30" fill="#c60b1e"/><rect width="60" height="20" fill="#ffc400" y="5"/><rect width="60" height="10" fill="#c60b1e" y="10"/></g></svg>');
+        }
         
         /* Action buttons */
         .action-button {
@@ -1185,10 +1219,14 @@
                     <div class="select-item" data-value="en">
                         <span class="flag-icon flag-en"></span> EN
                     </div>
+                    <div class="select-item" data-value="es">
+                        <span class="flag-icon flag-es"></span> ES
+                    </div>
                 </div>
                 <select id="language-select" class="styled-select">
                     <option value="pt-BR">PT</option>
                     <option value="en">EN</option>
+                    <option value="es">ES</option>
                 </select>
             </div>
         </div>
@@ -1245,10 +1283,14 @@
                             <div class="select-item" data-value="en">
                                 <span class="flag-icon flag-en"></span> EN
                             </div>
+                            <div class="select-item" data-value="es">
+                                <span class="flag-icon flag-es"></span> ES
+                            </div>
                         </div>
                         <select id="app-language-select" class="styled-select">
                             <option value="pt-BR">PT</option>
                             <option value="en">EN</option>
+                            <option value="es">ES</option>
                         </select>
                     </div>
                 </div>
@@ -1500,7 +1542,9 @@
                     'toast.welcome': 'Bem-vindo, {username}!',
                     'toast.linkCopied': 'Link copiado para a área de transferência!',
                     'toast.pendingResolved': 'Pendência resolvida com sucesso!',
-                    'admin.sectorLink': 'Compartilhe este link via WhatsApp para médicos se cadastrarem neste setor'
+                    'admin.sectorLink': 'Compartilhe este link via WhatsApp para médicos se cadastrarem neste setor',
+                    'admin.noPendingDoctors': 'Nenhum médico pendente',
+                    'admin.allDoctorsApproved': 'Todos os médicos estão aprovados neste setor'
                 },
                 'en': {
                     'app.name': 'Juli',
@@ -1525,7 +1569,36 @@
                     'toast.welcome': 'Welcome, {username}!',
                     'toast.linkCopied': 'Link copied to clipboard!',
                     'toast.pendingResolved': 'Pending issue resolved successfully!',
-                    'admin.sectorLink': 'Share this link via WhatsApp for doctors to register in this sector'
+                    'admin.sectorLink': 'Share this link via WhatsApp for doctors to register in this sector',
+                    'admin.noPendingDoctors': 'No pending doctors',
+                    'admin.allDoctorsApproved': 'All doctors are approved in this sector'
+                },
+                'es': {
+                    'app.name': 'Juli',
+                    'login.subtitle': 'Seguridad y continuidad de la información clínica',
+                    'login.username': 'Usuario',
+                    'login.password': 'Contraseña',
+                    'login.usernamePlaceholder': 'Usuario',
+                    'login.passwordPlaceholder': 'Contraseña',
+                    'login.button': 'Iniciar sesión',
+                    'login.error': 'Usuario o contraseña incorrectos. Inténtalo de nuevo.',
+                    'login.testTitle': 'Credenciales de prueba',
+                    'login.testUser': 'Usuario:',
+                    'login.testPassword': 'Contraseña:',
+                    'login.testAdmin': 'Admin:',
+                    'nav.dashboard': 'Panel de control',
+                    'nav.discharges': 'Altas',
+                    'nav.incidents': 'Incidentes',
+                    'nav.pending': 'Pendientes',
+                    'nav.logs': 'Registros',
+                    'nav.admin': 'Administración',
+                    'nav.logout': 'Salir',
+                    'toast.welcome': '¡Bienvenido, {username}!',
+                    'toast.linkCopied': '¡Enlace copiado al portapapeles!',
+                    'toast.pendingResolved': '¡Pendiente resuelta con éxito!',
+                    'admin.sectorLink': 'Comparte este enlace vía WhatsApp para que los médicos se registren en este sector',
+                    'admin.noPendingDoctors': 'Ningún médico pendiente',
+                    'admin.allDoctorsApproved': 'Todos los médicos están aprobados en este sector'
                 }
             },
             
@@ -1533,7 +1606,8 @@
             
             init() {
                 const savedLang = localStorage.getItem('userLang');
-                const browserLang = navigator.language.split('-')[0] === 'pt' ? 'pt-BR' : 'en';
+                const browserLang = navigator.language.split('-')[0] === 'pt' ? 'pt-BR' : 
+                                  navigator.language.split('-')[0] === 'es' ? 'es' : 'en';
                 this.currentLang = savedLang || browserLang;
                 
                 // Atualizar dropdowns de idioma
@@ -1544,10 +1618,19 @@
                 
                 // Atualizar seleção visual
                 document.querySelectorAll('.select-selected').forEach(el => {
-                    el.textContent = this.currentLang === 'pt-BR' ? 'PT' : 'EN';
+                    el.textContent = this.getLangText(this.currentLang);
                 });
                 
                 this.applyTranslations();
+            },
+            
+            getLangText(lang) {
+                switch(lang) {
+                    case 'pt-BR': return 'PT';
+                    case 'en': return 'EN';
+                    case 'es': return 'ES';
+                    default: return 'PT';
+                }
             },
             
             setLanguage(lang) {
@@ -1557,7 +1640,7 @@
                 
                 // Atualizar seleção visual
                 document.querySelectorAll('.select-selected').forEach(el => {
-                    el.textContent = lang === 'pt-BR' ? 'PT' : 'EN';
+                    el.textContent = this.getLangText(lang);
                 });
             },
             
@@ -1686,6 +1769,22 @@
             
             getApprovedDoctors() {
                 return this.getData().approvedDoctors;
+            },
+            
+            approveDoctor(doctorId) {
+                const data = this.getData();
+                const doctorIndex = data.pendingDoctors.findIndex(d => d.id === doctorId);
+                
+                if (doctorIndex !== -1) {
+                    const [doctor] = data.pendingDoctors.splice(doctorIndex, 1);
+                    data.approvedDoctors.push({
+                        ...doctor,
+                        registered: new Date().toLocaleDateString()
+                    });
+                    this.saveData(data);
+                    return true;
+                }
+                return false;
             },
             
             wsConnect() {
@@ -1880,8 +1979,8 @@
                     container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-user-check"></i>
-                            <h3>Nenhum médico pendente</h3>
-                            <p>Todos os médicos estão aprovados neste setor</p>
+                            <h3>${i18n.t('admin.noPendingDoctors')}</h3>
+                            <p>${i18n.t('admin.allDoctorsApproved')}</p>
                         </div>
                     `;
                     return;
@@ -1890,6 +1989,7 @@
                 pendingDoctors.forEach(doctor => {
                     const card = document.createElement('div');
                     card.className = 'card';
+                    card.dataset.id = doctor.id;
                     card.innerHTML = `
                         <div class="card-header">
                             <div class="card-title">${doctor.name}</div>
@@ -1920,16 +2020,6 @@
                         </div>
                     `;
                     container.appendChild(card);
-                });
-                
-                document.querySelectorAll('.resolve-btn').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const card = this.closest('.card');
-                        card.classList.add('resolved');
-                        this.disabled = true;
-                        UI.showToast(i18n.t('toast.pendingResolved'), 'success');
-                    });
                 });
             }
         };
@@ -2018,7 +2108,31 @@
                     });
                 });
                 
+                // Setup mobile keyboard behavior
+                this.setupMobileKeyboardBehavior();
+                
                 PatientManager.setupActionButtons();
+            },
+            
+            setupMobileKeyboardBehavior() {
+                const loginCard = document.querySelector('.login-card');
+                const originalMargin = window.getComputedStyle(loginCard).marginTop;
+                
+                // Verifica se a API VisualViewport está disponível
+                if (window.visualViewport) {
+                    window.visualViewport.addEventListener('resize', () => {
+                        const visualHeight = window.visualViewport.height;
+                        const windowHeight = window.innerHeight;
+                        
+                        // Se a altura visual for significativamente menor que a altura da janela
+                        // (indicando que o teclado está aberto)
+                        if (visualHeight < windowHeight * 0.8) {
+                            loginCard.style.marginTop = '20px';
+                        } else {
+                            loginCard.style.marginTop = originalMargin;
+                        }
+                    });
+                }
             }
         };
 
