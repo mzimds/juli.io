@@ -311,6 +311,7 @@
 
         .card.resolved {
             border-left: 4px solid var(--accent-green);
+            opacity: 0.8;
         }
 
         .card-header {
@@ -346,6 +347,11 @@
         .badge-pendencia {
             background-color: rgba(234, 179, 8, 0.1);
             color: var(--accent-yellow);
+        }
+
+        .badge-resolvido {
+            background-color: rgba(13, 148, 136, 0.1);
+            color: var(--accent-green);
         }
 
         .card-body {
@@ -713,6 +719,101 @@
             font-weight: 600;
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(30px);
+            transition: var(--transition);
+            opacity: 0;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--neutral-gray);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-btn.cancel {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+        }
+
+        .modal-btn.save {
+            background-color: var(--action-button);
+            color: white;
+        }
+
+        .modal-btn:hover {
+            opacity: 0.9;
+        }
+
         /* Utility Classes */
         .hidden {
             display: none;
@@ -846,6 +947,32 @@
             to { transform: scaleX(0); }
         }
 
+        /* Sector Selector in Header */
+        .sector-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-card);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .sector-selector select {
+            background: none;
+            border: none;
+            color: var(--accent-blue);
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            padding: 4px 20px 4px 8px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px;
+        }
+
         /* Responsive */
         @media (min-width: 769px) {
             .menu-btn {
@@ -880,6 +1007,20 @@
             
             .sector-info {
                 display: none;
+            }
+
+            .logo-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .header-actions {
+                margin-left: auto;
+            }
+
+            .sector-selector {
+                margin-top: 8px;
             }
         }
 
@@ -926,6 +1067,11 @@
                 white-space: normal;
                 padding: 10px;
                 margin-bottom: 8px;
+            }
+
+            .modal {
+                width: 95%;
+                margin: 0 auto;
             }
         }
 
@@ -1073,6 +1219,10 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>');
         }
 
+        .language-option[data-value="es"]::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><g clip-path="url(#s)"><rect width="60" height="30" fill="#c60b1e"/><rect width="60" height="20" fill="#ffc400" y="5"/><rect width="60" height="10" fill="#c60b1e" y="10"/></g></svg>');
+        }
+        
         /* Custom dropdown */
         .custom-select {
             position: relative;
@@ -1207,6 +1357,121 @@
 <body>
     <div id="toast-container"></div>
 
+    <!-- Modals -->
+    <div class="modal-overlay" id="alta-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Alta</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Paciente</label>
+                    <input type="text" class="form-control" placeholder="Nome do paciente">
+                </div>
+                <div class="form-group">
+                    <label>Setor</label>
+                    <select class="form-control">
+                        <option>UTI Adulto</option>
+                        <option>Emergência</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Data e Hora</label>
+                    <input type="datetime-local" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Motivo da Alta</label>
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Anexar Documento</label>
+                    <input type="file" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel">Cancelar</button>
+                <button class="modal-btn save">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="pendencia-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Pendência</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" class="form-control" placeholder="Título da pendência">
+                </div>
+                <div class="form-group">
+                    <label>Paciente</label>
+                    <select class="form-control">
+                        <option>Maria Silva</option>
+                        <option>João Santos</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea class="form-control" rows="3" placeholder="Descreva a pendência"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Prioridade</label>
+                    <select class="form-control">
+                        <option>Baixa</option>
+                        <option>Média</option>
+                        <option>Alta</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel">Cancelar</button>
+                <button class="modal-btn save">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="intercorrencia-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Intercorrência</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Paciente</label>
+                    <select class="form-control">
+                        <option>Maria Silva</option>
+                        <option>João Santos</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Data e Hora</label>
+                    <input type="datetime-local" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea class="form-control" rows="3" placeholder="Descreva a intercorrência"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Gravidade</label>
+                    <select class="form-control">
+                        <option>Leve</option>
+                        <option>Moderada</option>
+                        <option>Grave</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel">Cancelar</button>
+                <button class="modal-btn save">Salvar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Login Screen -->
     <div id="login-screen" class="login-container">
         <div class="language-selector">
@@ -1266,10 +1531,17 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="app-logo">Juli</div>
-                <div class="sector-info">
-                    <div class="sector-name" id="current-sector">UTI Adulto</div>
-                    <div class="shift-time" id="current-shift">Plantão Diurno (07:00 - 19:00)</div>
+                <div class="sector-selector">
+                    <select id="sector-switcher">
+                        <option value="uti-adulto">UTI Adulto</option>
+                        <option value="emergencia">Emergência</option>
+                    </select>
                 </div>
+            </div>
+            
+            <div class="sector-info">
+                <div class="sector-name" id="current-sector">UTI Adulto</div>
+                <div class="shift-time" id="current-shift">Plantão Diurno (07:00 - 19:00)</div>
             </div>
             
             <div class="header-actions">
@@ -1495,7 +1767,6 @@
                                 <div id="sector-link" class="sector-link">https://juli.app/convite/uti-adulto</div>
                                 <button class="copy-link">
                                     <i class="fas fa-copy"></i>
-                                    <span data-i18n="toast.linkCopied">Copiar Link</span>
                                 </button>
                             </div>
                             <p class="link-description" data-i18n="admin.sectorLink">
@@ -1542,6 +1813,7 @@
                     'toast.welcome': 'Bem-vindo, {username}!',
                     'toast.linkCopied': 'Link copiado para a área de transferência!',
                     'toast.pendingResolved': 'Pendência resolvida com sucesso!',
+                    'toast.itemAdded': '{type} adicionado com sucesso!',
                     'admin.sectorLink': 'Compartilhe este link via WhatsApp para médicos se cadastrarem neste setor',
                     'admin.noPendingDoctors': 'Nenhum médico pendente',
                     'admin.allDoctorsApproved': 'Todos os médicos estão aprovados neste setor'
@@ -1569,6 +1841,7 @@
                     'toast.welcome': 'Welcome, {username}!',
                     'toast.linkCopied': 'Link copied to clipboard!',
                     'toast.pendingResolved': 'Pending issue resolved successfully!',
+                    'toast.itemAdded': '{type} added successfully!',
                     'admin.sectorLink': 'Share this link via WhatsApp for doctors to register in this sector',
                     'admin.noPendingDoctors': 'No pending doctors',
                     'admin.allDoctorsApproved': 'All doctors are approved in this sector'
@@ -1596,6 +1869,7 @@
                     'toast.welcome': '¡Bienvenido, {username}!',
                     'toast.linkCopied': '¡Enlace copiado al portapapeles!',
                     'toast.pendingResolved': '¡Pendiente resuelta con éxito!',
+                    'toast.itemAdded': '¡{type} agregado con éxito!',
                     'admin.sectorLink': 'Comparte este enlace vía WhatsApp para que los médicos se registren en este sector',
                     'admin.noPendingDoctors': 'Ningún médico pendiente',
                     'admin.allDoctorsApproved': 'Todos los médicos están aprobados en este sector'
@@ -1698,6 +1972,43 @@
                         console.error('Failed to copy: ', err);
                         UI.showToast('Erro ao copiar', 'error');
                     });
+            },
+            
+            openModal(id) {
+                const modal = document.getElementById(id);
+                modal.classList.add('active');
+            },
+            
+            closeModal(id) {
+                const modal = document.getElementById(id);
+                modal.classList.remove('active');
+            },
+            
+            initModals() {
+                // Fechar modais ao clicar fora
+                document.querySelectorAll('.modal-overlay').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            this.closeModal(modal.id);
+                        }
+                    });
+                });
+                
+                // Fechar modais com botão de fechar
+                document.querySelectorAll('.modal-close').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const modal = btn.closest('.modal-overlay');
+                        this.closeModal(modal.id);
+                    });
+                });
+                
+                // Cancelar modais
+                document.querySelectorAll('.modal-btn.cancel').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const modal = btn.closest('.modal-overlay');
+                        this.closeModal(modal.id);
+                    });
+                });
             }
         };
 
@@ -1741,6 +2052,21 @@
                                 sector: 'UTI Adulto',
                                 registered: '10/10/2023'
                             }
+                        ],
+                        logs: [
+                            { timestamp: '18/06/2023 08:15', type: 'Plantão', description: 'Início do plantão diurno', user: 'Dr. Silva' },
+                            { timestamp: '18/06/2023 10:30', type: 'Intercorrência', description: 'Paciente com febre alta', user: 'Dra. Oliveira' }
+                        ],
+                        pendencies: [
+                            {
+                                id: 'pendencia-1',
+                                title: 'Medicação Pendente',
+                                patient: 'Maria Silva',
+                                sector: 'UTI Adulto',
+                                description: 'Antibiótico IV pendente',
+                                date: '18/06/2023 14:30',
+                                resolved: false
+                            }
                         ]
                     };
                     localStorage.setItem('juliData', JSON.stringify(initialData));
@@ -1771,6 +2097,14 @@
                 return this.getData().approvedDoctors;
             },
             
+            getLogs() {
+                return this.getData().logs;
+            },
+            
+            getPendencies() {
+                return this.getData().pendencies;
+            },
+            
             approveDoctor(doctorId) {
                 const data = this.getData();
                 const doctorIndex = data.pendingDoctors.findIndex(d => d.id === doctorId);
@@ -1785,6 +2119,35 @@
                     return true;
                 }
                 return false;
+            },
+            
+            resolvePendency(pendencyId) {
+                const data = this.getData();
+                const pendency = data.pendencies.find(p => p.id === pendencyId);
+                
+                if (pendency) {
+                    pendency.resolved = true;
+                    this.saveData(data);
+                    return true;
+                }
+                return false;
+            },
+            
+            addLog(log) {
+                const data = this.getData();
+                data.logs.unshift(log);
+                this.saveData(data);
+            },
+            
+            addPendency(pendency) {
+                const data = this.getData();
+                data.pendencies.push({
+                    ...pendency,
+                    id: 'pendency-' + Date.now(),
+                    resolved: false
+                });
+                this.saveData(data);
+                return true;
             },
             
             wsConnect() {
@@ -1826,7 +2189,8 @@
                 currentUserEl: null,
                 userRoleEl: null,
                 currentSectorEl: null,
-                currentShiftEl: null
+                currentShiftEl: null,
+                sectorSwitcher: null
             },
             
             init() {
@@ -1839,12 +2203,17 @@
                     currentUserEl: document.getElementById('current-user'),
                     userRoleEl: document.getElementById('user-role'),
                     currentSectorEl: document.getElementById('current-sector'),
-                    currentShiftEl: document.getElementById('current-shift')
+                    currentShiftEl: document.getElementById('current-shift'),
+                    sectorSwitcher: document.getElementById('sector-switcher')
                 };
                 
                 document.getElementById('login-btn').addEventListener('click', () => this.login());
                 this.elements.passwordInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') this.login();
+                });
+                
+                this.elements.sectorSwitcher?.addEventListener('change', (e) => {
+                    this.changeSector(e.target.value);
                 });
             },
             
@@ -1871,9 +2240,35 @@
                         });
                     }
                     
+                    // Preencher o seletor de setores
+                    const sectors = DataService.getSectors();
+                    this.elements.sectorSwitcher.innerHTML = '';
+                    sectors.forEach(sector => {
+                        const option = document.createElement('option');
+                        option.value = sector.id;
+                        option.textContent = sector.name;
+                        if (sector.name === this.currentSector) {
+                            option.selected = true;
+                        }
+                        this.elements.sectorSwitcher.appendChild(option);
+                    });
+                    
                     UI.showToast(i18n.t('toast.welcome', { username: this.currentUser.name }), 'success');
                 } else {
                     this.elements.errorMessage.style.display = 'block';
+                }
+            },
+            
+            changeSector(sectorId) {
+                const sector = DataService.getSectorById(sectorId);
+                if (sector) {
+                    this.currentSector = sector.name;
+                    this.elements.currentSectorEl.textContent = this.currentSector;
+                    
+                    // Atualizar contexto do sistema
+                    ViewManager.refreshViews();
+                    
+                    UI.showToast(`Setor alterado para: ${this.currentSector}`, 'info');
                 }
             },
             
@@ -1905,6 +2300,25 @@
                 
                 if (view === 'admin') {
                     AdminManager.renderPendingDoctors();
+                }
+                
+                if (view === 'pendencia') {
+                    PendencyManager.renderPendencies();
+                }
+                
+                if (view === 'logs') {
+                    LogManager.renderLogs();
+                }
+            },
+            
+            refreshViews() {
+                // Atualiza todas as views com base no setor atual
+                if (document.getElementById('pendencia-view').classList.contains('hidden') === false) {
+                    PendencyManager.renderPendencies();
+                }
+                
+                if (document.getElementById('logs-view').classList.contains('hidden') === false) {
+                    LogManager.renderLogs();
                 }
             },
             
@@ -1952,16 +2366,6 @@
                         document.getElementById('sector-select').value
                     );
                     UI.copyToClipboard(sector.invitationLink);
-                });
-                
-                document.querySelectorAll('.resolve-btn').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const card = this.closest('.card');
-                        card.classList.add('resolved');
-                        this.disabled = true;
-                        UI.showToast(i18n.t('toast.pendingResolved'), 'success');
-                    });
                 });
                 
                 this.renderPendingDoctors();
@@ -2020,35 +2424,235 @@
                         </div>
                     `;
                     container.appendChild(card);
+                    
+                    // Adicionar evento de aprovação
+                    card.querySelector('.resolve-btn').addEventListener('click', function() {
+                        const doctorId = card.dataset.id;
+                        if (DataService.approveDoctor(doctorId)) {
+                            UI.showToast(i18n.t('toast.pendingResolved'), 'success');
+                            AdminManager.renderPendingDoctors();
+                        }
+                    });
                 });
             }
         };
 
-        // patient.js
-        const PatientManager = {
-            init() {
-                this.setupActionButtons();
+        // pendency.js
+        const PendencyManager = {
+            renderPendencies() {
+                const container = document.querySelector('#pendencia-view .cards-grid');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                const pendencies = DataService.getPendencies();
+                const currentSector = Auth.currentSector;
+                
+                // Filtrar pendências pelo setor atual
+                const filteredPendencies = pendencies.filter(p => p.sector === currentSector);
+                
+                if (filteredPendencies.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-tasks"></i>
+                            <h3>Nenhuma pendência registrada</h3>
+                            <p>As pendências registradas durante o plantão aparecerão aqui.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                filteredPendencies.forEach(pendency => {
+                    const card = document.createElement('div');
+                    card.className = `card ${pendency.resolved ? 'resolved' : ''}`;
+                    card.dataset.id = pendency.id;
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="card-title">${pendency.title}</div>
+                            <div class="card-badge ${pendency.resolved ? 'badge-resolvido' : 'badge-pendencia'}">
+                                ${pendency.resolved ? 'Resolvido' : 'Pendente'}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-group">
+                                <div class="info-label">Paciente</div>
+                                <div class="info-value">${pendency.patient}</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Setor</div>
+                                <div class="info-value">${pendency.sector}</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Descrição</div>
+                                <div class="info-value">${pendency.description}</div>
+                            </div>
+                            <div class="info-group">
+                                <div class="info-label">Data</div>
+                                <div class="info-value">${pendency.date}</div>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="icon-button" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="resolve-btn" ${pendency.resolved ? 'disabled' : ''}>
+                                <i class="fas fa-check"></i>
+                                <span>Resolver</span>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                    
+                    // Adicionar evento de resolução
+                    const resolveBtn = card.querySelector('.resolve-btn');
+                    if (resolveBtn) {
+                        resolveBtn.addEventListener('click', function() {
+                            const pendencyId = card.dataset.id;
+                            if (DataService.resolvePendency(pendencyId)) {
+                                card.classList.add('resolved');
+                                resolveBtn.disabled = true;
+                                card.querySelector('.card-badge').className = 'card-badge badge-resolvido';
+                                card.querySelector('.card-badge').textContent = 'Resolvido';
+                                
+                                // Adicionar ao log
+                                DataService.addLog({
+                                    timestamp: new Date().toLocaleString(),
+                                    type: 'Pendência',
+                                    description: `Pendência resolvida: ${pendency.title}`,
+                                    user: Auth.currentUser.name
+                                });
+                                
+                                UI.showToast(i18n.t('toast.pendingResolved'), 'success');
+                            }
+                        });
+                    }
+                });
             },
             
-            setupActionButtons() {
-                document.getElementById('add-alta')?.addEventListener('click', () => {
-                    UI.showToast('Adicionar alta', 'info');
-                });
-                
-                document.getElementById('add-intercorrencia')?.addEventListener('click', () => {
-                    UI.showToast('Adicionar intercorrência', 'info');
-                });
-                
+            init() {
                 document.getElementById('add-pendencia')?.addEventListener('click', () => {
-                    UI.showToast('Adicionar pendência', 'info');
+                    UI.openModal('pendencia-modal');
                 });
                 
-                document.querySelectorAll('.card-actions .icon-button').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const action = this.title;
-                        UI.showToast(`Ação: ${action}`, 'info');
-                    });
+                // Salvar pendência
+                document.querySelector('#pendencia-modal .modal-btn.save')?.addEventListener('click', () => {
+                    const title = document.querySelector('#pendencia-modal input[placeholder="Título da pendência"]').value;
+                    const patient = document.querySelector('#pendencia-modal select').value;
+                    const description = document.querySelector('#pendencia-modal textarea').value;
+                    
+                    if (title && patient && description) {
+                        DataService.addPendency({
+                            title,
+                            patient,
+                            sector: Auth.currentSector,
+                            description,
+                            date: new Date().toLocaleString()
+                        });
+                        
+                        UI.closeModal('pendencia-modal');
+                        this.renderPendencies();
+                        
+                        // Adicionar ao log
+                        DataService.addLog({
+                            timestamp: new Date().toLocaleString(),
+                            type: 'Pendência',
+                            description: `Nova pendência: ${title}`,
+                            user: Auth.currentUser.name
+                        });
+                        
+                        UI.showToast(i18n.t('toast.itemAdded', { type: 'Pendência' }), 'success');
+                    }
+                });
+            }
+        };
+
+        // log.js
+        const LogManager = {
+            renderLogs() {
+                const tableBody = document.querySelector('#logs-view tbody');
+                if (!tableBody) return;
+                
+                tableBody.innerHTML = '';
+                
+                const logs = DataService.getLogs();
+                const currentSector = Auth.currentSector;
+                
+                // Filtrar logs pelo setor atual (simulação)
+                const filteredLogs = logs.filter(log => 
+                    log.description.includes(currentSector) || 
+                    log.type === 'Sistema'
+                );
+                
+                filteredLogs.forEach(log => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${log.timestamp}</td>
+                        <td>${log.type}</td>
+                        <td>${log.description}</td>
+                        <td>${log.user}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            },
+            
+            init() {
+                // Nada específico necessário no momento
+            }
+        };
+
+        // modal.js
+        const ModalManager = {
+            init() {
+                UI.initModals();
+                
+                // Abrir modal de alta
+                document.getElementById('add-alta')?.addEventListener('click', () => {
+                    UI.openModal('alta-modal');
+                });
+                
+                // Salvar alta
+                document.querySelector('#alta-modal .modal-btn.save')?.addEventListener('click', () => {
+                    const patient = document.querySelector('#alta-modal input[type="text"]').value;
+                    const reason = document.querySelector('#alta-modal textarea').value;
+                    
+                    if (patient && reason) {
+                        UI.closeModal('alta-modal');
+                        
+                        // Adicionar ao log
+                        DataService.addLog({
+                            timestamp: new Date().toLocaleString(),
+                            type: 'Alta',
+                            description: `Alta médica para ${patient}: ${reason}`,
+                            user: Auth.currentUser.name
+                        });
+                        
+                        UI.showToast(i18n.t('toast.itemAdded', { type: 'Alta' }), 'success');
+                    }
+                });
+                
+                // Abrir modal de intercorrência
+                document.getElementById('add-intercorrencia')?.addEventListener('click', () => {
+                    UI.openModal('intercorrencia-modal');
+                });
+                
+                // Salvar intercorrência
+                document.querySelector('#intercorrencia-modal .modal-btn.save')?.addEventListener('click', () => {
+                    const patient = document.querySelector('#intercorrencia-modal select').value;
+                    const description = document.querySelector('#intercorrencia-modal textarea').value;
+                    
+                    if (patient && description) {
+                        UI.closeModal('intercorrencia-modal');
+                        
+                        // Adicionar ao log
+                        DataService.addLog({
+                            timestamp: new Date().toLocaleString(),
+                            type: 'Intercorrência',
+                            description: `Intercorrência com ${patient}: ${description}`,
+                            user: Auth.currentUser.name
+                        });
+                        
+                        UI.showToast(i18n.t('toast.itemAdded', { type: 'Intercorrência' }), 'success');
+                    }
                 });
             }
         };
@@ -2110,8 +2714,6 @@
                 
                 // Setup mobile keyboard behavior
                 this.setupMobileKeyboardBehavior();
-                
-                PatientManager.setupActionButtons();
             },
             
             setupMobileKeyboardBehavior() {
@@ -2143,7 +2745,9 @@
             Auth.init();
             ViewManager.init();
             AdminManager.init();
-            PatientManager.init();
+            PendencyManager.init();
+            LogManager.init();
+            ModalManager.init();
             App.init();
         });
     </script>
