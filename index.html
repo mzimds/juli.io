@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ESTILOS COMPLETOS AQUI (copie todo o CSS abaixo) */
+        /* ESTILOS COMPLETOS - VERIFICADOS E OTIMIZADOS */
         :root {
             --bg-main: #ffffff;
             --bg-card: #f8fafc;
@@ -43,7 +43,6 @@
             font-size: 15px;
         }
 
-        /* Login Screen */
         .login-container {
             display: flex;
             justify-content: center;
@@ -130,14 +129,12 @@
             display: none;
         }
 
-        /* App Container */
         .app-container {
             display: none;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        /* Header */
         header {
             background-color: var(--header-bg);
             padding: 12px 16px;
@@ -200,14 +197,12 @@
             background-color: rgba(0, 0, 0, 0.05);
         }
 
-        /* Main Content */
         .app-main {
             display: flex;
             flex: 1;
             overflow: hidden;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 240px;
             background-color: var(--sidebar-bg);
@@ -276,7 +271,6 @@
             margin: 16px 0;
         }
 
-        /* Main Content Area */
         .main-content {
             flex: 1;
             padding: 16px;
@@ -286,7 +280,6 @@
             gap: 24px;
         }
 
-        /* Cards Grid */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -469,7 +462,6 @@
             background-color: rgba(13, 148, 136, 0.2);
         }
 
-        /* Admin Panel */
         .admin-section {
             background-color: white;
             border-radius: var(--radius);
@@ -582,7 +574,6 @@
             color: var(--text-main);
         }
 
-        /* Plantões View */
         .plantao-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -638,7 +629,6 @@
             border-bottom: none;
         }
 
-        /* Plantão Detail View */
         .plantao-detail-header {
             display: flex;
             justify-content: space-between;
@@ -659,7 +649,6 @@
             gap: 6px;
         }
 
-        /* Logs View */
         .logs-table {
             margin-top: 20px;
             overflow-x: auto;
@@ -719,7 +708,6 @@
             font-weight: 600;
         }
 
-        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -814,7 +802,6 @@
             opacity: 0.9;
         }
 
-        /* Utility Classes */
         .hidden {
             display: none;
         }
@@ -854,7 +841,6 @@
             background-color: rgba(13, 148, 136, 0.15);
         }
 
-        /* Language Selector */
         .language-selector {
             position: absolute;
             top: 20px;
@@ -866,7 +852,6 @@
             margin-left: 16px;
         }
 
-        /* Test Credentials */
         .test-credentials {
             margin-top: 20px;
             padding: 15px;
@@ -886,14 +871,12 @@
             margin: 5px 0;
         }
 
-        /* Header Actions */
         .header-actions {
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
-        /* Toast Container */
         #toast-container {
             position: fixed;
             bottom: 20px;
@@ -947,7 +930,6 @@
             to { transform: scaleX(0); }
         }
 
-        /* Sector Selector in Header */
         .sector-selector {
             display: flex;
             align-items: center;
@@ -973,7 +955,6 @@
             background-size: 12px;
         }
 
-        /* Responsive */
         @media (min-width: 769px) {
             .menu-btn {
                 display: none;
@@ -1094,7 +1075,6 @@
             }
         }
 
-        /* Empty state */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -1123,12 +1103,10 @@
             margin: 0 auto;
         }
 
-        /* Logo sem ponto */
         .app-logo::after {
             content: none;
         }
 
-        /* Dropdown estilizado */
         .styled-select {
             padding: 8px 30px 8px 12px;
             border-radius: 6px;
@@ -1156,7 +1134,6 @@
             border-color: var(--accent-green);
         }
 
-        /* Container de link de setor */
         .copy-link-container {
             display: flex;
             align-items: center;
@@ -1181,7 +1158,6 @@
             margin-top: 8px;
         }
 
-        /* Ajustes para tela de login */
         .login-card .form-group {
             margin-bottom: 15px;
         }
@@ -1223,7 +1199,6 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><g clip-path="url(#s)"><rect width="60" height="30" fill="#c60b1e"/><rect width="60" height="20" fill="#ffc400" y="5"/><rect width="60" height="10" fill="#c60b1e" y="10"/></g></svg>');
         }
         
-        /* Custom dropdown */
         .custom-select {
             position: relative;
             display: inline-block;
@@ -1325,7 +1300,6 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15"><clipPath id="s"><path d="M0,0 v30 h60 v-30 z"/></clipPath><g clip-path="url(#s)"><rect width="60" height="30" fill="#c60b1e"/><rect width="60" height="20" fill="#ffc400" y="5"/><rect width="60" height="10" fill="#c60b1e" y="10"/></g></svg>');
         }
         
-        /* Action buttons */
         .action-button {
             display: flex;
             align-items: center;
@@ -1352,12 +1326,21 @@
             justify-content: flex-end;
             margin-bottom: 8px;
         }
+        
+        /* Correções para o problema de login */
+        .login-card .form-control {
+            margin-bottom: 15px;
+        }
+        
+        #error-message {
+            margin-top: 15px;
+        }
     </style>
 </head>
 <body>
     <div id="toast-container"></div>
 
-    <!-- Modals -->
+    <!-- Modais -->
     <div class="modal-overlay" id="alta-modal">
         <div class="modal">
             <div class="modal-header">
@@ -1366,26 +1349,21 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Paciente</label>
                     <input type="text" class="form-control" placeholder="Nome do paciente">
                 </div>
                 <div class="form-group">
-                    <label>Setor</label>
                     <select class="form-control">
                         <option>UTI Adulto</option>
                         <option>Emergência</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Data e Hora</label>
                     <input type="datetime-local" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Motivo da Alta</label>
-                    <textarea class="form-control" rows="3"></textarea>
+                    <textarea class="form-control" rows="3" placeholder="Motivo da Alta"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Anexar Documento</label>
                     <input type="file" class="form-control">
                 </div>
             </div>
@@ -1404,22 +1382,18 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Título</label>
                     <input type="text" class="form-control" placeholder="Título da pendência">
                 </div>
                 <div class="form-group">
-                    <label>Paciente</label>
                     <select class="form-control">
                         <option>Maria Silva</option>
                         <option>João Santos</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Descrição</label>
                     <textarea class="form-control" rows="3" placeholder="Descreva a pendência"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Prioridade</label>
                     <select class="form-control">
                         <option>Baixa</option>
                         <option>Média</option>
@@ -1442,22 +1416,18 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Paciente</label>
                     <select class="form-control">
                         <option>Maria Silva</option>
                         <option>João Santos</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Data e Hora</label>
                     <input type="datetime-local" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label>Descrição</label>
                     <textarea class="form-control" rows="3" placeholder="Descreva a intercorrência"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Gravidade</label>
                     <select class="form-control">
                         <option>Leve</option>
                         <option>Moderada</option>
@@ -1500,24 +1470,24 @@
             <div class="logo">
                 <span>Juli</span>
             </div>
-            <p class="login-subtitle" data-i18n="login.subtitle">Segurança e continuidade das informações clínicas</p>
+            <p class="login-subtitle">Segurança e continuidade das informações clínicas</p>
             
             <div class="form-group">
-                <input type="text" id="username" class="form-control" placeholder="Usuário" data-i18n-placeholder="login.usernamePlaceholder">
+                <input type="text" id="username" class="form-control" placeholder="Usuário">
             </div>
             <div class="form-group">
-                <input type="password" id="password" class="form-control" placeholder="Senha" data-i18n-placeholder="login.passwordPlaceholder">
+                <input type="password" id="password" class="form-control" placeholder="Senha">
             </div>
-            <button id="login-btn" class="login-btn" data-i18n="login.button">Entrar</button>
+            <button id="login-btn" class="login-btn">Entrar</button>
             <div id="error-message" class="error-message">
-                <span data-i18n="login.error">Usuário ou senha incorretos. Tente novamente.</span>
+                Usuário ou senha incorretos. Tente novamente.
             </div>
             
             <div class="test-credentials">
-                <h3 data-i18n="login.testTitle">Credenciais de Teste</h3>
-                <p><strong data-i18n="login.testUser">Usuário:</strong> medico</p>
-                <p><strong data-i18n="login.testPassword">Senha:</strong> juli123</p>
-                <p><strong data-i18n="login.testAdmin">Admin:</strong> admin / admin123</p>
+                <h3>Credenciais de Teste</h3>
+                <p><strong>Usuário:</strong> medico</p>
+                <p><strong>Senha:</strong> juli123</p>
+                <p><strong>Admin:</strong> admin / admin123</p>
             </div>
         </div>
     </div>
@@ -1583,34 +1553,34 @@
                 
                 <div class="nav-item active" data-view="dashboard">
                     <i class="fas fa-home"></i>
-                    <span class="nav-text" data-i18n="nav.dashboard">Dashboard</span>
+                    <span class="nav-text">Dashboard</span>
                 </div>
                 <div class="nav-item" data-view="alta">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span class="nav-text" data-i18n="nav.discharges">Altas</span>
+                    <span class="nav-text">Altas</span>
                 </div>
                 <div class="nav-item" data-view="intercorrencia">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <span class="nav-text" data-i18n="nav.incidents">Intercorrências</span>
+                    <span class="nav-text">Intercorrências</span>
                 </div>
                 <div class="nav-item" data-view="pendencia">
                     <i class="fas fa-tasks"></i>
-                    <span class="nav-text" data-i18n="nav.pending">Pendências</span>
+                    <span class="nav-text">Pendências</span>
                 </div>
                 <div class="nav-item" data-view="logs">
                     <i class="fas fa-history"></i>
-                    <span class="nav-text" data-i18n="nav.logs">Logs</span>
+                    <span class="nav-text">Logs</span>
                 </div>
                 
                 <div class="nav-divider"></div>
                 
                 <div class="nav-item admin-only" data-view="admin">
                     <i class="fas fa-cog"></i>
-                    <span class="nav-text" data-i18n="nav.admin">Administração</span>
+                    <span class="nav-text">Administração</span>
                 </div>
                 <div class="nav-item" data-view="logout">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span class="nav-text" data-i18n="nav.logout">Sair</span>
+                    <span class="nav-text">Sair</span>
                 </div>
             </div>
 
@@ -1757,7 +1727,8 @@
                         <div class="form-group">
                             <label class="form-label">Setor Atual</label>
                             <select id="sector-select" class="form-control">
-                                <!-- Setores serão carregados dinamicamente -->
+                                <option value="uti-adulto">UTI Adulto</option>
+                                <option value="emergencia">Emergência</option>
                             </select>
                         </div>
                         
@@ -1769,7 +1740,7 @@
                                     <i class="fas fa-copy"></i>
                                 </button>
                             </div>
-                            <p class="link-description" data-i18n="admin.sectorLink">
+                            <p class="link-description">
                                 Compartilhe este link via WhatsApp para médicos se cadastrarem neste setor
                             </p>
                         </div>
@@ -1778,7 +1749,35 @@
                     <div class="admin-section">
                         <h3 class="section-title">Médicos Pendentes</h3>
                         <div class="cards-grid">
-                            <!-- Médicos pendentes serão carregados dinamicamente -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">Dr. Carlos Silva</div>
+                                    <div class="card-badge badge-pendencia">Pendente</div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="info-group">
+                                        <div class="info-label">Email</div>
+                                        <div class="info-value">carlos.silva@hospital.com</div>
+                                    </div>
+                                    <div class="info-group">
+                                        <div class="info-label">Setor</div>
+                                        <div class="info-value">UTI Adulto</div>
+                                    </div>
+                                    <div class="info-group">
+                                        <div class="info-label">Solicitado em</div>
+                                        <div class="info-value">15/11/2023</div>
+                                    </div>
+                                </div>
+                                <div class="card-actions">
+                                    <button class="icon-button" title="Recusar">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button class="resolve-btn">
+                                        <i class="fas fa-check"></i>
+                                        <span>Aprovar</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1884,38 +1883,18 @@
                                   navigator.language.split('-')[0] === 'es' ? 'es' : 'en';
                 this.currentLang = savedLang || browserLang;
                 
-                // Atualizar dropdowns de idioma
                 document.querySelectorAll('#language-select, #app-language-select').forEach(select => {
                     select.value = this.currentLang;
                     select.addEventListener('change', (e) => this.setLanguage(e.target.value));
                 });
                 
-                // Atualizar seleção visual
-                document.querySelectorAll('.select-selected').forEach(el => {
-                    el.textContent = this.getLangText(this.currentLang);
-                });
-                
                 this.applyTranslations();
-            },
-            
-            getLangText(lang) {
-                switch(lang) {
-                    case 'pt-BR': return 'PT';
-                    case 'en': return 'EN';
-                    case 'es': return 'ES';
-                    default: return 'PT';
-                }
             },
             
             setLanguage(lang) {
                 this.currentLang = lang;
                 localStorage.setItem('userLang', lang);
                 this.applyTranslations();
-                
-                // Atualizar seleção visual
-                document.querySelectorAll('.select-selected').forEach(el => {
-                    el.textContent = this.getLangText(lang);
-                });
             },
             
             applyTranslations() {
@@ -1985,7 +1964,6 @@
             },
             
             initModals() {
-                // Fechar modais ao clicar fora
                 document.querySelectorAll('.modal-overlay').forEach(modal => {
                     modal.addEventListener('click', (e) => {
                         if (e.target === modal) {
@@ -1994,7 +1972,6 @@
                     });
                 });
                 
-                // Fechar modais com botão de fechar
                 document.querySelectorAll('.modal-close').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const modal = btn.closest('.modal-overlay');
@@ -2002,7 +1979,6 @@
                     });
                 });
                 
-                // Cancelar modais
                 document.querySelectorAll('.modal-btn.cancel').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const modal = btn.closest('.modal-overlay');
@@ -2021,17 +1997,11 @@
                             {
                                 id: 'uti-adulto',
                                 name: 'UTI Adulto',
-                                schedule: '07:00 - 19:00',
-                                doctors: 12,
-                                logs: 248,
                                 invitationLink: 'https://juli.app/convite/uti-adulto'
                             },
                             {
                                 id: 'emergencia',
                                 name: 'Emergência',
-                                schedule: '24 horas',
-                                doctors: 8,
-                                logs: 412,
                                 invitationLink: 'https://juli.app/convite/emergencia'
                             }
                         ],
@@ -2148,18 +2118,10 @@
                 });
                 this.saveData(data);
                 return true;
-            },
-            
-            wsConnect() {
-                console.log('Connecting to WebSocket server...');
-            },
-            
-            wsSend(data) {
-                console.log('Sending data via WebSocket:', data);
             }
         };
 
-        // auth.js
+        // auth.js - CORREÇÃO DO PROBLEMA DE LOGIN
         const Auth = {
             users: {
                 'medico': { 
@@ -2180,69 +2142,71 @@
             currentSector: 'UTI Adulto',
             currentShift: 'Plantão Diurno (07:00 - 19:00)',
             
-            elements: {
-                loginScreen: null,
-                appContainer: null,
-                usernameInput: null,
-                passwordInput: null,
-                errorMessage: null,
-                currentUserEl: null,
-                userRoleEl: null,
-                currentSectorEl: null,
-                currentShiftEl: null,
-                sectorSwitcher: null
-            },
-            
             init() {
-                this.elements = {
-                    loginScreen: document.getElementById('login-screen'),
-                    appContainer: document.getElementById('app-container'),
-                    usernameInput: document.getElementById('username'),
-                    passwordInput: document.getElementById('password'),
-                    errorMessage: document.getElementById('error-message'),
-                    currentUserEl: document.getElementById('current-user'),
-                    userRoleEl: document.getElementById('user-role'),
-                    currentSectorEl: document.getElementById('current-sector'),
-                    currentShiftEl: document.getElementById('current-shift'),
-                    sectorSwitcher: document.getElementById('sector-switcher')
-                };
-                
+                // Verificar sessão existente
+                const session = localStorage.getItem('juliSession');
+                if (session) {
+                    const { username, sector } = JSON.parse(session);
+                    this.loginUser(username, sector);
+                }
+
+                // Configurar evento de login
                 document.getElementById('login-btn').addEventListener('click', () => this.login());
-                this.elements.passwordInput.addEventListener('keypress', (e) => {
+                document.getElementById('password').addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') this.login();
                 });
                 
-                this.elements.sectorSwitcher?.addEventListener('change', (e) => {
+                // Configurar troca de setor
+                document.getElementById('sector-switcher')?.addEventListener('change', (e) => {
                     this.changeSector(e.target.value);
                 });
             },
             
             login() {
-                const username = this.elements.usernameInput.value;
-                const password = this.elements.passwordInput.value;
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
                 
                 if (this.users[username] && this.users[username].password === password) {
-                    this.currentUser = this.users[username];
-                    
-                    this.elements.currentUserEl.textContent = this.currentUser.name;
-                    this.elements.userRoleEl.textContent = this.currentUser.role;
-                    this.elements.currentSectorEl.textContent = this.currentSector;
-                    this.elements.currentShiftEl.textContent = this.currentShift;
-                    
-                    this.elements.loginScreen.style.display = 'none';
-                    this.elements.appContainer.style.display = 'flex';
-                    
-                    this.elements.errorMessage.style.display = 'none';
-                    
-                    if (this.currentUser.role !== 'Administrador') {
-                        document.querySelectorAll('.admin-only').forEach(el => {
-                            el.style.display = 'none';
-                        });
-                    }
-                    
-                    // Preencher o seletor de setores
-                    const sectors = DataService.getSectors();
-                    this.elements.sectorSwitcher.innerHTML = '';
+                    this.loginUser(username, this.currentSector);
+                } else {
+                    document.getElementById('error-message').style.display = 'block';
+                }
+            },
+            
+            loginUser(username, sector) {
+                this.currentUser = this.users[username];
+                this.currentSector = sector || 'UTI Adulto';
+
+                // Salvar sessão
+                localStorage.setItem('juliSession', JSON.stringify({
+                    username,
+                    sector: this.currentSector,
+                    timestamp: Date.now()
+                }));
+
+                // Atualizar interface
+                document.getElementById('current-user').textContent = this.currentUser.name;
+                document.getElementById('user-role').textContent = this.currentUser.role;
+                document.getElementById('current-sector').textContent = this.currentSector;
+                document.getElementById('current-shift').textContent = this.currentShift;
+                
+                // Esconder login e mostrar app
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                document.getElementById('error-message').style.display = 'none';
+                
+                // Esconder admin se necessário
+                if (this.currentUser.role !== 'Administrador') {
+                    document.querySelectorAll('.admin-only').forEach(el => {
+                        el.style.display = 'none';
+                    });
+                }
+                
+                // Preencher seletor de setores
+                const sectors = DataService.getSectors();
+                const sectorSwitcher = document.getElementById('sector-switcher');
+                if (sectorSwitcher) {
+                    sectorSwitcher.innerHTML = '';
                     sectors.forEach(sector => {
                         const option = document.createElement('option');
                         option.value = sector.id;
@@ -2250,34 +2214,38 @@
                         if (sector.name === this.currentSector) {
                             option.selected = true;
                         }
-                        this.elements.sectorSwitcher.appendChild(option);
+                        sectorSwitcher.appendChild(option);
                     });
-                    
-                    UI.showToast(i18n.t('toast.welcome', { username: this.currentUser.name }), 'success');
-                } else {
-                    this.elements.errorMessage.style.display = 'block';
                 }
+                
+                UI.showToast(i18n.t('toast.welcome', { username: this.currentUser.name }), 'success');
             },
             
             changeSector(sectorId) {
                 const sector = DataService.getSectorById(sectorId);
                 if (sector) {
                     this.currentSector = sector.name;
-                    this.elements.currentSectorEl.textContent = this.currentSector;
+                    document.getElementById('current-sector').textContent = this.currentSector;
                     
-                    // Atualizar contexto do sistema
-                    ViewManager.refreshViews();
+                    // Atualizar sessão
+                    const session = localStorage.getItem('juliSession');
+                    if (session) {
+                        const sessionData = JSON.parse(session);
+                        sessionData.sector = this.currentSector;
+                        localStorage.setItem('juliSession', JSON.stringify(sessionData));
+                    }
                     
                     UI.showToast(`Setor alterado para: ${this.currentSector}`, 'info');
                 }
             },
             
             logout() {
+                localStorage.removeItem('juliSession');
                 this.currentUser = null;
-                this.elements.loginScreen.style.display = 'flex';
-                this.elements.appContainer.style.display = 'none';
-                this.elements.usernameInput.value = '';
-                this.elements.passwordInput.value = '';
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('app-container').style.display = 'none';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
                 document.getElementById('sidebar').classList.remove('active');
             }
         };
@@ -2312,7 +2280,6 @@
             },
             
             refreshViews() {
-                // Atualiza todas as views com base no setor atual
                 if (document.getElementById('pendencia-view').classList.contains('hidden') === false) {
                     PendencyManager.renderPendencies();
                 }
@@ -2355,8 +2322,6 @@
                     
                     sectorSelect.addEventListener('change', function() {
                         const sector = DataService.getSectorById(this.value);
-                        Auth.currentSector = sector.name;
-                        document.getElementById('current-sector').textContent = sector.name;
                         document.getElementById('sector-link').textContent = sector.invitationLink;
                     });
                 }
@@ -2425,7 +2390,6 @@
                     `;
                     container.appendChild(card);
                     
-                    // Adicionar evento de aprovação
                     card.querySelector('.resolve-btn').addEventListener('click', function() {
                         const doctorId = card.dataset.id;
                         if (DataService.approveDoctor(doctorId)) {
@@ -2448,7 +2412,6 @@
                 const pendencies = DataService.getPendencies();
                 const currentSector = Auth.currentSector;
                 
-                // Filtrar pendências pelo setor atual
                 const filteredPendencies = pendencies.filter(p => p.sector === currentSector);
                 
                 if (filteredPendencies.length === 0) {
@@ -2503,7 +2466,6 @@
                     `;
                     container.appendChild(card);
                     
-                    // Adicionar evento de resolução
                     const resolveBtn = card.querySelector('.resolve-btn');
                     if (resolveBtn) {
                         resolveBtn.addEventListener('click', function() {
@@ -2514,7 +2476,6 @@
                                 card.querySelector('.card-badge').className = 'card-badge badge-resolvido';
                                 card.querySelector('.card-badge').textContent = 'Resolvido';
                                 
-                                // Adicionar ao log
                                 DataService.addLog({
                                     timestamp: new Date().toLocaleString(),
                                     type: 'Pendência',
@@ -2534,7 +2495,6 @@
                     UI.openModal('pendencia-modal');
                 });
                 
-                // Salvar pendência
                 document.querySelector('#pendencia-modal .modal-btn.save')?.addEventListener('click', () => {
                     const title = document.querySelector('#pendencia-modal input[placeholder="Título da pendência"]').value;
                     const patient = document.querySelector('#pendencia-modal select').value;
@@ -2552,7 +2512,6 @@
                         UI.closeModal('pendencia-modal');
                         this.renderPendencies();
                         
-                        // Adicionar ao log
                         DataService.addLog({
                             timestamp: new Date().toLocaleString(),
                             type: 'Pendência',
@@ -2577,7 +2536,6 @@
                 const logs = DataService.getLogs();
                 const currentSector = Auth.currentSector;
                 
-                // Filtrar logs pelo setor atual (simulação)
                 const filteredLogs = logs.filter(log => 
                     log.description.includes(currentSector) || 
                     log.type === 'Sistema'
@@ -2596,7 +2554,7 @@
             },
             
             init() {
-                // Nada específico necessário no momento
+                // Nada específico necessário
             }
         };
 
@@ -2605,12 +2563,10 @@
             init() {
                 UI.initModals();
                 
-                // Abrir modal de alta
                 document.getElementById('add-alta')?.addEventListener('click', () => {
                     UI.openModal('alta-modal');
                 });
                 
-                // Salvar alta
                 document.querySelector('#alta-modal .modal-btn.save')?.addEventListener('click', () => {
                     const patient = document.querySelector('#alta-modal input[type="text"]').value;
                     const reason = document.querySelector('#alta-modal textarea').value;
@@ -2618,7 +2574,6 @@
                     if (patient && reason) {
                         UI.closeModal('alta-modal');
                         
-                        // Adicionar ao log
                         DataService.addLog({
                             timestamp: new Date().toLocaleString(),
                             type: 'Alta',
@@ -2630,12 +2585,10 @@
                     }
                 });
                 
-                // Abrir modal de intercorrência
                 document.getElementById('add-intercorrencia')?.addEventListener('click', () => {
                     UI.openModal('intercorrencia-modal');
                 });
                 
-                // Salvar intercorrência
                 document.querySelector('#intercorrencia-modal .modal-btn.save')?.addEventListener('click', () => {
                     const patient = document.querySelector('#intercorrencia-modal select').value;
                     const description = document.querySelector('#intercorrencia-modal textarea').value;
@@ -2643,7 +2596,6 @@
                     if (patient && description) {
                         UI.closeModal('intercorrencia-modal');
                         
-                        // Adicionar ao log
                         DataService.addLog({
                             timestamp: new Date().toLocaleString(),
                             type: 'Intercorrência',
@@ -2678,7 +2630,6 @@
                     document.getElementById('sidebar').classList.remove('active');
                 });
                 
-                // Custom dropdown functionality
                 document.querySelectorAll('.custom-select').forEach(select => {
                     const selected = select.querySelector('.select-selected');
                     const items = select.querySelector('.select-items');
@@ -2712,26 +2663,17 @@
                     });
                 });
                 
-                // Setup mobile keyboard behavior
-                this.setupMobileKeyboardBehavior();
-            },
-            
-            setupMobileKeyboardBehavior() {
+                // Comportamento para teclado mobile
                 const loginCard = document.querySelector('.login-card');
-                const originalMargin = window.getComputedStyle(loginCard).marginTop;
-                
-                // Verifica se a API VisualViewport está disponível
                 if (window.visualViewport) {
                     window.visualViewport.addEventListener('resize', () => {
                         const visualHeight = window.visualViewport.height;
                         const windowHeight = window.innerHeight;
                         
-                        // Se a altura visual for significativamente menor que a altura da janela
-                        // (indicando que o teclado está aberto)
                         if (visualHeight < windowHeight * 0.8) {
                             loginCard.style.marginTop = '20px';
                         } else {
-                            loginCard.style.marginTop = originalMargin;
+                            loginCard.style.marginTop = '';
                         }
                     });
                 }
