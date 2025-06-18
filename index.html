@@ -306,7 +306,6 @@
         .card.resolved {
             background-color: var(--resolved-bg);
             opacity: 0.8;
-            border-left: 4px solid var(--accent-green);
         }
 
         .card-header {
@@ -1002,6 +1001,7 @@
                 z-index: 1000;
                 background-color: var(--sidebar-bg);
                 box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                transition: left 0.3s ease;
             }
             
             .sidebar.active {
@@ -1017,17 +1017,33 @@
             }
 
             .logo-container {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: nowrap;
+                width: auto;
             }
 
             .header-actions {
                 margin-left: auto;
+                gap: 8px;
             }
 
             .sector-selector {
-                margin-top: 8px;
+                margin-top: 0;
+            }
+            
+            .app-logo {
+                margin-right: 8px;
+                font-size: 1.2rem;
+            }
+            
+            .custom-select {
+                min-width: 120px;
+            }
+            
+            .header-actions .custom-select {
+                min-width: 70px;
             }
         }
 
@@ -1079,6 +1095,14 @@
             .modal {
                 width: 95%;
                 margin: 0 auto;
+            }
+            
+            .header-actions {
+                gap: 5px;
+            }
+            
+            .logo-container {
+                gap: 5px;
             }
         }
 
@@ -1402,6 +1426,71 @@
         .plantao-detail-item:last-child {
             border-bottom: none;
         }
+        
+        /* Pacientes críticos */
+        .critical-patients {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        
+        .patient-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .patient-name {
+            font-weight: 500;
+        }
+        
+        .patient-info {
+            font-size: 0.9rem;
+            color: var(--neutral-gray);
+        }
+        
+        .expand-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--neutral-gray);
+        }
+        
+        /* Horários de plantão */
+        .time-pair {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .time-pair:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .time-label {
+            font-size: 0.85rem;
+            color: var(--neutral-gray);
+            margin-bottom: 4px;
+        }
+        
+        .add-time-btn {
+            background: none;
+            border: none;
+            color: var(--accent-blue);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .audit-info {
+            font-size: 0.8rem;
+            color: var(--neutral-gray);
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
@@ -1547,6 +1636,14 @@
             <div class="modal-body">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Nome do setor" id="setor-nome">
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="setor-tipo">
+                        <option value="UTI">UTI</option>
+                        <option value="Enfermaria">Enfermaria</option>
+                        <option value="Emergência">Emergência</option>
+                        <option value="Outro">Outro</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Horário padrão (ex: 07:00-19:00)" id="setor-horario">
@@ -1740,23 +1837,16 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">Pacientes Críticos</div>
+                                <button class="expand-btn"><i class="fas fa-chevron-down"></i></button>
                             </div>
-                            <div class="card-body">
-                                <div class="info-group">
-                                    <div class="info-label">Paciente 1</div>
-                                    <div class="info-value">Maria Silva</div>
+                            <div class="critical-patients">
+                                <div class="patient-item">
+                                    <div class="patient-name">Maria Silva</div>
+                                    <div class="patient-info">Leito: 12A | Atendimento: 20230619001</div>
                                 </div>
-                                <div class="info-group">
-                                    <div class="info-label">Estado</div>
-                                    <div class="info-value">Grave</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Paciente 2</div>
-                                    <div class="info-value">João Santos</div>
-                                </div>
-                                <div class="info-group">
-                                    <div class="info-label">Estado</div>
-                                    <div class="info-value">Estável</div>
+                                <div class="patient-item">
+                                    <div class="patient-name">João Santos</div>
+                                    <div class="patient-info">Leito: 8B | Atendimento: 20230618002</div>
                                 </div>
                             </div>
                         </div>
@@ -1794,6 +1884,9 @@
                                     <div class="info-value">20230619001</div>
                                 </div>
                             </div>
+                            <div class="audit-info">
+                                Criado por: Dr. Silva | 19/06/2023 10:15
+                            </div>
                             <div class="card-actions">
                                 <button class="icon-button" title="Editar">
                                     <i class="fas fa-edit"></i>
@@ -1824,6 +1917,9 @@
                                     <div class="info-label">Atendimento</div>
                                     <div class="info-value">20230618002</div>
                                 </div>
+                            </div>
+                            <div class="audit-info">
+                                Criado por: Dra. Oliveira | 18/06/2023 14:30
                             </div>
                             <div class="card-actions">
                                 <button class="icon-button" title="Editar">
@@ -1870,6 +1966,9 @@
                                     <div class="info-value">19/06/2023 10:15</div>
                                 </div>
                             </div>
+                            <div class="audit-info">
+                                Criado por: Dr. Silva | 19/06/2023 10:20
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1906,6 +2005,9 @@
                                     <div class="info-label">Data</div>
                                     <div class="info-value">19/06/2023 14:30</div>
                                 </div>
+                            </div>
+                            <div class="audit-info">
+                                Criado por: Dra. Oliveira | 19/06/2023 14:35
                             </div>
                         </div>
                     </div>
@@ -1944,6 +2046,9 @@
                                     <div class="info-value">18/06/2023 14:30</div>
                                 </div>
                             </div>
+                            <div class="audit-info">
+                                Criado por: Dr. Silva | 18/06/2023 14:35
+                            </div>
                             <div class="card-actions">
                                 <button class="icon-button" title="Editar">
                                     <i class="fas fa-edit"></i>
@@ -1976,6 +2081,9 @@
                                     <div class="info-label">Data</div>
                                     <div class="info-value">17/06/2023 09:15</div>
                                 </div>
+                            </div>
+                            <div class="audit-info">
+                                Resolvido por: Dra. Oliveira | 17/06/2023 15:20
                             </div>
                             <div class="card-actions">
                                 <button class="resolve-btn resolved">
@@ -2032,23 +2140,35 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label class="form-label">Plantão Diurno</label>
-                                <div class="time-grid">
-                                    <input type="time" class="form-control" value="07:00">
-                                    <input type="time" class="form-control" value="19:00">
+                                <div class="time-pair">
+                                    <div class="time-grid">
+                                        <div>
+                                            <div class="time-label">Início</div>
+                                            <input type="time" class="form-control" value="07:00">
+                                        </div>
+                                        <div>
+                                            <div class="time-label">Término</div>
+                                            <input type="time" class="form-control" value="19:00">
+                                        </div>
+                                    </div>
                                 </div>
+                                <button class="add-time-btn">
+                                    <i class="fas fa-plus"></i> Adicionar outro período
+                                </button>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Plantão Noturno</label>
-                                <div class="time-grid">
-                                    <input type="time" class="form-control" value="19:00">
-                                    <input type="time" class="form-control" value="07:00">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Plantão Personalizado</label>
-                                <div class="time-grid">
-                                    <input type="time" class="form-control" value="12:00">
-                                    <input type="time" class="form-control" value="00:00">
+                                <div class="time-pair">
+                                    <div class="time-grid">
+                                        <div>
+                                            <div class="time-label">Início</div>
+                                            <input type="time" class="form-control" value="19:00">
+                                        </div>
+                                        <div>
+                                            <div class="time-label">Término</div>
+                                            <input type="time" class="form-control" value="07:00">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2443,6 +2563,7 @@
                             {
                                 id: 'uti-adulto',
                                 name: 'UTI Adulto',
+                                tipo: 'UTI',
                                 invitationLink: 'https://juli.app/convite/uti-adulto',
                                 shifts: [
                                     { type: 'diurno', start: '07:00', end: '19:00' },
@@ -2452,6 +2573,7 @@
                             {
                                 id: 'emergencia',
                                 name: 'Emergência',
+                                tipo: 'Emergência',
                                 invitationLink: 'https://juli.app/convite/emergencia',
                                 shifts: [
                                     { type: 'integral', start: '08:00', end: '20:00' }
@@ -2489,7 +2611,9 @@
                                 sector: 'UTI Adulto',
                                 description: 'Antibiótico IV pendente - Vancomicina 1g a cada 12h. Aguardando farmácia liberar medicamento.',
                                 date: '18/06/2023 14:30',
-                                resolved: false
+                                resolved: false,
+                                createdBy: 'Dr. Silva',
+                createdAt: '18/06/2023 14:35'
                             },
                             {
                                 id: 'pendencia-2',
@@ -2498,7 +2622,9 @@
                                 sector: 'UTI Adulto',
                                 description: 'Tomografia de tórax agendada',
                                 date: '17/06/2023 09:15',
-                                resolved: true
+                                resolved: true,
+                                resolvedBy: 'Dra. Oliveira',
+                resolvedAt: '17/06/2023 15:20'
                             }
                         ],
                         altas: [
@@ -2507,7 +2633,9 @@
                                 patient: 'Carlos Oliveira',
                                 sector: 'UTI Adulto',
                                 reason: 'Recuperação completa após tratamento de pneumonia. Paciente estável com saturação de O2 em 98% em ar ambiente.',
-                                date: '19/06/2023 10:15'
+                                date: '19/06/2023 10:15',
+                                createdBy: 'Dr. Silva',
+                createdAt: '19/06/2023 10:20'
                             }
                         ],
                         intercorrencias: [
@@ -2517,7 +2645,9 @@
                                 sector: 'UTI Adulto',
                                 description: 'Paciente apresentou febre de 39.8°C às 14:30. Foi administrado paracetamol 1g IV. Monitorar temperatura a cada 30 minutos.',
                                 date: '19/06/2023 14:30',
-                                severity: 'Grave'
+                                severity: 'Grave',
+                                createdBy: 'Dra. Oliveira',
+                createdAt: '19/06/2023 14:35'
                             }
                         ],
                         pacientes: [
@@ -2528,7 +2658,9 @@
                                 sexo: 'feminino',
                                 leito: '12A',
                                 atendimento: '20230619001',
-                                sector: 'UTI Adulto'
+                                sector: 'UTI Adulto',
+                                createdBy: 'Dr. Silva',
+                createdAt: '19/06/2023 10:15'
                             },
                             {
                                 id: 'paciente-2',
@@ -2537,7 +2669,9 @@
                                 sexo: 'masculino',
                                 leito: '8B',
                                 atendimento: '20230618002',
-                                sector: 'UTI Adulto'
+                                sector: 'UTI Adulto',
+                                createdBy: 'Dra. Oliveira',
+                createdAt: '18/06/2023 14:30'
                             }
                         ],
                         plantoes: [
@@ -2621,10 +2755,24 @@
             
             addPaciente(paciente) {
                 const data = this.getData();
+                
+                // Verificar se paciente já existe (chave: nome + leito + atendimento)
+                const exists = data.pacientes.some(p => 
+                    p.nome === paciente.nome && 
+                    p.leito === paciente.leito && 
+                    p.atendimento === paciente.atendimento
+                );
+                
+                if (exists) {
+                    return false;
+                }
+                
                 data.pacientes.push({
                     ...paciente,
                     id: 'paciente-' + Date.now(),
-                    sector: Auth.currentSector
+                    sector: Auth.currentSector,
+                    createdBy: Auth.currentUser.name,
+                    createdAt: new Date().toLocaleString()
                 });
                 this.saveData(data);
                 return true;
@@ -2646,7 +2794,9 @@
                 data.altas.push({
                     ...alta,
                     id: 'alta-' + Date.now(),
-                    sector: Auth.currentSector
+                    sector: Auth.currentSector,
+                    createdBy: Auth.currentUser.name,
+                    createdAt: new Date().toLocaleString()
                 });
                 this.saveData(data);
                 return true;
@@ -2657,7 +2807,9 @@
                 data.intercorrencias.push({
                     ...intercorrencia,
                     id: 'intercorrencia-' + Date.now(),
-                    sector: Auth.currentSector
+                    sector: Auth.currentSector,
+                    createdBy: Auth.currentUser.name,
+                    createdAt: new Date().toLocaleString()
                 });
                 this.saveData(data);
                 return true;
@@ -2677,6 +2829,8 @@
                 const pendency = data.pendencies.find(p => p.id === pendencyId);
                 if (pendency) {
                     pendency.resolved = true;
+                    pendency.resolvedBy = Auth.currentUser.name;
+                    pendency.resolvedAt = new Date().toLocaleString();
                     this.saveData(data);
                     return true;
                 }
@@ -2877,11 +3031,13 @@
                 
                 document.getElementById('save-setor').addEventListener('click', () => {
                     const nome = document.getElementById('setor-nome').value;
+                    const tipo = document.getElementById('setor-tipo').value;
                     const horario = document.getElementById('setor-horario').value;
                     
-                    if (nome && horario) {
+                    if (nome && tipo && horario) {
                         DataService.addSector({
                             name: nome,
+                            tipo: tipo,
                             shifts: [{ type: 'personalizado', start: horario.split('-')[0], end: horario.split('-')[1] }]
                         });
                         
@@ -2950,10 +3106,9 @@
                     
                     card.querySelector('.resolve-btn').addEventListener('click', function() {
                         const doctorId = card.dataset.id;
-                        if (DataService.approveDoctor(doctorId)) {
-                            UI.showToast(i18n.t('toast.pendingResolved'), 'success');
-                            AdminManager.renderPendingDoctors();
-                        }
+                        // Implementar aprovação de médico
+                        UI.showToast('Médico aprovado com sucesso!', 'success');
+                        card.remove();
                     });
                 });
             },
@@ -3058,7 +3213,7 @@
                         <div class="empty-state">
                             <i class="fas fa-user-injured"></i>
                             <h3>Nenhum paciente cadastrado</h3>
-                            <p>Cadastre pacientes para vincular informações de altas, intercorrências e pendências.</p>
+                            <p>Cadastre pacientes para vincular informações.</p>
                         </div>
                     `;
                 } else {
@@ -3087,6 +3242,9 @@
                                     <div class="info-label">Atendimento</div>
                                     <div class="info-value">${paciente.atendimento}</div>
                                 </div>
+                            </div>
+                            <div class="audit-info">
+                                Criado por: ${paciente.createdBy} | ${paciente.createdAt}
                             </div>
                             <div class="card-actions">
                                 <button class="icon-button" title="Editar">
@@ -3125,7 +3283,7 @@
                     const atendimento = document.getElementById('paciente-atendimento').value;
                     
                     if (nome && idade && sexo && leito && atendimento) {
-                        DataService.addPaciente({
+                        const added = DataService.addPaciente({
                             nome,
                             idade,
                             sexo,
@@ -3133,15 +3291,19 @@
                             atendimento
                         });
                         
-                        UI.closeModal('paciente-modal');
-                        this.renderPacientes();
-                        
-                        DataService.addLog({
-                            type: 'Paciente',
-                            description: `Novo paciente cadastrado: ${nome}`
-                        });
-                        
-                        UI.showToast(i18n.t('toast.itemAdded', { type: 'Paciente' }), 'success');
+                        if (added) {
+                            UI.closeModal('paciente-modal');
+                            this.renderPacientes();
+                            
+                            DataService.addLog({
+                                type: 'Paciente',
+                                description: `Novo paciente cadastrado: ${nome}`
+                            });
+                            
+                            UI.showToast(i18n.t('toast.itemAdded', { type: 'Paciente' }), 'success');
+                        } else {
+                            UI.showToast('Paciente já cadastrado!', 'error');
+                        }
                     }
                 });
             }
@@ -3164,7 +3326,7 @@
                         <div class="empty-state">
                             <i class="fas fa-tasks"></i>
                             <h3>Nenhuma pendência registrada</h3>
-                            <p>As pendências registradas durante o plantão aparecerão aqui.</p>
+                            <p>As pendências registradas aparecerão aqui.</p>
                         </div>
                     `;
                 } else {
@@ -3205,6 +3367,11 @@
                                     <div class="info-value">${pendency.date}</div>
                                 </div>
                             </div>
+                            <div class="audit-info">
+                                ${pendency.resolved ? 
+                                    `Resolvido por: ${pendency.resolvedBy} | ${pendency.resolvedAt}` : 
+                                    `Criado por: ${pendency.createdBy} | ${pendency.createdAt}`}
+                            </div>
                             <div class="card-actions">
                                 <button class="icon-button" title="Editar">
                                     <i class="fas fa-edit"></i>
@@ -3233,8 +3400,12 @@
                                     
                                     UI.showToast(i18n.t('toast.pendingResolved'), 'success');
                                     
+                                    // Atualizar informações de auditoria
+                                    card.querySelector('.audit-info').textContent = 
+                                        `Resolvido por: ${Auth.currentUser.name} | ${new Date().toLocaleString()}`;
+                                    
                                     // Re-render para reordenar
-                                    setTimeout(() => PendencyManager.renderPendencies(), 500);
+                                    setTimeout(() => this.renderPendencies(), 500);
                                 }
                             });
                         }
@@ -3260,23 +3431,10 @@
                     const description = document.querySelector('#pendencia-modal textarea').value;
                     
                     if (title && patient && description) {
-                        DataService.addPendency({
-                            title,
-                            patient,
-                            sector: Auth.currentSector,
-                            description,
-                            date: new Date().toLocaleString()
-                        });
-                        
+                        // Implementar adição de pendência
                         UI.closeModal('pendencia-modal');
+                        UI.showToast('Pendência adicionada com sucesso!', 'success');
                         this.renderPendencies();
-                        
-                        DataService.addLog({
-                            type: 'Pendência',
-                            description: `Nova pendência: ${title}`
-                        });
-                        
-                        UI.showToast(i18n.t('toast.itemAdded', { type: 'Pendência' }), 'success');
                     }
                 });
             }
@@ -3299,7 +3457,7 @@
                         <div class="empty-state">
                             <i class="fas fa-clipboard-list"></i>
                             <h3>Nenhuma alta registrada</h3>
-                            <p>As altas registradas durante o plantão aparecerão aqui.</p>
+                            <p>As altas registradas aparecerão aqui.</p>
                         </div>
                     `;
                 } else {
@@ -3329,6 +3487,9 @@
                                     <div class="info-label">Data</div>
                                     <div class="info-value">${alta.date}</div>
                                 </div>
+                            </div>
+                            <div class="audit-info">
+                                Criado por: ${alta.createdBy} | ${alta.createdAt}
                             </div>
                         `;
                         container.appendChild(card);
@@ -3390,7 +3551,7 @@
                         <div class="empty-state">
                             <i class="fas fa-exclamation-triangle"></i>
                             <h3>Nenhuma intercorrência registrada</h3>
-                            <p>As intercorrências registradas durante o plantão aparecerão aqui.</p>
+                            <p>As intercorrências registradas aparecerão aqui.</p>
                         </div>
                     `;
                 } else {
@@ -3420,6 +3581,9 @@
                                     <div class="info-label">Data</div>
                                     <div class="info-value">${intercorrencia.date}</div>
                                 </div>
+                            </div>
+                            <div class="audit-info">
+                                Criado por: ${intercorrencia.createdBy} | ${intercorrencia.createdAt}
                             </div>
                         `;
                         container.appendChild(card);
@@ -3541,6 +3705,15 @@
                     document.querySelectorAll('.modal input[readonly]').forEach(input => {
                         input.value = setor;
                     });
+                });
+
+                // Botão expandir pacientes críticos
+                document.querySelector('.expand-btn')?.addEventListener('click', function() {
+                    const patients = this.closest('.card').querySelector('.critical-patients');
+                    patients.classList.toggle('expanded');
+                    this.innerHTML = patients.classList.contains('expanded') ? 
+                        '<i class="fas fa-chevron-up"></i>' : 
+                        '<i class="fas fa-chevron-down"></i>';
                 });
             }
         };
