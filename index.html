@@ -1034,6 +1034,246 @@ header {
     display: none;
 }
 
+/* NOVA UI ADMIN */
+.admin-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+}
+
+.sector-sidebar {
+    background-color: var(--sidebar-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sector-limit {
+    background-color: rgba(13, 148, 136, 0.1);
+    padding: 10px;
+    border-radius: var(--radius);
+    margin-top: 10px;
+}
+
+.limit-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.limit-bar {
+    height: 6px;
+    background-color: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.limit-progress {
+    height: 100%;
+    background-color: var(--accent-green);
+    transition: width 0.3s ease;
+}
+
+.sector-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sector-item {
+    padding: 12px 15px;
+    background-color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sector-item.active {
+    background-color: rgba(13, 148, 136, 0.1);
+    border-left: 3px solid var(--accent-green);
+}
+
+.sector-item:hover {
+    background-color: var(--bg-card);
+    transform: translateX(5px);
+}
+
+.sector-item i {
+    color: var(--neutral-gray);
+    min-width: 20px;
+}
+
+.sector-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sector-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.sector-link-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+}
+
+.sector-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.summary-card {
+    background-color: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 15px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.summary-title {
+    font-size: 0.9rem;
+    color: var(--neutral-gray);
+    margin-bottom: 5px;
+}
+
+.summary-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.summary-badge {
+    margin-top: 8px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.shift-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.shift-btn {
+    padding: 8px 15px;
+    border-radius: var(--radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-details {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--accent-blue);
+}
+
+.btn-edit {
+    background-color: rgba(234, 179, 8, 0.1);
+    color: var(--accent-yellow);
+}
+
+.btn-end {
+    background-color: rgba(13, 148, 136, 0.1);
+    color: var(--accent-green);
+}
+
+.shift-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.doctor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.doctor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background-color: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+}
+
+.doctor-status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.status-active {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.status-pending {
+    background-color: rgba(234, 179, 8, 0.1);
+    color: var(--accent-yellow);
+}
+
+.status-inactive {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--accent-red);
+}
+
+.doctor-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.export-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
 @media (min-width: 769px) {
     .menu-btn {
         display: none;
@@ -1043,6 +1283,9 @@ header {
 @media (max-width: 1024px) {
     .sidebar {
         width: 200px;
+    }
+    .admin-container {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -1157,6 +1400,10 @@ header {
     
     .logo-container {
         gap: 5px;
+    }
+    
+    .shift-actions {
+        flex-direction: column;
     }
 }
 
@@ -1517,6 +1764,39 @@ header {
     flex: 1;
     margin-bottom: 0;
 }
+
+.form-row .form-group:last-child {
+    flex: 0.5;
+}
+
+/* Gravidade do paciente */
+.gravity-tag {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.gravity-estavel {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.gravity-observacao {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--accent-blue);
+}
+
+.gravity-instavel {
+    background-color: rgba(234, 179, 8, 0.1);
+    color: var(--accent-yellow);
+}
+
+.gravity-critico {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--accent-red);
+}
     </style>
 </head>
 <body>
@@ -1569,7 +1849,8 @@ header {
                 <input type="text" class="form-control" value="UTI Adulto" id="alta-setor" readonly>
             </div>
             <div class="form-group">
-                <input type="datetime-local" class="form-control" placeholder="Data e hora da alta">
+                <input type="datetime-local" class="form-control" placeholder="Data e hora da alta" 
+                       value="${new Date().toISOString().slice(0, 16)}">
             </div>
             <div class="form-group">
                 <textarea class="form-control" rows="3" placeholder="Motivo da Alta"></textarea>
@@ -1629,7 +1910,8 @@ header {
                 <input type="text" class="form-control" value="UTI Adulto" readonly>
             </div>
             <div class="form-group">
-                <input type="datetime-local" class="form-control" placeholder="Data e hora da intercorrência">
+                <input type="datetime-local" class="form-control" placeholder="Data e hora da intercorrência"
+                       value="${new Date().toISOString().slice(0, 16)}">
             </div>
             <div class="form-group">
                 <textarea class="form-control" rows="3" placeholder="Descreva a intercorrência"></textarea>
@@ -1679,6 +1961,14 @@ header {
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Nº Atendimento" id="paciente-atendimento">
                 </div>
+            </div>
+            <div class="form-group">
+                <select class="form-control" id="paciente-gravidade">
+                    <option value="estavel">Estável</option>
+                    <option value="observacao">Em observação</option>
+                    <option value="instavel">Instável</option>
+                    <option value="critico">Crítico</option>
+                </select>
             </div>
         </div>
         <div class="modal-footer">
@@ -1768,6 +2058,37 @@ header {
                     <i class="fas fa-file-excel"></i> Exportar Excel
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Upgrade -->
+<div class="modal-overlay" id="upgrade-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Limite de Setores Atingido</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Você atingiu o limite máximo de setores permitido pelo seu plano atual.</p>
+            <p>Atualize seu plano para adicionar mais setores:</p>
+            <div class="plans-container">
+                <div class="plan-card">
+                    <h4>Plano Profissional</h4>
+                    <p>10 setores</p>
+                    <p class="price">R$ 199/mês</p>
+                    <button class="modal-btn save">Atualizar</button>
+                </div>
+                <div class="plan-card">
+                    <h4>Plano Empresarial</h4>
+                    <p>Setores ilimitados</p>
+                    <p class="price">R$ 499/mês</p>
+                    <button class="modal-btn save">Atualizar</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn cancel">Fechar</button>
         </div>
     </div>
 </div>
@@ -2028,100 +2349,141 @@ header {
             
             <!-- Admin View -->
             <div id="admin-view" class="view-content hidden">
-                <div class="content-header">
-                    <button id="add-setor" class="action-button">
-                        <i class="fas fa-plus"></i>
-                        <span>Novo Setor</span>
-                    </button>
-                </div>
-                
-                <div class="admin-section">
-                    <h3 class="section-title">Gerenciamento de Setores</h3>
-                    <div class="form-group">
-                        <label class="form-label">Setor Atual</label>
-                        <div class="custom-select">
-                            <div class="select-selected">UTI Adulto</div>
-                            <div class="select-items">
-                                <div class="select-item" data-value="uti-adulto">UTI Adulto</div>
-                                <div class="select-item" data-value="emergencia">Emergência</div>
-                            </div>
-                            <select id="sector-select" class="hidden">
-                                <option value="uti-adulto">UTI Adulto</option>
-                                <option value="emergencia">Emergência</option>
-                            </select>
+                <div class="admin-container">
+                    <!-- Sidebar de Setores -->
+                    <div class="sector-sidebar">
+                        <div class="sidebar-header">
+                            <h3>Setores</h3>
+                            <div class="sector-count">3/5 setores</div>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Link de Convite</label>
-                        <div class="copy-link-container">
-                            <div id="sector-link" class="sector-link">https://juli.app/convite/uti-adulto</div>
-                            <button class="copy-link">
-                                <i class="fas fa-copy"></i>
-                            </button>
+                        <div class="sector-list">
+                            <!-- Setores serão carregados aqui -->
                         </div>
-                        <p class="link-description">
-                            Compartilhe este link via WhatsApp para médicos se cadastrarem neste setor
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="admin-section">
-                    <h3 class="section-title">Horário dos Plantões</h3>
-                    <div id="shifts-container">
-                        <div class="shift-entry">
-                            <div class="form-group shift-name-input">
-                                <input type="text" class="form-control" placeholder="Nome do período (opcional)">
+                        
+                        <div class="sector-limit">
+                            <div class="limit-header">
+                                <span>Setores Utilizados</span>
+                                <span>3/5</span>
                             </div>
-                            <div class="time-grid">
-                                <div>
-                                    <div class="time-label">Início</div>
-                                    <input type="time" class="form-control" value="07:00">
-                                </div>
-                                <div>
-                                    <div class="time-label">Término</div>
-                                    <input type="time" class="form-control" value="19:00">
+                            <div class="limit-bar">
+                                <div class="limit-progress" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        
+                        <button id="add-sector-btn" class="action-button">
+                            <i class="fas fa-plus"></i>
+                            <span>Novo Setor</span>
+                        </button>
+                    </div>
+
+                    <!-- Dashboard do Setor Selecionado -->
+                    <div class="sector-dashboard">
+                        <!-- Cabeçalho com nome do setor, status e link -->
+                        <div class="sector-header">
+                            <h2 id="current-sector-name">UTI Adulto</h2>
+                            <div class="sector-meta">
+                                <span class="sector-status badge-resolvido">Ativo</span>
+                                <div class="sector-link-container">
+                                    <div id="sector-link" class="sector-link">https://juli.app/convite/uti-adulto</div>
+                                    <button class="copy-link">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
                                 </div>
                             </div>
-                            <button class="remove-shift-btn"><i class="fas fa-trash"></i></button>
                         </div>
-                    </div>
-                    <button class="add-time-btn" id="add-shift-btn">
-                        <i class="fas fa-plus"></i> Adicionar outro período
-                    </button>
-                </div>
-                
-                <div class="admin-section">
-                    <h3 class="section-title">Médicos Pendentes</h3>
-                    <div class="cards-grid" id="pending-doctors-container">
-                        <!-- Médicos pendentes serão renderizados aqui -->
-                    </div>
-                </div>
-                
-                <div class="admin-section">
-                    <h3 class="section-title">Plantões Encerrados</h3>
-                    <div class="plantao-grid" id="plantoes-container">
-                        <!-- Plantões serão renderizados aqui -->
-                    </div>
-                </div>
-                
-                <div class="admin-section">
-                    <h3 class="section-title">Logs do Sistema</h3>
-                    <div class="logs-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Data/Hora</th>
-                                    <th>Tipo</th>
-                                    <th>Descrição</th>
-                                    <th>Responsável</th>
-                                    <th>Setor</th>
-                                </tr>
-                            </thead>
-                            <tbody id="logs-body">
-                                <!-- Logs serão renderizados aqui -->
-                            </tbody>
-                        </table>
+
+                        <!-- Plantão Atual -->
+                        <div class="current-shift card">
+                            <div class="card-header">
+                                <div class="card-title">Plantão Atual</div>
+                                <div class="card-badge badge-pendencia">Em andamento</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-group">
+                                    <div class="info-label">Data</div>
+                                    <div class="info-value">19/06/2023</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Turno</div>
+                                    <div class="info-value">Diurno (07:00 - 19:00)</div>
+                                </div>
+                                <div class="info-group">
+                                    <div class="info-label">Responsável</div>
+                                    <div class="info-value">Dr. Silva</div>
+                                </div>
+                            </div>
+                            <div class="shift-actions">
+                                <button class="shift-btn btn-details">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Ver Detalhes</span>
+                                </button>
+                                <button class="shift-btn btn-edit">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Editar</span>
+                                </button>
+                                <button class="shift-btn btn-end">
+                                    <i class="fas fa-stop"></i>
+                                    <span>Encerrar Plantão</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Resumo do Setor -->
+                        <div class="sector-summary">
+                            <div class="summary-card">
+                                <div class="summary-title">Médicos</div>
+                                <div class="summary-value">8</div>
+                                <div class="summary-badge badge-pendencia">2 pendentes</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-title">Pacientes Ativos</div>
+                                <div class="summary-value">24</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-title">Pendências</div>
+                                <div class="summary-value">5</div>
+                            </div>
+                            <div class="summary-card">
+                                <div class="summary-title">Intercorrências</div>
+                                <div class="summary-value">3</div>
+                            </div>
+                        </div>
+
+                        <!-- Histórico de Plantões -->
+                        <div class="admin-section">
+                            <h3 class="section-title">Histórico de Plantões</h3>
+                            <div class="plantao-grid" id="plantoes-container">
+                                <!-- Plantões serão renderizados aqui -->
+                            </div>
+                        </div>
+
+                        <!-- Gestão de Médicos -->
+                        <div class="admin-section">
+                            <h3 class="section-title">Gestão de Médicos</h3>
+                            <div class="doctor-list" id="doctors-container">
+                                <!-- Médicos serão renderizados aqui -->
+                            </div>
+                        </div>
+
+                        <!-- Logs do Sistema -->
+                        <div class="admin-section">
+                            <h3 class="section-title">Logs do Sistema</h3>
+                            <div class="logs-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Data/Hora</th>
+                                            <th>Tipo</th>
+                                            <th>Descrição</th>
+                                            <th>Responsável</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="logs-body">
+                                        <!-- Logs serão renderizados aqui -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2499,7 +2861,8 @@ const DataService = {
                         sector: 'UTI Adulto',
                         createdBy: 'Dr. Silva',
                         createdAt: '19/06/2023 10:15',
-                        discharged: false
+                        discharged: false,
+                        gravidade: 'critico'
                     },
                     {
                         id: 'paciente-2',
@@ -2511,7 +2874,8 @@ const DataService = {
                         sector: 'UTI Adulto',
                         createdBy: 'Dra. Oliveira',
                         createdAt: '18/06/2023 14:30',
-                        discharged: false
+                        discharged: false,
+                        gravidade: 'instavel'
                     }
                 ],
                 plantoes: [
@@ -2528,7 +2892,8 @@ const DataService = {
                         intercorrencias: 5,
                         pendencias: 2
                     }
-                ]
+                ],
+                currentSector: 'uti-adulto'
             };
             localStorage.setItem('juliData', JSON.stringify(initialData));
         }
@@ -2588,6 +2953,14 @@ const DataService = {
     
     addSector(sector) {
         const data = this.getData();
+        
+        // Verificar limite de setores
+        const maxSectors = 5;
+        if (data.sectors.length >= maxSectors) {
+            UI.openModal('upgrade-modal');
+            return false;
+        }
+        
         data.sectors.push({
             ...sector,
             id: 'sector-' + Date.now(),
@@ -2710,6 +3083,20 @@ const DataService = {
         return this.getPacientes().filter(p => 
             p.sector === sector && !p.discharged
         );
+    },
+    
+    getMaxSectors() {
+        return 5;
+    },
+    
+    getCurrentSector() {
+        return this.getData().currentSector || 'uti-adulto';
+    },
+    
+    setCurrentSector(sectorId) {
+        const data = this.getData();
+        data.currentSector = sectorId;
+        this.saveData(data);
     }
 };
 
@@ -2731,7 +3118,7 @@ const Auth = {
     },
     
     currentUser: null,
-    currentSector: 'UTI Adulto',
+    currentSector: DataService.getCurrentSector(),
     
     init() {
         const session = localStorage.getItem('juliSession');
@@ -2763,7 +3150,7 @@ const Auth = {
     
     loginUser(username, sector) {
         this.currentUser = this.users[username];
-        this.currentSector = sector || 'UTI Adulto';
+        this.currentSector = sector || DataService.getCurrentSector();
 
         localStorage.setItem('juliSession', JSON.stringify({
             username,
@@ -2801,6 +3188,11 @@ const Auth = {
         }
         
         UI.showToast(i18n.t('toast.welcome', { username: this.currentUser.name }), 'success');
+        
+        // Atualizar setor nos modais
+        document.querySelectorAll('.modal input[readonly]').forEach(input => {
+            input.value = this.currentSector;
+        });
     },
     
     changeSector(sectorId) {
@@ -2816,10 +3208,15 @@ const Auth = {
                 localStorage.setItem('juliSession', JSON.stringify(sessionData));
             }
             
+            DataService.setCurrentSector(sectorId);
+            
             UI.showToast(`Setor alterado para: ${this.currentSector}`, 'info');
             
             // Atualizar dropdowns de pacientes
             PacienteManager.populatePatientDropdowns();
+            
+            // Recarregar view atual
+            ViewManager.reloadCurrentView();
         }
     },
     
@@ -2836,7 +3233,11 @@ const Auth = {
 
 // views.js
 const ViewManager = {
+    currentView: 'dashboard',
+    
     switchView(view) {
+        this.currentView = view;
+        
         document.querySelectorAll('.view-content').forEach(v => {
             v.classList.add('hidden');
         });
@@ -2851,8 +3252,9 @@ const ViewManager = {
         });
         
         if (view === 'admin') {
-            AdminManager.renderPendingDoctors();
+            AdminManager.renderSectors();
             AdminManager.renderPlantoes();
+            AdminManager.renderDoctors();
             AdminManager.renderLogs();
         }
         
@@ -2875,6 +3277,10 @@ const ViewManager = {
         setTimeout(() => UI.checkTextOverflow(), 100);
     },
     
+    reloadCurrentView() {
+        this.switchView(this.currentView);
+    },
+    
     init() {
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
@@ -2895,8 +3301,10 @@ const ViewManager = {
 
 // admin.js
 const AdminManager = {
+    currentSector: null,
+    
     init() {
-        document.getElementById('add-setor').addEventListener('click', () => {
+        document.getElementById('add-sector-btn').addEventListener('click', () => {
             UI.openModal('novo-setor-modal');
         });
         
@@ -2906,42 +3314,16 @@ const AdminManager = {
             const horario = document.getElementById('setor-horario').value;
             
             if (nome && tipo && horario) {
-                DataService.addSector({
+                if (DataService.addSector({
                     name: nome,
                     tipo: tipo,
                     shifts: [{ type: 'personalizado', start: horario.split('-')[0], end: horario.split('-')[1] }]
-                });
-                
-                UI.closeModal('novo-setor-modal');
-                UI.showToast(i18n.t('toast.setorCriado'), 'success');
+                })) {
+                    UI.closeModal('novo-setor-modal');
+                    UI.showToast(i18n.t('toast.setorCriado'), 'success');
+                    this.renderSectors();
+                }
             }
-        });
-        
-        document.getElementById('add-shift-btn').addEventListener('click', function() {
-            const container = document.getElementById('shifts-container');
-            const newEntry = document.createElement('div');
-            newEntry.className = 'shift-entry';
-            newEntry.innerHTML = `
-                <div class="form-group shift-name-input">
-                    <input type="text" class="form-control" placeholder="Nome do período (opcional)">
-                </div>
-                <div class="time-grid">
-                    <div>
-                        <div class="time-label">Início</div>
-                        <input type="time" class="form-control" value="07:00">
-                    </div>
-                    <div>
-                        <div class="time-label">Término</div>
-                        <input type="time" class="form-control" value="19:00">
-                    </div>
-                </div>
-                <button class="remove-shift-btn"><i class="fas fa-trash"></i></button>
-            `;
-            container.appendChild(newEntry);
-            
-            newEntry.querySelector('.remove-shift-btn').addEventListener('click', function() {
-                newEntry.remove();
-            });
         });
         
         document.querySelector('.copy-link').addEventListener('click', function() {
@@ -2957,9 +3339,74 @@ const AdminManager = {
             }
         });
         
-        this.renderPendingDoctors();
-        this.renderPlantoes();
-        this.renderLogs();
+        document.querySelector('.btn-end').addEventListener('click', function() {
+            UI.showToast('Plantão encerrado com sucesso!', 'success');
+        });
+        
+        this.renderSectors();
+    },
+    
+    renderSectors() {
+        const container = document.querySelector('.sector-list');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        const sectors = DataService.getSectors();
+        const currentSectorId = DataService.getCurrentSector();
+        
+        sectors.forEach(sector => {
+            const item = document.createElement('div');
+            item.className = 'sector-item';
+            if (sector.id === currentSectorId) {
+                item.classList.add('active');
+                this.currentSector = sector;
+            }
+            item.dataset.id = sector.id;
+            item.innerHTML = `
+                <i class="fas fa-hospital"></i>
+                <span>${sector.name}</span>
+            `;
+            container.appendChild(item);
+            
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.sector-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                this.loadSector(sector.id);
+            });
+        });
+        
+        // Atualizar contador de setores
+        const maxSectors = DataService.getMaxSectors();
+        document.querySelector('.sector-count').textContent = `${sectors.length}/${maxSectors} setores`;
+        document.querySelector('.limit-progress').style.width = `${(sectors.length / maxSectors) * 100}%`;
+        
+        // Carregar setor atual se ainda não carregado
+        if (this.currentSector) {
+            this.loadSector(this.currentSector.id);
+        } else if (sectors.length > 0) {
+            this.loadSector(sectors[0].id);
+        }
+    },
+    
+    loadSector(sectorId) {
+        const sector = DataService.getSectorById(sectorId);
+        if (!sector) return;
+        
+        this.currentSector = sector;
+        
+        // Atualizar header
+        document.getElementById('current-sector-name').textContent = sector.name;
+        document.getElementById('sector-link').textContent = sector.invitationLink;
+        
+        // Atualizar contadores (exemplo)
+        const activePatients = DataService.getActivePatients(sector.name).length;
+        document.querySelector('.summary-card:nth-child(2) .summary-value').textContent = activePatients;
+        
+        // Recarregar plantões, médicos e logs deste setor
+        this.renderPlantoes(sector.name);
+        this.renderDoctors(sector.name);
+        this.renderLogs(sector.name);
     },
     
     exportPlantaoData(plantaoId, format) {
@@ -2969,75 +3416,57 @@ const AdminManager = {
         }
     },
     
-    renderPendingDoctors() {
-        const container = document.getElementById('pending-doctors-container');
+    renderDoctors(sectorName) {
+        const container = document.getElementById('doctors-container');
         if (!container) return;
         
         container.innerHTML = '';
         
-        const pendingDoctors = DataService.getPendingDoctors();
+        const doctors = [
+            ...DataService.getPendingDoctors().filter(d => d.sector === sectorName),
+            ...DataService.getApprovedDoctors().filter(d => d.sector === sectorName)
+        ];
         
-        if (pendingDoctors.length === 0) {
+        if (doctors.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    <i class="fas fa-user-check"></i>
-                    <h3>${i18n.t('admin.noPendingDoctors')}</h3>
-                    <p>${i18n.t('admin.allDoctorsApproved')}</p>
+                    <i class="fas fa-user-md"></i>
+                    <h3>Nenhum médico encontrado</h3>
+                    <p>Compartilhe o link do setor para convidar médicos</p>
                 </div>
             `;
             return;
         }
         
-        pendingDoctors.forEach(doctor => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.dataset.id = doctor.id;
-            card.innerHTML = `
-                <div class="card-header">
-                    <div class="card-title">${doctor.name}</div>
-                    <div class="card-badge badge-pendencia">Pendente</div>
+        doctors.forEach(doctor => {
+            const status = doctor.requested ? 'pending' : 'active';
+            const item = document.createElement('div');
+            item.className = 'doctor-item';
+            item.innerHTML = `
+                <div>
+                    <div class="doctor-name">${doctor.name}</div>
+                    <div class="doctor-email">${doctor.email}</div>
                 </div>
-                <div class="card-body">
-                    <div class="info-group">
-                        <div class="info-label">Email</div>
-                        <div class="info-value">${doctor.email}</div>
-                    </div>
-                    <div class="info-group">
-                        <div class="info-label">Setor</div>
-                        <div class="info-value">${doctor.sector}</div>
-                    </div>
-                    <div class="info-group">
-                        <div class="info-label">Solicitado em</div>
-                        <div class="info-value">${doctor.requested}</div>
-                    </div>
+                <div class="doctor-status ${status === 'pending' ? 'status-pending' : 'status-active'}">
+                    ${status === 'pending' ? 'Pendente' : 'Ativo'}
                 </div>
-                <div class="card-actions">
-                    <button class="icon-button" title="Recusar">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <button class="resolve-btn">
-                        <i class="fas fa-check"></i>
-                        <span>Aprovar</span>
+                <div class="doctor-actions">
+                    <button class="icon-button" title="${status === 'pending' ? 'Aprovar' : 'Remover'}">
+                        <i class="fas ${status === 'pending' ? 'fa-check' : 'fa-trash'}"></i>
                     </button>
                 </div>
             `;
-            container.appendChild(card);
-            
-            card.querySelector('.resolve-btn').addEventListener('click', function() {
-                const doctorId = card.dataset.id;
-                UI.showToast('Médico aprovado com sucesso!', 'success');
-                card.remove();
-            });
+            container.appendChild(item);
         });
     },
     
-    renderPlantoes() {
+    renderPlantoes(sectorName) {
         const container = document.getElementById('plantoes-container');
         if (!container) return;
         
         container.innerHTML = '';
         
-        const plantoes = DataService.getPlantoes();
+        const plantoes = DataService.getPlantoes().filter(p => p.setor === sectorName);
         
         plantoes.forEach(plantao => {
             const card = document.createElement('div');
@@ -3071,6 +3500,12 @@ const AdminManager = {
                         <i class="fas fa-info-circle"></i>
                         <span>Detalhes</span>
                     </button>
+                    <button class="export-btn" data-format="pdf">
+                        <i class="fas fa-file-pdf"></i>
+                    </button>
+                    <button class="export-btn" data-format="excel">
+                        <i class="fas fa-file-excel"></i>
+                    </button>
                 </div>
             `;
             container.appendChild(card);
@@ -3096,13 +3531,13 @@ const AdminManager = {
         UI.openModal('plantao-details-modal');
     },
     
-    renderLogs() {
+    renderLogs(sectorName) {
         const container = document.getElementById('logs-body');
         if (!container) return;
         
         container.innerHTML = '';
         
-        const logs = DataService.getLogs();
+        const logs = DataService.getLogs().filter(l => l.sector === sectorName);
         
         logs.forEach(log => {
             const row = document.createElement('tr');
@@ -3111,7 +3546,6 @@ const AdminManager = {
                 <td>${log.type}</td>
                 <td>${log.description}</td>
                 <td>${log.user}</td>
-                <td>${log.sector}</td>
             `;
             container.appendChild(row);
         });
@@ -3131,14 +3565,16 @@ const PacienteManager = {
             const sexo = document.getElementById('paciente-sexo').value;
             const leito = document.getElementById('paciente-leito').value;
             const atendimento = document.getElementById('paciente-atendimento').value;
+            const gravidade = document.getElementById('paciente-gravidade').value;
             
-            if (nome && idade && sexo && leito && atendimento) {
+            if (nome && idade && sexo && leito && atendimento && gravidade) {
                 const added = DataService.addPaciente({
                     nome,
                     idade,
                     sexo,
                     leito,
-                    atendimento
+                    atendimento,
+                    gravidade
                 });
                 
                 if (added) {
@@ -3192,6 +3628,9 @@ const PacienteManager = {
             p.sector === Auth.currentSector && !p.discharged
         );
         
+        // Ordenar por data de criação (mais recente primeiro)
+        pacientes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
         if (pacientes.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
@@ -3208,6 +3647,11 @@ const PacienteManager = {
                 card.innerHTML = `
                     <div class="card-header">
                         <div class="card-title">${paciente.nome}</div>
+                        <div class="gravity-tag gravity-${paciente.gravidade}">
+                            ${paciente.gravidade === 'estavel' ? 'Estável' : 
+                              paciente.gravidade === 'observacao' ? 'Em observação' : 
+                              paciente.gravidade === 'instavel' ? 'Instável' : 'Crítico'}
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="info-group">
@@ -3394,6 +3838,8 @@ const PendencyManager = {
                 resolveBtn.addEventListener('click', () => {
                     if (DataService.resolvePendency(pendency.id)) {
                         card.classList.add('resolved');
+                        card.querySelector('.card-badge').className = 'card-badge badge-resolvido';
+                        card.querySelector('.card-badge').textContent = 'Resolvido';
                         resolveBtn.classList.add('resolved');
                         resolveBtn.innerHTML = `<i class="fas fa-check"></i><span>Resolvido</span>`;
                         
@@ -3512,6 +3958,11 @@ const AltaManager = {
                     </div>
                     <div class="audit-info">
                         Criado por: ${alta.createdBy} | ${alta.createdAt}
+                    </div>
+                    <div class="card-actions">
+                        <button class="icon-button edit-btn" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
                     </div>
                 `;
                 container.appendChild(card);
