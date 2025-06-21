@@ -760,7 +760,7 @@
             border-radius: var(--radius);
             width: 100%;
             max-width: 500px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             transform: translateY(30px);
             transition: var(--transition);
             opacity: 0;
@@ -1621,6 +1621,12 @@
             justify-content: center;
         }
 
+        /* Hot/Cold Storage Badge */
+        .badge-archived {
+            background-color: rgba(100, 116, 139, 0.1);
+            color: var(--neutral-gray);
+        }
+
         /* Mobile First Adaptations */
         @media (max-width: 768px) {
             .cards-grid {
@@ -2044,8 +2050,29 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Horário do Plantão</label>
-                    <input type="text" class="form-control" placeholder="Ex: 07:00-19:00" id="setor-horario">
+                    <label class="form-label">Horários do Plantão</label>
+                    <div id="turnos-container">
+                        <div class="turno-entry">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Nome do Turno" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="time" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="time" class="form-control" required>
+                                </div>
+                                <button class="icon-button remove-turno-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="add-turno" class="add-time-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Adicionar Turno</span>
+                    </button>
                 </div>
             </div>
             <div class="modal-footer">
@@ -2440,7 +2467,6 @@
                             <div class="sector-header">
                                 <h2 id="current-sector-name">UTI Adulto</h2>
                                 <div class="sector-meta">
-                                    <span class="sector-status badge-resolvido">Ativo</span>
                                     <div class="sector-link-container">
                                         <div id="sector-link" class="sector-link">https://juli.app/convite/uti-adulto</div>
                                         <button class="copy-link">
@@ -2529,6 +2555,7 @@
                                                 <th>Tipo</th>
                                                 <th>Descrição</th>
                                                 <th>Responsável</th>
+                                                <th>Armazenamento</th>
                                             </tr>
                                         </thead>
                                         <tbody id="logs-body">
@@ -2809,142 +2836,16 @@
             init() {
                 if (!localStorage.getItem('juliData')) {
                     const initialData = {
-                        sectors: [
-                            {
-                                id: 'uti-adulto',
-                                name: 'UTI Adulto',
-                                tipo: 'UTI',
-                                invitationLink: 'https://juli.app/convite/uti-adulto',
-                                shifts: [
-                                    { type: 'diurno', start: '07:00', end: '19:00' },
-                                    { type: 'noturno', start: '19:00', end: '07:00' }
-                                ]
-                            },
-                            {
-                                id: 'emergencia',
-                                name: 'Emergência',
-                                tipo: 'Emergência',
-                                invitationLink: 'https://juli.app/convite/emergencia',
-                                shifts: [
-                                    { type: 'integral', start: '08:00', end: '20:00' }
-                                ]
-                            }
-                        ],
-                        pendingDoctors: [
-                            {
-                                id: 'dr-silva',
-                                name: 'Dr. Carlos Silva',
-                                email: 'carlos.silva@hospital.com',
-                                sector: 'UTI Adulto',
-                                requested: '15/11/2023'
-                            }
-                        ],
-                        approvedDoctors: [
-                            {
-                                id: 'dra-oliveira',
-                                name: 'Dra. Ana Oliveira',
-                                email: 'ana.oliveira@hospital.com',
-                                sector: 'UTI Adulto',
-                                registered: '10/10/2023'
-                            }
-                        ],
-                        logs: [
-                            { timestamp: '19/06/2023 08:15', type: 'Plantão', description: 'Início do plantão diurno', user: 'Dr. Silva', sector: 'UTI Adulto' },
-                            { timestamp: '19/06/2023 10:30', type: 'Intercorrência', description: 'Paciente com febre alta', user: 'Dra. Oliveira', sector: 'UTI Adulto' },
-                            { timestamp: '19/06/2023 11:45', type: 'Alta', description: 'Alta médica para Carlos Oliveira', user: 'Dr. Silva', sector: 'UTI Adulto' }
-                        ],
-                        pendencies: [
-                            {
-                                id: 'pendencia-1',
-                                title: 'Medicação Pendente',
-                                patient: 'Maria Silva',
-                                sector: 'UTI Adulto',
-                                description: 'Antibiótico IV pendente - Vancomicina 1g a cada 12h. Aguardando farmácia liberar medicamento.',
-                                date: '18/06/2023 14:30',
-                                resolved: false,
-                                createdBy: 'Dr. Silva',
-                                createdAt: '18/06/2023 14:35'
-                            },
-                            {
-                                id: 'pendencia-2',
-                                title: 'Exame Pendente',
-                                patient: 'João Santos',
-                                sector: 'UTI Adulto',
-                                description: 'Tomografia de tórax agendada',
-                                date: '17/06/2023 09:15',
-                                resolved: true,
-                                resolvedBy: 'Dra. Oliveira',
-                                resolvedAt: '17/06/2023 15:20'
-                            }
-                        ],
-                        altas: [
-                            {
-                                id: 'alta-1',
-                                patient: 'Carlos Oliveira',
-                                sector: 'UTI Adulto',
-                                tipo: 'Clínica',
-                                reason: 'Recuperação completa após tratamento de pneumonia. Paciente estável com saturação de O2 em 98% em ar ambiente.',
-                                date: '19/06/2023 10:15',
-                                createdBy: 'Dr. Silva',
-                                createdAt: '19/06/2023 10:20'
-                            }
-                        ],
-                        intercorrencias: [
-                            {
-                                id: 'intercorrencia-1',
-                                patient: 'Maria Silva',
-                                sector: 'UTI Adulto',
-                                description: 'Paciente apresentou febre de 39.8°C às 14:30. Foi administrado paracetamol 1g IV. Monitorar temperatura a cada 30 minutos.',
-                                date: '19/06/2023 14:30',
-                                severity: 'Grave',
-                                resolved: false,
-                                createdBy: 'Dra. Oliveira',
-                                createdAt: '19/06/2023 14:35'
-                            }
-                        ],
-                        pacientes: [
-                            {
-                                id: 'paciente-1',
-                                nome: 'Maria Silva',
-                                idade: 65,
-                                sexo: 'feminino',
-                                leito: '12A',
-                                atendimento: '20230619001',
-                                sector: 'UTI Adulto',
-                                createdBy: 'Dr. Silva',
-                                createdAt: '19/06/2023 10:15',
-                                discharged: false,
-                                gravidade: 'critico'
-                            },
-                            {
-                                id: 'paciente-2',
-                                nome: 'João Santos',
-                                idade: 48,
-                                sexo: 'masculino',
-                                leito: '8B',
-                                atendimento: '20230618002',
-                                sector: 'UTI Adulto',
-                                createdBy: 'Dra. Oliveira',
-                                createdAt: '18/06/2023 14:30',
-                                discharged: false,
-                                gravidade: 'instavel'
-                            }
-                        ],
-                        plantoes: [
-                            {
-                                id: 'plantao-1',
-                                tipo: 'diurno',
-                                data: '18/06/2023',
-                                setor: 'UTI Adulto',
-                                inicio: '18/06/2023 07:00',
-                                termino: '18/06/2023 19:00',
-                                pacientes: 24,
-                                altas: 3,
-                                intercorrencias: 5,
-                                pendencias: 2
-                            }
-                        ],
-                        currentSector: 'uti-adulto'
+                        sectors: [],
+                        pendingDoctors: [],
+                        approvedDoctors: [],
+                        logs: [],
+                        pendencies: [],
+                        altas: [],
+                        intercorrencias: [],
+                        pacientes: [],
+                        plantoes: [],
+                        currentSector: ''
                     };
                     localStorage.setItem('juliData', JSON.stringify(initialData));
                 }
@@ -3145,7 +3046,7 @@
             },
             
             getCurrentSector() {
-                return this.getData().currentSector || 'uti-adulto';
+                return this.getData().currentSector || '';
             },
             
             setCurrentSector(sectorId) {
@@ -3179,6 +3080,37 @@
                 
                 this.saveData(data);
                 return true;
+            },
+            
+            getPlantaoData(sector, dateRange) {
+                const plantoes = this.getPlantoes();
+                const now = new Date();
+                const cutoffDate = new Date();
+                cutoffDate.setMonth(now.getMonth() - 12);
+                
+                return plantoes.filter(p => {
+                    const plantaoDate = new Date(p.data);
+                    return plantaoDate > cutoffDate; // Hot storage
+                });
+            },
+            
+            calculatePrice(sectorsCount) {
+                if(sectorsCount === 1) return 399;
+                if(sectorsCount >= 2 && sectorsCount <= 5) return 379 * sectorsCount;
+                if(sectorsCount >= 6 && sectorsCount <= 10) return 359 * sectorsCount;
+                if(sectorsCount >= 11 && sectorsCount <= 30) return 339 * sectorsCount;
+                return 300 * sectorsCount; // Corporate
+            },
+            
+            validateShifts(shifts) {
+                for(let i = 0; i < shifts.length; i++) {
+                    for(let j = i + 1; j < shifts.length; j++) {
+                        if((shifts[i].start < shifts[j].end && shifts[i].end > shifts[j].start)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
             }
         };
 
@@ -3189,13 +3121,13 @@
                     password: 'juli123', 
                     name: 'Dra. Juliana Calvo', 
                     role: 'Médico Plantonista', 
-                    sectors: ['UTI Adulto', 'Emergência'] 
+                    sectors: [] 
                 },
                 'admin': { 
                     password: 'admin123', 
                     name: 'Admin Sistema', 
                     role: 'Administrador', 
-                    sectors: ['UTI Adulto', 'UTI Pediátrica', 'Emergência', 'Enfermaria'] 
+                    sectors: [] 
                 }
             },
             
@@ -3242,7 +3174,14 @@
 
                 document.getElementById('current-user').textContent = this.currentUser.name;
                 document.getElementById('user-role').textContent = this.currentUser.role;
-                document.getElementById('current-sector-display').textContent = this.currentSector;
+                
+                // Atualizar setor
+                if (this.currentSector) {
+                    const sectorObj = DataService.getSectorById(this.currentSector);
+                    if (sectorObj) {
+                        document.getElementById('current-sector-display').textContent = sectorObj.name;
+                    }
+                }
                 
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-container').style.display = 'flex';
@@ -3272,16 +3211,21 @@
                 UI.showToast(i18n.t('toast.welcome', { username: this.currentUser.name }), 'success');
                 
                 // Atualizar setor nos modais
-                document.querySelectorAll('.modal input[readonly]').forEach(input => {
-                    input.value = this.currentSector;
-                });
+                if (this.currentSector) {
+                    const sectorObj = DataService.getSectorById(this.currentSector);
+                    if (sectorObj) {
+                        document.querySelectorAll('.modal input[readonly]').forEach(input => {
+                            input.value = sectorObj.name;
+                        });
+                    }
+                }
             },
             
             changeSector(sectorId) {
                 const sector = DataService.getSectorById(sectorId);
                 if (sector) {
-                    this.currentSector = sector.name;
-                    document.getElementById('current-sector-display').textContent = this.currentSector;
+                    this.currentSector = sector.id;
+                    document.getElementById('current-sector-display').textContent = sector.name;
                     
                     const session = localStorage.getItem('juliSession');
                     if (session) {
@@ -3292,13 +3236,18 @@
                     
                     DataService.setCurrentSector(sectorId);
                     
-                    UI.showToast(`Setor alterado para: ${this.currentSector}`, 'info');
+                    UI.showToast(`Setor alterado para: ${sector.name}`, 'info');
                     
                     // Atualizar dropdowns de pacientes
                     PacienteManager.populatePatientDropdowns();
                     
                     // Recarregar view atual
                     ViewManager.reloadCurrentView();
+                    
+                    // Atualizar setor nos modais
+                    document.querySelectorAll('.modal input[readonly]').forEach(input => {
+                        input.value = sector.name;
+                    });
                 }
             },
             
@@ -3394,20 +3343,57 @@
                     // Limpar o modal antes de abrir
                     document.getElementById('setor-nome').value = '';
                     document.getElementById('setor-tipo').value = 'UTI';
-                    document.getElementById('setor-horario').value = '';
+                    document.getElementById('turnos-container').innerHTML = `
+                        <div class="turno-entry">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Nome do Turno" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="time" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="time" class="form-control" required>
+                                </div>
+                                <button class="icon-button remove-turno-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
                     UI.openModal('novo-setor-modal');
                 });
                 
                 document.getElementById('save-setor').addEventListener('click', () => {
                     const nome = document.getElementById('setor-nome').value;
                     const tipo = document.getElementById('setor-tipo').value;
-                    const horario = document.getElementById('setor-horario').value;
                     
-                    if (nome && tipo && horario) {
+                    // Coletar turnos
+                    const turnos = [];
+                    const turnoEntries = document.querySelectorAll('.turno-entry');
+                    let valid = true;
+                    
+                    turnoEntries.forEach(entry => {
+                        const name = entry.querySelector('input[type="text"]').value;
+                        const start = entry.querySelector('input[type="time"]:nth-child(2)').value;
+                        const end = entry.querySelector('input[type="time"]:nth-child(3)').value;
+                        
+                        if (!name || !start || !end) {
+                            valid = false;
+                            UI.showToast('Preencha todos os campos dos turnos', 'error');
+                            return;
+                        }
+                        
+                        turnos.push({ name, start, end });
+                    });
+                    
+                    if (!valid) return;
+                    
+                    if (nome && tipo && turnos.length > 0) {
                         if (DataService.addSector({
                             name: nome,
                             tipo: tipo,
-                            shifts: [{ type: 'personalizado', start: horario.split('-')[0], end: horario.split('-')[1] }]
+                            shifts: turnos
                         })) {
                             UI.closeModal('novo-setor-modal');
                             UI.showToast(i18n.t('toast.setorCriado'), 'success');
@@ -3428,6 +3414,37 @@
                         const format = e.target.dataset.format;
                         this.exportPlantaoData(plantaoId, format);
                     }
+                    
+                    if (e.target.classList.contains('remove-turno-btn')) {
+                        if (document.querySelectorAll('.turno-entry').length > 1) {
+                            e.target.closest('.turno-entry').remove();
+                        } else {
+                            UI.showToast('É necessário pelo menos um turno', 'warning');
+                        }
+                    }
+                });
+                
+                document.getElementById('add-turno').addEventListener('click', () => {
+                    const container = document.getElementById('turnos-container');
+                    const newEntry = document.createElement('div');
+                    newEntry.className = 'turno-entry';
+                    newEntry.innerHTML = `
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Nome do Turno" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="time" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="time" class="form-control" required>
+                            </div>
+                            <button class="icon-button remove-turno-btn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(newEntry);
                 });
                 
                 document.getElementById('delete-sector-btn').addEventListener('click', () => {
@@ -3528,7 +3545,7 @@
                 document.getElementById('current-sector-name').textContent = sector.name;
                 document.getElementById('sector-link').textContent = sector.invitationLink;
                 
-                // Atualizar contadores (exemplo)
+                // Atualizar contadores
                 const activePatients = DataService.getActivePatients(sector.name).length;
                 document.querySelector('.summary-card:nth-child(2) .summary-value').textContent = activePatients;
                 
@@ -3595,7 +3612,7 @@
                 
                 container.innerHTML = '';
                 
-                const plantoes = DataService.getPlantoes().filter(p => p.setor === sectorName);
+                const plantoes = DataService.getPlantaoData(sectorName);
                 
                 plantoes.forEach(plantao => {
                     const card = document.createElement('div');
@@ -3666,11 +3683,14 @@
                 
                 logs.forEach(log => {
                     const row = document.createElement('tr');
+                    const isArchived = new Date(log.timestamp) < new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+                    
                     row.innerHTML = `
                         <td>${log.timestamp}</td>
                         <td>${log.type}</td>
                         <td>${log.description}</td>
                         <td>${log.user}</td>
+                        <td><span class="card-badge ${isArchived ? 'badge-archived' : 'badge-resolvido'}">${isArchived ? 'Arquivado' : 'Ativo'}</span></td>
                     `;
                     container.appendChild(row);
                 });
@@ -3681,6 +3701,13 @@
         const PacienteManager = {
             init() {
                 document.getElementById('add-paciente').addEventListener('click', () => {
+                    // Limpar campos
+                    document.getElementById('paciente-nome').value = '';
+                    document.getElementById('paciente-idade').value = '';
+                    document.getElementById('paciente-sexo').value = '';
+                    document.getElementById('paciente-leito').value = '';
+                    document.getElementById('paciente-atendimento').value = '';
+                    document.getElementById('paciente-gravidade').value = 'estavel';
                     UI.openModal('paciente-modal');
                 });
                 
@@ -3845,6 +3872,7 @@
                         UI.closeModal('delete-confirm-modal');
                         UI.showToast(i18n.t('toast.pacienteExcluido'), 'success');
                         this.renderPacientes();
+                        this.populatePatientDropdowns();
                     }
                 });
             }
@@ -4037,6 +4065,9 @@
                             });
                             
                             UI.showToast(`${tipo} registrada com sucesso!`, 'success');
+                            
+                            // Atualizar dropdowns de pacientes
+                            PacienteManager.populatePatientDropdowns();
                         }
                     }
                 });
@@ -4337,9 +4368,12 @@
                 // Atualizar setor nos modais
                 document.getElementById('sector-switcher').addEventListener('change', () => {
                     const setor = Auth.currentSector;
-                    document.querySelectorAll('.modal input[readonly]').forEach(input => {
-                        input.value = setor;
-                    });
+                    const sectorObj = DataService.getSectorById(setor);
+                    if (sectorObj) {
+                        document.querySelectorAll('.modal input[readonly]').forEach(input => {
+                            input.value = sectorObj.name;
+                        });
+                    }
                 });
             }
         };
@@ -4358,12 +4392,6 @@
             PacienteManager.init();
             DashboardManager.init();
             App.init();
-            
-            // Atualizar setor nos modais
-            const setor = Auth.currentSector;
-            document.querySelectorAll('.modal input[readonly]').forEach(input => {
-                input.value = setor;
-            });
         });
     </script>
 </body>
