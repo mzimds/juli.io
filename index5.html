@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juli - Continuidade Clínica Inteligente</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-main: #ffffff;
+            --bg-card: #f8fafc;
+            --text-main: #0f172a;
+            --accent-green: #0d9488;
+            --accent-yellow: #eab308;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --neutral-gray: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease;
+            --radius: 12px;
+            --header-bg: #ffffff;
+            --sidebar-bg: #f1f5f9;
+            --action-button: #0f172a;
+            --resolved-bg: #f1f5f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 2.2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
+            border: none;
+            background-color: var(--action-button);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #1e293b;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-green);
+        }
+
+        .btn-accent:hover {
+            background-color: #0b8176;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--header-bg);
+            z-index: 1000;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            font-size: 1.05rem;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            color: var(--neutral-gray);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-green);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 12rem 0 6rem;
+            background-color: var(--bg-main);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.8rem;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--neutral-gray);
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            font-weight: 400;
+        }
+        
+        .hero-numbers {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .number-item {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .number-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 0.8rem;
+            color: var(--accent-green);
+        }
+
+        .number-label {
+            font-size: 1.05rem;
+            color: var(--neutral-gray);
+            font-weight: 500;
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 0;
+        }
+
+        .section-header {
+            max-width: 800px;
+            margin: 0 auto 5rem;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--text-main);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--neutral-gray);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Problem Section */
+        .problem-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .problem-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            line-height: 1.3;
+            color: var(--text-main);
+        }
+
+        .problem-text p {
+            margin-bottom: 1.5rem;
+            color: var(--neutral-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        .highlight-box {
+            border-left: 3px solid var(--accent-green);
+            padding: 1.8rem 0 1.8rem 1.8rem;
+            margin: 2.5rem 0;
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+        }
+
+        .highlight-text {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Benefits */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 1.8rem;
+            align-items: flex-start;
+            padding: 1.8rem;
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .benefit-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .benefit-icon {
+            width: 56px;
+            height: 56px;
+            background-color: rgba(13, 148, 136, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-green);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-main);
+        }
+
+        .benefit-content p {
+            font-size: 1.05rem;
+            color: var(--neutral-gray);
+            line-height: 1.7;
+        }
+
+        /* Value Proposition */
+        .value-proposition {
+            background-color: var(--bg-card);
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .value-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .value-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+        }
+
+        .value-text {
+            font-size: 1.2rem;
+            color: var(--neutral-gray);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        /* Security */
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .security-item {
+            text-align: center;
+            padding: 1.8rem;
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .security-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .security-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--accent-green);
+        }
+
+        .security-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .security-text {
+            font-size: 0.95rem;
+            color: var(--neutral-gray);
+        }
+
+        /* Plans */
+        .plans-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .plan-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-radius: var(--radius);
+        }
+
+        .plan-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+        }
+
+        .plan-card.popular {
+            border: 2px solid var(--accent-green);
+            position: relative;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent-green);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 0 var(--radius) 0 var(--radius);
+        }
+
+        .plan-header {
+            margin-bottom: 1.8rem;
+            padding-bottom: 1.8rem;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .plan-price {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--accent-green);
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            color: var(--neutral-gray);
+            font-weight: normal;
+        }
+
+        .plan-description {
+            color: var(--neutral-gray);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .free-trial {
+            display: inline-block;
+            background-color: rgba(13, 148, 136, 0.1);
+            color: var(--accent-green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .plan-features li {
+            padding: 0.7rem 0;
+            font-size: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            color: var(--neutral-gray);
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-features li:before {
+            content: "✓";
+            margin-right: 0.8rem;
+            font-weight: bold;
+            color: var(--accent-green);
+            font-size: 1.1rem;
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            padding: 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--bg-main);
+            border-radius: var(--radius);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            color: var(--text-main);
+        }
+
+        .contact-info div p {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: var(--neutral-gray);
+        }
+
+        .contact-info div p i {
+            margin-right: 15px;
+            width: 24px;
+            font-size: 1.3rem;
+            color: var(--accent-green);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-main);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--accent-green);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.9rem;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            transition: var(--transition);
+            font-size: 1rem;
+            display: block;
+            padding: 0.3rem 0;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-green);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-green);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.8rem;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Certifications Section */
+        .certifications {
+            background-color: var(--bg-main);
+            padding: 4rem 0;
+        }
+
+        .certifications-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .cert-item {
+            padding: 1.8rem;
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .cert-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .cert-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-green);
+        }
+
+        .cert-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-text {
+            font-size: 0.95rem;
+            color: var(--neutral-gray);
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .value-title {
+                font-size: 2.2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-numbers {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .plans-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+
+            .security-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .certifications-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 10rem 0 4rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .value-title {
+                font-size: 1.8rem;
+            }
+            
+            .number-value {
+                font-size: 2.8rem;
+            }
+
+            .plans-container {
+                grid-template-columns: 1fr;
+            }
+
+            .security-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .certifications-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        @media (max-width: 992px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background-color: var(--header-bg);
+                flex-direction: column;
+                padding: 6rem 2rem 2rem;
+                transition: right 0.4s ease;
+                z-index: 1000;
+                gap: 0;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.05);
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links a {
+                padding: 1.2rem 0;
+                font-weight: 500;
+                font-size: 1.1rem;
+                border-bottom: 1px solid var(--border-color);
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+            }
+            
+            .nav-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 999;
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+            
+            .nav-backdrop.active {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">JULI</a>
+                <button class="mobile-menu-btn" id="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="nav-links" id="nav-links">
+                    <a href="#problema">O Problema</a>
+                    <a href="#solucao">Solução</a>
+                    <a href="#valor">Valor</a>
+                    <a href="#planos">Planos</a>
+                    <a href="#contato">Contato</a>
+                </div>
+            </nav>
+        </div>
+        <div class="nav-backdrop" id="nav-backdrop"></div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Continuidade clínica com precisão operacional</h1>
+                <p>Solução de gestão de plantões para hospitais, garantindo segurança do paciente e eficiência operacional.</p>
+                <a href="#planos" class="btn">Começar</a>
+                
+                <div class="hero-numbers">
+                    <div class="number-item">
+                        <span class="number-value">24/7</span>
+                        <span class="number-label">Disponibilidade</span>
+                    </div>
+                    <div class="number-item">
+                        <span class="number-value">100%</span>
+                        <span class="number-label">Conformidade</span>
+                    </div>
+                    <div class="number-item">
+                        <span class="number-value">∞</span>
+                        <span class="number-label">Escalabilidade</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="problema">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">O desafio da continuidade clínica</h2>
+                <p class="section-subtitle">Plantões médicos representam momentos críticos onde a continuidade da informação é essencial</p>
+            </div>
+            
+            <div class="problem-content">
+                <div class="problem-text">
+                    <h2>Risco sistêmico na transferência de informações</h2>
+                    <p>A transição entre equipes frequentemente apresenta desafios significativos que comprometem a segurança do paciente e a eficiência operacional em instituições de saúde.</p>
+                    
+                    <div class="highlight-box">
+                        <p class="highlight-text">Falhas na comunicação durante trocas de plantão podem comprometer a segurança do paciente e a eficiência operacional.</p>
+                    </div>
+                    
+                    <p>Estudos mostram que mais de 60% dos erros médicos ocorrem durante transições de cuidado, resultando em custos adicionais estimados em R$ 2,8 bilhões anuais para o sistema de saúde brasileiro.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solucao">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Solução integrada para gestão clínica</h2>
+                <p class="section-subtitle">Plataforma unificada para continuidade de informações e processos hospitalares</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Passagem de Plantão Digital</h3>
+                        <p>Fluxo estruturado e padronizado para transferência de informações críticas entre equipes, garantindo continuidade no cuidado.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Checklists Inteligentes</h3>
+                        <p>Protocolos adaptáveis para diferentes especialidades e cenários clínicos, com acompanhamento em tempo real.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Rastreabilidade Completa</h3>
+                        <p>Registro detalhado de todas as ações e decisões com carimbo de tempo e responsável, garantindo transparência.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h3>Acesso Multiplataforma</h3>
+                        <p>Disponível em qualquer dispositivo, permitindo acesso às informações onde e quando necessário.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition Section -->
+    <section id="valor" class="value-proposition">
+        <div class="container">
+            <div class="value-content">
+                <h2 class="value-title">Controle Operacional em Tempo Real</h2>
+                <p class="value-text">Gerencie as demandas flutuantes de capacidade em tempo real, em um único lugar. Crie fluxos de trabalho personalizados que harmonizam os dados de fluxo de pacientes para criar uma fonte única de verdade na gestão de capacidade.</p>
+                <p class="value-text">Tenha acesso imediato a todas as atividades do plantão, com registro de data, hora e responsável por cada ação. Obtenha dados auditáveis em tempo real para acompanhamento de indicadores e tomada de decisão estratégica.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Segurança e conformidade</h2>
+                <p class="section-subtitle">Infraestrutura projetada para proteção de dados sensíveis</p>
+            </div>
+            
+            <div class="security-grid">
+                <div class="security-item">
+                    <div class="security-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="security-title">Conformidade LGPD</h3>
+                    <p class="security-text">Total aderência à Lei Geral de Proteção de Dados brasileira.</p>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3 class="security-title">Certificação HIPAA</h3>
+                    <p class="security-text">Atende aos padrões internacionais de segurança de saúde.</p>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h3 class="security-title">Certificação HCI</h3>
+                    <p class="security-text">Padrões internacionais de saúde certificados.</p>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <h3 class="security-title">Certificação JCI</h3>
+                    <p class="security-text">Joint Commission International standards compliance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section id="planos" class="plans">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Soluções escaláveis</h2>
+                <p class="section-subtitle">Planos adaptados às necessidades da sua instituição</p>
+            </div>
+            
+            <div class="plans-container">
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-name">Starter</h3>
+                        <div class="plan-price">R$399<span>/mês</span></div>
+                        <p class="plan-description">Para pequenas instituições</p>
+                        <span class="free-trial">30 dias gratuitos</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>1 setor</li>
+                        <li>Passagem de plantão digital</li>
+                        <li>Checklists inteligentes</li>
+                        <li>Rastreabilidade completa</li>
+                        <li>Acesso multiplataforma</li>
+                        <li>Suporte por e-mail</li>
+                    </ul>
+                    <a href="#contato" class="btn">Assinar</a>
+                </div>
+                
+                <div class="plan-card popular">
+                    <div class="popular-badge">POPULAR</div>
+                    <div class="plan-header">
+                        <h3 class="plan-name">Growth</h3>
+                        <div class="plan-price">R$379<span>/setor/mês</span></div>
+                        <p class="plan-description">Para instituições em expansão</p>
+                        <span class="free-trial">30 dias gratuitos</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>2-5 setores</li>
+                        <li>Todos os recursos do Starter</li>
+                        <li>Protocolos customizáveis</li>
+                        <li>Relatórios operacionais</li>
+                        <li>Suporte prioritário</li>
+                        <li>Cold storage (5 anos)</li>
+                    </ul>
+                    <a href="#contato" class="btn">Assinar</a>
+                </div>
+                
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-name">Business</h3>
+                        <div class="plan-price">R$359<span>/setor/mês</span></div>
+                        <p class="plan-description">Para hospitais médios</p>
+                        <span class="free-trial">30 dias gratuitos</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>6-10 setores</li>
+                        <li>Todos os recursos do Growth</li>
+                        <li>Integração com sistemas</li>
+                        <li>Gestão de pendências</li>
+                        <li>Suporte 24/7</li>
+                        <li>Cold storage (5 anos)</li>
+                    </ul>
+                    <a href="#contato" class="btn">Assinar</a>
+                </div>
+                
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-name">Enterprise</h3>
+                        <div class="plan-price">R$339<span>/setor/mês</span></div>
+                        <p class="plan-description">Para grandes hospitais</p>
+                        <span class="free-trial">30 dias gratuitos</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>11-30 setores</li>
+                        <li>Todos os recursos do Business</li>
+                        <li>Integração avançada</li>
+                        <li>Customização de fluxos</li>
+                        <li>Gerente de conta dedicado</li>
+                        <li>Cold storage (5 anos)</li>
+                    </ul>
+                    <a href="#contato" class="btn">Assinar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Entre em contato</h2>
+                <p class="section-subtitle">Nossa equipe está pronta para ajudar sua instituição</p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Transforme a gestão de plantões na sua instituição</h3>
+                    <div>
+                        <p><i class="fas fa-phone-alt"></i> (11) 3456-7890</p>
+                        <p><i class="fas fa-envelope"></i> contato@juli.com</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000 - São Paulo, SP</p>
+                        <p><i class="fas fa-clock"></i> Segunda a Sexta: 8h às 18h</p>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Nome completo</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="institution">Instituição</label>
+                            <input type="text" id="institution" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Mensagem</label>
+                            <textarea id="message" rows="4" class="form-control" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section class="certifications">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Certificações e Padrões</h2>
+                <p class="section-subtitle">Atendemos aos mais rigorosos padrões de qualidade e segurança</p>
+            </div>
+            
+            <div class="certifications-grid">
+                <div class="cert-item">
+                    <div class="cert-icon">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                    <h3 class="cert-title">LGPD</h3>
+                    <p class="cert-text">Conformidade total com a Lei Geral de Proteção de Dados</p>
+                </div>
+                
+                <div class="cert-item">
+                    <div class="cert-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3 class="cert-title">HIPAA</h3>
+                    <p class="cert-text">Padrões internacionais de segurança de saúde</p>
+                </div>
+                
+                <div class="cert-item">
+                    <div class="cert-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="cert-title">HCI</h3>
+                    <p class="cert-text">Healthcare Information Security Standards</p>
+                </div>
+                
+                <div class="cert-item">
+                    <div class="cert-icon">
+                        <i class="fas fa-clinic-medical"></i>
+                    </div>
+                    <h3 class="cert-title">JCI</h3>
+                    <p class="cert-text">Joint Commission International Accreditation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Juli</h4>
+                    <p style="color: #94a3b8; margin-bottom: 1.5rem;">Soluções para continuidade clínica e segurança do paciente em ambientes hospitalares.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Produto</h4>
+                    <ul class="footer-links">
+                        <li><a href="#solucao">Funcionalidades</a></li>
+                        <li><a href="#planos">Planos</a></li>
+                        <li><a href="#">Demonstração</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">LGPD</a></li>
+                        <li><a href="#">Certificações</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Juli. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu mobile toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
+            const navBackdrop = document.getElementById('nav-backdrop');
+            
+            menuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                navBackdrop.classList.toggle('active');
+            });
+            
+            navBackdrop.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                navBackdrop.classList.remove('active');
+            });
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        // Fechar menu mobile se estiver aberto
+                        navLinks.classList.remove('active');
+                        navBackdrop.classList.remove('active');
+                        
+                        window.scrollTo({
+                            top: target.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
