@@ -10,19 +10,20 @@
             --primary: #2c7da0;
             --primary-dark: #1a5276;
             --secondary: #468faf;
-            --light: #e8f4f8;
-            --dark: #333;
+            --light: #ffffff;
+            --dark: #333333;
+            --darker: #222222;
             --danger: #e74c3c;
             --success: #2ecc71;
             --warning: #f39c12;
             --pass-plantao: #5d8aa8;
             --gray: #95a5a6;
+            --light-gray: #f5f5f5;
             --border: rgba(0, 0, 0, 0.1);
             --sidebar-width: 280px;
             --header-height: 60px;
-            --glass-bg: rgba(255, 255, 255, 0.92);
-            --glass-border: rgba(0, 0, 0, 0.08);
-            --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         * {
@@ -33,7 +34,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f5f9fc, #e1ebf5);
+            background: var(--light);
             color: var(--dark);
             height: 100vh;
             display: flex;
@@ -41,24 +42,26 @@
             overflow: hidden;
         }
 
-        /* Glassmorphism effect */
-        .glass {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
+        /* Minimalista com sombras suaves */
+        .card {
+            background: var(--light);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
             border-radius: 8px;
         }
 
         /* Header */
         header {
             height: var(--header-height);
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
+            background: var(--light);
+            color: var(--darker);
             padding: 0 15px;
             display: flex;
             align-items: center;
             position: relative;
             z-index: 100;
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border);
         }
 
         .logo {
@@ -68,6 +71,7 @@
             font-family: 'Inter', sans-serif;
             font-weight: 800;
             margin-right: auto;
+            color: var(--darker);
         }
 
         .header-info {
@@ -75,6 +79,7 @@
             align-items: center;
             gap: 15px;
             font-size: 0.9rem;
+            color: var(--dark);
         }
 
         /* Main layout */
@@ -84,6 +89,7 @@
             overflow: hidden;
             padding: 12px;
             gap: 12px;
+            background: var(--light-gray);
         }
 
         /* Sidebar */
@@ -105,13 +111,13 @@
 
         .section-title {
             font-weight: 600;
-            color: var(--primary-dark);
+            color: var(--darker);
             font-size: 1.1rem;
         }
 
         .btn {
             padding: 8px 12px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--darker);
             color: white;
             border: none;
             border-radius: 6px;
@@ -119,10 +125,13 @@
             font-size: 0.9rem;
             transition: all 0.2s ease;
             font-weight: 500;
+            box-shadow: var(--shadow-sm);
         }
 
         .btn:hover {
+            background: var(--dark);
             transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .btn:active {
@@ -130,15 +139,15 @@
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, var(--danger), #c0392b);
+            background: var(--danger);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, var(--success), #27ae60);
+            background: var(--success);
         }
 
         .btn-pass {
-            background: linear-gradient(135deg, var(--pass-plantao), #4a708b);
+            background: var(--pass-plantao);
         }
 
         .search-container {
@@ -156,15 +165,17 @@
             border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 0.95rem;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--light);
             transition: all 0.2s ease;
             font-family: 'Inter', sans-serif;
+            box-shadow: var(--shadow-sm);
         }
 
         .search-box input:focus {
             background: white;
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
             outline: none;
+            border-color: var(--primary);
         }
 
         .scrollable-content {
@@ -180,14 +191,16 @@
             border-left: 3px solid transparent;
             margin: 4px 8px;
             border-radius: 6px;
+            background: var(--light);
+            box-shadow: var(--shadow-sm);
         }
 
         .setor-item:hover {
-            background-color: rgba(44, 125, 160, 0.08);
+            background-color: rgba(44, 125, 160, 0.05);
         }
 
         .setor-item.active {
-            background-color: rgba(44, 125, 160, 0.12);
+            background-color: rgba(44, 125, 160, 0.08);
             border-left: 3px solid var(--primary);
         }
 
@@ -197,6 +210,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: var(--darker);
         }
 
         .pacientes-container {
@@ -217,6 +231,7 @@
             border-radius: 6px;
             margin: 5px 0;
             transition: all 0.2s ease;
+            background: var(--light);
         }
 
         .paciente-item:hover {
@@ -239,6 +254,7 @@
             text-overflow: ellipsis;
             font-size: 0.95rem;
             margin-bottom: 4px;
+            color: var(--darker);
         }
 
         .paciente-details {
@@ -264,6 +280,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
 
         .patient-header {
@@ -272,12 +289,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            background: var(--light);
         }
 
         .patient-title {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--primary-dark);
+            color: var(--darker);
             letter-spacing: -0.3px;
         }
 
@@ -300,7 +318,7 @@
             display: flex;
             background-color: white;
             border-bottom: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--light);
             overflow-x: auto;
         }
 
@@ -316,13 +334,13 @@
         }
 
         .soap-tab:hover {
-            color: var(--primary);
+            color: var(--darker);
             background: rgba(44, 125, 160, 0.05);
         }
 
         .soap-tab.active {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
+            color: var(--darker);
+            border-bottom: 3px solid var(--darker);
             background: rgba(44, 125, 160, 0.08);
         }
 
@@ -331,6 +349,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            background: var(--light);
         }
 
         .editor-content {
@@ -355,7 +374,7 @@
         .editor-title {
             font-size: 1.1rem;
             font-weight: 700;
-            color: var(--primary-dark);
+            color: var(--darker);
         }
 
         .quick-actions {
@@ -367,18 +386,20 @@
 
         .quick-action {
             padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--light);
             border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.2s ease;
             font-weight: 500;
+            box-shadow: var(--shadow-sm);
         }
 
         .quick-action:hover {
             background: rgba(44, 125, 160, 0.1);
             transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .textarea-container {
@@ -397,15 +418,15 @@
             font-size: 1.05rem;
             line-height: 1.6;
             font-family: 'Inter', sans-serif;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--light);
             transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
 
         .soap-textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
-            background: white;
         }
 
         .editor-footer {
@@ -413,7 +434,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--light);
             border-top: 1px solid var(--border);
             gap: 10px;
         }
@@ -430,7 +451,7 @@
             display: none;
             background: none;
             border: none;
-            color: white;
+            color: var(--darker);
             font-size: 1.4rem;
             cursor: pointer;
             margin-right: 12px;
@@ -439,39 +460,31 @@
             position: relative;
         }
 
-        .hamburger, .hamburger:before, .hamburger:after {
+        .hamburger, .hamburger:before {
             content: '';
             position: absolute;
             width: 100%;
-            height: 3px;
-            background: white;
+            height: 2px;
+            background: var(--darker);
             transition: all 0.3s ease;
+            left: 0;
         }
 
         .hamburger {
-            top: 50%;
-            transform: translateY(-50%);
+            top: 30%;
         }
 
         .hamburger:before {
-            top: -8px;
-        }
-
-        .hamburger:after {
-            top: 8px;
+            top: 70%;
         }
 
         .mobile-menu-btn.open .hamburger {
-            background: transparent;
+            transform: rotate(45deg);
+            top: 50%;
         }
 
         .mobile-menu-btn.open .hamburger:before {
-            transform: rotate(45deg);
-            top: 0;
-        }
-
-        .mobile-menu-btn.open .hamburger:after {
-            transform: rotate(-45deg);
+            transform: rotate(-90deg);
             top: 0;
         }
 
@@ -506,6 +519,8 @@
             border-radius: 10px;
             transform: translateY(20px);
             transition: transform 0.3s ease;
+            background: var(--light);
+            box-shadow: var(--shadow-md);
         }
 
         .modal.active .modal-content {
@@ -521,7 +536,7 @@
         .modal-title {
             font-size: 1.4rem;
             font-weight: 700;
-            color: var(--primary-dark);
+            color: var(--darker);
         }
 
         .form-group {
@@ -542,15 +557,15 @@
             border-radius: 6px;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--light);
             transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
-            background: white;
         }
 
         .modal-footer {
@@ -567,10 +582,10 @@
             right: 20px;
             padding: 12px 20px;
             border-radius: 6px;
-            background: var(--dark);
+            background: var(--darker);
             color: white;
             font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-md);
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s ease;
@@ -584,11 +599,11 @@
         }
 
         .toast-success {
-            background: linear-gradient(135deg, var(--success), #27ae60);
+            background: var(--success);
         }
 
         .toast-error {
-            background: linear-gradient(135deg, var(--danger), #c0392b);
+            background: var(--danger);
         }
 
         /* Responsive */
@@ -601,6 +616,8 @@
                 z-index: 90;
                 transform: translateX(-100%);
                 width: 100%;
+                max-width: 320px;
+                box-shadow: var(--shadow-md);
             }
 
             .sidebar.open {
@@ -625,6 +642,16 @@
                 bottom: 10px;
                 margin: 15px;
                 z-index: 10;
+            }
+            
+            #btnPassPlantao {
+                display: none;
+            }
+        }
+
+        @media (min-width: 993px) {
+            #btnPassPlantaoMobile {
+                display: none;
             }
         }
 
@@ -716,6 +743,21 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(44, 125, 160, 0.5);
         }
+        
+        /* Auto save indicator */
+        .save-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.75rem;
+            color: var(--success);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .save-indicator.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -744,7 +786,7 @@
 
     <div class="container">
         <!-- Sidebar -->
-        <div class="sidebar glass" id="sidebar">
+        <div class="sidebar card" id="sidebar">
             <div class="section-header">
                 <div class="section-title">Setores</div>
                 <button class="btn" id="btnNewSetor">
@@ -769,7 +811,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="main-content glass">
+        <div class="main-content card">
             <div class="patient-header">
                 <div class="patient-title" id="patientTitle">Selecione um paciente</div>
                 <div class="patient-details" id="patientDetails">
@@ -803,6 +845,7 @@
                     </div>
                     <div class="textarea-container">
                         <textarea class="soap-textarea" id="subjetivo-text" placeholder="Descreva os sintomas e queixas relatadas pelo paciente..."></textarea>
+                        <div class="save-indicator" id="saveIndicatorSubjetivo">Salvo</div>
                     </div>
                 </div>
                 
@@ -824,6 +867,7 @@
                     </div>
                     <div class="textarea-container">
                         <textarea class="soap-textarea" id="objetivo-text" placeholder="Registre os achados objetivos do exame físico e exames complementares..."></textarea>
+                        <div class="save-indicator" id="saveIndicatorObjetivo">Salvo</div>
                     </div>
                 </div>
                 
@@ -845,6 +889,7 @@
                     </div>
                     <div class="textarea-container">
                         <textarea class="soap-textarea" id="avaliacao-text" placeholder="Faça sua avaliação diagnóstica e análise do quadro clínico..."></textarea>
+                        <div class="save-indicator" id="saveIndicatorAvaliacao">Salvo</div>
                     </div>
                 </div>
                 
@@ -866,6 +911,7 @@
                     </div>
                     <div class="textarea-container">
                         <textarea class="soap-textarea" id="plano-text" placeholder="Descreva o plano terapêutico, condutas e orientações..."></textarea>
+                        <div class="save-indicator" id="saveIndicatorPlano">Salvo</div>
                     </div>
                 </div>
             </div>
@@ -884,7 +930,7 @@
 
     <!-- Modal Passar Plantão -->
     <div class="modal" id="passPlantaoModal">
-        <div class="modal-content glass">
+        <div class="modal-content card">
             <div class="modal-header">
                 <h2 class="modal-title">Passagem de Plantão</h2>
             </div>
@@ -893,19 +939,19 @@
                 <h3 style="margin-bottom: 15px; font-size: 1.1rem; font-weight: 600;">Checklist de Passagem</h3>
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
                     <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--primary);">
+                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
                         <span>Todos os pacientes foram visitados</span>
                     </label>
                     <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--primary);">
+                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
                         <span>Plantão repassado para o médico seguinte</span>
                     </label>
                     <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--primary);">
+                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
                         <span>Todas as prescrições foram atualizadas</span>
                     </label>
                     <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--primary);">
+                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
                         <span>Documentação completa de todos os atendimentos</span>
                     </label>
                 </div>
@@ -929,7 +975,7 @@
 
     <!-- Modal Novo Setor -->
     <div class="modal" id="newSetorModal">
-        <div class="modal-content glass">
+        <div class="modal-content card">
             <div class="modal-header">
                 <h2 class="modal-title">Adicionar Novo Setor</h2>
             </div>
@@ -952,7 +998,7 @@
 
     <!-- Modal Novo Paciente -->
     <div class="modal" id="newPacienteModal">
-        <div class="modal-content glass">
+        <div class="modal-content card">
             <div class="modal-header">
                 <h2 class="modal-title">Adicionar Novo Paciente</h2>
             </div>
@@ -1149,6 +1195,12 @@
                 avaliacao: document.getElementById('avaliacao-text'),
                 plano: document.getElementById('plano-text')
             },
+            saveIndicators: {
+                subjetivo: document.getElementById('saveIndicatorSubjetivo'),
+                objetivo: document.getElementById('saveIndicatorObjetivo'),
+                avaliacao: document.getElementById('saveIndicatorAvaliacao'),
+                plano: document.getElementById('saveIndicatorPlano')
+            },
             btnPassPlantao: document.getElementById('btnPassPlantao'),
             btnPassPlantaoMobile: document.getElementById('btnPassPlantaoMobile'),
             passPlantaoModal: document.getElementById('passPlantaoModal'),
@@ -1199,7 +1251,7 @@
                 const isExpanded = state.currentSetor === setor.id;
                 
                 const setorEl = document.createElement('div');
-                setorEl.className = `setor-item glass ${isExpanded ? 'expanded' : ''} ${state.currentSetor === setor.id ? 'active' : ''}`;
+                setorEl.className = `setor-item ${isExpanded ? 'expanded' : ''} ${state.currentSetor === setor.id ? 'active' : ''}`;
                 setorEl.innerHTML = `
                     <div class="setor-name">
                         <span>${setor.nome}</span>
@@ -1207,7 +1259,7 @@
                     </div>
                     <div class="pacientes-container">
                         ${setor.pacientes.map(paciente => `
-                            <div class="paciente-item glass ${state.currentPaciente === paciente.id ? 'active' : ''}" data-id="${paciente.id}">
+                            <div class="paciente-item ${state.currentPaciente === paciente.id ? 'active' : ''}" data-id="${paciente.id}">
                                 <div class="paciente-info">
                                     <div class="paciente-name">${paciente.nome}</div>
                                     <div class="paciente-details">
@@ -1332,6 +1384,9 @@
                     
                     // Registrar ação
                     registerAction(`Template adicionado em ${tabId}`);
+                    
+                    // Salvar imediatamente
+                    saveCurrentData();
                 });
             });
             
@@ -1461,7 +1516,15 @@
             // Eventos para salvar ao editar
             Object.values(DOM.textareas).forEach(textarea => {
                 textarea.addEventListener('input', () => {
-                    saveCurrentData();
+                    // Mostrar indicador de salvamento
+                    const tabId = textarea.id.split('-')[0];
+                    showSaveIndicator(tabId);
+                    
+                    // Salvar após 1 segundo sem edição
+                    clearTimeout(textarea.saveTimeout);
+                    textarea.saveTimeout = setTimeout(() => {
+                        saveCurrentData();
+                    }, 1000);
                 });
             });
         }
@@ -1489,23 +1552,20 @@
                     const changes = [];
                     if (paciente.soap.subjetivo !== DOM.textareas.subjetivo.value) {
                         changes.push("Subjetivo");
-                        registerAction(`Subjetivo editado`);
                     }
                     if (paciente.soap.objetivo !== DOM.textareas.objetivo.value) {
                         changes.push("Objetivo");
-                        registerAction(`Objetivo editado`);
                     }
                     if (paciente.soap.avaliacao !== DOM.textareas.avaliacao.value) {
                         changes.push("Avaliação");
-                        registerAction(`Avaliação editada`);
                     }
                     if (paciente.soap.plano !== DOM.textareas.plano.value) {
                         changes.push("Plano");
-                        registerAction(`Plano editado`);
                     }
                     
                     if (changes.length > 0) {
                         registerAction(`${changes.join(', ')} editado(s) por ${state.currentDoctor}`);
+                        showToast('Dados salvos com sucesso', 'success');
                     }
                     
                     // Atualizar valores
@@ -1521,6 +1581,16 @@
                     break;
                 }
             }
+        }
+
+        // Mostrar indicador de salvamento
+        function showSaveIndicator(tabId) {
+            const indicator = DOM.saveIndicators[tabId];
+            indicator.classList.add('show');
+            
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
         }
 
         // Atualizar assinatura visível
