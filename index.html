@@ -149,6 +149,7 @@
         .search-container {
             padding: 12px;
             border-bottom: 1px solid var(--border);
+            position: relative;
         }
 
         .search-box {
@@ -172,6 +173,58 @@
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
             outline: none;
             border-color: var(--primary);
+        }
+
+        /* Autocomplete styles */
+        .autocomplete-container {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+            z-index: 200;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .autocomplete-container.visible {
+            display: block;
+        }
+        
+        .autocomplete-header {
+            padding: 10px 15px;
+            font-weight: 600;
+            color: var(--darker);
+            background: var(--light-gray);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .autocomplete-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .autocomplete-item:hover {
+            background-color: rgba(44, 125, 160, 0.05);
+        }
+        
+        .autocomplete-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .highlight {
+            background-color: rgba(255, 217, 0, 0.3);
+            font-weight: 600;
+            padding: 0 2px;
+            border-radius: 3px;
         }
 
         .scrollable-content {
@@ -854,6 +907,9 @@
             <div class="search-container">
                 <div class="search-box">
                     <input type="text" id="searchInput" placeholder="Buscar paciente ou setor...">
+                    <div class="autocomplete-container" id="autocompleteContainer">
+                        <!-- Resultados do autocomplete serão exibidos aqui -->
+                    </div>
                 </div>
             </div>
             
@@ -1263,6 +1319,7 @@
             patientTitle: document.getElementById('patientTitle'),
             patientDetails: document.getElementById('patientDetails'),
             searchInput: document.getElementById('searchInput'),
+            autocompleteContainer: document.getElementById('autocompleteContainer'),
             soapTabs: document.querySelectorAll('.soap-tab'),
             editorContents: document.querySelectorAll('.editor-content'),
             textareas: {
@@ -1309,6 +1366,120 @@
             currentDoctor: "Dr. Carlos Silva",
             lastEdit: new Date().toISOString()
         };
+
+        // Função para destacar termos de busca
+        function highlightText(text, searchTerm) {
+            if (!searchTerm) return text;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // Função para pesquisar pacientes e setores
+        function searchContent(searchTerm) {
+            const results = {
+                setores: [],
+                pacientes: []
+            };
+            
+            if (!searchTerm) {
+                return results;
+            }
+            
+            const term = searchTerm.toLowerCase();
+            
+            // Procurar em setores
+            dados.setores.forEach(setor => {
+                if (setor.nome.toLowerCase().includes(term)) {
+                    results.setores.push({
+                        id: setor.id,
+                        nome: setor.nome,
+                        type: 'setor'
+                    });
+                }
+                
+                // Procurar em pacientes
+                setor.pacientes.forEach(paciente => {
+                    if (paciente.nome.toLowerCase().includes(term)) {
+                        results.pacientes.push({
+                            id: paciente.id,
+                            nome: paciente.nome,
+                            setorId: setor.id,
+                            setorNome: setor.nome,
+                            type: 'paciente'
+                        });
+                    }
+                });
+            });
+            
+            return results;
+        }
+
+        // Renderizar resultados do autocomplete
+        function renderAutocomplete(results, searchTerm) {
+            DOM.autocompleteContainer.innerHTML = '';
+            
+            if (results.pacientes.length === 0 && results.setores.length === 0) {
+                DOM.autocompleteContainer.classList.remove('visible');
+                return;
+            }
+            
+            // Adicionar pacientes
+            if (results.pacientes.length > 0) {
+                const header = document.createElement('div');
+                header.className = 'autocomplete-header';
+                header.textContent = 'Pacientes';
+                DOM.autocompleteContainer.appendChild(header);
+                
+                results.pacientes.forEach(paciente => {
+                    const item = document.createElement('div');
+                    item.className = 'autocomplete-item';
+                    item.innerHTML = `
+                        <div class="autocomplete-icon">👤</div>
+                        <div>
+                            <div>${highlightText(paciente.nome, searchTerm)}</div>
+                            <div style="font-size: 0.8rem; color: var(--gray);">${paciente.setorNome}</div>
+                        </div>
+                    `;
+                    
+                    item.addEventListener('click', () => {
+                        DOM.searchInput.value = '';
+                        DOM.autocompleteContainer.classList.remove('visible');
+                        selectPaciente(paciente.id);
+                    });
+                    
+                    DOM.autocompleteContainer.appendChild(item);
+                });
+            }
+            
+            // Adicionar setores
+            if (results.setores.length > 0) {
+                const header = document.createElement('div');
+                header.className = 'autocomplete-header';
+                header.textContent = 'Setores';
+                DOM.autocompleteContainer.appendChild(header);
+                
+                results.setores.forEach(setor => {
+                    const item = document.createElement('div');
+                    item.className = 'autocomplete-item';
+                    item.innerHTML = `
+                        <div class="autocomplete-icon">🏥</div>
+                        <div>${highlightText(setor.nome, searchTerm)}</div>
+                    `;
+                    
+                    item.addEventListener('click', () => {
+                        DOM.searchInput.value = '';
+                        DOM.autocompleteContainer.classList.remove('visible');
+                        state.currentSetor = setor.id;
+                        renderSetores();
+                    });
+                    
+                    DOM.autocompleteContainer.appendChild(item);
+                });
+            }
+            
+            DOM.autocompleteContainer.classList.add('visible');
+        }
 
         // Inicialização
         function init() {
@@ -1464,6 +1635,25 @@
                     const tabId = tab.getAttribute('data-tab');
                     openTab(tabId);
                 });
+            });
+            
+            // Autocomplete
+            DOM.searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.trim();
+                if (searchTerm.length > 1) {
+                    const results = searchContent(searchTerm.toLowerCase());
+                    renderAutocomplete(results, searchTerm);
+                } else {
+                    DOM.autocompleteContainer.classList.remove('visible');
+                    renderSetores();
+                }
+            });
+            
+            // Fechar autocomplete ao clicar fora
+            document.addEventListener('click', (e) => {
+                if (!DOM.searchInput.contains(e.target) && !DOM.autocompleteContainer.contains(e.target)) {
+                    DOM.autocompleteContainer.classList.remove('visible');
+                }
             });
             
             // Quick actions
