@@ -16,7 +16,7 @@
             --danger: #e74c3c;
             --success: #2ecc71;
             --warning: #f39c12;
-            --pass-plantao: #2ecc71; /* ALTERADO: Verde vivo para o botão de passar plantão */
+            --pass-plantao: #2ecc71;
             --gray: #95a5a6;
             --light-gray: #f5f5f5;
             --border: rgba(0, 0, 0, 0.1);
@@ -42,7 +42,6 @@
             overflow: hidden;
         }
 
-        /* Minimalista com sombras suaves */
         .card {
             background: var(--light);
             border: 1px solid var(--border);
@@ -50,7 +49,6 @@
             border-radius: 8px;
         }
 
-        /* Header */
         header {
             height: var(--header-height);
             background: var(--light);
@@ -82,7 +80,6 @@
             color: var(--dark);
         }
 
-        /* Main layout */
         .container {
             display: flex;
             flex: 1;
@@ -92,7 +89,6 @@
             background: var(--light-gray);
         }
 
-        /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
             display: flex;
@@ -189,7 +185,7 @@
             cursor: pointer;
             transition: background-color 0.2s;
             border-left: 3px solid transparent;
-            margin: 4px 8px;
+            margin: 8px 0;
             border-radius: 6px;
             background: var(--light);
             box-shadow: var(--shadow-sm);
@@ -200,8 +196,8 @@
         }
 
         .setor-item.active {
-            background-color: rgba(0, 0, 0, 0.03); /* ALTERADO: Removido efeito azul */
-            border-left: 3px solid transparent; /* ALTERADO: Removida borda azul */
+            background-color: rgba(0, 0, 0, 0.03);
+            border-left: 3px solid transparent;
         }
 
         .setor-name {
@@ -214,11 +210,14 @@
         }
 
         .pacientes-container {
-            margin-top: 8px;
+            margin-top: 12px;
             padding-left: 10px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
         }
 
         .setor-item.expanded .pacientes-container {
@@ -226,12 +225,13 @@
         }
 
         .paciente-item {
-            padding: 10px;
+            padding: 12px;
             border-bottom: 1px dashed var(--border);
             border-radius: 6px;
-            margin: 5px 0;
             transition: all 0.2s ease;
             background: var(--light);
+            display: flex;
+            align-items: center;
         }
 
         .paciente-item:hover {
@@ -274,7 +274,6 @@
             font-weight: 500;
         }
 
-        /* Main content */
         .main-content {
             flex: 1;
             display: flex;
@@ -405,11 +404,13 @@
         .textarea-container {
             position: relative;
             flex: 1;
-            overflow: hidden;
+            min-height: 0;
+            overflow: auto;
         }
 
         .soap-textarea {
             width: 100%;
+            min-height: 150px;
             height: 100%;
             padding: 15px;
             border: 1px solid var(--border);
@@ -446,7 +447,6 @@
             flex-direction: column;
         }
 
-        /* Mobile menu */
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -460,7 +460,7 @@
             position: relative;
         }
 
-        .hamburger, .hamburger:before {
+        .hamburger, .hamburger:before, .hamburger:after {
             content: '';
             position: absolute;
             width: 100%;
@@ -471,24 +471,32 @@
         }
 
         .hamburger {
-            top: 30%;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         .hamburger:before {
-            top: 70%;
+            top: -8px;
+        }
+
+        .hamburger:after {
+            top: 8px;
         }
 
         .mobile-menu-btn.open .hamburger {
-            transform: rotate(45deg);
-            top: 50%;
+            background: transparent;
         }
 
         .mobile-menu-btn.open .hamburger:before {
-            transform: rotate(-90deg);
+            transform: rotate(45deg);
             top: 0;
         }
 
-        /* Modal */
+        .mobile-menu-btn.open .hamburger:after {
+            transform: rotate(-45deg);
+            top: 0;
+        }
+
         .modal {
             position: fixed;
             top: 0;
@@ -575,22 +583,29 @@
             margin-top: 15px;
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            padding: 12px 20px;
-            border-radius: 6px;
+            padding: 16px 24px;
+            border-radius: 8px;
             background: var(--darker);
             color: white;
             font-weight: 500;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s ease;
             z-index: 2000;
             max-width: 320px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toast:before {
+            content: '✓';
+            font-size: 1.2rem;
         }
 
         .toast.show {
@@ -606,7 +621,10 @@
             background: var(--danger);
         }
 
-        /* Responsive */
+        .toast-error:before {
+            content: '!';
+        }
+
         @media (max-width: 992px) {
             .sidebar {
                 position: absolute;
@@ -629,7 +647,7 @@
             }
 
             .patient-details {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 5px;
             }
 
@@ -724,7 +742,6 @@
             }
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -744,7 +761,6 @@
             background: rgba(44, 125, 160, 0.5);
         }
         
-        /* Auto save indicator */
         .save-indicator {
             position: absolute;
             bottom: 10px;
@@ -761,12 +777,10 @@
     </style>
 </head>
 <body>
-    <!-- Toast Container -->
     <div class="toast" id="toast">
         <span id="toast-message">Operação realizada com sucesso!</span>
     </div>
 
-    <!-- Header -->
     <header>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
             <span class="hamburger"></span>
@@ -785,7 +799,6 @@
     </header>
 
     <div class="container">
-        <!-- Sidebar -->
         <div class="sidebar card" id="sidebar">
             <div class="section-header">
                 <div class="section-title">Setores</div>
@@ -804,13 +817,11 @@
                 <!-- Setores serão carregados aqui dinamicamente -->
             </div>
             
-            <!-- Botão "Passar Plantão" na sidebar (mobile) -->
             <button class="btn btn-pass" id="btnPassPlantaoMobile">
                 Passar Plantão
             </button>
         </div>
 
-        <!-- Main Content -->
         <div class="main-content card">
             <div class="patient-header">
                 <div class="patient-title" id="patientTitle">Selecione um paciente</div>
@@ -827,7 +838,6 @@
             </div>
             
             <div class="editor-container">
-                <!-- Subjetivo -->
                 <div class="editor-content active" id="subjetivo">
                     <div class="editor-header">
                         <div class="editor-title">Subjetivo</div>
@@ -849,7 +859,6 @@
                     </div>
                 </div>
                 
-                <!-- Objetivo -->
                 <div class="editor-content" id="objetivo">
                     <div class="editor-header">
                         <div class="editor-title">Objetivo</div>
@@ -871,7 +880,6 @@
                     </div>
                 </div>
                 
-                <!-- Avaliação -->
                 <div class="editor-content" id="avaliacao">
                     <div class="editor-header">
                         <div class="editor-title">Avaliação</div>
@@ -893,7 +901,6 @@
                     </div>
                 </div>
                 
-                <!-- Plano -->
                 <div class="editor-content" id="plano">
                     <div class="editor-header">
                         <div class="editor-title">Plano</div>
@@ -928,7 +935,6 @@
         </div>
     </div>
 
-    <!-- Modal Passar Plantão -->
     <div class="modal" id="passPlantaoModal">
         <div class="modal-content card">
             <div class="modal-header">
@@ -936,7 +942,12 @@
             </div>
             
             <div>
-                <h3 style="margin-bottom: 15px; font-size: 1.1rem; font-weight: 600;">Checklist de Passagem</h3>
+                <div class="form-group">
+                    <label>Médico que recebe o plantão</label>
+                    <input type="text" class="form-control" id="medicoRecebe" placeholder="Nome do médico">
+                </div>
+                
+                <h3 style="margin: 20px 0 15px; font-size: 1.1rem; font-weight: 600;">Checklist de Passagem</h3>
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
                     <label style="display: flex; align-items: center; gap: 12px;">
                         <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
@@ -958,7 +969,7 @@
                 
                 <div class="form-group">
                     <label>Assinatura Digital</label>
-                    <input type="text" class="form-control" id="assinatura" placeholder="Digite seu nome completo para assinar">
+                    <input type="text" class="form-control" id="assinatura" readonly>
                 </div>
             </div>
             
@@ -973,7 +984,6 @@
         </div>
     </div>
 
-    <!-- Modal Novo Setor -->
     <div class="modal" id="newSetorModal">
         <div class="modal-content card">
             <div class="modal-header">
@@ -996,7 +1006,6 @@
         </div>
     </div>
 
-    <!-- Modal Novo Paciente -->
     <div class="modal" id="newPacienteModal">
         <div class="modal-content card">
             <div class="modal-header">
@@ -1048,7 +1057,6 @@
     </div>
 
     <script>
-        // Dados de exemplo para demonstração
         const dados = {
             setores: [
                 {
@@ -1178,7 +1186,6 @@
             historico: []
         };
 
-        // Elementos DOM
         const DOM = {
             sidebar: document.getElementById('sidebar'),
             mobileMenuBtn: document.getElementById('mobileMenuBtn'),
@@ -1206,6 +1213,7 @@
             passPlantaoModal: document.getElementById('passPlantaoModal'),
             btnCancelPass: document.getElementById('btnCancelPass'),
             btnConfirmPass: document.getElementById('btnConfirmPass'),
+            medicoRecebe: document.getElementById('medicoRecebe'),
             assinatura: document.getElementById('assinatura'),
             toast: document.getElementById('toast'),
             toastMessage: document.getElementById('toast-message'),
@@ -1225,7 +1233,6 @@
             editTimestamp: document.getElementById('editTimestamp')
         };
 
-        // Estado da aplicação
         let state = {
             currentSetor: null,
             currentPaciente: null,
@@ -1233,17 +1240,15 @@
             lastEdit: new Date().toISOString()
         };
 
-        // Inicialização
         function init() {
             renderSetores();
             setupEventListeners();
             updateTime();
             setInterval(updateTime, 60000);
-            setInterval(saveCurrentData, 30000); // Salvamento automático a cada 30s
+            setInterval(saveCurrentData, 30000);
             updateSignature();
         }
 
-        // Renderizar setores e pacientes
         function renderSetores() {
             DOM.setoresList.innerHTML = '';
             
@@ -1279,7 +1284,6 @@
                 setorEl.addEventListener('click', (e) => {
                     if (!e.target.closest('.paciente-item') && !e.target.closest('button')) {
                         if (state.currentSetor === setor.id) {
-                            // Recolher se já estiver expandido
                             state.currentSetor = null;
                         } else {
                             state.currentSetor = setor.id;
@@ -1290,7 +1294,6 @@
                 
                 DOM.setoresList.appendChild(setorEl);
                 
-                // Eventos para pacientes
                 setorEl.querySelectorAll('.paciente-item').forEach(item => {
                     item.addEventListener('click', () => {
                         const pacienteId = parseInt(item.getAttribute('data-id'));
@@ -1298,7 +1301,6 @@
                     });
                 });
                 
-                // Evento para botão de adicionar paciente
                 setorEl.querySelector('button').addEventListener('click', (e) => {
                     e.stopPropagation();
                     openNewPacienteModal(setor.id);
@@ -1306,12 +1308,10 @@
             });
         }
 
-        // Selecionar paciente
         function selectPaciente(pacienteId) {
             let paciente = null;
             let setor = null;
             
-            // Encontrar paciente e setor
             for (const s of dados.setores) {
                 paciente = s.pacientes.find(p => p.id === pacienteId);
                 if (paciente) {
@@ -1325,7 +1325,6 @@
             state.currentSetor = setor.id;
             state.currentPaciente = paciente.id;
             
-            // Atualizar header do paciente
             DOM.patientTitle.textContent = paciente.nome;
             DOM.patientDetails.innerHTML = `
                 <div class="detail-item">${paciente.idade} anos, ${paciente.sexo === 'M' ? 'Masculino' : 'Feminino'}</div>
@@ -1333,37 +1332,28 @@
                 <div class="detail-item">Atendimento: ${paciente.atendimento}</div>
             `;
             
-            // Preencher os campos SOAP
             DOM.textareas.subjetivo.value = paciente.soap.subjetivo;
             DOM.textareas.objetivo.value = paciente.soap.objetivo;
             DOM.textareas.avaliacao.value = paciente.soap.avaliacao;
             DOM.textareas.plano.value = paciente.soap.plano;
             
-            // Atualizar assinatura
             updateSignature();
-            
-            // Atualizar sidebar
             renderSetores();
             
-            // Fechar menu no mobile
             if (window.innerWidth <= 992) {
                 DOM.sidebar.classList.remove('open');
                 DOM.mobileMenuBtn.classList.remove('open');
             }
         }
 
-        // Configurar event listeners
         function setupEventListeners() {
-            // Menu mobile
             DOM.mobileMenuBtn.addEventListener('click', () => {
                 DOM.sidebar.classList.toggle('open');
                 DOM.mobileMenuBtn.classList.toggle('open');
             });
             
-            // Novo setor
             DOM.btnNewSetor.addEventListener('click', openNewSetorModal);
             
-            // Abas SOAP
             DOM.soapTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const tabId = tab.getAttribute('data-tab');
@@ -1371,62 +1361,55 @@
                 });
             });
             
-            // Quick actions
             document.querySelectorAll('.quick-action').forEach(action => {
                 action.addEventListener('click', function() {
                     const tabId = this.closest('.editor-content').id;
                     const textarea = DOM.textareas[tabId];
                     const textToAdd = this.getAttribute('data-text');
                     
-                    // Adicionar texto no início do textarea
                     textarea.value = textToAdd + '\n\n' + textarea.value;
                     textarea.focus();
                     
-                    // Registrar ação
                     registerAction(`Template adicionado em ${tabId}`);
-                    
-                    // Salvar imediatamente
                     saveCurrentData();
                 });
             });
             
-            // Passar plantão
-            DOM.btnPassPlantao.addEventListener('click', () => {
+            function openPassPlantaoModal() {
+                const now = new Date();
+                DOM.assinatura.value = `${state.currentDoctor} - ${now.toLocaleString('pt-BR')}`;
                 DOM.passPlantaoModal.classList.add('active');
-            });
-            
-            DOM.btnPassPlantaoMobile.addEventListener('click', () => {
-                DOM.passPlantaoModal.classList.add('active');
-            });
+            }
+
+            DOM.btnPassPlantao.addEventListener('click', openPassPlantaoModal);
+            DOM.btnPassPlantaoMobile.addEventListener('click', openPassPlantaoModal);
             
             DOM.btnCancelPass.addEventListener('click', () => {
                 DOM.passPlantaoModal.classList.remove('active');
             });
             
             DOM.btnConfirmPass.addEventListener('click', () => {
-                if (DOM.assinatura.value.trim() === '') {
-                    showToast('Por favor, insira sua assinatura digital', 'error');
+                const medicoRecebe = DOM.medicoRecebe.value.trim();
+                
+                if (!medicoRecebe) {
+                    showToast('Informe o médico que receberá o plantão', 'error');
                     return;
                 }
                 
-                // Salvar histórico
                 const plantao = {
                     data: new Date().toISOString(),
+                    medicoRecebe: medicoRecebe,
                     assinatura: DOM.assinatura.value,
                     setores: JSON.parse(JSON.stringify(dados.setores))
                 };
                 
                 dados.historico.push(plantao);
-                
-                // Registrar ação
-                registerAction(`Plantão passado para outro médico por ${DOM.assinatura.value}`);
-                
-                showToast('Plantão passado com sucesso!', 'success');
+                registerAction(`Plantão passado para ${medicoRecebe} por ${state.currentDoctor}`);
+                showToast(`Plantão passado para ${medicoRecebe} com sucesso!`, 'success');
                 DOM.passPlantaoModal.classList.remove('active');
-                DOM.assinatura.value = '';
+                DOM.medicoRecebe.value = '';
             });
             
-            // Modal novo setor
             DOM.btnCancelSetor.addEventListener('click', () => {
                 DOM.newSetorModal.classList.remove('active');
             });
@@ -1443,17 +1426,13 @@
                     renderSetores();
                     DOM.newSetorModal.classList.remove('active');
                     DOM.setorName.value = '';
-                    
-                    // Registrar ação
                     registerAction(`Novo setor criado: ${nomeSetor}`);
-                    
                     showToast(`Setor "${nomeSetor}" criado com sucesso!`, 'success');
                 } else {
                     showToast('Por favor, informe o nome do setor', 'error');
                 }
             });
             
-            // Modal novo paciente
             DOM.btnCancelPaciente.addEventListener('click', () => {
                 DOM.newPacienteModal.classList.remove('active');
             });
@@ -1470,7 +1449,6 @@
                     return;
                 }
                 
-                // Encontrar setor
                 const setorId = parseInt(DOM.newPacienteModal.getAttribute('data-setor'));
                 const setor = dados.setores.find(s => s.id === setorId);
                 
@@ -1499,28 +1477,22 @@
                     renderSetores();
                     DOM.newPacienteModal.classList.remove('active');
                     
-                    // Resetar campos
                     DOM.pacienteName.value = '';
                     DOM.pacienteIdade.value = '';
                     DOM.pacienteSexo.value = '';
                     DOM.pacienteLeito.value = '';
                     DOM.pacienteAtendimento.value = '';
                     
-                    // Registrar ação
                     registerAction(`Novo paciente adicionado: ${nome}`);
-                    
                     showToast(`Paciente "${nome}" adicionado com sucesso!`, 'success');
                 }
             });
             
-            // Eventos para salvar ao editar
             Object.values(DOM.textareas).forEach(textarea => {
                 textarea.addEventListener('input', () => {
-                    // Mostrar indicador de salvamento
                     const tabId = textarea.id.split('-')[0];
                     showSaveIndicator(tabId);
                     
-                    // Salvar após 1 segundo sem edição
                     clearTimeout(textarea.saveTimeout);
                     textarea.saveTimeout = setTimeout(() => {
                         saveCurrentData();
@@ -1529,26 +1501,20 @@
             });
         }
 
-        // Abrir aba específica
         function openTab(tabId) {
-            // Remover classe ativa de todas as abas e conteúdos
             DOM.soapTabs.forEach(tab => tab.classList.remove('active'));
             DOM.editorContents.forEach(content => content.classList.remove('active'));
             
-            // Adicionar classe ativa à aba selecionada
             document.querySelector(`.soap-tab[data-tab="${tabId}"]`).classList.add('active');
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Salvar dados atuais
         function saveCurrentData() {
             if (!state.currentPaciente) return;
             
-            // Encontrar paciente
             for (const setor of dados.setores) {
                 const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
                 if (paciente) {
-                    // Registrar ação de edição com assinatura
                     const changes = [];
                     if (paciente.soap.subjetivo !== DOM.textareas.subjetivo.value) {
                         changes.push("Subjetivo");
@@ -1564,17 +1530,14 @@
                     }
                     
                     if (changes.length > 0) {
-                        registerAction(`${changes.join(', ')} editado(s) por ${state.currentDoctor}`);
-                        showToast('Dados salvos com sucesso', 'success');
+                        showToast('Dados salvos automaticamente', 'success');
                     }
                     
-                    // Atualizar valores
                     paciente.soap.subjetivo = DOM.textareas.subjetivo.value;
                     paciente.soap.objetivo = DOM.textareas.objetivo.value;
                     paciente.soap.avaliacao = DOM.textareas.avaliacao.value;
                     paciente.soap.plano = DOM.textareas.plano.value;
                     
-                    // Atualizar timestamp
                     state.lastEdit = new Date().toISOString();
                     updateSignature();
                     
@@ -1583,7 +1546,6 @@
             }
         }
 
-        // Mostrar indicador de salvamento
         function showSaveIndicator(tabId) {
             const indicator = DOM.saveIndicators[tabId];
             indicator.classList.add('show');
@@ -1593,31 +1555,25 @@
             }, 2000);
         }
 
-        // Atualizar assinatura visível
         function updateSignature() {
             if (state.lastEdit) {
                 const editDate = new Date(state.lastEdit);
-                const dateStr = editDate.toLocaleDateString('pt-BR');
-                const timeStr = editDate.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-                DOM.editTimestamp.textContent = `${dateStr} ${timeStr}`;
+                DOM.editTimestamp.textContent = editDate.toLocaleString('pt-BR');
             }
             DOM.signatureName.textContent = `Assinado digitalmente por: ${state.currentDoctor}`;
         }
 
-        // Abrir modal novo setor
         function openNewSetorModal() {
             DOM.newSetorModal.classList.add('active');
             DOM.setorName.focus();
         }
 
-        // Abrir modal novo paciente
         function openNewPacienteModal(setorId) {
             DOM.newPacienteModal.setAttribute('data-setor', setorId);
             DOM.newPacienteModal.classList.add('active');
             DOM.pacienteName.focus();
         }
 
-        // Atualizar hora atual
         function updateTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('pt-BR', {
@@ -1627,7 +1583,6 @@
             document.getElementById('currentTime').textContent = timeString;
         }
 
-        // Mostrar toast
         function showToast(message, type = 'success') {
             DOM.toast.className = `toast ${type === 'error' ? 'toast-error' : 'toast-success'}`;
             DOM.toastMessage.textContent = message;
@@ -1638,12 +1593,10 @@
             }, 3000);
         }
 
-        // Registrar ação com assinatura digital
         function registerAction(action) {
             const now = new Date();
             const timestamp = now.toLocaleString('pt-BR');
             
-            // Se um paciente está selecionado, adicionar ao histórico
             if (state.currentPaciente) {
                 for (const setor of dados.setores) {
                     const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
@@ -1658,12 +1611,10 @@
                 }
             }
             
-            // Atualizar timestamp
             state.lastEdit = now.toISOString();
             updateSignature();
         }
 
-        // Inicializar aplicação
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
