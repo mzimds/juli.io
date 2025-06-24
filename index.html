@@ -3,750 +3,820 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juli - Passagem de Plantão Segura e Eficiente</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>juli.io - Registros Médicos Simplificados</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #ffffff;
-            --bg-card: #f8fafc;
-            --text-main: #0f172a;
-            --accent-green: #0d9488;
-            --accent-yellow: #eab308;
-            --accent-red: #ef4444;
-            --accent-blue: #3b82f6;
-            --neutral-gray: #64748b;
-            --border-color: #e2e8f0;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            --transition: all 0.2s ease;
-            --radius: 12px;
-            --header-bg: #ffffff;
-            --sidebar-bg: #f1f5f9;
-            --action-button: #0f172a;
-            --resolved-bg: #f1f5f9;
+            --bg-primary: #0D0D0D;
+            --bg-secondary: #121212;
+            --bg-tertiary: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --accent-primary: #3B82F6;
+            --accent-secondary: #A78BFA;
+            --border-color: #1A1A1A;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
         }
-
+        
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
-            font-size: 16px;
             overflow-x: hidden;
         }
-
+        
         .container {
-            width: 100%;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
-        /* Header */
+        
+        /* Header Styles */
         header {
-            background-color: var(--header-bg);
-            padding: 16px 0;
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow);
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            background-color: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
             border-bottom: 1px solid var(--border-color);
         }
-
+        
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
+        
         .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: var(--accent-green);
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--accent-primary);
             display: flex;
             align-items: center;
-            gap: 12px;
-            text-decoration: none;
         }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(13, 148, 136, 0.15);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        
+        .logo span {
+            color: var(--text-primary);
         }
-
-        .logo-icon i {
-            font-size: 1.5rem;
-            color: var(--accent-green);
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
         }
-
-        nav ul {
+        
+        .nav-links {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 24px;
         }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text-main);
+        
+        .nav-links a {
+            color: var(--text-secondary);
             font-weight: 500;
-            transition: var(--transition);
+            text-decoration: none;
+            transition: color 0.3s ease;
             position: relative;
+            font-size: 15px;
         }
-
-        nav a:hover {
-            color: var(--accent-green);
+        
+        .nav-links a:hover {
+            color: var(--text-primary);
         }
-
-        nav a::after {
+        
+        .nav-links a::after {
             content: '';
             position: absolute;
             bottom: -5px;
             left: 0;
             width: 0;
             height: 2px;
-            background-color: var(--accent-green);
-            transition: var(--transition);
+            background-color: var(--accent-primary);
+            transition: width 0.3s ease;
         }
-
-        nav a:hover::after {
+        
+        .nav-links a:hover::after {
             width: 100%;
         }
-
-        .header-buttons {
+        
+        .header-actions {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
-
+        
         .btn {
-            padding: 12px 24px;
-            border-radius: var(--radius);
-            font-weight: 500;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 14px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            text-decoration: none;
+            justify-content: center;
         }
-
+        
         .btn-outline {
             background: transparent;
-            color: var(--accent-green);
-            border: 2px solid var(--accent-green);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
         }
-
+        
         .btn-outline:hover {
-            background-color: rgba(13, 148, 136, 0.1);
-        }
-
-        .btn-primary {
-            background-color: var(--accent-green);
-            color: white;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background-color: #0b8176;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-main);
-            cursor: pointer;
+        
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
         }
-
+        
+        .btn-primary:hover {
+            background-color: #2563EB;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+        }
+        
         /* Hero Section */
         .hero {
-            padding: 80px 0;
-            background: linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(11, 129, 118, 0.08) 100%);
+            padding: 160px 0 80px;
             position: relative;
             overflow: hidden;
+            background: radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1), transparent 50%);
         }
-
-        .hero-content {
+        
+        .hero-container {
             display: flex;
             align-items: center;
-            gap: 60px;
+            gap: 40px;
         }
-
-        .hero-text {
+        
+        .hero-content {
             flex: 1;
         }
-
+        
         .hero-image {
             flex: 1;
             position: relative;
+            display: flex;
+            justify-content: center;
         }
-
-        .hero-image img {
-            width: 100%;
-            border-radius: var(--radius);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
         }
-
-        .hero-badge {
-            display: inline-block;
-            background-color: rgba(13, 148, 136, 0.15);
-            color: var(--accent-green);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            color: var(--text-main);
-        }
-
+        
         .hero p {
-            font-size: 1.25rem;
-            color: var(--neutral-gray);
+            font-size: 18px;
+            color: var(--text-secondary);
             margin-bottom: 40px;
             max-width: 600px;
         }
-
-        .hero-buttons {
+        
+        .hero-cta {
             display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
+            gap: 16px;
+            flex-wrap: wrap;
         }
-
-        .stats {
-            display: flex;
-            gap: 40px;
+        
+        .btn-large {
+            padding: 14px 28px;
+            font-size: 16px;
+            border-radius: 12px;
         }
-
-        .stat-item {
+        
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+            transform: translateY(-2px);
+        }
+        
+        .hero-visual {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            gap: 20px;
         }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-green);
+        
+        .visual-card {
+            background: linear-gradient(145deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: 16px;
+            padding: 30px;
+            width: 280px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
         }
-
-        .stat-label {
-            font-size: 1rem;
-            color: var(--neutral-gray);
+        
+        .visual-card:hover {
+            transform: translateY(-10px);
         }
-
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        
+        .card-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
         /* Features Section */
         .features {
             padding: 100px 0;
         }
-
+        
         .section-header {
             text-align: center;
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto 60px;
         }
-
-        .section-title {
-            font-size: 2.5rem;
+        
+        .section-header h2 {
+            font-size: 40px;
             font-weight: 700;
             margin-bottom: 20px;
-            color: var(--text-main);
+            letter-spacing: -0.02em;
         }
-
-        .section-subtitle {
-            font-size: 1.25rem;
-            color: var(--neutral-gray);
+        
+        .section-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
         }
-
+        
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            gap: 24px;
         }
-
+        
         .feature-card {
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
+            background-color: var(--bg-secondary);
+            border-radius: 20px;
             padding: 30px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
             border: 1px solid var(--border-color);
-            text-align: center;
         }
-
+        
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
         }
-
+        
         .feature-icon {
-            width: 70px;
-            height: 70px;
-            background-color: rgba(13, 148, 136, 0.1);
-            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 25px;
+            margin-bottom: 24px;
+            font-size: 26px;
         }
-
-        .feature-icon i {
-            font-size: 1.8rem;
-            color: var(--accent-green);
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 16px;
         }
-
-        .feature-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--text-main);
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 16px;
         }
-
-        .feature-description {
-            color: var(--neutral-gray);
-        }
-
-        /* How it Works Section */
-        .how-it-works {
+        
+        /* How It Works Section */
+        .workflow {
             padding: 100px 0;
-            background-color: var(--sidebar-bg);
+            background-color: var(--bg-secondary);
         }
-
+        
         .steps-container {
             display: flex;
-            justify-content: space-between;
-            gap: 40px;
-            position: relative;
+            flex-direction: column;
+            gap: 50px;
+            max-width: 800px;
+            margin: 0 auto;
         }
-
-        .steps-container::before {
-            content: '';
-            position: absolute;
-            top: 80px;
-            left: 10%;
-            width: 80%;
-            height: 2px;
-            background-color: var(--accent-green);
-            z-index: 1;
-        }
-
+        
         .step {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            flex: 1;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background-color: var(--accent-green);
-            color: white;
-            border-radius: 50%;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0 auto 20px;
-        }
-
-        .step-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--text-main);
-        }
-
-        .step-description {
-            color: var(--neutral-gray);
-        }
-
-        /* Testimonials */
-        .testimonials {
-            padding: 100px 0;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
+            align-items: flex-start;
         }
-
-        .testimonial-card {
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            position: relative;
-        }
-
-        .testimonial-card::before {
-            content: '"';
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 5rem;
-            color: rgba(13, 148, 136, 0.1);
-            font-family: serif;
-            line-height: 1;
-        }
-
-        .testimonial-content {
-            font-size: 1.1rem;
-            color: var(--neutral-gray);
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .author-avatar {
-            width: 60px;
-            height: 60px;
+        
+        .step-number {
+            min-width: 50px;
+            height: 50px;
+            background: var(--bg-tertiary);
             border-radius: 50%;
-            background-color: var(--sidebar-bg);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            color: var(--accent-green);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
         }
-
-        .author-info h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 5px;
+        
+        .step-content h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
         }
-
-        .author-info p {
-            color: var(--neutral-gray);
-            font-size: 0.9rem;
+        
+        .step-content p {
+            color: var(--text-secondary);
+            line-height: 1.7;
         }
-
-        /* Pricing */
+        
+        /* Pricing Section */
         .pricing {
             padding: 100px 0;
-            background-color: var(--sidebar-bg);
         }
-
+        
+        .pricing-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+        
+        .pricing-header h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        
+        .pricing-header p {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+        
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            gap: 24px;
         }
-
+        
         .pricing-card {
-            background-color: white;
-            border-radius: var(--radius);
+            background-color: var(--bg-secondary);
+            border-radius: 20px;
             padding: 40px 30px;
-            box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
-            text-align: center;
+            transition: transform 0.3s ease;
             position: relative;
-            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
-
-        .pricing-card.featured {
-            border: 2px solid var(--accent-green);
-            transform: scale(1.05);
+        
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-primary);
         }
-
-        .pricing-header {
-            margin-bottom: 30px;
+        
+        .pricing-card.popular {
+            border: 2px solid var(--accent-primary);
+            transform: scale(1.03);
         }
-
-        .pricing-title {
-            font-size: 1.5rem;
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 24px;
+            background-color: var(--accent-primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 15px;
-            color: var(--text-main);
         }
-
-        .pricing-price {
-            font-size: 3rem;
+        
+        .pricing-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .pricing-card .price {
+            font-size: 42px;
             font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text-main);
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
         }
-
-        .pricing-price span {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--neutral-gray);
+        
+        .pricing-card .price span {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: normal;
         }
-
-        .pricing-period {
-            color: var(--neutral-gray);
-            font-size: 0.9rem;
-        }
-
+        
         .pricing-features {
-            margin-bottom: 30px;
+            list-style: none;
+            margin-bottom: 40px;
+            flex-grow: 1;
         }
-
-        .feature-item {
+        
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            color: var(--neutral-gray);
+            gap: 12px;
         }
-
-        .feature-item i {
-            color: var(--accent-green);
+        
+        .pricing-features li:last-child {
+            border-bottom: none;
         }
-
-        .feature-item.disabled {
-            color: #cbd5e1;
+        
+        .pricing-features li i {
+            color: var(--success);
+            min-width: 20px;
         }
-
-        .feature-item.disabled i {
-            color: #cbd5e1;
-        }
-
-        /* CTA */
-        .cta {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #0d9488 0%, #0b8176 100%);
-            color: white;
+        
+        .pricing-card .btn {
+            width: 100%;
             text-align: center;
+            margin-top: auto;
         }
-
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(167, 139, 250, 0.15));
+            text-align: center;
+            border-radius: 20px;
+            margin: 40px;
         }
-
-        .cta p {
-            font-size: 1.25rem;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            opacity: 0.9;
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        
+        .cta-container h2 {
+            font-size: 40px;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
         }
-
-        .btn-light {
-            background-color: white;
-            color: var(--accent-green);
-            border: none;
+        
+        .cta-container p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-
-        .btn-light:hover {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-
+        
         /* Footer */
         footer {
             padding: 80px 0 40px;
-            background-color: var(--header-bg);
+            background-color: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
         }
-
+        
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 40px;
             margin-bottom: 60px;
         }
-
-        .footer-logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: var(--accent-green);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
+        
+        .footer-col h4 {
+            font-size: 18px;
+            margin-bottom: 24px;
+            color: var(--text-primary);
         }
-
-        .footer-logo .logo-icon {
-            width: 40px;
-            height: 40px;
-            background-color: rgba(13, 148, 136, 0.15);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .footer-logo .logo-icon i {
-            font-size: 1.5rem;
-            color: var(--accent-green);
-        }
-
-        .footer-description {
-            color: var(--neutral-gray);
-            margin-bottom: 20px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--sidebar-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-main);
-            transition: var(--transition);
-            text-decoration: none;
-        }
-
-        .social-link:hover {
-            background-color: var(--accent-green);
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        .footer-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--text-main);
-        }
-
+        
         .footer-links {
             list-style: none;
         }
-
+        
         .footer-links li {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
-
+        
         .footer-links a {
+            color: var(--text-secondary);
             text-decoration: none;
-            color: var(--neutral-gray);
-            transition: var(--transition);
+            transition: color 0.3s ease;
+            font-size: 15px;
         }
-
+        
         .footer-links a:hover {
-            color: var(--accent-green);
+            color: var(--text-primary);
         }
-
-        .copyright {
-            text-align: center;
+        
+        .footer-bottom {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             padding-top: 40px;
             border-top: 1px solid var(--border-color);
-            color: var(--neutral-gray);
-            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-size: 14px;
+            gap: 20px;
+            text-align: center;
         }
-
+        
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .social-links a {
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+            font-size: 18px;
+        }
+        
+        .social-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Login Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            margin: 20px;
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .modal-header h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .modal-header p {
+            color: var(--text-secondary);
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .form-footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
         /* Responsive Design */
-        @media (max-width: 992px) {
-            h1 {
-                font-size: 2.5rem;
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 42px;
+            }
+            
+            .section-header h2, 
+            .pricing-header h2, 
+            .cta-container h2 {
+                font-size: 36px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 140px 0 60px;
+            }
+            
+            .hero-container {
+                flex-direction: column;
+                gap: 50px;
             }
             
             .hero-content {
-                flex-direction: column;
                 text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
             
-            .hero-buttons, .stats {
+            .hero-cta {
                 justify-content: center;
             }
             
-            .steps-container {
-                flex-direction: column;
-                gap: 30px;
-            }
-            
-            .steps-container::before {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
+            .menu-toggle {
                 display: block;
             }
             
-            nav {
+            .nav-links {
                 position: fixed;
-                top: 0;
-                right: -300px;
-                width: 300px;
-                height: 100vh;
-                background-color: white;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-                z-index: 1000;
-                transition: var(--transition);
-                padding: 80px 30px 30px;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-secondary);
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 0;
+                gap: 25px;
+                transform: translateY(-150%);
+                transition: transform 0.4s ease;
+                border-bottom: 1px solid var(--border-color);
             }
             
-            nav.active {
-                right: 0;
+            .nav-links.active {
+                transform: translateY(0);
             }
             
-            nav ul {
+            .header-actions {
+                display: none;
+            }
+            
+            .mobile-actions {
+                display: flex;
+                gap: 12px;
+                margin-top: 20px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .section-header h2, 
+            .pricing-header h2, 
+            .cta-container h2 {
+                font-size: 32px;
+            }
+            
+            .step {
                 flex-direction: column;
                 gap: 20px;
             }
             
-            .header-buttons {
-                display: none;
+            .cta-section {
+                margin: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 32px;
             }
             
-            .mobile-menu-close {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                color: var(--text-main);
-                cursor: pointer;
+            .hero p {
+                font-size: 16px;
             }
             
-            .hero-buttons {
-                flex-direction: column;
+            .btn-large {
+                width: 100%;
             }
             
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
+            .hero-cta {
+                width: 100%;
+            }
+            
+            .section-header h2, 
+            .pricing-header h2, 
+            .cta-container h2 {
+                font-size: 28px;
+            }
+            
+            .cta-section {
+                padding: 60px 0;
+            }
+            
+            .footer-grid {
+                gap: 30px;
             }
         }
     </style>
@@ -755,503 +825,421 @@
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <a href="#" class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-clipboard-user"></i>
-                </div>
-                Juli
-            </a>
+            <a href="#" class="logo">juli<span>.io</span></a>
             
-            <button class="mobile-menu-btn" id="mobile-menu-btn">
+            <button class="menu-toggle" id="menu-toggle">
                 <i class="fas fa-bars"></i>
             </button>
             
-            <nav id="main-nav">
-                <button class="mobile-menu-close" id="mobile-menu-close">
-                    <i class="fas fa-times"></i>
-                </button>
-                <ul>
-                    <li><a href="#features">Recursos</a></li>
-                    <li><a href="#how-it-works">Como funciona</a></li>
-                    <li><a href="#testimonials">Depoimentos</a></li>
-                    <li><a href="#pricing">Planos</a></li>
-                    <li><a href="#contact">Contato</a></li>
-                </ul>
-            </nav>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#">Produto</a></li>
+                <li><a href="#">Recursos</a></li>
+                <li><a href="#">Preços</a></li>
+                <li><a href="#">Clientes</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Contato</a></li>
+                <li><a href="#">Documentação</a></li>
+                <div class="mobile-actions">
+                    <button class="btn btn-outline" id="open-app-mobile">Abrir app</button>
+                    <button class="btn btn-primary" id="sign-up-mobile">Cadastrar</button>
+                </div>
+            </ul>
             
-            <div class="header-buttons">
-                <a href="#" class="btn btn-outline">Entrar</a>
-                <a href="#pricing" class="btn btn-primary">Comece agora</a>
+            <div class="header-actions">
+                <button class="btn btn-outline" id="open-app">Abrir app</button>
+                <button class="btn btn-primary" id="sign-up">Cadastrar</button>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="container hero-content">
-            <div class="hero-text">
-                <span class="hero-badge">Revolucionando a passagem de plantão</span>
-                <h1>Passagem de plantão segura e eficiente</h1>
-                <p>Juli garante a continuidade das informações clínicas entre equipes médicas, reduzindo erros e melhorando a segurança do paciente.</p>
-                
-                <div class="hero-buttons">
-                    <a href="#pricing" class="btn btn-primary">
-                        <i class="fas fa-play-circle"></i>
-                        Experimente grátis
-                    </a>
-                    <a href="#features" class="btn btn-outline">
-                        <i class="fas fa-info-circle"></i>
-                        Saber mais
-                    </a>
-                </div>
-                
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-value">99%</div>
-                        <div class="stat-label">Redução de erros</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">50%</div>
-                        <div class="stat-label">Tempo economizado</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">100+</div>
-                        <div class="stat-label">Médicos satisfeitos</div>
-                    </div>
+        <div class="container hero-container">
+            <div class="hero-content fade-in">
+                <h1>Registros médicos simplificados durante o plantão</h1>
+                <p>O juli.io oferece uma maneira rápida e segura de realizar registros médicos durante o plantão, com histórico completo e assinaturas eletrônicas.</p>
+                <div class="hero-cta">
+                    <button class="btn btn-primary btn-large" id="start-building">Comece agora</button>
+                    <button class="btn btn-secondary btn-large">Ver demonstração</button>
                 </div>
             </div>
-            
-            <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1581595219319-5b467da7b9b6?q=80&w=2070&auto=format&fit=crop" alt="Interface do Juli">
+            <div class="hero-image fade-in" style="transition-delay: 0.2s">
+                <div class="hero-visual">
+                    <div class="visual-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-user-injured"></i>
+                            </div>
+                            <h3>Registro Rápido</h3>
+                        </div>
+                        <div class="card-content">
+                            Preencha apenas os campos essenciais com nosso sistema inteligente de formulários médicos.
+                        </div>
+                    </div>
+                    <div class="visual-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="fas fa-file-signature"></i>
+                            </div>
+                            <h3>Assinatura Digital</h3>
+                        </div>
+                        <div class="card-content">
+                            Validação segura e legal dos registros com certificação digital integrada.
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features" id="features">
+    <section class="features">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Recursos que transformam a passagem de plantão</h2>
-                <p class="section-subtitle">Tudo que sua equipe médica precisa para uma comunicação eficiente e segura</p>
+            <div class="section-header fade-in">
+                <h2>Feito para o ambiente hospitalar</h2>
+                <p>Projetado para médicos que precisam de agilidade e precisão durante os plantões</p>
             </div>
             
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-card fade-in">
                     <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-bolt"></i>
                     </div>
-                    <h3 class="feature-title">Segurança de Dados</h3>
-                    <p class="feature-description">Proteção de dados sensíveis com criptografia de ponta a ponta e conformidade com LGPD.</p>
+                    <h3>Rápido e intuitivo</h3>
+                    <p>Interface simples que permite criar registros em segundos, sem treinamento prévio necessário.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card fade-in" style="transition-delay: 0.1s">
                     <div class="feature-icon">
-                        <i class="fas fa-clipboard-list"></i>
+                        <i class="fas fa-file-medical"></i>
                     </div>
-                    <h3 class="feature-title">Registro Completo</h3>
-                    <p class="feature-description">Registro detalhado de altas, intercorrências e pendências para total rastreabilidade.</p>
+                    <h3>Pré-prontuários</h3>
+                    <p>Modelos pré-definidos para diferentes especialidades e situações clínicas comuns.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card fade-in" style="transition-delay: 0.2s">
+                    <div class="feature-icon">
+                        <i class="fas fa-signature"></i>
+                    </div>
+                    <h3>Assinatura eletrônica</h3>
+                    <p>Validação segura e legal dos registros com certificação digital integrada.</p>
+                </div>
+                
+                <div class="feature-card fade-in" style="transition-delay: 0.3s">
+                    <div class="feature-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Histórico completo</h3>
+                    <p>Acesso a todos os registros anteriores do paciente com linha do tempo clara.</p>
+                </div>
+                
+                <div class="feature-card fade-in" style="transition-delay: 0.4s">
                     <div class="feature-icon">
                         <i class="fas fa-mobile-alt"></i>
                     </div>
-                    <h3 class="feature-title">Acesso Multiplataforma</h3>
-                    <p class="feature-description">Acesso em qualquer dispositivo, online ou offline, para plantões sem interrupções.</p>
+                    <h3>Acesso em qualquer lugar</h3>
+                    <p>Use em tablets, computadores ou smartphones durante o plantão.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card fade-in" style="transition-delay: 0.5s">
                     <div class="feature-icon">
-                        <i class="fas fa-bell"></i>
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3 class="feature-title">Alertas em Tempo Real</h3>
-                    <p class="feature-description">Notificações imediatas para pacientes críticos e pendências urgentes.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="feature-title">Relatórios Avançados</h3>
-                    <p class="feature-description">Análises e insights para melhorar processos e tomada de decisão.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 class="feature-title">Gestão de Equipe</h3>
-                    <p class="feature-description">Controle de acessos e permissões personalizadas para diferentes funções.</p>
+                    <h3>Segurança hospitalar</h3>
+                    <p>Dados criptografados e conformidade com normas de segurança e privacidade.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- How It Works -->
-    <section class="how-it-works" id="how-it-works">
+    <!-- How It Works Section -->
+    <section class="workflow">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Como o Juli funciona</h2>
-                <p class="section-subtitle">Simplificando a comunicação entre equipes médicas em apenas 4 passos</p>
+            <div class="section-header fade-in">
+                <h2>Como funciona</h2>
+                <p>Um fluxo de trabalho simples para otimizar seu tempo durante plantões</p>
             </div>
             
-            <div class="steps-container">
+            <div class="steps-container fade-in">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3 class="step-title">Cadastro de Pacientes</h3>
-                    <p class="step-description">Cadastre pacientes com informações completas e gravidade clínica.</p>
+                    <div class="step-content">
+                        <h3>Acesso imediato</h3>
+                        <p>Faça login com suas credenciais médicas em qualquer dispositivo. Nenhuma instalação complexa necessária.</p>
+                    </div>
                 </div>
                 
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3 class="step-title">Registro de Ocorrências</h3>
-                    <p class="step-description">Registre altas, intercorrências e pendências durante o plantão.</p>
+                    <div class="step-content">
+                        <h3>Selecione o modelo</h3>
+                        <p>Escolha entre dezenas de modelos pré-definidos para diferentes especialidades e situações clínicas.</p>
+                    </div>
                 </div>
                 
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3 class="step-title">Passagem de Plantão</h3>
-                    <p class="step-description">Revise todas as informações antes de passar para a próxima equipe.</p>
+                    <div class="step-content">
+                        <h3>Preencha os campos</h3>
+                        <p>Interface simplificada que permite registrar informações médicas essenciais em poucos cliques.</p>
+                    </div>
                 </div>
                 
                 <div class="step">
                     <div class="step-number">4</div>
-                    <h3 class="step-title">Acompanhamento Contínuo</h3>
-                    <p class="step-description">Acesse histórico completo e relatórios para melhorias contínuas.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">O que os médicos dizem</h2>
-                <p class="section-subtitle">Depoimentos de profissionais que transformaram sua rotina com o Juli</p>
-            </div>
-            
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-content">"O Juli revolucionou nossa passagem de plantão. Erros que eram comuns desapareceram e o tempo que gastávamos nesse processo reduziu pela metade."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user-md"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>Dra. Juliana Calvo</h4>
-                            <p>Médica Intensivista - Hospital São Lucas</p>
-                        </div>
+                    <div class="step-content">
+                        <h3>Assinatura eletrônica</h3>
+                        <p>Valide o registro com sua assinatura digital certificada, garantindo validade legal.</p>
                     </div>
                 </div>
                 
-                <div class="testimonial-card">
-                    <p class="testimonial-content">"Finalmente uma solução que entende as necessidades da equipe médica. A organização das informações de pacientes críticos salvou vidas em nossa UTI."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user-md"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>Dr. Carlos Mendes</h4>
-                            <p>Coordenador UTI - Santa Casa de Misericórdia</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-content">"A implementação do Juli trouxe mais segurança para nossos pacientes e menos estresse para nossa equipe. Recomendo para qualquer instituição de saúde."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <i class="fas fa-user-md"></i>
-                        </div>
-                        <div class="author-info">
-                            <h4>Dra. Fernanda Oliveira</h4>
-                            <p>Diretora Clínica - Hospital Vita</p>
-                        </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Acesso ao histórico</h3>
+                        <p>Todos os registros ficam armazenados com segurança e podem ser acessados a qualquer momento.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Pricing -->
-    <section class="pricing" id="pricing">
+    <!-- Pricing Section -->
+    <section class="pricing">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Planos Acessíveis</h2>
-                <p class="section-subtitle">Escolha o plano ideal para sua instituição de saúde</p>
+            <div class="pricing-header fade-in">
+                <h2>Planos acessíveis para hospitais e profissionais</h2>
+                <p>Escolha o plano ideal para sua necessidade, sem comprometer a qualidade do atendimento</p>
             </div>
             
             <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3 class="pricing-title">Básico</h3>
-                        <div class="pricing-price">R$199<span>/mês</span></div>
-                        <div class="pricing-period">Por setor/mês</div>
-                    </div>
-                    
-                    <div class="pricing-features">
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Até 5 setores</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Gestão de pacientes ilimitada</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Registro de ocorrências</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Relatórios básicos</span>
-                        </div>
-                        <div class="feature-item disabled">
-                            <i class="fas fa-times"></i>
-                            <span>Integração com prontuário eletrônico</span>
-                        </div>
-                        <div class="feature-item disabled">
-                            <i class="fas fa-times"></i>
-                            <span>Suporte prioritário</span>
-                        </div>
-                    </div>
-                    
-                    <a href="#" class="btn btn-outline">Começar agora</a>
+                <div class="pricing-card fade-in">
+                    <h3>Básico</h3>
+                    <div class="price">R$0<span>/mês</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Até 50 registros/mês</li>
+                        <li><i class="fas fa-check"></i> Histórico de 6 meses</li>
+                        <li><i class="fas fa-check"></i> 1 usuário</li>
+                        <li><i class="fas fa-check"></i> Templates básicos</li>
+                        <li><i class="fas fa-times"></i> Assinatura eletrônica</li>
+                    </ul>
+                    <button class="btn btn-outline">Começar agora</button>
                 </div>
                 
-                <div class="pricing-card featured">
-                    <div class="pricing-header">
-                        <h3 class="pricing-title">Profissional</h3>
-                        <div class="pricing-price">R$499<span>/mês</span></div>
-                        <div class="pricing-period">Por setor/mês</div>
-                    </div>
-                    
-                    <div class="pricing-features">
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Setores ilimitados</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Gestão de pacientes ilimitada</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Registro de ocorrências</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Relatórios avançados</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Integração com prontuário eletrônico</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Suporte prioritário</span>
-                        </div>
-                    </div>
-                    
-                    <a href="#" class="btn btn-primary">Começar agora</a>
+                <div class="pricing-card popular fade-in" style="transition-delay: 0.2s">
+                    <div class="popular-badge">Mais popular</div>
+                    <h3>Profissional</h3>
+                    <div class="price">R$79<span>/mês</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Registros ilimitados</li>
+                        <li><i class="fas fa-check"></i> Histórico completo</li>
+                        <li><i class="fas fa-check"></i> Até 3 usuários</li>
+                        <li><i class="fas fa-check"></i> Todos os templates</li>
+                        <li><i class="fas fa-check"></i> Assinatura eletrônica</li>
+                    </ul>
+                    <button class="btn btn-primary">Assinar agora</button>
                 </div>
                 
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3 class="pricing-title">Empresarial</h3>
-                        <div class="pricing-price">Personalizado</div>
-                        <div class="pricing-period">Solução para redes hospitalares</div>
-                    </div>
-                    
-                    <div class="pricing-features">
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Todos os recursos do Profissional</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Multi-unidades hospitalares</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Treinamento dedicado</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>API para integração total</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Consultoria especializada</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-check"></i>
-                            <span>Suporte 24/7</span>
-                        </div>
-                    </div>
-                    
-                    <a href="#contact" class="btn btn-outline">Fale conosco</a>
+                <div class="pricing-card fade-in" style="transition-delay: 0.4s">
+                    <h3>Hospitalar</h3>
+                    <div class="price">Personalizado</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Registros ilimitados</li>
+                        <li><i class="fas fa-check"></i> Histórico completo</li>
+                        <li><i class="fas fa-check"></i> Usuários ilimitados</li>
+                        <li><i class="fas fa-check"></i> Templates personalizados</li>
+                        <li><i class="fas fa-check"></i> Suporte prioritário</li>
+                    </ul>
+                    <button class="btn btn-outline">Falar com vendas</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section class="cta">
-        <div class="container">
-            <h2>Pronto para transformar sua passagem de plantão?</h2>
-            <p>Junte-se a centenas de instituições de saúde que já melhoraram sua comunicação e segurança do paciente com o Juli.</p>
-            
-            <div class="cta-buttons">
-                <a href="#pricing" class="btn btn-primary btn-light">
-                    <i class="fas fa-play-circle"></i>
-                    Experimente grátis
-                </a>
-                <a href="#contact" class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3);">
-                    <i class="fas fa-comments"></i>
-                    Fale com nossa equipe
-                </a>
-            </div>
+    <!-- CTA Section -->
+    <section class="cta-section fade-in">
+        <div class="container cta-container">
+            <h2>Comece a usar hoje mesmo</h2>
+            <p>Junte-se a centenas de profissionais de saúde que já transformaram seus plantões com o juli.io</p>
+            <button class="btn btn-primary btn-large">Criar conta gratuita</button>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer id="contact">
+    <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <div class="footer-logo">
-                        <div class="logo-icon">
-                            <i class="fas fa-clipboard-user"></i>
-                        </div>
-                        Juli
-                    </div>
-                    <p class="footer-description">Solução completa para passagem de plantão segura e eficiente em instituições de saúde.</p>
-                    
-                    <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
+                    <div class="logo">juli<span>.io</span></div>
+                    <p style="color: var(--text-secondary); margin-top: 20px; max-width: 300px;">
+                        Simplificando registros médicos para profissionais de saúde durante plantões.
+                    </p>
                 </div>
                 
                 <div class="footer-col">
-                    <h3 class="footer-title">Produto</h3>
+                    <h4>Produto</h4>
                     <ul class="footer-links">
-                        <li><a href="#features">Recursos</a></li>
-                        <li><a href="#how-it-works">Como funciona</a></li>
-                        <li><a href="#pricing">Planos</a></li>
-                        <li><a href="#">Histórias de sucesso</a></li>
-                        <li><a href="#">Status do sistema</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3 class="footer-title">Recursos</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Recursos</a></li>
+                        <li><a href="#">Planos</a></li>
                         <li><a href="#">Tutoriais</a></li>
-                        <li><a href="#">Suporte</a></li>
-                        <li><a href="#">Desenvolvedores</a></li>
-                        <li><a href="#">Segurança</a></li>
+                        <li><a href="#">Atualizações</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-col">
-                    <h3 class="footer-title">Empresa</h3>
+                    <h4>Empresa</h4>
                     <ul class="footer-links">
                         <li><a href="#">Sobre nós</a></li>
+                        <li><a href="#">Blog</a></li>
                         <li><a href="#">Carreiras</a></li>
                         <li><a href="#">Contato</a></li>
-                        <li><a href="#">Parceiros</a></li>
-                        <li><a href="#">Imprensa</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-col">
-                    <h3 class="footer-title">Contato</h3>
+                    <h4>Recursos</h4>
                     <ul class="footer-links">
-                        <li><i class="fas fa-envelope"></i> contato@juli.com.br</li>
-                        <li><i class="fas fa-phone"></i> (11) 99999-9999</li>
-                        <li><i class="fas fa-map-marker-alt"></i> São Paulo, SP</li>
+                        <li><a href="#">Documentação</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Segurança</a></li>
+                        <li><a href="#">Suporte</a></li>
                     </ul>
                 </div>
             </div>
             
-            <div class="copyright">
-                &copy; 2023 Juli. Todos os direitos reservados.
+            <div class="footer-bottom">
+                <div>© 2023 juli.io. Todos os direitos reservados.</div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Mobile Menu Toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            document.getElementById('main-nav').classList.add('active');
-        });
-        
-        document.getElementById('mobile-menu-close').addEventListener('click', function() {
-            document.getElementById('main-nav').classList.remove('active');
-        });
-        
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    document.getElementById('main-nav').classList.remove('active');
-                }
-            });
-        });
-        
-        // Animation on scroll
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.feature-card, .step, .testimonial-card, .pricing-card');
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="close-modal">&times;</button>
+            <div class="modal-header">
+                <h2>Acesse sua conta</h2>
+                <p>Entre para gerenciar seus registros médicos</p>
+            </div>
             
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="seu@email.com" required>
+                </div>
                 
-                if (elementTop < windowHeight * 0.85) {
-                    element.style.opacity = "1";
-                    element.style.transform = "translateY(0)";
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-large" style="width: 100%">Entrar</button>
+                
+                <div class="form-footer">
+                    <a href="#">Esqueceu sua senha?</a>
+                    <a href="#">Criar nova conta</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Observador de elementos para animações
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('appear');
                 }
             });
-        }
-        
-        // Set initial styles for animated elements
-        document.querySelectorAll('.feature-card, .step, .testimonial-card, .pricing-card').forEach(element => {
-            element.style.opacity = "0";
-            element.style.transform = "translateY(20px)";
-            element.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        }, {
+            threshold: 0.1
         });
         
-        // Add scroll event listener
-        window.addEventListener('scroll', animateOnScroll);
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
         
-        // Trigger initial check
-        animateOnScroll();
+        // Modal de login
+        const openAppBtn = document.getElementById('open-app');
+        const openAppMobileBtn = document.getElementById('open-app-mobile');
+        const loginModal = document.getElementById('login-modal');
+        const closeModal = document.getElementById('close-modal');
+        
+        const openModal = () => {
+            loginModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+        
+        const closeModalFunc = () => {
+            loginModal.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+        
+        openAppBtn.addEventListener('click', openModal);
+        openAppMobileBtn.addEventListener('click', openModal);
+        
+        closeModal.addEventListener('click', closeModalFunc);
+        
+        // Fechar modal ao clicar fora
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                closeModalFunc();
+            }
+        });
+        
+        // Formulário de login
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simulação de login
+            alert(`Login realizado com: ${email}\nRedirecionando para o sistema...`);
+            closeModalFunc();
+        });
+        
+        // Botão de Sign Up
+        const signUpBtn = document.getElementById('sign-up');
+        const signUpMobileBtn = document.getElementById('sign-up-mobile');
+        signUpBtn.addEventListener('click', () => {
+            alert('Redirecionando para página de cadastro...');
+        });
+        signUpMobileBtn.addEventListener('click', () => {
+            alert('Redirecionando para página de cadastro...');
+        });
+        
+        // Botão Start Building
+        const startBuildingBtn = document.getElementById('start-building');
+        startBuildingBtn.addEventListener('click', () => {
+            alert('Redirecionando para criação de conta...');
+        });
+        
+        // Menu mobile
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            if (navLinks.classList.contains('active')) {
+                menuToggle.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+        
+        // Fechar menu ao clicar em um link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
     </script>
 </body>
 </html>
