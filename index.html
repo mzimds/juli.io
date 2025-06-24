@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEDNOTE - Sistema de Plantão Médico</title>
+    <title>Mednote - Sistema de Plantão Médico</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #2c7da0;
@@ -17,12 +16,12 @@
             --success: #2ecc71;
             --warning: #f39c12;
             --gray: #95a5a6;
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(0, 0, 0, 0.1);
             --sidebar-width: 280px;
             --header-height: 60px;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.92);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -39,15 +38,12 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            backdrop-filter: blur(2px);
         }
 
         /* Glassmorphism effect */
         .glass {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             box-shadow: var(--glass-shadow);
             border-radius: 8px;
         }
@@ -57,21 +53,17 @@
             height: var(--header-height);
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 0 20px;
+            padding: 0 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
             position: relative;
             z-index: 100;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
             font-weight: 700;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             letter-spacing: -0.5px;
             font-family: 'Inter', sans-serif;
             font-weight: 800;
@@ -84,31 +76,13 @@
             font-size: 0.9rem;
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background-color: var(--light);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
         /* Main layout */
         .container {
             display: flex;
             flex: 1;
             overflow: hidden;
-            padding: 15px;
-            gap: 15px;
+            padding: 12px;
+            gap: 12px;
         }
 
         /* Sidebar */
@@ -121,7 +95,7 @@
         }
 
         .section-header {
-            padding: 15px 20px;
+            padding: 15px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -135,55 +109,35 @@
         }
 
         .btn {
-            padding: 8px 15px;
+            padding: 8px 12px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             font-weight: 500;
-            box-shadow: 0 4px 6px rgba(44, 125, 160, 0.2);
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(44, 125, 160, 0.3);
+            transform: translateY(-1px);
         }
 
         .btn:active {
             transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(44, 125, 160, 0.2);
-        }
-
-        .btn i {
-            font-size: 0.9rem;
         }
 
         .btn-danger {
             background: linear-gradient(135deg, var(--danger), #c0392b);
-            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.2);
-        }
-
-        .btn-danger:hover {
-            box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
         }
 
         .btn-success {
             background: linear-gradient(135deg, var(--success), #27ae60);
-            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
-        }
-
-        .btn-success:hover {
-            box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
         }
 
         .search-container {
-            padding: 15px;
+            padding: 12px;
             border-bottom: 1px solid var(--border);
         }
 
@@ -193,49 +147,42 @@
 
         .search-box input {
             width: 100%;
-            padding: 10px 15px 10px 40px;
+            padding: 10px 12px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 0.95rem;
             background: rgba(255, 255, 255, 0.7);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             font-family: 'Inter', sans-serif;
         }
 
         .search-box input:focus {
             background: white;
-            box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
+            box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
+            outline: none;
         }
 
         .scrollable-content {
             flex: 1;
             overflow-y: auto;
-            padding: 10px 0;
+            padding: 8px 0;
         }
 
         .setor-item {
-            padding: 12px 20px;
+            padding: 12px 15px;
             cursor: pointer;
             transition: background-color 0.2s;
             border-left: 3px solid transparent;
-            margin: 5px 10px;
+            margin: 4px 8px;
             border-radius: 6px;
         }
 
         .setor-item:hover {
-            background-color: rgba(44, 125, 160, 0.1);
+            background-color: rgba(44, 125, 160, 0.08);
         }
 
         .setor-item.active {
-            background-color: rgba(44, 125, 160, 0.15);
+            background-color: rgba(44, 125, 160, 0.12);
             border-left: 3px solid var(--primary);
         }
 
@@ -249,10 +196,10 @@
 
         .pacientes-container {
             margin-top: 8px;
-            padding-left: 15px;
+            padding-left: 10px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease;
+            transition: max-height 0.3s ease;
         }
 
         .setor-item.expanded .pacientes-container {
@@ -261,9 +208,6 @@
 
         .paciente-item {
             padding: 10px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
             border-bottom: 1px dashed var(--border);
             border-radius: 6px;
             margin: 5px 0;
@@ -271,25 +215,11 @@
         }
 
         .paciente-item:hover {
-            background-color: rgba(44, 125, 160, 0.08);
+            background-color: rgba(44, 125, 160, 0.05);
         }
 
         .paciente-item:last-child {
             border-bottom: none;
-        }
-
-        .paciente-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-            font-size: 1.1rem;
         }
 
         .paciente-info {
@@ -303,6 +233,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             font-size: 0.95rem;
+            margin-bottom: 4px;
         }
 
         .paciente-details {
@@ -310,7 +241,7 @@
             color: var(--gray);
             display: flex;
             gap: 8px;
-            margin-top: 3px;
+            flex-wrap: wrap;
         }
 
         .badge {
@@ -331,7 +262,7 @@
         }
 
         .patient-header {
-            padding: 15px 25px;
+            padding: 15px 20px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -339,7 +270,7 @@
         }
 
         .patient-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--primary-dark);
             letter-spacing: -0.3px;
@@ -347,15 +278,16 @@
 
         .patient-details {
             display: flex;
-            gap: 25px;
-            font-size: 0.95rem;
+            gap: 15px;
+            font-size: 0.9rem;
             color: var(--dark);
+            flex-wrap: wrap;
         }
 
         .detail-item {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 5px;
             font-weight: 500;
         }
 
@@ -364,16 +296,18 @@
             background-color: white;
             border-bottom: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.7);
+            overflow-x: auto;
         }
 
         .soap-tab {
-            padding: 14px 25px;
+            padding: 12px 20px;
             cursor: pointer;
             font-weight: 600;
             color: var(--gray);
             border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            font-size: 0.92rem;
+            white-space: nowrap;
         }
 
         .soap-tab:hover {
@@ -398,7 +332,7 @@
             flex: 1;
             display: none;
             flex-direction: column;
-            padding: 20px;
+            padding: 15px;
             overflow: hidden;
         }
 
@@ -407,41 +341,39 @@
         }
 
         .editor-header {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .editor-title {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--primary-dark);
         }
 
         .quick-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .quick-action {
-            padding: 8px 14px;
+            padding: 8px 12px;
             background: rgba(255, 255, 255, 0.7);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             font-weight: 500;
         }
 
         .quick-action:hover {
             background: rgba(44, 125, 160, 0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transform: translateY(-1px);
         }
 
         .textarea-container {
@@ -453,55 +385,31 @@
         .soap-textarea {
             width: 100%;
             height: 100%;
-            padding: 18px;
+            padding: 15px;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 6px;
             resize: none;
             font-size: 1.05rem;
             line-height: 1.6;
             font-family: 'Inter', sans-serif;
             background: rgba(255, 255, 255, 0.7);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .soap-textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
+            box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
             background: white;
-        }
-
-        .autocomplete-suggestions {
-            position: absolute;
-            background: white;
-            border: 1px solid var(--border);
-            max-height: 200px;
-            overflow-y: auto;
-            width: 300px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            z-index: 100;
-            border-radius: 8px;
-            display: none;
-        }
-
-        .autocomplete-suggestion {
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: background-color 0.2s;
-        }
-
-        .autocomplete-suggestion:hover {
-            background-color: var(--light);
         }
 
         .editor-footer {
-            padding: 15px 25px;
+            padding: 12px 20px;
             display: flex;
             justify-content: flex-end;
             background: rgba(255, 255, 255, 0.7);
             border-top: 1px solid var(--border);
-            gap: 12px;
+            gap: 10px;
         }
 
         /* Mobile menu */
@@ -512,7 +420,7 @@
             color: white;
             font-size: 1.4rem;
             cursor: pointer;
-            margin-right: 15px;
+            margin-right: 12px;
         }
 
         /* Modal */
@@ -540,11 +448,12 @@
         .modal-content {
             width: 90%;
             max-width: 500px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            border-radius: 10px;
             transform: translateY(20px);
-            transition: transform 0.4s ease;
+            transition: transform 0.3s ease;
         }
 
         .modal.active .modal-content {
@@ -552,71 +461,69 @@
         }
 
         .modal-header {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
         }
 
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--primary-dark);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: var(--dark);
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 15px;
+            padding: 10px 12px;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
             background: rgba(255, 255, 255, 0.7);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.2);
+            box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
             background: white;
         }
 
         .modal-footer {
             display: flex;
             justify-content: flex-end;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         /* Toast */
         .toast {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 15px 25px;
-            border-radius: 8px;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 6px;
             background: var(--dark);
             color: white;
             font-weight: 500;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             z-index: 2000;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            max-width: 320px;
         }
 
         .toast.show {
@@ -624,16 +531,8 @@
             transform: translateY(0);
         }
 
-        .toast i {
-            font-size: 1.2rem;
-        }
-
         .toast-success {
             background: linear-gradient(135deg, var(--success), #27ae60);
-        }
-
-        .toast-info {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
         }
 
         .toast-error {
@@ -668,92 +567,113 @@
         @media (max-width: 576px) {
             :root {
                 --sidebar-width: 260px;
+                --header-height: 55px;
             }
 
+            .container {
+                padding: 8px;
+                gap: 8px;
+            }
+            
+            .logo {
+                font-size: 1.3rem;
+            }
+            
             .header-info {
                 font-size: 0.8rem;
             }
-
+            
+            .section-header {
+                padding: 12px 10px;
+            }
+            
             .soap-tabs {
                 overflow-x: auto;
                 white-space: nowrap;
             }
-
+            
             .soap-tab {
-                padding: 12px 20px;
-                font-size: 0.9rem;
+                padding: 10px 15px;
+                font-size: 0.85rem;
             }
-
+            
             .editor-content {
-                padding: 15px;
+                padding: 12px;
             }
-
+            
+            .editor-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
             .quick-actions {
-                flex-wrap: wrap;
-                justify-content: flex-end;
+                width: 100%;
+                justify-content: flex-start;
             }
-
-            .toast {
-                bottom: 20px;
-                right: 20px;
-                left: 20px;
-                max-width: calc(100% - 40px);
+            
+            .patient-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 12px 15px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .modal-title {
+                font-size: 1.3rem;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
             }
         }
 
         /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
 
         ::-webkit-scrollbar-track {
             background: rgba(0,0,0,0.05);
-            border-radius: 10px;
+            border-radius: 8px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(44, 125, 160, 0.4);
-            border-radius: 10px;
+            background: rgba(44, 125, 160, 0.3);
+            border-radius: 8px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(44, 125, 160, 0.6);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.4s ease forwards;
+            background: rgba(44, 125, 160, 0.5);
         }
     </style>
 </head>
 <body>
     <!-- Toast Container -->
     <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
         <span id="toast-message">Operação realizada com sucesso!</span>
     </div>
 
     <!-- Header -->
     <header>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <i class="fas fa-bars"></i>
+            ☰
         </button>
         <div class="logo">
             MEDNOTE
         </div>
         <div class="header-info">
             <div class="user-info">
-                <div class="user-avatar">DR</div>
                 <span>Dr. Carlos Silva</span>
             </div>
             <div class="time-info">
-                <i class="fas fa-clock"></i> <span id="currentTime">00:00</span>
+                <span id="currentTime">00:00</span>
             </div>
         </div>
     </header>
@@ -764,13 +684,12 @@
             <div class="section-header">
                 <div class="section-title">Setores</div>
                 <button class="btn" id="btnNewSetor">
-                    <i class="fas fa-plus"></i> Novo
+                    Novo
                 </button>
             </div>
             
             <div class="search-container">
                 <div class="search-box">
-                    <i class="fas fa-search"></i>
                     <input type="text" id="searchInput" placeholder="Buscar paciente ou setor...">
                 </div>
             </div>
@@ -803,19 +722,18 @@
                         <div class="editor-title">Subjetivo</div>
                         <div class="quick-actions">
                             <div class="quick-action" data-text="Paciente relata melhora do quadro">
-                                <i class="fas fa-plus"></i> Melhora
+                                Melhora
                             </div>
                             <div class="quick-action" data-text="Paciente refere dor intensa">
-                                <i class="fas fa-plus"></i> Dor
+                                Dor
                             </div>
                             <div class="quick-action" data-text="Paciente refere falta de ar">
-                                <i class="fas fa-plus"></i> Dispneia
+                                Dispneia
                             </div>
                         </div>
                     </div>
                     <div class="textarea-container">
                         <textarea class="soap-textarea" id="subjetivo-text" placeholder="Descreva os sintomas e queixas relatadas pelo paciente..."></textarea>
-                        <div class="autocomplete-suggestions" id="subjetivo-suggestions"></div>
                     </div>
                 </div>
                 
@@ -825,19 +743,18 @@
                         <div class="editor-title">Objetivo</div>
                         <div class="quick-actions">
                             <div class="quick-action" data-text="PA: 120/80 mmHg | FC: 78 bpm | FR: 16 rpm | Temp: 36.5°C">
-                                <i class="fas fa-plus"></i> Sinais Vitais
+                                Sinais Vitais
                             </div>
                             <div class="quick-action" data-text="Exame físico: abdômen flácido, indolor à palpação">
-                                <i class="fas fa-plus"></i> Exame Físico
+                                Exame Físico
                             </div>
                             <div class="quick-action" data-text="Exames laboratoriais dentro dos parâmetros normais">
-                                <i class="fas fa-plus"></i> Exames
+                                Exames
                             </div>
                         </div>
                     </div>
                     <div class="textarea-container">
                         <textarea class="soap-textarea" id="objetivo-text" placeholder="Registre os achados objetivos do exame físico e exames complementares..."></textarea>
-                        <div class="autocomplete-suggestions" id="objetivo-suggestions"></div>
                     </div>
                 </div>
                 
@@ -847,19 +764,18 @@
                         <div class="editor-title">Avaliação</div>
                         <div class="quick-actions">
                             <div class="quick-action" data-text="Paciente estável, em melhora clínica">
-                                <i class="fas fa-plus"></i> Estável
+                                Estável
                             </div>
                             <div class="quick-action" data-text="Paciente instável, necessita monitorização contínua">
-                                <i class="fas fa-plus"></i> Instável
+                                Instável
                             </div>
                             <div class="quick-action" data-text="Suspeita de infecção, iniciar antibioticoterapia">
-                                <i class="fas fa-plus"></i> Infecção
+                                Infecção
                             </div>
                         </div>
                     </div>
                     <div class="textarea-container">
                         <textarea class="soap-textarea" id="avaliacao-text" placeholder="Faça sua avaliação diagnóstica e análise do quadro clínico..."></textarea>
-                        <div class="autocomplete-suggestions" id="avaliacao-suggestions"></div>
                     </div>
                 </div>
                 
@@ -869,29 +785,25 @@
                         <div class="editor-title">Plano</div>
                         <div class="quick-actions">
                             <div class="quick-action" data-text="Manter tratamento atual">
-                                <i class="fas fa-plus"></i> Manter
+                                Manter
                             </div>
                             <div class="quick-action" data-text="Solicitar novos exames laboratoriais">
-                                <i class="fas fa-plus"></i> Exames
+                                Exames
                             </div>
                             <div class="quick-action" data-text="Encaminhar para especialista">
-                                <i class="fas fa-plus"></i> Encaminhar
+                                Encaminhar
                             </div>
                         </div>
                     </div>
                     <div class="textarea-container">
                         <textarea class="soap-textarea" id="plano-text" placeholder="Descreva o plano terapêutico, condutas e orientações..."></textarea>
-                        <div class="autocomplete-suggestions" id="plano-suggestions"></div>
                     </div>
                 </div>
             </div>
             
             <div class="editor-footer">
                 <button class="btn btn-danger" id="btnEndPlantao">
-                    <i class="fas fa-sign-out-alt"></i> Encerrar Plantão
-                </button>
-                <button class="btn btn-success" id="btnSave">
-                    <i class="fas fa-save"></i> Salvar
+                    Encerrar Plantão
                 </button>
             </div>
         </div>
@@ -959,7 +871,7 @@
                     Cancelar
                 </button>
                 <button class="btn btn-success" id="btnSaveSetor">
-                    <i class="fas fa-save"></i> Salvar Setor
+                    Salvar Setor
                 </button>
             </div>
         </div>
@@ -1010,7 +922,7 @@
                     Cancelar
                 </button>
                 <button class="btn btn-success" id="btnSavePaciente">
-                    <i class="fas fa-user-plus"></i> Adicionar Paciente
+                    Adicionar Paciente
                 </button>
             </div>
         </div>
@@ -1117,40 +1029,6 @@
             historico: []
         };
 
-        // Termos médicos para auto-complete
-        const termosMedicos = {
-            subjetivo: [
-                "dor", "febre", "náusea", "vômito", "tontura", "dispneia", "cefaleia", 
-                "astenia", "palpitação", "edema", "prurido", "anorexia", "poliúria", 
-                "polidipsia", "constipação", "diarreia", "hemoptise", "hematêmese", 
-                "melena", "hematúria", "tosse", "expectoração", "síncope", "convulsão"
-            ],
-            objetivo: [
-                "PA", "FC", "FR", "Temp", "SatO2", "GCS", "ausculta pulmonar", 
-                "ausculta cardíaca", "abdome", "neurológico", "edema", "icterícia", 
-                "palidez", "cianose", "rash cutâneo", "linfonodos", "reflexos", "ECG", 
-                "Rx tórax", "USG", "Tomografia", "Ressonância", "hemograma", "glicemia", 
-                "ureia", "creatinina", "TGO", "TGP", "troponina", "gasometria", "culturas"
-            ],
-            avaliacao: [
-                "diagnóstico", "hipótese diagnóstica", "diagnóstico diferencial", 
-                "complicação", "progressão", "estabilidade", "piora", "melhora", 
-                "risco", "prognóstico", "síndrome", "infecção", "inflamação", 
-                "isquemia", "hemorragia", "trauma", "neoplasia", "metástase", 
-                "descompensação", "choque", "sepse", "insuficiência", "edema", 
-                "embolia", "trombose", "desidratação", "eletrólitos"
-            ],
-            plano: [
-                "antibioticoterapia", "analgesia", "antiemético", "antitérmico", 
-                "anti-hipertensivo", "diurético", "broncodilatador", "corticoide", 
-                "anticoagulante", "insulina", "hidratação", "dieta", "repouso", 
-                "monitorização", "oxigenoterapia", "ventilação", "ressuscitação", 
-                "transfusão", "exames", "imagem", "consulta", "encaminhamento", 
-                "alta", "internação", "cirurgia", "procedimento", "curativo", 
-                "fisioterapia", "acompanhamento", "retorno"
-            ]
-        };
-
         // Elementos DOM
         const DOM = {
             sidebar: document.getElementById('sidebar'),
@@ -1168,14 +1046,7 @@
                 avaliacao: document.getElementById('avaliacao-text'),
                 plano: document.getElementById('plano-text')
             },
-            suggestions: {
-                subjetivo: document.getElementById('subjetivo-suggestions'),
-                objetivo: document.getElementById('objetivo-suggestions'),
-                avaliacao: document.getElementById('avaliacao-suggestions'),
-                plano: document.getElementById('plano-suggestions')
-            },
             btnEndPlantao: document.getElementById('btnEndPlantao'),
-            btnSave: document.getElementById('btnSave'),
             endPlantaoModal: document.getElementById('endPlantaoModal'),
             btnCancelEnd: document.getElementById('btnCancelEnd'),
             btnConfirmEnd: document.getElementById('btnConfirmEnd'),
@@ -1200,7 +1071,6 @@
         let state = {
             currentSetor: null,
             currentPaciente: null,
-            autoCompleteActive: false,
             currentDoctor: "Dr. Carlos Silva"
         };
 
@@ -1210,6 +1080,7 @@
             setupEventListeners();
             updateTime();
             setInterval(updateTime, 60000);
+            setInterval(saveCurrentData, 30000); // Salvamento automático a cada 30s
         }
 
         // Renderizar setores e pacientes
@@ -1220,7 +1091,7 @@
                 const isExpanded = state.currentSetor === setor.id;
                 
                 const setorEl = document.createElement('div');
-                setorEl.className = `setor-item glass fade-in ${isExpanded ? 'expanded' : ''} ${state.currentSetor === setor.id ? 'active' : ''}`;
+                setorEl.className = `setor-item glass ${isExpanded ? 'expanded' : ''} ${state.currentSetor === setor.id ? 'active' : ''}`;
                 setorEl.innerHTML = `
                     <div class="setor-name">
                         <span>${setor.nome}</span>
@@ -1229,7 +1100,6 @@
                     <div class="pacientes-container">
                         ${setor.pacientes.map(paciente => `
                             <div class="paciente-item glass ${state.currentPaciente === paciente.id ? 'active' : ''}" data-id="${paciente.id}">
-                                <div class="paciente-avatar">${paciente.nome.charAt(0)}</div>
                                 <div class="paciente-info">
                                     <div class="paciente-name">${paciente.nome}</div>
                                     <div class="paciente-details">
@@ -1241,14 +1111,19 @@
                             </div>
                         `).join('')}
                         <button class="btn" style="margin-top: 10px; width: 100%;" data-setor="${setor.id}">
-                            <i class="fas fa-user-plus"></i> Adicionar Paciente
+                            Adicionar Paciente
                         </button>
                     </div>
                 `;
                 
                 setorEl.addEventListener('click', (e) => {
                     if (!e.target.closest('.paciente-item') && !e.target.closest('button')) {
-                        state.currentSetor = setor.id;
+                        if (state.currentSetor === setor.id) {
+                            // Recolher se já estiver expandido
+                            state.currentSetor = null;
+                        } else {
+                            state.currentSetor = setor.id;
+                        }
                         renderSetores();
                     }
                 });
@@ -1293,9 +1168,9 @@
             // Atualizar header do paciente
             DOM.patientTitle.textContent = paciente.nome;
             DOM.patientDetails.innerHTML = `
-                <div class="detail-item"><i class="fas fa-user"></i> ${paciente.idade} anos, ${paciente.sexo === 'M' ? 'Masculino' : 'Feminino'}</div>
-                <div class="detail-item"><i class="fas fa-bed"></i> Leito: ${paciente.leito}</div>
-                <div class="detail-item"><i class="fas fa-file-medical"></i> Atendimento: ${paciente.atendimento}</div>
+                <div class="detail-item">${paciente.idade} anos, ${paciente.sexo === 'M' ? 'Masculino' : 'Feminino'}</div>
+                <div class="detail-item">Leito: ${paciente.leito}</div>
+                <div class="detail-item">Atendimento: ${paciente.atendimento}</div>
             `;
             
             // Preencher os campos SOAP
@@ -1306,9 +1181,6 @@
             
             // Atualizar sidebar
             renderSetores();
-            
-            // Registrar ação
-            registerAction(`Paciente ${paciente.nome} selecionado`);
         }
 
         // Configurar event listeners
@@ -1328,21 +1200,6 @@
                     openTab(tabId);
                 });
             });
-            
-            // Auto-complete
-            for (const tab in DOM.textareas) {
-                DOM.textareas[tab].addEventListener('input', function(e) {
-                    handleAutoComplete(e, tab);
-                });
-                
-                DOM.textareas[tab].addEventListener('blur', function() {
-                    setTimeout(() => {
-                        if (!state.autoCompleteActive) {
-                            DOM.suggestions[tab].style.display = 'none';
-                        }
-                    }, 200);
-                });
-            }
             
             // Quick actions
             document.querySelectorAll('.quick-action').forEach(action => {
@@ -1391,12 +1248,6 @@
                 DOM.endPlantaoModal.classList.remove('active');
                 DOM.assinatura.value = '';
             });
-            
-            // Salvar dados
-            DOM.btnSave.addEventListener('click', saveCurrentData);
-            
-            // Salvar automaticamente a cada 30 segundos
-            setInterval(saveCurrentData, 30000);
             
             // Modal novo setor
             DOM.btnCancelSetor.addEventListener('click', () => {
@@ -1493,63 +1344,6 @@
             document.getElementById(tabId).classList.add('active');
         }
 
-        // Auto-complete
-        function handleAutoComplete(e, tab) {
-            const textarea = e.target;
-            const value = textarea.value;
-            const cursorPos = textarea.selectionStart;
-            
-            // Encontrar a palavra atual
-            const textUntilCursor = value.substring(0, cursorPos);
-            const words = textUntilCursor.split(/\s+/);
-            const currentWord = words[words.length - 1].toLowerCase();
-            
-            // Limpar sugestões anteriores
-            DOM.suggestions[tab].innerHTML = '';
-            
-            if (currentWord.length > 1) {
-                const matchedTerms = termosMedicos[tab].filter(term => 
-                    term.toLowerCase().includes(currentWord)
-                );
-                
-                if (matchedTerms.length > 0) {
-                    DOM.suggestions[tab].style.display = 'block';
-                    matchedTerms.forEach(term => {
-                        const suggestion = document.createElement('div');
-                        suggestion.className = 'autocomplete-suggestion';
-                        suggestion.textContent = term;
-                        suggestion.addEventListener('mousedown', () => {
-                            state.autoCompleteActive = true;
-                            
-                            // Substituir a palavra atual pelo termo
-                            const newText = textUntilCursor.substring(0, textUntilCursor.lastIndexOf(currentWord)) + 
-                                          term + 
-                                          value.substring(cursorPos);
-                            
-                            textarea.value = newText;
-                            
-                            // Colocar o cursor após o termo inserido
-                            const newCursorPos = textUntilCursor.length - currentWord.length + term.length;
-                            setTimeout(() => {
-                                textarea.setSelectionRange(newCursorPos, newCursorPos);
-                                textarea.focus();
-                                DOM.suggestions[tab].style.display = 'none';
-                                state.autoCompleteActive = false;
-                                
-                                // Registrar ação
-                                registerAction(`Termo médico inserido: ${term}`);
-                            }, 0);
-                        });
-                        DOM.suggestions[tab].appendChild(suggestion);
-                    });
-                } else {
-                    DOM.suggestions[tab].style.display = 'none';
-                }
-            } else {
-                DOM.suggestions[tab].style.display = 'none';
-            }
-        }
-
         // Salvar dados atuais
         function saveCurrentData() {
             if (!state.currentPaciente) return;
@@ -1574,16 +1368,6 @@
                     paciente.soap.objetivo = DOM.textareas.objetivo.value;
                     paciente.soap.avaliacao = DOM.textareas.avaliacao.value;
                     paciente.soap.plano = DOM.textareas.plano.value;
-                    
-                    // Feedback visual
-                    const btn = DOM.btnSave;
-                    btn.innerHTML = '<i class="fas fa-check"></i> Salvo';
-                    btn.style.backgroundColor = '#27ae60';
-                    
-                    setTimeout(() => {
-                        btn.innerHTML = '<i class="fas fa-save"></i> Salvar';
-                        btn.style.backgroundColor = '';
-                    }, 2000);
                     
                     break;
                 }
@@ -1614,8 +1398,8 @@
         }
 
         // Mostrar toast
-        function showToast(message, type = 'info') {
-            DOM.toast.className = `toast toast-${type}`;
+        function showToast(message, type = 'success') {
+            DOM.toast.className = `toast ${type === 'error' ? 'toast-error' : 'toast-success'}`;
             DOM.toastMessage.textContent = message;
             DOM.toast.classList.add('show');
             
@@ -1628,8 +1412,6 @@
         function registerAction(action) {
             const now = new Date();
             const dateTime = now.toLocaleString('pt-BR');
-            
-            console.log(`[${dateTime}] ${state.currentDoctor}: ${action}`);
             
             // Se um paciente está selecionado, adicionar ao histórico
             if (state.currentPaciente) {
