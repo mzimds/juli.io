@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DONTMED- Sistema de Plantão Médico</title>
+    <title>DONTMED - Sistema de Plantão Médico</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -185,7 +185,7 @@
             cursor: pointer;
             transition: background-color 0.2s;
             border-left: 3px solid transparent;
-            margin: 8px 0;
+            margin: 4px 8px;
             border-radius: 6px;
             background: var(--light);
             box-shadow: var(--shadow-sm);
@@ -197,7 +197,6 @@
 
         .setor-item.active {
             background-color: rgba(0, 0, 0, 0.03);
-            border-left: 3px solid transparent;
         }
 
         .setor-name {
@@ -210,14 +209,11 @@
         }
 
         .pacientes-container {
-            margin-top: 12px;
-            padding-left: 10px;
+            margin-top: 8px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
+            padding: 0;
         }
 
         .setor-item.expanded .pacientes-container {
@@ -225,9 +221,10 @@
         }
 
         .paciente-item {
-            padding: 12px;
+            padding: 10px;
             border-bottom: 1px dashed var(--border);
             border-radius: 6px;
+            margin: 5px 0;
             transition: all 0.2s ease;
             background: var(--light);
             display: flex;
@@ -263,6 +260,7 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .badge {
@@ -349,6 +347,7 @@
             flex-direction: column;
             overflow: hidden;
             background: var(--light);
+            min-height: 300px;
         }
 
         .editor-content {
@@ -404,13 +403,11 @@
         .textarea-container {
             position: relative;
             flex: 1;
-            min-height: 0;
-            overflow: auto;
+            overflow: hidden;
         }
 
         .soap-textarea {
             width: 100%;
-            min-height: 150px;
             height: 100%;
             padding: 15px;
             border: 1px solid var(--border);
@@ -422,6 +419,7 @@
             background: var(--light);
             transition: all 0.2s ease;
             box-shadow: var(--shadow-sm);
+            min-height: 150px;
         }
 
         .soap-textarea:focus {
@@ -447,6 +445,7 @@
             flex-direction: column;
         }
 
+        /* Novo ícone hambúrguer/X */
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -460,7 +459,9 @@
             position: relative;
         }
 
-        .hamburger, .hamburger:before, .hamburger:after {
+        .mobile-menu-btn .hamburger,
+        .mobile-menu-btn .hamburger:before,
+        .mobile-menu-btn .hamburger:after {
             content: '';
             position: absolute;
             width: 100%;
@@ -470,31 +471,31 @@
             left: 0;
         }
 
-        .hamburger {
+        .mobile-menu-btn .hamburger {
+            top: 30%;
+        }
+
+        .mobile-menu-btn .hamburger:before {
             top: 50%;
             transform: translateY(-50%);
         }
 
-        .hamburger:before {
-            top: -8px;
-        }
-
-        .hamburger:after {
-            top: 8px;
+        .mobile-menu-btn .hamburger:after {
+            top: 70%;
         }
 
         .mobile-menu-btn.open .hamburger {
-            background: transparent;
+            transform: rotate(45deg);
+            top: 50%;
         }
 
         .mobile-menu-btn.open .hamburger:before {
-            transform: rotate(45deg);
-            top: 0;
+            opacity: 0;
         }
 
         .mobile-menu-btn.open .hamburger:after {
-            transform: rotate(-45deg);
-            top: 0;
+            transform: rotate(-90deg);
+            top: 50%;
         }
 
         .modal {
@@ -587,12 +588,12 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            padding: 16px 24px;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: 6px;
             background: var(--darker);
             color: white;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-md);
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s ease;
@@ -600,12 +601,6 @@
             max-width: 320px;
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .toast:before {
-            content: '✓';
-            font-size: 1.2rem;
         }
 
         .toast.show {
@@ -617,12 +612,70 @@
             background: var(--success);
         }
 
+        .toast-success::before {
+            content: "✓";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
         .toast-error {
             background: var(--danger);
         }
 
-        .toast-error:before {
-            content: '!';
+        .toast-error::before {
+            content: "⚠";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        @keyframes toastIn {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.show {
+            animation: toastIn 0.5s forwards;
+        }
+
+        .save-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.75rem;
+            color: var(--success);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .save-indicator.show {
+            opacity: 1;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .setor-name span:last-child {
+            background: rgba(44, 125, 160, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .disabled {
+            opacity: 0.5;
+            pointer-events: none;
         }
 
         @media (max-width: 992px) {
@@ -647,7 +700,7 @@
             }
 
             .patient-details {
-                flex-direction: row;
+                flex-direction: column;
                 gap: 5px;
             }
 
@@ -760,27 +813,15 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(44, 125, 160, 0.5);
         }
-        
-        .save-indicator {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 0.75rem;
-            color: var(--success);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .save-indicator.show {
-            opacity: 1;
-        }
     </style>
 </head>
 <body>
+    <!-- Toast Container -->
     <div class="toast" id="toast">
         <span id="toast-message">Operação realizada com sucesso!</span>
     </div>
 
+    <!-- Header -->
     <header>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
             <span class="hamburger"></span>
@@ -799,6 +840,7 @@
     </header>
 
     <div class="container">
+        <!-- Sidebar -->
         <div class="sidebar card" id="sidebar">
             <div class="section-header">
                 <div class="section-title">Setores</div>
@@ -817,11 +859,13 @@
                 <!-- Setores serão carregados aqui dinamicamente -->
             </div>
             
+            <!-- Botão "Passar Plantão" na sidebar (mobile) -->
             <button class="btn btn-pass" id="btnPassPlantaoMobile">
                 Passar Plantão
             </button>
         </div>
 
+        <!-- Main Content -->
         <div class="main-content card">
             <div class="patient-header">
                 <div class="patient-title" id="patientTitle">Selecione um paciente</div>
@@ -838,6 +882,7 @@
             </div>
             
             <div class="editor-container">
+                <!-- Subjetivo -->
                 <div class="editor-content active" id="subjetivo">
                     <div class="editor-header">
                         <div class="editor-title">Subjetivo</div>
@@ -854,11 +899,12 @@
                         </div>
                     </div>
                     <div class="textarea-container">
-                        <textarea class="soap-textarea" id="subjetivo-text" placeholder="Descreva os sintomas e queixas relatadas pelo paciente..."></textarea>
+                        <textarea class="soap-textarea" id="subjetivo-text" placeholder="Selecione um paciente para editar" disabled></textarea>
                         <div class="save-indicator" id="saveIndicatorSubjetivo">Salvo</div>
                     </div>
                 </div>
                 
+                <!-- Objetivo -->
                 <div class="editor-content" id="objetivo">
                     <div class="editor-header">
                         <div class="editor-title">Objetivo</div>
@@ -875,11 +921,12 @@
                         </div>
                     </div>
                     <div class="textarea-container">
-                        <textarea class="soap-textarea" id="objetivo-text" placeholder="Registre os achados objetivos do exame físico e exames complementares..."></textarea>
+                        <textarea class="soap-textarea" id="objetivo-text" placeholder="Selecione um paciente para editar" disabled></textarea>
                         <div class="save-indicator" id="saveIndicatorObjetivo">Salvo</div>
                     </div>
                 </div>
                 
+                <!-- Avaliação -->
                 <div class="editor-content" id="avaliacao">
                     <div class="editor-header">
                         <div class="editor-title">Avaliação</div>
@@ -896,11 +943,12 @@
                         </div>
                     </div>
                     <div class="textarea-container">
-                        <textarea class="soap-textarea" id="avaliacao-text" placeholder="Faça sua avaliação diagnóstica e análise do quadro clínico..."></textarea>
+                        <textarea class="soap-textarea" id="avaliacao-text" placeholder="Selecione um paciente para editar" disabled></textarea>
                         <div class="save-indicator" id="saveIndicatorAvaliacao">Salvo</div>
                     </div>
                 </div>
                 
+                <!-- Plano -->
                 <div class="editor-content" id="plano">
                     <div class="editor-header">
                         <div class="editor-title">Plano</div>
@@ -917,7 +965,7 @@
                         </div>
                     </div>
                     <div class="textarea-container">
-                        <textarea class="soap-textarea" id="plano-text" placeholder="Descreva o plano terapêutico, condutas e orientações..."></textarea>
+                        <textarea class="soap-textarea" id="plano-text" placeholder="Selecione um paciente para editar" disabled></textarea>
                         <div class="save-indicator" id="saveIndicatorPlano">Salvo</div>
                     </div>
                 </div>
@@ -935,6 +983,7 @@
         </div>
     </div>
 
+    <!-- Modal Passar Plantão -->
     <div class="modal" id="passPlantaoModal">
         <div class="modal-content card">
             <div class="modal-header">
@@ -943,11 +992,24 @@
             
             <div>
                 <div class="form-group">
-                    <label>Médico que recebe o plantão</label>
-                    <input type="text" class="form-control" id="medicoRecebe" placeholder="Nome do médico">
+                    <label>Médico Atual</label>
+                    <input type="text" class="form-control" value="Dr. Carlos Silva" readonly>
                 </div>
                 
-                <h3 style="margin: 20px 0 15px; font-size: 1.1rem; font-weight: 600;">Checklist de Passagem</h3>
+                <div class="form-group">
+                    <label>Médico que Receberá</label>
+                    <select class="form-control" id="medicoRecebe">
+                        <option value="">Selecione o médico</option>
+                        <option value="Dra. Ana Santos">Dra. Ana Santos</option>
+                        <option value="Dr. Pedro Oliveira">Dr. Pedro Oliveira</option>
+                        <option value="Dra. Juliana Costa">Dra. Juliana Costa</option>
+                    </select>
+                </div>
+                
+                <h3 style="margin: 20px 0 15px; font-size: 1.1rem; font-weight: 600; border-top: 1px solid var(--border); padding-top: 15px;">
+                    Checklist de Passagem
+                </h3>
+                
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
                     <label style="display: flex; align-items: center; gap: 12px;">
                         <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
@@ -969,7 +1031,8 @@
                 
                 <div class="form-group">
                     <label>Assinatura Digital</label>
-                    <input type="text" class="form-control" id="assinatura" readonly>
+                    <input type="text" class="form-control" id="assinatura" 
+                           placeholder="Digite seu nome completo para assinar" readonly>
                 </div>
             </div>
             
@@ -984,6 +1047,7 @@
         </div>
     </div>
 
+    <!-- Modal Novo Setor -->
     <div class="modal" id="newSetorModal">
         <div class="modal-content card">
             <div class="modal-header">
@@ -1006,6 +1070,7 @@
         </div>
     </div>
 
+    <!-- Modal Novo Paciente -->
     <div class="modal" id="newPacienteModal">
         <div class="modal-content card">
             <div class="modal-header">
@@ -1057,6 +1122,7 @@
     </div>
 
     <script>
+        // Dados de exemplo para demonstração
         const dados = {
             setores: [
                 {
@@ -1186,6 +1252,7 @@
             historico: []
         };
 
+        // Elementos DOM
         const DOM = {
             sidebar: document.getElementById('sidebar'),
             mobileMenuBtn: document.getElementById('mobileMenuBtn'),
@@ -1233,6 +1300,7 @@
             editTimestamp: document.getElementById('editTimestamp')
         };
 
+        // Estado da aplicação
         let state = {
             currentSetor: null,
             currentPaciente: null,
@@ -1240,6 +1308,7 @@
             lastEdit: new Date().toISOString()
         };
 
+        // Inicialização
         function init() {
             renderSetores();
             setupEventListeners();
@@ -1247,8 +1316,25 @@
             setInterval(updateTime, 60000);
             setInterval(saveCurrentData, 30000);
             updateSignature();
+            disableSOAPEditor(true);
+        }
+        
+        // Habilitar/desabilitar editor SOAP
+        function disableSOAPEditor(disabled) {
+            Object.values(DOM.textareas).forEach(textarea => {
+                textarea.disabled = disabled;
+                textarea.placeholder = disabled 
+                    ? "Selecione um paciente para editar" 
+                    : "Digite suas observações...";
+            });
+            
+            document.querySelectorAll('.quick-action').forEach(btn => {
+                btn.style.opacity = disabled ? 0.5 : 1;
+                btn.style.pointerEvents = disabled ? 'none' : 'all';
+            });
         }
 
+        // Renderizar setores e pacientes
         function renderSetores() {
             DOM.setoresList.innerHTML = '';
             
@@ -1260,7 +1346,7 @@
                 setorEl.innerHTML = `
                     <div class="setor-name">
                         <span>${setor.nome}</span>
-                        <span>${setor.pacientes.length} paciente${setor.pacientes.length !== 1 ? 's' : ''}</span>
+                        <span>${setor.pacientes.length}</span>
                     </div>
                     <div class="pacientes-container">
                         ${setor.pacientes.map(paciente => `
@@ -1294,6 +1380,7 @@
                 
                 DOM.setoresList.appendChild(setorEl);
                 
+                // Eventos para pacientes
                 setorEl.querySelectorAll('.paciente-item').forEach(item => {
                     item.addEventListener('click', () => {
                         const pacienteId = parseInt(item.getAttribute('data-id'));
@@ -1301,6 +1388,7 @@
                     });
                 });
                 
+                // Evento para botão de adicionar paciente
                 setorEl.querySelector('button').addEventListener('click', (e) => {
                     e.stopPropagation();
                     openNewPacienteModal(setor.id);
@@ -1308,10 +1396,12 @@
             });
         }
 
+        // Selecionar paciente
         function selectPaciente(pacienteId) {
             let paciente = null;
             let setor = null;
             
+            // Encontrar paciente e setor
             for (const s of dados.setores) {
                 paciente = s.pacientes.find(p => p.id === pacienteId);
                 if (paciente) {
@@ -1325,6 +1415,7 @@
             state.currentSetor = setor.id;
             state.currentPaciente = paciente.id;
             
+            // Atualizar header do paciente
             DOM.patientTitle.textContent = paciente.nome;
             DOM.patientDetails.innerHTML = `
                 <div class="detail-item">${paciente.idade} anos, ${paciente.sexo === 'M' ? 'Masculino' : 'Feminino'}</div>
@@ -1332,28 +1423,40 @@
                 <div class="detail-item">Atendimento: ${paciente.atendimento}</div>
             `;
             
+            // Preencher os campos SOAP
             DOM.textareas.subjetivo.value = paciente.soap.subjetivo;
             DOM.textareas.objetivo.value = paciente.soap.objetivo;
             DOM.textareas.avaliacao.value = paciente.soap.avaliacao;
             DOM.textareas.plano.value = paciente.soap.plano;
             
+            // Habilitar editor
+            disableSOAPEditor(false);
+            
+            // Atualizar assinatura
             updateSignature();
+            
+            // Atualizar sidebar
             renderSetores();
             
+            // Fechar menu no mobile
             if (window.innerWidth <= 992) {
                 DOM.sidebar.classList.remove('open');
                 DOM.mobileMenuBtn.classList.remove('open');
             }
         }
 
+        // Configurar event listeners
         function setupEventListeners() {
+            // Menu mobile
             DOM.mobileMenuBtn.addEventListener('click', () => {
                 DOM.sidebar.classList.toggle('open');
                 DOM.mobileMenuBtn.classList.toggle('open');
             });
             
+            // Novo setor
             DOM.btnNewSetor.addEventListener('click', openNewSetorModal);
             
+            // Abas SOAP
             DOM.soapTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const tabId = tab.getAttribute('data-tab');
@@ -1361,26 +1464,28 @@
                 });
             });
             
+            // Quick actions
             document.querySelectorAll('.quick-action').forEach(action => {
                 action.addEventListener('click', function() {
+                    if (state.currentPaciente === null) return;
+                    
                     const tabId = this.closest('.editor-content').id;
                     const textarea = DOM.textareas[tabId];
                     const textToAdd = this.getAttribute('data-text');
                     
+                    // Adicionar texto no início do textarea
                     textarea.value = textToAdd + '\n\n' + textarea.value;
                     textarea.focus();
                     
+                    // Registrar ação
                     registerAction(`Template adicionado em ${tabId}`);
+                    
+                    // Salvar imediatamente
                     saveCurrentData();
                 });
             });
             
-            function openPassPlantaoModal() {
-                const now = new Date();
-                DOM.assinatura.value = `${state.currentDoctor} - ${now.toLocaleString('pt-BR')}`;
-                DOM.passPlantaoModal.classList.add('active');
-            }
-
+            // Passar plantão
             DOM.btnPassPlantao.addEventListener('click', openPassPlantaoModal);
             DOM.btnPassPlantaoMobile.addEventListener('click', openPassPlantaoModal);
             
@@ -1390,26 +1495,28 @@
             
             DOM.btnConfirmPass.addEventListener('click', () => {
                 const medicoRecebe = DOM.medicoRecebe.value.trim();
-                
                 if (!medicoRecebe) {
-                    showToast('Informe o médico que receberá o plantão', 'error');
+                    showToast('Selecione o médico que receberá o plantão', 'error');
                     return;
                 }
                 
-                const plantao = {
-                    data: new Date().toISOString(),
-                    medicoRecebe: medicoRecebe,
-                    assinatura: DOM.assinatura.value,
-                    setores: JSON.parse(JSON.stringify(dados.setores))
-                };
+                // Mostrar feedback visual
+                DOM.btnConfirmPass.innerHTML = '<span class="loader"></span> Processando...';
+                DOM.btnConfirmPass.disabled = true;
                 
-                dados.historico.push(plantao);
-                registerAction(`Plantão passado para ${medicoRecebe} por ${state.currentDoctor}`);
-                showToast(`Plantão passado para ${medicoRecebe} com sucesso!`, 'success');
-                DOM.passPlantaoModal.classList.remove('active');
-                DOM.medicoRecebe.value = '';
+                setTimeout(() => {
+                    // Simular passagem de plantão
+                    showToast(`Plantão passado para ${medicoRecebe} com sucesso!`, 'success');
+                    
+                    // Fechar o modal
+                    DOM.passPlantaoModal.classList.remove('active');
+                    DOM.btnConfirmPass.innerHTML = 'Confirmar Passagem';
+                    DOM.btnConfirmPass.disabled = false;
+                    DOM.medicoRecebe.value = '';
+                }, 1500);
             });
             
+            // Modal novo setor
             DOM.btnCancelSetor.addEventListener('click', () => {
                 DOM.newSetorModal.classList.remove('active');
             });
@@ -1426,13 +1533,17 @@
                     renderSetores();
                     DOM.newSetorModal.classList.remove('active');
                     DOM.setorName.value = '';
+                    
+                    // Registrar ação
                     registerAction(`Novo setor criado: ${nomeSetor}`);
+                    
                     showToast(`Setor "${nomeSetor}" criado com sucesso!`, 'success');
                 } else {
                     showToast('Por favor, informe o nome do setor', 'error');
                 }
             });
             
+            // Modal novo paciente
             DOM.btnCancelPaciente.addEventListener('click', () => {
                 DOM.newPacienteModal.classList.remove('active');
             });
@@ -1449,6 +1560,7 @@
                     return;
                 }
                 
+                // Encontrar setor
                 const setorId = parseInt(DOM.newPacienteModal.getAttribute('data-setor'));
                 const setor = dados.setores.find(s => s.id === setorId);
                 
@@ -1477,22 +1589,30 @@
                     renderSetores();
                     DOM.newPacienteModal.classList.remove('active');
                     
+                    // Resetar campos
                     DOM.pacienteName.value = '';
                     DOM.pacienteIdade.value = '';
                     DOM.pacienteSexo.value = '';
                     DOM.pacienteLeito.value = '';
                     DOM.pacienteAtendimento.value = '';
                     
+                    // Registrar ação
                     registerAction(`Novo paciente adicionado: ${nome}`);
+                    
                     showToast(`Paciente "${nome}" adicionado com sucesso!`, 'success');
                 }
             });
             
+            // Eventos para salvar ao editar
             Object.values(DOM.textareas).forEach(textarea => {
                 textarea.addEventListener('input', () => {
+                    if (state.currentPaciente === null) return;
+                    
+                    // Mostrar indicador de salvamento
                     const tabId = textarea.id.split('-')[0];
                     showSaveIndicator(tabId);
                     
+                    // Salvar após 1 segundo sem edição
                     clearTimeout(textarea.saveTimeout);
                     textarea.saveTimeout = setTimeout(() => {
                         saveCurrentData();
@@ -1501,20 +1621,26 @@
             });
         }
 
+        // Abrir aba específica
         function openTab(tabId) {
+            // Remover classe ativa de todas as abas e conteúdos
             DOM.soapTabs.forEach(tab => tab.classList.remove('active'));
             DOM.editorContents.forEach(content => content.classList.remove('active'));
             
+            // Adicionar classe ativa à aba selecionada
             document.querySelector(`.soap-tab[data-tab="${tabId}"]`).classList.add('active');
             document.getElementById(tabId).classList.add('active');
         }
 
+        // Salvar dados atuais
         function saveCurrentData() {
             if (!state.currentPaciente) return;
             
+            // Encontrar paciente
             for (const setor of dados.setores) {
                 const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
                 if (paciente) {
+                    // Registrar ação de edição com assinatura
                     const changes = [];
                     if (paciente.soap.subjetivo !== DOM.textareas.subjetivo.value) {
                         changes.push("Subjetivo");
@@ -1530,14 +1656,17 @@
                     }
                     
                     if (changes.length > 0) {
-                        showToast('Dados salvos automaticamente', 'success');
+                        registerAction(`${changes.join(', ')} editado(s) por ${state.currentDoctor}`);
+                        showToast('Dados salvos com sucesso', 'success');
                     }
                     
+                    // Atualizar valores
                     paciente.soap.subjetivo = DOM.textareas.subjetivo.value;
                     paciente.soap.objetivo = DOM.textareas.objetivo.value;
                     paciente.soap.avaliacao = DOM.textareas.avaliacao.value;
                     paciente.soap.plano = DOM.textareas.plano.value;
                     
+                    // Atualizar timestamp
                     state.lastEdit = new Date().toISOString();
                     updateSignature();
                     
@@ -1546,6 +1675,7 @@
             }
         }
 
+        // Mostrar indicador de salvamento
         function showSaveIndicator(tabId) {
             const indicator = DOM.saveIndicators[tabId];
             indicator.classList.add('show');
@@ -1555,25 +1685,40 @@
             }, 2000);
         }
 
+        // Atualizar assinatura visível
         function updateSignature() {
             if (state.lastEdit) {
                 const editDate = new Date(state.lastEdit);
-                DOM.editTimestamp.textContent = editDate.toLocaleString('pt-BR');
+                const dateStr = editDate.toLocaleDateString('pt-BR');
+                const timeStr = editDate.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                DOM.editTimestamp.textContent = `${dateStr} ${timeStr}`;
             }
             DOM.signatureName.textContent = `Assinado digitalmente por: ${state.currentDoctor}`;
         }
 
+        // Abrir modal novo setor
         function openNewSetorModal() {
             DOM.newSetorModal.classList.add('active');
             DOM.setorName.focus();
         }
 
+        // Abrir modal novo paciente
         function openNewPacienteModal(setorId) {
             DOM.newPacienteModal.setAttribute('data-setor', setorId);
             DOM.newPacienteModal.classList.add('active');
             DOM.pacienteName.focus();
         }
+        
+        // Abrir modal de passagem de plantão
+        function openPassPlantaoModal() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('pt-BR');
+            const timeStr = now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+            DOM.assinatura.value = `${state.currentDoctor} - ${dateStr} ${timeStr}`;
+            DOM.passPlantaoModal.classList.add('active');
+        }
 
+        // Atualizar hora atual
         function updateTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('pt-BR', {
@@ -1583,6 +1728,7 @@
             document.getElementById('currentTime').textContent = timeString;
         }
 
+        // Mostrar toast
         function showToast(message, type = 'success') {
             DOM.toast.className = `toast ${type === 'error' ? 'toast-error' : 'toast-success'}`;
             DOM.toastMessage.textContent = message;
@@ -1593,10 +1739,12 @@
             }, 3000);
         }
 
+        // Registrar ação com assinatura digital
         function registerAction(action) {
             const now = new Date();
             const timestamp = now.toLocaleString('pt-BR');
             
+            // Se um paciente está selecionado, adicionar ao histórico
             if (state.currentPaciente) {
                 for (const setor of dados.setores) {
                     const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
@@ -1611,10 +1759,12 @@
                 }
             }
             
+            // Atualizar timestamp
             state.lastEdit = now.toISOString();
             updateSignature();
         }
 
+        // Inicializar aplicação
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
