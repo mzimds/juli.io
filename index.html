@@ -798,8 +798,9 @@
 
         .btn-send {
             position: absolute;
-            right: 20px;
-            bottom: 18px;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
             background: var(--pass-plantao);
             color: white;
             border: none;
@@ -1124,15 +1125,6 @@
                             </div>
                             <div class="quick-action" data-text="Paciente refere dor intensa">
                                 Dor
-                            </div>
-                            <div class="quick-action" data-action="copy">
-                                Copiar
-                            </div>
-                            <div class="quick-action" data-action="highlight">
-                                Destacar
-                            </div>
-                            <div class="quick-action" data-action="attach">
-                                Anexar
                             </div>
                         </div>
                     </div>
@@ -1816,6 +1808,8 @@
                     if(textToAdd) {
                         DOM.messageInput.value = textToAdd;
                         DOM.messageInput.focus();
+                        // Habilita o botão de envio
+                        DOM.btnSendMessage.disabled = false;
                     }
                 });
             });
@@ -2034,14 +2028,19 @@
             const message = DOM.messageInput.value.trim();
             if (!message) return;
             
+            // Adiciona assinatura completa à mensagem
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('pt-BR');
+            const timeStr = now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+            
             // Encontrar paciente
             for (const setor of dados.setores) {
                 const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
                 if (paciente) {
-                    // Adicionar mensagem
+                    // Adicionar mensagem com assinatura
                     paciente.anotacoes.push({
                         id: Date.now(),
-                        texto: message,
+                        texto: `${message}\n\nAssinado por: ${state.currentDoctor}\n${dateStr} ${timeStr}`,
                         timestamp: new Date().toISOString(),
                         medico: state.currentDoctor,
                         tipo: "texto"
