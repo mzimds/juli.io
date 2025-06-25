@@ -772,22 +772,22 @@
         }
 
         .message-input-container {
+            position: relative;
             display: flex;
             padding: 10px;
             border-top: 1px solid var(--border);
-            gap: 8px;
             background: var(--light);
         }
 
         .message-input {
             flex: 1;
-            padding: 10px 12px;
+            padding: 10px 45px 10px 12px; /* Espaço para o botão */
             border: 1px solid var(--border);
             border-radius: 20px;
             resize: none;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
-            min-height: 80px;
+            min-height: 40px;
             max-height: 150px;
         }
 
@@ -797,29 +797,24 @@
         }
 
         .btn-send {
-            padding: 8px 12px;
-            background: var(--gray); 
+            position: absolute;
+            right: 20px;
+            bottom: 18px;
+            background: var(--pass-plantao);
             color: white;
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            font-weight: 500;
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
         }
 
-        .btn-send:not(:disabled) {
-            background: var(--pass-plantao); 
-            cursor: pointer;
-            box-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
-        }
-
         .btn-send:disabled {
-            opacity: 0.5;
+            background: var(--gray);
             cursor: not-allowed;
         }
 
@@ -860,9 +855,10 @@
             align-items: center;
             gap: 5px;
             font-size: 0.85rem;
-            color: var(--primary);
+            color: var(--darker); /* Alterado para preto */
             cursor: pointer;
             margin-top: 5px;
+            font-weight: 500; /* Adicionado para melhor legibilidade */
         }
 
         .patient-details {
@@ -1235,7 +1231,7 @@
             
             <div class="progress-container">
                 <div class="progress-header">
-                    <span>Setores: <span id="currentSetorCount">0</span>/5</span>
+                    <span>Setores: <span id="currentSetorCount">0</span>/<span id="maxSetor">5</span></span> <!-- Corrigido -->
                     <span id="maxSetorMessage" style="color: var(--danger); display: none;">Máximo atingido</span>
                 </div>
                 <div class="progress-bar">
@@ -1474,7 +1470,8 @@
             btnSendMessage: document.getElementById('btnSendMessage'),
             currentSetorCount: document.getElementById('currentSetorCount'),
             progressFill: document.getElementById('progressFill'),
-            maxSetorMessage: document.getElementById('maxSetorMessage')
+            maxSetorMessage: document.getElementById('maxSetorMessage'),
+            maxSetor: document.getElementById('maxSetor') // Adicionado
         };
 
         // Estado da aplicação
@@ -1605,7 +1602,10 @@
             const max = 5;
             const percentage = (count / max) * 100;
             
-            DOM.currentSetorCount.textContent = `${count}/${max}`;
+            // Correção: exibir apenas "X/5"
+            DOM.currentSetorCount.textContent = count;
+            DOM.maxSetor.textContent = max;
+            
             DOM.progressFill.style.width = `${percentage}%`;
             
             if (count >= max) {
@@ -1820,9 +1820,17 @@
                 });
             });
             
-            // Passar plantão
+            // Passar plantão - CORREÇÃO: Área clicável completa
             DOM.btnPassPlantao.addEventListener('click', openPassPlantaoModal);
             DOM.btnPassPlantaoMobile.addEventListener('click', openPassPlantaoModal);
+            
+            // Permitir clique em qualquer parte dos botões
+            [DOM.btnPassPlantao, DOM.btnPassPlantaoMobile].forEach(btn => {
+                btn.style.cursor = 'pointer';
+                btn.querySelectorAll('*').forEach(child => {
+                    child.style.pointerEvents = 'none';
+                });
+            });
             
             DOM.btnCancelPass.addEventListener('click', () => {
                 DOM.passPlantaoModal.classList.remove('active');
