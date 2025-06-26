@@ -409,6 +409,7 @@
 
         .pricing-header {
             margin-bottom: 15px; /* Reduzido */
+            position: relative;
         }
 
         .pricing-header h3 {
@@ -1114,27 +1115,21 @@
                     <div class="pricing-header">
                         <h3>Pro</h3>
                         <p>Ideal para hospitais que valorizam governança clínica</p>
-                        <div class="price" id="proPrice">R$59<span>/setor/mês</span></div>
-                    </div>
-                    
-                    <div class="toggle-container">
-                        <div class="toggle-option active" data-plan="monthly">Mensal</div>
-                        <div class="toggle-option" data-plan="annual">Anual (20% OFF)</div>
-                    </div>
-                    
-                    <div class="setor-selector">
-                        <div class="setor-btn" id="decreaseSetor">-</div>
-                        <div class="setor-count" id="setorCount">3</div>
-                        <div class="setor-btn" id="increaseSetor">+</div>
-                    </div>
-                    
-                    <div class="total-price">
-                        <div class="label">Total mensal</div>
-                        <div class="price" id="totalPrice">R$177</div>
-                        <div class="annual" id="annualPrice">Total anual: R$1.699 (economize R$424)</div>
+                        
+                        <!-- Toggle para seleção de plano -->
+                        <div class="toggle-container">
+                            <div class="toggle-option active" data-plan="monthly">Mensal</div>
+                            <div class="toggle-option" data-plan="annual">Anual (20% OFF)</div>
+                        </div>
+                        
+                        <div class="price" id="proPrice">R$99<span>/setor/mês</span></div>
                     </div>
                     
                     <div class="pricing-features">
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Setores ilimitados</p>
+                        </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
                             <p>Salvamento e histórico ilimitado</p>
@@ -1322,63 +1317,27 @@
 
         // Pricing Toggle
         const toggleOptions = document.querySelectorAll('.toggle-option');
+        const proPriceElement = document.getElementById('proPrice');
+        
+        // Preço base do plano Pro
+        const monthlyPrice = 99;
+        const annualDiscount = 0.2; // 20% de desconto
+        const annualPrice = monthlyPrice * (1 - annualDiscount);
+        
         toggleOptions.forEach(option => {
             option.addEventListener('click', () => {
                 toggleOptions.forEach(opt => opt.classList.remove('active'));
                 option.classList.add('active');
-                updatePricing();
+                
+                // Atualizar o preço exibido
+                if(option.dataset.plan === 'monthly') {
+                    proPriceElement.innerHTML = `R$${monthlyPrice.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
+                } else {
+                    proPriceElement.innerHTML = `R$${annualPrice.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
+                    proPriceElement.innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
+                }
             });
         });
-
-        // Setor Counter
-        const setorCount = document.getElementById('setorCount');
-        const minusBtn = document.getElementById('decreaseSetor');
-        const plusBtn = document.getElementById('increaseSetor');
-        const totalPrice = document.getElementById('totalPrice');
-        const annualPrice = document.getElementById('annualPrice');
-        const proPrice = document.getElementById('proPrice');
-        
-        let count = 3;
-        let isAnnual = false;
-        
-        minusBtn.addEventListener('click', () => {
-            if (count > 1) {
-                count--;
-                setorCount.textContent = count;
-                updatePricing();
-            }
-        });
-        
-        plusBtn.addEventListener('click', () => {
-            count++;
-            setorCount.textContent = count;
-            updatePricing();
-        });
-        
-        function updatePricing() {
-            // Get active plan
-            const activePlan = document.querySelector('.toggle-option.active').dataset.plan;
-            isAnnual = activePlan === 'annual';
-            
-            // Calculate prices
-            const pricePerSetor = isAnnual ? 47.20 : 59;
-            const monthlyTotal = count * pricePerSetor;
-            const annualTotal = monthlyTotal * 12;
-            const savings = count * 59 * 12 - annualTotal;
-            
-            // Update displayed prices
-            proPrice.innerHTML = `R$${pricePerSetor.toFixed(2).replace('.', ',')}<span>/setor/${isAnnual ? 'ano' : 'mês'}</span>`;
-            totalPrice.textContent = `R$${monthlyTotal.toFixed(2).replace('.', ',')}`;
-            
-            if (isAnnual) {
-                annualPrice.textContent = `Total anual: R$${annualTotal.toFixed(2).replace('.', ',')} (economize R$${savings.toFixed(2).replace('.', ',')})`;
-            } else {
-                annualPrice.textContent = `Total anual: R$${(monthlyTotal * 12 * 0.8).toFixed(2).replace('.', ',')} (economize R$${(monthlyTotal * 12 * 0.2).toFixed(2).replace('.', ',')})`;
-            }
-        }
-        
-        // Initialize
-        updatePricing();
         
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
