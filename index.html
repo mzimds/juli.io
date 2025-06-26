@@ -7,8 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Estilos anteriores mantidos */
         :root {
-            --primary: #2ecc71; /* Verde médico */
+            --primary: #2ecc71;
             --primary-dark: #27ae60;
             --light: #ffffff;
             --dark: #0a0a0a;
@@ -575,6 +576,16 @@
         .cancel-info i {
             color: var(--success);
         }
+        
+        .temporary-note {
+            background: rgba(0,0,0,0.03);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            border: 1px dashed var(--border);
+        }
 
         /* Highlights */
         .highlights {
@@ -1021,7 +1032,7 @@
     <section class="hero">
         <div class="container">
             <h1 id="typed-title"></h1>
-            <p>Cada anotação é registrada com precisão e rastreabilidade total.</p>
+            <p>Documentação médica ágil e segura. Fluxos simplificados. Gestão em tempo real.</p>
             <div class="hero-buttons">
                 <a href="#pricing" class="btn btn-primary">Testar gratuitamente</a>
                 <a href="#features" class="btn btn-outline">Ver funcionalidades</a>
@@ -1033,18 +1044,18 @@
     <section id="features" class="features">
         <div class="container">
             <div class="section-header">
-                <h2>Registros clínicos organizados.<br>Sem ruído. Sem perda de tempo.</h2>
-                <p>Otimizado para passagem de plantão, rastreio de informações e governança clínica</p>
+                <h2>Visão em tempo real de equipes e pacientes</h2>
+                <p>Ideal para coordenadores médicos, hospitais e clínicas com equipes rotativas</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-                    <h3>Registro de anotações ultra-rápido</h3>
-                    <p>Interface otimizada para registrar informações clínicas em segundos, sem atrasar sua rotina.</p>
+                    <div class="feature-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Visão consolidada de registros</h3>
+                    <p>Acompanhe em tempo real o que cada profissional está registrando.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-brain"></i></div>
-                    <h3>Otimizado para passagem de plantão</h3>
+                    <h3>Otimizado para transições</h3>
                     <p>Transição de informações entre equipes de forma ágil e estruturada, reduzindo erros e garantindo continuidade do cuidado.</p>
                 </div>
                 <div class="feature-card">
@@ -1054,17 +1065,17 @@
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
-                    <h3>Analytics para rastreio de equipes e decisões</h3>
+                    <h3>Analytics para coordenação</h3>
                     <p>Relatórios em tempo real para acompanhamento de métricas operacionais e conformidade regulatória.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-stopwatch"></i></div>
-                    <h3>Redução do tempo na transição entre turnos</h3>
-                    <p>Economize até 40% do tempo na passagem de plantão com fluxos otimizados.</p>
+                    <h3>Redução do tempo na transição</h3>
+                    <p>Economize até 40% do tempo na passagem de informações com fluxos otimizados.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Conformidade com LGPD sem fricção</h3>
+                    <h3>Conformidade sem fricção</h3>
                     <p>Registro completo de todas as ações com timestamp e assinatura digital, atendendo aos mais rigorosos padrões.</p>
                 </div>
             </div>
@@ -1075,7 +1086,7 @@
     <section id="pricing" class="pricing">
         <div class="container">
             <div class="section-header">
-                <h2>Planos sob medida para qualquer rotina hospitalar.</h2>
+                <h2>Planos sob medida para qualquer rotina hospitalar</h2>
                 <p>Simples, transparente e sem surpresas</p>
             </div>
             <div class="pricing-cards">
@@ -1083,13 +1094,17 @@
                 <div class="pricing-card">
                     <div class="pricing-header">
                         <h3>Free</h3>
-                        <p>Para pequenas equipes e testes</p>
+                        <p>Para testes e pequenas equipes</p>
                         <div class="price">R$0<span>/mês</span></div>
                     </div>
                     <div class="pricing-features">
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
                             <p>1 setor</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Até 5 usuários</p>
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
@@ -1100,27 +1115,36 @@
                             <p>Assinatura eletrônica integrada</p>
                         </div>
                         <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Analytics em tempo real</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Memória temporária durante o plantão</p>
+                        </div>
+                        <div class="feature-item">
                             <div class="icon"><i class="fas fa-times" style="color: var(--gray-500);"></i></div>
-                            <p>Salvamento de anotações</p>
+                            <p>Dados não são salvos após o encerramento</p>
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-times" style="color: var(--gray-500);"></i></div>
                             <p>Histórico completo</p>
                         </div>
                     </div>
+                    <div class="temporary-note">
+                        <p>As informações são mantidas apenas durante o plantão, em memória volátil. Após o término, todos os dados são descartados automaticamente.</p>
+                    </div>
                     <a href="#" class="btn btn-outline" style="width: 100%; text-align: center;">Começar gratuitamente</a>
-                    <p class="cancel-info placeholder" style="visibility: hidden;"><i class="fas fa-check"></i> Cancelamento facilitado</p>
                 </div>
                 
                 <!-- Pro Plan -->
                 <div class="pricing-card featured">
                     <div class="pricing-header">
                         <h3>Pro</h3>
-                        <p>Ideal para hospitais que valorizam governança clínica</p>
+                        <p>Para equipes que buscam escalabilidade com segurança clínica</p>
                         
                         <!-- Toggle para seleção de plano -->
                         <div class="toggle-container">
-                            <!-- Alterado: Removido texto "OFF" -->
                             <div class="toggle-option active" data-plan="monthly">Mensal</div>
                             <div class="toggle-option" data-plan="annual">Anual</div>
                         </div>
@@ -1135,7 +1159,11 @@
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
-                            <p>Salvamento e histórico ilimitado</p>
+                            <p>Até 10 usuários por setor</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Salvamento e histórico completo</p>
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
@@ -1143,16 +1171,68 @@
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
-                            <p>Logs e rastreabilidade completa</p>
+                            <p>Logs e rastreabilidade</p>
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
-                            <p>Multiusuário e acesso seguro</p>
+                            <p>Multiusuário com acesso seguro</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Analytics em tempo real</p>
                         </div>
                     </div>
                     <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Assinar Pro</a>
-                    <!-- Alterado: Adicionado ID para controle -->
-                    <p class="cancel-info" id="cancelInfo"><i class="fas fa-check"></i> Cancelamento facilitado</p>
+                    <p class="cancel-info" id="proCancelInfo"><i class="fas fa-check"></i> Cancelamento a qualquer momento</p>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <p>Para operações hospitalares complexas e alta demanda</p>
+                        
+                        <!-- Toggle para seleção de plano -->
+                        <div class="toggle-container">
+                            <div class="toggle-option active" data-plan="monthly">Mensal</div>
+                            <div class="toggle-option" data-plan="annual">Anual</div>
+                        </div>
+                        
+                        <div class="price" id="enterprisePrice">R$199<span>/setor/mês</span></div>
+                    </div>
+                    
+                    <div class="pricing-features">
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Setores ilimitados</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Usuários ilimitados por setor</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Salvamento e histórico completo</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Assinatura eletrônica integrada</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Logs e rastreabilidade avançada</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Multiusuário com controle de acesso</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Analytics em tempo real</p>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-outline" style="width: 100%; text-align: center;">Assinar Enterprise</a>
+                    <p class="cancel-info" id="enterpriseCancelInfo"><i class="fas fa-check"></i> Cancelamento a qualquer momento</p>
                 </div>
             </div>
         </div>
@@ -1162,7 +1242,7 @@
     <section id="highlights" class="highlights">
         <div class="container">
             <div class="section-header">
-                <h2>Plataforma feita para o ritmo do plantão</h2>
+                <h2>Plataforma feita para o ritmo da prática clínica</h2>
                 <p>Desenvolvido por profissionais de saúde para profissionais de saúde</p>
             </div>
             <div class="highlights-grid">
@@ -1202,13 +1282,14 @@
                 <div class="faq-item">
                     <div class="faq-question">Posso migrar entre planos?</div>
                     <div class="faq-answer">
-                        <p>Sim, você pode migrar entre planos a qualquer momento sem custos adicionais. Se você estiver no plano Free e quiser migrar para o Pro, seus dados serão mantidos e você terá acesso imediato a todos os recursos premium.</p>
+                        <p>Sim, você pode realizar upgrade do Pro para o Enterprise a qualquer momento, sem custos adicionais de migração. Seus dados, usuários e configurações são mantidos, e o acesso aos recursos avançados é liberado imediatamente.</p>
+                        <p style="margin-top:10px;font-weight:500">Downgrade de plano não está disponível para evitar perda de dados e conflitos com usuários ativos.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question">Posso cancelar a qualquer momento?</div>
                     <div class="faq-answer">
-                        <p>Sim, todos os planos podem ser cancelados a qualquer momento sem taxas de cancelamento. Se você cancelar no meio do período, terá acesso até o final do ciclo de faturamento já pago.</p>
+                        <p>Sim, todos os planos com assinatura mensal podem ser cancelados a qualquer momento, sem taxas de cancelamento. Se você cancelar no meio do período, continuará com acesso até o final do ciclo de faturamento já pago.</p>
                     </div>
                 </div>
             </div>
@@ -1278,7 +1359,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const titleElement = document.getElementById('typed-title');
             const textLines = [
-                "Otimizado para plantões.",
+                "Otimizado para rotinas médicas.",
                 "Rápido. Seguro. Assinado."
             ];
             let lineIndex = 0;
@@ -1319,34 +1400,54 @@
             });
         });
 
-        // Pricing Toggle
-        const toggleOptions = document.querySelectorAll('.toggle-option');
-        const proPriceElement = document.getElementById('proPrice');
-        const cancelInfo = document.getElementById('cancelInfo');
-        
-        // Preço base do plano Pro
-        const monthlyPrice = 99;
+        // Preços base
+        const monthlyPricePro = 99;
         const annualDiscount = 0.2; // 20% de desconto
-        const annualPrice = monthlyPrice * (1 - annualDiscount);
+        const annualPricePro = monthlyPricePro * (1 - annualDiscount);
         
-        toggleOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                toggleOptions.forEach(opt => opt.classList.remove('active'));
-                option.classList.add('active');
+        const monthlyPriceEnterprise = 199;
+        const annualPriceEnterprise = monthlyPriceEnterprise * (1 - annualDiscount);
+        
+        // Referências para elementos de cancelamento
+        const proCancelInfo = document.getElementById('proCancelInfo');
+        const enterpriseCancelInfo = document.getElementById('enterpriseCancelInfo');
+        
+        // Função para atualizar preços e estado do cancelamento
+        function updatePricing(planType) {
+            // Atualizar todos os toggles
+            document.querySelectorAll('.toggle-option').forEach(option => {
+                option.classList.toggle('active', option.dataset.plan === planType);
+            });
+            
+            // Atualizar preços
+            if(planType === 'monthly') {
+                document.querySelectorAll('.price').forEach((element, index) => {
+                    if (index === 0) return; // Ignorar plano Free
+                    const price = index === 1 ? monthlyPricePro : monthlyPriceEnterprise;
+                    element.innerHTML = `R$${price.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
+                });
                 
-                // Atualizar o preço exibido
-                if(option.dataset.plan === 'monthly') {
-                    // Formatar sem decimais
-                    proPriceElement.innerHTML = `R$${monthlyPrice.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
-                    // Mostrar o texto de cancelamento
-                    cancelInfo.style.display = 'flex';
-                } else {
-                    // Formatar com duas casas decimais
-                    proPriceElement.innerHTML = `R$${annualPrice.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
-                    proPriceElement.innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
-                    // Ocultar o texto de cancelamento
-                    cancelInfo.style.display = 'none';
-                }
+                // Mostrar texto de cancelamento
+                proCancelInfo.style.display = 'flex';
+                enterpriseCancelInfo.style.display = 'flex';
+            } else {
+                document.querySelectorAll('.price').forEach((element, index) => {
+                    if (index === 0) return; // Ignorar plano Free
+                    const price = index === 1 ? annualPricePro : annualPriceEnterprise;
+                    element.innerHTML = `R$${price.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
+                    element.innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
+                });
+                
+                // Ocultar texto de cancelamento
+                proCancelInfo.style.display = 'none';
+                enterpriseCancelInfo.style.display = 'none';
+            }
+        }
+        
+        // Event listeners para os toggles
+        document.querySelectorAll('.toggle-option').forEach(option => {
+            option.addEventListener('click', () => {
+                updatePricing(option.dataset.plan);
             });
         });
         
