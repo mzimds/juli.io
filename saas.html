@@ -470,16 +470,6 @@
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
         }
 
-        .editor-footer {
-            padding: 10px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--light);
-            border-top: 1px solid var(--border);
-            gap: 10px;
-        }
-
         /* Novo ícone hambúrguer/X */
         .mobile-menu-btn {
             display: none;
@@ -943,10 +933,6 @@
                 display: block;
             }
 
-            .editor-footer {
-                padding: 8px 12px;
-            }
-            
             .sidebar .btn-pass {
                 position: sticky;
                 bottom: 10px;
@@ -1290,11 +1276,7 @@
                 </div>
             </div>
             
-            <div class="editor-footer">
-                <button class="btn btn-pass" id="btnPassPlantao">
-                    Passar Plantão
-                </button>
-            </div>
+            <!-- REMOVIDO: editor-footer -->
         </div>
     </div>
 
@@ -1574,7 +1556,6 @@
             autocompleteContainer: document.getElementById('autocompleteContainer'),
             soapTabs: document.querySelectorAll('.soap-tab'),
             editorContents: document.querySelectorAll('.editor-content'),
-            btnPassPlantao: document.getElementById('btnPassPlantao'),
             btnPassPlantaoMobile: document.getElementById('btnPassPlantaoMobile'),
             btnPassPlantaoHeader: document.getElementById('btnPassPlantaoHeader'),
             passPlantaoModal: document.getElementById('passPlantaoModal'),
@@ -1845,7 +1826,7 @@
             
             // Encontrar paciente e setor
             for (const s of dados.setores) {
-                const paciente = s.pacientes.find(p => p.id === pacienteId);
+                paciente = s.pacientes.find(p => p.id === pacienteId);
                 if (paciente) {
                     setor = s;
                     break;
@@ -1968,8 +1949,6 @@
             });
             
             // Passar plantão
-            DOM.btnPassPlantao.addEventListener('click', openPassPlantaoModal);
-            
             // Correção do clique do botão mobile
             DOM.btnPassPlantaoMobile.addEventListener('click', (e) => {
                 e.stopPropagation(); // Impede a propagação para o elemento pai
@@ -1979,7 +1958,7 @@
             DOM.btnPassPlantaoHeader.addEventListener('click', openPassPlantaoModal);
             
             // Permitir clique em qualquer parte dos botões
-            [DOM.btnPassPlantao, DOM.btnPassPlantaoMobile, DOM.btnPassPlantaoHeader].forEach(btn => {
+            [DOM.btnPassPlantaoMobile, DOM.btnPassPlantaoHeader].forEach(btn => {
                 btn.style.cursor = 'pointer';
                 if (btn.querySelectorAll) {
                     btn.querySelectorAll('*').forEach(child => {
