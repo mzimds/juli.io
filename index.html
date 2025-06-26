@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DONTMED - Documentação Médica Ágil</title>
+    <title>DONTMED - Registros Médicos Ágeis</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -66,8 +66,9 @@
 
         .header-content {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start; /* Alterado para alinhar à esquerda */
             align-items: center;
+            gap: 40px; /* Espaço entre logo e menu */
         }
 
         .logo {
@@ -99,6 +100,7 @@
         .header-buttons {
             display: flex;
             gap: 12px;
+            margin-left: auto; /* Empurra os botões para a direita */
         }
 
         .btn {
@@ -901,13 +903,13 @@
             /* Header mobile layout - Logo mais à esquerda */
             .header-content {
                 display: grid;
-                grid-template-columns: auto auto 1fr;
-                gap: 15px;
+                grid-template-columns: 30px auto auto; /* Alterado: menu, logo, botões */
+                gap: 10px; /* Reduzido o gap */
             }
             
             .logo {
                 justify-self: start;
-                margin-left: 10px;
+                margin-left: 0; /* Removida margem anterior */
             }
             
             .header-buttons {
@@ -1001,7 +1003,6 @@
                     </ul>
                 </nav>
                 <div class="header-buttons">
-                    <!-- Alterado: href para saas.html -->
                     <a href="saas.html" class="btn btn-outline">Log in</a>
                     <a href="#pricing" class="btn btn-primary">Começar agora</a>
                 </div>
@@ -1020,7 +1021,6 @@
                     <li><a href="#faq">FAQ</a></li>
                 </ul>
                 <div class="mobile-sidebar-buttons">
-                    <!-- Alterado: href para saas.html -->
                     <a href="saas.html" class="btn btn-outline">Log in</a>
                     <a href="#pricing" class="btn btn-primary">Começar agora</a>
                 </div>
@@ -1032,7 +1032,8 @@
     <section class="hero">
         <div class="container">
             <h1 id="typed-title"></h1>
-            <p>Documentação médica ágil e segura. Fluxos simplificados. Gestão em tempo real.</p>
+            <!-- Alterado para "Registros médicos" -->
+            <p>Registros médicos ágeis e seguros. Fluxos simplificados. Gestão em tempo real.</p>
             <div class="hero-buttons">
                 <a href="#pricing" class="btn btn-primary">Testar gratuitamente</a>
                 <a href="#features" class="btn btn-outline">Ver funcionalidades</a>
@@ -1159,7 +1160,7 @@
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
-                            <p>Até 10 usuários por setor</p>
+                            <p>Até 20 usuários por setor</p>
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
@@ -1302,7 +1303,7 @@
             <div class="footer-content">
                 <div class="footer-logo">
                     <div class="logo">DONTMED</div>
-                    <p>Documentação médica que você realmente vai gostar de usar. Otimizado para velocidade, governança e segurança no ambiente hospitalar.</p>
+                    <p>Registros médicos que você realmente vai gostar de usar. Otimizado para velocidade, governança e segurança no ambiente hospitalar.</p>
                 </div>
                 <div class="footer-links">
                     <div class="link-group">
@@ -1355,12 +1356,12 @@
             mobileSidebar.classList.toggle('open');
         });
 
-        // Typing animation for hero title
+        // Typing animation for hero title - Alterado para "Auditável"
         document.addEventListener('DOMContentLoaded', function() {
             const titleElement = document.getElementById('typed-title');
             const textLines = [
                 "Otimizado para rotinas médicas.",
-                "Rápido. Seguro. Assinado."
+                "Rápido. Seguro. Auditável." // Alterado de "Assinado" para "Auditável"
             ];
             let lineIndex = 0;
             let htmlLines = ['', ''];
