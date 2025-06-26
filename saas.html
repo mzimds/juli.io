@@ -87,6 +87,7 @@
             padding: 12px;
             gap: 12px;
             background: var(--light-gray);
+            height: calc(100vh - var(--header-height)); /* Ajuste para mobile */
         }
 
         .sidebar {
@@ -327,6 +328,7 @@
             flex-direction: column;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
+            min-height: 0; /* Adicionado para mobile */
         }
 
         .patient-header {
@@ -381,7 +383,7 @@
             flex-direction: column;
             overflow: hidden;
             background: var(--light);
-            min-height: 0; /* Adicionado para corrigir layout em mobile */
+            min-height: 0;
         }
 
         .editor-content {
@@ -469,13 +471,6 @@
             background: var(--light);
             border-top: 1px solid var(--border);
             gap: 10px;
-        }
-
-        .signature {
-            font-size: 0.85rem;
-            color: var(--gray);
-            display: flex;
-            flex-direction: column;
         }
 
         /* Novo ícone hambúrguer/X */
@@ -741,7 +736,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            min-height: 0; /* Adicionado para corrigir layout em mobile */
+            min-height: 0;
         }
 
         .message {
@@ -773,6 +768,13 @@
             color: var(--gray);
         }
 
+        /* Novo estilo para assinatura */
+        .message-signature {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
         .message-input-container {
             position: relative;
             display: flex;
@@ -783,7 +785,7 @@
 
         .message-input {
             flex: 1;
-            padding: 10px 45px 10px 12px; /* Espaço para o botão */
+            padding: 10px 45px 10px 12px;
             border: 1px solid var(--border);
             border-radius: 20px;
             resize: none;
@@ -851,17 +853,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-        }
-
-        .patient-details-toggle {
-            display: flex;
-            align-items: center;
             gap: 5px;
-            font-size: 0.85rem;
-            color: var(--darker); /* Alterado para preto */
-            cursor: pointer;
-            margin-top: 5px;
-            font-weight: 500; /* Adicionado para melhor legibilidade */
         }
 
         .patient-details {
@@ -873,6 +865,53 @@
             padding-top: 8px;
             border-top: 1px solid var(--border);
             margin-top: 8px;
+        }
+
+        /* ALTERAÇÕES PARA O TOGGLE ICON */
+        .patient-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .patient-title {
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .patient-toggle-icon {
+            cursor: pointer;
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: none;
+            align-self: center;
+            flex-shrink: 0;
+            margin-left: 5px;
+            transition: transform 0.2s;
+        }
+
+        .patient-toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        /* Botão passar plantão no header */
+        .btn-pass-header {
+            margin-right: 15px;
+            background: var(--pass-plantao);
+            color: white;
+            font-weight: 500;
+            font-size: 0.85rem;
+            padding: 5px 10px;
+        }
+
+        /* Adicione esta classe para controle de visibilidade */
+        .hidden {
+            display: none !important;
         }
 
         @media (max-width: 992px) {
@@ -896,10 +935,10 @@
                 display: block;
             }
 
-            .signature {
-                display: none;
+            .editor-footer {
+                padding: 8px 12px;
             }
-
+            
             .sidebar .btn-pass {
                 position: sticky;
                 bottom: 10px;
@@ -925,16 +964,49 @@
                 overflow-x: auto;
                 padding-bottom: 8px;
                 flex-wrap: nowrap;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            
+            .quick-actions::-webkit-scrollbar {
+                display: none;
             }
             
             .quick-action {
                 flex-shrink: 0;
+            }
+
+            .editor-container {
+                min-height: 0;
+                height: 100%;
+            }
+
+            .message-input-container {
+                padding: 8px;
+            }
+
+            #btnPassPlantaoHeader {
+                display: none !important;
             }
         }
 
         @media (min-width: 993px) {
             #btnPassPlantaoMobile {
                 display: none;
+            }
+            
+            .btn-pass-header {
+                display: block !important;
+            }
+
+            /* Adicionado para evitar quebra de linha no header */
+            .header-info {
+                flex-wrap: nowrap;
+            }
+
+            /* Ocultar botão passar plantão no footer no desktop */
+            #btnPassPlantao {
+                display: none !important;
             }
         }
 
@@ -1030,12 +1102,12 @@
         }
 
        ::-webkit-scrollbar-thumb {
-       background: rgba(180, 180, 180, 0.5); /* CINZA CLARO */
+       background: rgba(180, 180, 180, 0.5);
        border-radius: 8px;
        }
 
      ::-webkit-scrollbar-thumb:hover {
-     background: rgba(150, 150, 150, 0.7); /* CINZA UM POUCO MAIS ESCURO NO HOVER */
+     background: rgba(150, 150, 150, 0.7);
         }
     </style>
 </head>
@@ -1054,6 +1126,10 @@
             DONTMED
         </div>
         <div class="header-info">
+            <!-- Botão passar plantão no header (desktop) -->
+            <button class="btn btn-pass btn-pass-header" id="btnPassPlantaoHeader">
+                Passar Plantão
+            </button>
             <div class="user-info">
                 <span>Dr. Carlos Silva</span>
             </div>
@@ -1096,11 +1172,11 @@
         <div class="main-content card">
             <div class="patient-header">
                 <div class="patient-title-container">
-                    <div class="patient-title" id="patientTitle">Selecione um paciente</div>
+                    <div class="patient-title-wrapper">
+                        <div class="patient-title" id="patientTitle">Selecione um paciente</div>
+                        <div class="patient-toggle-icon" id="patientToggleIcon">▼</div>
+                    </div>
                     <button class="btn btn-success" id="btnAlta" style="display: none;">Alta</button>
-                </div>
-                <div class="patient-details-toggle" id="patientDetailsToggle" style="display: none;">
-                    <span>Detalhes</span> <span id="toggleIcon">▼</span>
                 </div>
                 <div class="patient-details" id="patientDetails" style="display: none;">
                     <!-- Detalhes do paciente serão carregados aqui -->
@@ -1128,13 +1204,34 @@
                             <div class="quick-action" data-text="Paciente refere dor intensa">
                                 Dor
                             </div>
+                            <!-- Novas quick actions -->
+                            <div class="quick-action" data-text="Paciente consciente, orientado, em bom estado geral">
+                                Estado Geral
+                            </div>
+                            <div class="quick-action" data-text="Queixa principal: dor abdominal difusa há 2 dias">
+                                Queixas
+                            </div>
+                            <div class="quick-action" data-text="Conduta: manter hidratação venosa, analgesia e reavaliação em 6h">
+                                Conduta
+                            </div>
+                            <div class="quick-action" data-text="Prescrição: dipirona 1g IV 6/6h, omeprazol 40mg VO 1x/dia">
+                                Prescrição
+                            </div>
+                            <div class="quick-action" data-text="Paciente evolui estável, sem intercorrências">
+                                Evolução Estável
+                            </div>
+                            <div class="quick-action" data-text="Encaminhado para realização de exames laboratoriais e imagem">
+                                Encaminhamento
+                            </div>
+                            <div class="quick-action" data-text="Informado à equipe de enfermagem para monitorização contínua dos sinais vitais">
+                                Enfermagem
+                            </div>
                         </div>
                     </div>
                     <div class="chat-history" id="chatHistory">
                         <!-- Mensagens serão carregadas aqui -->
                     </div>
                     <div class="message-input-container">
-                        <!-- Alterado o placeholder para texto mais adequado -->
                         <textarea class="message-input" id="messageInput" placeholder="Escreva uma nova anotação clínica..." rows="1"></textarea>
                         <button class="btn-send" id="btnSendMessage" disabled>➤</button>
                     </div>
@@ -1142,10 +1239,6 @@
             </div>
             
             <div class="editor-footer">
-                <div class="signature">
-                    <span id="signatureName">Assinado digitalmente por: Dr. Carlos Silva</span>
-                    <span id="editTimestamp">25/06/2023 14:30</span>
-                </div>
                 <button class="btn btn-pass" id="btnPassPlantao">
                     Passar Plantão
                 </button>
@@ -1226,7 +1319,7 @@
             
             <div class="progress-container">
                 <div class="progress-header">
-                    <span>Setores: <span id="currentSetorCount">0</span>/<span id="maxSetor">5</span></span> <!-- Corrigido -->
+                    <span>Setores: <span id="currentSetorCount">0</span>/<span id="maxSetor">5</span></span>
                     <span id="maxSetorMessage" style="color: var(--danger); display: none;">Máximo atingido</span>
                 </div>
                 <div class="progress-bar">
@@ -1424,14 +1517,14 @@
             btnNewSetor: document.getElementById('btnNewSetor'),
             patientTitle: document.getElementById('patientTitle'),
             patientDetails: document.getElementById('patientDetails'),
-            patientDetailsToggle: document.getElementById('patientDetailsToggle'),
-            toggleIcon: document.getElementById('toggleIcon'),
+            patientToggleIcon: document.getElementById('patientToggleIcon'),
             searchInput: document.getElementById('searchInput'),
             autocompleteContainer: document.getElementById('autocompleteContainer'),
             soapTabs: document.querySelectorAll('.soap-tab'),
             editorContents: document.querySelectorAll('.editor-content'),
             btnPassPlantao: document.getElementById('btnPassPlantao'),
             btnPassPlantaoMobile: document.getElementById('btnPassPlantaoMobile'),
+            btnPassPlantaoHeader: document.getElementById('btnPassPlantaoHeader'),
             passPlantaoModal: document.getElementById('passPlantaoModal'),
             btnCancelPass: document.getElementById('btnCancelPass'),
             btnConfirmPass: document.getElementById('btnConfirmPass'),
@@ -1451,8 +1544,6 @@
             pacienteAtendimento: document.getElementById('pacienteAtendimento'),
             btnCancelPaciente: document.getElementById('btnCancelPaciente'),
             btnSavePaciente: document.getElementById('btnSavePaciente'),
-            signatureName: document.getElementById('signatureName'),
-            editTimestamp: document.getElementById('editTimestamp'),
             btnAlta: document.getElementById('btnAlta'),
             altaModal: document.getElementById('altaModal'),
             tipoAlta: document.getElementById('tipoAlta'),
@@ -1466,7 +1557,7 @@
             currentSetorCount: document.getElementById('currentSetorCount'),
             progressFill: document.getElementById('progressFill'),
             maxSetorMessage: document.getElementById('maxSetorMessage'),
-            maxSetor: document.getElementById('maxSetor') // Adicionado
+            maxSetor: document.getElementById('maxSetor')
         };
 
         // Estado da aplicação
@@ -1587,8 +1678,12 @@
             setupEventListeners();
             updateTime();
             setInterval(updateTime, 60000);
-            updateSignature();
             updateSetorProgress();
+            
+            // Garantir que o botão do header esteja oculto em mobile inicialmente
+            if (window.innerWidth <= 992) {
+                DOM.btnPassPlantaoHeader.classList.add('hidden');
+            }
         }
         
         // Atualizar barra de progresso de setores
@@ -1597,7 +1692,6 @@
             const max = 5;
             const percentage = (count / max) * 100;
             
-            // Correção: exibir apenas "X/5"
             DOM.currentSetorCount.textContent = count;
             DOM.maxSetor.textContent = max;
             
@@ -1723,14 +1817,11 @@
             DOM.btnAlta.style.display = paciente.alta ? 'none' : 'block';
             
             // Mostrar toggle de detalhes
-            DOM.patientDetailsToggle.style.display = 'flex';
+            DOM.patientToggleIcon.style.display = 'block';
             DOM.patientDetails.style.display = 'none';
             
             // Carregar histórico de mensagens
             renderChatHistory(paciente);
-            
-            // Atualizar assinatura
-            updateSignature();
             
             // Atualizar sidebar
             renderSetores();
@@ -1760,11 +1851,17 @@
                 const timeString = date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
                 
                 messageEl.className = `message ${msg.medico ? 'message-doctor' : 'message-system'}`;
+                
+                // Formatar a data para DD/MM/AAAA HH:MM
+                const dateStr = date.toLocaleDateString('pt-BR');
+                const timeStr = date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                
                 messageEl.innerHTML = `
                     <div>${msg.texto}</div>
-                    <div class="message-timestamp">
-                        ${timeString}
-                    </div>
+                    ${msg.medico ? 
+                        `<div class="message-signature">${msg.medico} - ${dateStr} ${timeStr}</div>` : 
+                        `<div class="message-timestamp">${timeString}</div>`
+                    }
                 `;
                 
                 DOM.chatHistory.appendChild(messageEl);
@@ -1811,22 +1908,27 @@
                     if(textToAdd) {
                         DOM.messageInput.value = textToAdd;
                         DOM.messageInput.focus();
-                        // Habilita o botão de envio
                         DOM.btnSendMessage.disabled = false;
                     }
                 });
             });
             
-            // Passar plantão - CORREÇÃO: Área clicável completa
+            // Passar plantão
             DOM.btnPassPlantao.addEventListener('click', openPassPlantaoModal);
-            DOM.btnPassPlantaoMobile.addEventListener('click', openPassPlantaoModal);
+            DOM.btnPassPlantaoMobile.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openPassPlantaoModal();
+            });
+            DOM.btnPassPlantaoHeader.addEventListener('click', openPassPlantaoModal);
             
             // Permitir clique em qualquer parte dos botões
-            [DOM.btnPassPlantao, DOM.btnPassPlantaoMobile].forEach(btn => {
+            [DOM.btnPassPlantao, DOM.btnPassPlantaoMobile, DOM.btnPassPlantaoHeader].forEach(btn => {
                 btn.style.cursor = 'pointer';
-                btn.querySelectorAll('*').forEach(child => {
-                    child.style.pointerEvents = 'none';
-                });
+                if (btn.querySelectorAll) {
+                    btn.querySelectorAll('*').forEach(child => {
+                        child.style.pointerEvents = 'none';
+                    });
+                }
             });
             
             DOM.btnCancelPass.addEventListener('click', () => {
@@ -1845,10 +1947,7 @@
                 DOM.btnConfirmPass.disabled = true;
                 
                 setTimeout(() => {
-                    // Simular passagem de plantão
                     showToast(`Plantão passado para ${medicoRecebe} com sucesso!`, 'success');
-                    
-                    // Fechar o modal
                     DOM.passPlantaoModal.classList.remove('active');
                     DOM.btnConfirmPass.innerHTML = 'Confirmar Passagem';
                     DOM.btnConfirmPass.disabled = false;
@@ -1874,10 +1973,6 @@
                     DOM.newSetorModal.classList.remove('active');
                     DOM.setorName.value = '';
                     updateSetorProgress();
-                    
-                    // Registrar ação
-                    registerAction(`Novo setor criado: ${nomeSetor}`);
-                    
                     showToast(`Setor "${nomeSetor}" criado com sucesso!`, 'success');
                 } else {
                     showToast('Por favor, informe o nome do setor', 'error');
@@ -1913,7 +2008,7 @@
                         sexo,
                         leito,
                         atendimento,
-                        anotacoes: [{
+                        anotacoes: [{ 
                             id: Date.now(),
                             texto: `Paciente admitido em ${setor.nome}`,
                             timestamp: new Date().toISOString(),
@@ -1933,9 +2028,6 @@
                     DOM.pacienteSexo.value = '';
                     DOM.pacienteLeito.value = '';
                     DOM.pacienteAtendimento.value = '';
-                    
-                    // Registrar ação
-                    registerAction(`Novo paciente adicionado: ${nome}`);
                     
                     showToast(`Paciente "${nome}" adicionado com sucesso!`, 'success');
                 }
@@ -2014,10 +2106,21 @@
             });
 
             // Toggle de detalhes do paciente
-            DOM.patientDetailsToggle.addEventListener('click', function() {
+            DOM.patientToggleIcon.addEventListener('click', function(e) {
+                e.stopPropagation();
                 const isVisible = DOM.patientDetails.style.display === 'block';
                 DOM.patientDetails.style.display = isVisible ? 'none' : 'block';
-                DOM.toggleIcon.textContent = isVisible ? '▼' : '▲';
+                this.textContent = isVisible ? '▼' : '▲';
+                this.classList.toggle('open', !isVisible);
+            });
+            
+            // Listener para redimensionamento da tela
+            window.addEventListener('resize', () => {
+                if (window.innerWidth <= 992) {
+                    DOM.btnPassPlantaoHeader.classList.add('hidden');
+                } else {
+                    DOM.btnPassPlantaoHeader.classList.remove('hidden');
+                }
             });
         }
 
@@ -2031,19 +2134,14 @@
             const message = DOM.messageInput.value.trim();
             if (!message) return;
             
-            // Adiciona assinatura completa à mensagem
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('pt-BR');
-            const timeStr = now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-            
             // Encontrar paciente
             for (const setor of dados.setores) {
                 const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
                 if (paciente) {
-                    // Adicionar mensagem com assinatura
+                    // Adicionar mensagem
                     paciente.anotacoes.push({
                         id: Date.now(),
-                        texto: `${message}\n\nAssinado por: ${state.currentDoctor}\n${dateStr} ${timeStr}`,
+                        texto: message,
                         timestamp: new Date().toISOString(),
                         medico: state.currentDoctor,
                         tipo: "texto"
@@ -2055,9 +2153,6 @@
                     // Limpar campo
                     DOM.messageInput.value = '';
                     DOM.btnSendMessage.disabled = true;
-                    
-                    // Registrar ação
-                    registerAction(`Nova anotação adicionada`);
                     break;
                 }
             }
@@ -2118,44 +2213,6 @@
             setTimeout(() => {
                 DOM.toast.classList.remove('show');
             }, 3000);
-        }
-
-        // Registrar ação com assinatura digital
-        function registerAction(action) {
-            const now = new Date();
-            const timestamp = now.toLocaleString('pt-BR');
-            
-            // Se um paciente está selecionado, adicionar ao histórico
-            if (state.currentPaciente) {
-                for (const setor of dados.setores) {
-                    const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
-                    if (paciente) {
-                        paciente.anotacoes.push({
-                            id: Date.now(),
-                            texto: action,
-                            timestamp: new Date().toISOString(),
-                            medico: state.currentDoctor,
-                            tipo: "system"
-                        });
-                        break;
-                    }
-                }
-            }
-            
-            // Atualizar timestamp
-            state.lastEdit = now.toISOString();
-            updateSignature();
-        }
-
-        // Atualizar assinatura visível
-        function updateSignature() {
-            if (state.lastEdit) {
-                const editDate = new Date(state.lastEdit);
-                const dateStr = editDate.toLocaleDateString('pt-BR');
-                const timeStr = editDate.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
-                DOM.editTimestamp.textContent = `${dateStr} ${timeStr}`;
-            }
-            DOM.signatureName.textContent = `Assinado digitalmente por: ${state.currentDoctor}`;
         }
 
         // Inicializar aplicação
