@@ -785,9 +785,10 @@
         .message-input-container {
             position: relative;
             display: flex;
-            padding: 10px;
+            padding: 15px 10px 10px; /* Mais espaço acima */
             border-top: 1px solid var(--border);
             background: var(--light);
+            margin-top: 10px; /* Espaço acima do campo */
         }
 
         .message-input {
@@ -895,7 +896,7 @@
             cursor: pointer;
             color: var(--gray);
             font-size: 0.9rem;
-            display: none;
+            display: none; /* Inicialmente oculto */
             align-self: center;
             flex-shrink: 0;
             margin: 0 10px;
@@ -1225,7 +1226,6 @@
                     <div class="patient-title-wrapper">
                         <div class="patient-title" id="patientTitle">
                             <span>Selecione um paciente</span>
-                            <div class="patient-toggle-icon" id="patientToggleIcon">▼</div>
                         </div>
                     </div>
                     <button class="btn btn-success" id="btnAlta" style="display: none;">Alta</button>
@@ -1845,7 +1845,7 @@
             
             // Encontrar paciente e setor
             for (const s of dados.setores) {
-                paciente = s.pacientes.find(p => p.id === pacienteId);
+                const paciente = s.pacientes.find(p => p.id === pacienteId);
                 if (paciente) {
                     setor = s;
                     break;
@@ -1872,8 +1872,6 @@
             DOM.btnAlta.style.display = paciente.alta ? 'none' : 'block';
             
             // Mostrar toggle de detalhes
-            DOM.patientToggleIcon = document.getElementById('patientToggleIcon');
-            DOM.patientToggleIcon.style.display = 'block';
             DOM.patientDetails.style.display = 'none';
             
             // Carregar histórico de mensagens
@@ -2166,11 +2164,12 @@
 
             // Toggle de detalhes do paciente
             document.addEventListener('click', function(e) {
-                if (e.target.closest('#patientToggleIcon') || e.target.closest('.patient-title')) {
+                const toggleIcon = document.getElementById('patientToggleIcon');
+                if (toggleIcon && (e.target === toggleIcon || e.target.closest('#patientToggleIcon'))) {
                     const isVisible = DOM.patientDetails.style.display === 'block';
                     DOM.patientDetails.style.display = isVisible ? 'none' : 'block';
-                    DOM.patientToggleIcon.textContent = isVisible ? '▼' : '▲';
-                    DOM.patientToggleIcon.classList.toggle('open', !isVisible);
+                    toggleIcon.textContent = isVisible ? '▼' : '▲';
+                    toggleIcon.classList.toggle('open', !isVisible);
                 }
             });
             
