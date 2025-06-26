@@ -990,7 +990,8 @@
                     </ul>
                 </nav>
                 <div class="header-buttons">
-                    <a href="#" class="btn btn-outline">Log in</a>
+                    <!-- Alterado: href para saas.html -->
+                    <a href="saas.html" class="btn btn-outline">Log in</a>
                     <a href="#pricing" class="btn btn-primary">Começar agora</a>
                 </div>
             </div>
@@ -1008,7 +1009,8 @@
                     <li><a href="#faq">FAQ</a></li>
                 </ul>
                 <div class="mobile-sidebar-buttons">
-                    <a href="#" class="btn btn-outline">Log in</a>
+                    <!-- Alterado: href para saas.html -->
+                    <a href="saas.html" class="btn btn-outline">Log in</a>
                     <a href="#pricing" class="btn btn-primary">Começar agora</a>
                 </div>
             </nav>
@@ -1118,8 +1120,9 @@
                         
                         <!-- Toggle para seleção de plano -->
                         <div class="toggle-container">
+                            <!-- Alterado: Removido texto "OFF" -->
                             <div class="toggle-option active" data-plan="monthly">Mensal</div>
-                            <div class="toggle-option" data-plan="annual">Anual (20% OFF)</div>
+                            <div class="toggle-option" data-plan="annual">Anual</div>
                         </div>
                         
                         <div class="price" id="proPrice">R$99<span>/setor/mês</span></div>
@@ -1148,7 +1151,8 @@
                         </div>
                     </div>
                     <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Assinar Pro</a>
-                    <p class="cancel-info"><i class="fas fa-check"></i> Cancelamento facilitado</p>
+                    <!-- Alterado: Adicionado ID para controle -->
+                    <p class="cancel-info" id="cancelInfo"><i class="fas fa-check"></i> Cancelamento facilitado</p>
                 </div>
             </div>
         </div>
@@ -1318,6 +1322,7 @@
         // Pricing Toggle
         const toggleOptions = document.querySelectorAll('.toggle-option');
         const proPriceElement = document.getElementById('proPrice');
+        const cancelInfo = document.getElementById('cancelInfo');
         
         // Preço base do plano Pro
         const monthlyPrice = 99;
@@ -1331,10 +1336,16 @@
                 
                 // Atualizar o preço exibido
                 if(option.dataset.plan === 'monthly') {
-                    proPriceElement.innerHTML = `R$${monthlyPrice.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
+                    // Formatar sem decimais
+                    proPriceElement.innerHTML = `R$${monthlyPrice.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
+                    // Mostrar o texto de cancelamento
+                    cancelInfo.style.display = 'flex';
                 } else {
+                    // Formatar com duas casas decimais
                     proPriceElement.innerHTML = `R$${annualPrice.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
                     proPriceElement.innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
+                    // Ocultar o texto de cancelamento
+                    cancelInfo.style.display = 'none';
                 }
             });
         });
