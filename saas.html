@@ -345,6 +345,9 @@
             font-weight: 700;
             color: var(--darker);
             letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .soap-tabs {
@@ -999,6 +1002,42 @@
                 width: calc(100% - 30px);
                 margin: 15px auto;
             }
+
+            /* Correções para o campo de anotação não ser cortado */
+            .editor-container {
+                padding-bottom: 70px; /* Espaço extra para o campo de entrada */
+            }
+
+            .chat-history {
+                padding-bottom: 80px; /* Espaço extra para o campo de entrada */
+            }
+
+            /* Posicionamento do toggle perto do nome do paciente */
+            .patient-title-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .patient-title-wrapper {
+                width: 100%;
+            }
+            
+            .patient-toggle-icon {
+                display: block;
+                margin: 0;
+            }
+            
+            .patient-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            #btnAlta {
+                align-self: flex-end;
+                margin-top: 8px;
+            }
         }
 
         @media (min-width: 993px) {
@@ -1184,8 +1223,10 @@
             <div class="patient-header">
                 <div class="patient-title-container">
                     <div class="patient-title-wrapper">
-                        <div class="patient-title" id="patientTitle">Selecione um paciente</div>
-                        <div class="patient-toggle-icon" id="patientToggleIcon">▼</div>
+                        <div class="patient-title" id="patientTitle">
+                            <span>Selecione um paciente</span>
+                            <div class="patient-toggle-icon" id="patientToggleIcon">▼</div>
+                        </div>
                     </div>
                     <button class="btn btn-success" id="btnAlta" style="display: none;">Alta</button>
                 </div>
@@ -1817,7 +1858,10 @@
             state.currentPaciente = paciente.id;
             
             // Atualizar header do paciente
-            DOM.patientTitle.textContent = paciente.nome;
+            DOM.patientTitle.innerHTML = `
+                <span>${paciente.nome}</span>
+                <div class="patient-toggle-icon" id="patientToggleIcon">▼</div>
+            `;
             DOM.patientDetails.innerHTML = `
                 <div class="detail-item">${paciente.idade} anos, ${paciente.sexo === 'M' ? 'Masculino' : 'Feminino'}</div>
                 <div class="detail-item">Leito: ${paciente.leito}</div>
@@ -1828,6 +1872,7 @@
             DOM.btnAlta.style.display = paciente.alta ? 'none' : 'block';
             
             // Mostrar toggle de detalhes
+            DOM.patientToggleIcon = document.getElementById('patientToggleIcon');
             DOM.patientToggleIcon.style.display = 'block';
             DOM.patientDetails.style.display = 'none';
             
@@ -2120,12 +2165,13 @@
             });
 
             // Toggle de detalhes do paciente
-            DOM.patientToggleIcon.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const isVisible = DOM.patientDetails.style.display === 'block';
-                DOM.patientDetails.style.display = isVisible ? 'none' : 'block';
-                this.textContent = isVisible ? '▼' : '▲';
-                this.classList.toggle('open', !isVisible);
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('#patientToggleIcon') || e.target.closest('.patient-title')) {
+                    const isVisible = DOM.patientDetails.style.display === 'block';
+                    DOM.patientDetails.style.display = isVisible ? 'none' : 'block';
+                    DOM.patientToggleIcon.textContent = isVisible ? '▼' : '▲';
+                    DOM.patientToggleIcon.classList.toggle('open', !isVisible);
+                }
             });
             
             // Listener para redimensionamento da tela
