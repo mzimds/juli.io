@@ -404,39 +404,40 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 8px 25px rgba(46, 204, 113, 0.1);
+            padding: 18px; /* Reduzido */
         }
 
         .pricing-header {
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Reduzido */
         }
 
         .pricing-header h3 {
-            font-size: 1.4rem;
+            font-size: 1.3rem; /* Reduzido */
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px; /* Reduzido */
         }
 
         .pricing-header p {
             color: var(--gray-500);
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-            min-height: 50px;
+            margin-bottom: 10px; /* Reduzido */
+            font-size: 0.9rem; /* Reduzido */
+            min-height: 40px; /* Reduzido */
         }
 
         .price {
-            font-size: 2.2rem;
+            font-size: 1.9rem; /* Reduzido */
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 12px; /* Reduzido */
         }
 
         .price span {
-            font-size: 0.95rem;
+            font-size: 0.9rem; /* Reduzido */
             font-weight: 500;
             color: var(--gray-500);
         }
 
         .pricing-features {
-            margin: 15px 0;
+            margin: 12px 0; /* Reduzido */
             flex-grow: 1;
         }
 
@@ -444,8 +445,8 @@
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            margin-bottom: 10px;
-            font-size: 0.95rem;
+            margin-bottom: 8px; /* Reduzido */
+            font-size: 0.9rem; /* Reduzido */
         }
 
         .feature-item .icon {
@@ -472,19 +473,23 @@
             display: flex;
             background: var(--gray-100);
             border-radius: 8px;
-            padding: 4px;
-            margin-bottom: 15px;
+            padding: 3px; /* Reduzido */
+            margin-bottom: 12px; /* Reduzido */
+            font-size: 0.85rem; /* Reduzido para caber em uma linha */
         }
 
         .toggle-option {
             flex: 1;
             text-align: center;
-            padding: 8px;
+            padding: 6px; /* Reduzido */
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s;
-            font-size: 0.9rem;
+            font-size: 0.85rem; /* Reduzido */
+            white-space: nowrap; /* Evita quebra de linha */
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .toggle-option.active {
@@ -497,13 +502,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin: 15px 0;
+            gap: 10px; /* Reduzido */
+            margin: 10px 0; /* Reduzido */
         }
 
         .setor-btn {
-            width: 36px;
-            height: 36px;
+            width: 32px; /* Reduzido */
+            height: 32px; /* Reduzido */
             border-radius: 50%;
             background: var(--light);
             border: 1px solid var(--border);
@@ -511,7 +516,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem; /* Reduzido */
             transition: all 0.2s;
             color: var(--gray-600);
         }
@@ -522,44 +527,52 @@
         }
 
         .setor-count {
-            font-size: 1.3rem;
+            font-size: 1.2rem; /* Reduzido */
             font-weight: 600;
-            min-width: 36px;
+            min-width: 32px; /* Reduzido */
             text-align: center;
             color: var(--dark);
         }
 
         .total-price {
             text-align: center;
-            margin: 15px 0;
-            padding: 12px;
+            margin: 12px 0; /* Reduzido */
+            padding: 8px; /* Reduzido */
             background: rgba(46, 204, 113, 0.05);
             border-radius: 8px;
             border: 1px solid rgba(46, 204, 113, 0.1);
         }
 
         .total-price .label {
-            font-size: 0.85rem;
+            font-size: 0.8rem; /* Reduzido */
             color: var(--gray-500);
-            margin-bottom: 5px;
+            margin-bottom: 4px; /* Reduzido */
         }
 
         .total-price .price {
-            font-size: 1.6rem;
+            font-size: 1.4rem; /* Reduzido */
             margin: 0;
         }
 
         .total-price .annual {
             color: var(--primary);
-            font-size: 0.85rem;
-            margin-top: 5px;
+            font-size: 0.8rem; /* Reduzido */
+            margin-top: 4px; /* Reduzido */
         }
 
         .cancel-info {
             text-align: center;
             color: var(--gray-500);
-            font-size: 0.85rem;
-            margin-top: 12px;
+            font-size: 0.8rem; /* Reduzido */
+            margin-top: 8px; /* Reduzido */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .cancel-info i {
+            color: var(--success);
         }
 
         /* Highlights */
@@ -798,6 +811,8 @@
         @media (max-width: 992px) {
             .hero h1 {
                 font-size: 2.6rem;
+                min-height: auto;
+                line-height: 1.2;
             }
             
             .features-grid,
@@ -821,7 +836,12 @@
             
             .hero h1 {
                 font-size: 2.2rem;
-                min-height: 100px;
+                min-height: auto;
+                line-height: 1.3;
+            }
+            
+            .hero h1 br {
+                display: block;
             }
             
             nav {
@@ -890,7 +910,8 @@
             
             .hero h1 {
                 font-size: 1.9rem;
-                min-height: 90px;
+                min-height: auto;
+                line-height: 1.3;
             }
             
             .hero p {
@@ -933,6 +954,19 @@
             
             .total-price .price {
                 font-size: 1.3rem;
+            }
+
+            /* Forçar quebras de linha específicas no mobile */
+            .hero h1 br {
+                display: block;
+            }
+            
+            .section-header h2 br {
+                display: block;
+            }
+            
+            .toggle-container {
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -996,7 +1030,7 @@
     <section id="features" class="features">
         <div class="container">
             <div class="section-header">
-                <h2>Registros clínicos organizados. Sem ruído. Sem perda de tempo.</h2>
+                <h2>Registros clínicos organizados.<br>Sem ruído. Sem perda de tempo.</h2>
                 <p>Otimizado para passagem de plantão, rastreio de informações e governança clínica</p>
             </div>
             <div class="features-grid">
@@ -1059,12 +1093,12 @@
                             <p>Teste de funcionalidades</p>
                         </div>
                         <div class="feature-item">
-                            <div class="icon"><i class="fas fa-times" style="color: var(--gray-500);"></i></div>
-                            <p>Salvamento de anotações</p>
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Assinatura eletrônica integrada</p>
                         </div>
                         <div class="feature-item">
-                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
-                            <p>Assinatura eletrônica</p>
+                            <div class="icon"><i class="fas fa-times" style="color: var(--gray-500);"></i></div>
+                            <p>Salvamento de anotações</p>
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-times" style="color: var(--gray-500);"></i></div>
@@ -1072,6 +1106,7 @@
                         </div>
                     </div>
                     <a href="#" class="btn btn-outline" style="width: 100%; text-align: center;">Começar gratuitamente</a>
+                    <p class="cancel-info placeholder" style="visibility: hidden;"><i class="fas fa-check"></i> Cancelamento facilitado</p>
                 </div>
                 
                 <!-- Pro Plan -->
@@ -1102,10 +1137,6 @@
                     <div class="pricing-features">
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
-                            <p>Todos os recursos do Free</p>
-                        </div>
-                        <div class="feature-item">
-                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
                             <p>Salvamento e histórico ilimitado</p>
                         </div>
                         <div class="feature-item">
@@ -1122,7 +1153,7 @@
                         </div>
                     </div>
                     <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Assinar Pro</a>
-                    <p class="cancel-info">Cancele quando quiser. Sem taxas escondidas.</p>
+                    <p class="cancel-info"><i class="fas fa-check"></i> Cancelamento facilitado</p>
                 </div>
             </div>
         </div>
