@@ -384,6 +384,8 @@
             overflow: hidden;
             background: var(--light);
             min-height: 0;
+            /* Correção para mobile */
+            height: 100%;
         }
 
         .editor-content {
@@ -392,6 +394,8 @@
             flex-direction: column;
             padding: 12px;
             overflow: hidden;
+            /* Correção para mobile */
+            min-height: 0;
         }
 
         .editor-content.active {
@@ -867,7 +871,7 @@
             margin-top: 8px;
         }
 
-        /* ALTERAÇÕES PARA O TOGGLE ICON */
+        /* ALTERAÇÕES PARA O TOGGLE ICON - CORREÇÃO */
         .patient-title-wrapper {
             display: flex;
             align-items: center;
@@ -891,7 +895,7 @@
             display: none;
             align-self: center;
             flex-shrink: 0;
-            margin-left: 5px;
+            margin: 0 10px;
             transition: transform 0.2s;
         }
 
@@ -987,6 +991,13 @@
 
             #btnPassPlantaoHeader {
                 display: none !important;
+            }
+
+            /* Correção para o botão Passar Plantão Mobile */
+            #btnPassPlantaoMobile {
+                display: block;
+                width: calc(100% - 30px);
+                margin: 15px auto;
             }
         }
 
@@ -1915,10 +1926,13 @@
             
             // Passar plantão
             DOM.btnPassPlantao.addEventListener('click', openPassPlantaoModal);
+            
+            // Correção do clique do botão mobile
             DOM.btnPassPlantaoMobile.addEventListener('click', (e) => {
-                e.stopPropagation();
+                e.stopPropagation(); // Impede a propagação para o elemento pai
                 openPassPlantaoModal();
             });
+            
             DOM.btnPassPlantaoHeader.addEventListener('click', openPassPlantaoModal);
             
             // Permitir clique em qualquer parte dos botões
