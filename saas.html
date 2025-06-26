@@ -772,13 +772,16 @@
             margin-top: 4px;
         }
 
+        /* CORREÇÃO: Campo de entrada com fechamento visual */
         .message-input-container {
             position: relative;
             display: flex;
-            padding: 15px 10px 10px; /* Mais espaço acima */
-            border-top: 1px solid var(--border);
+            padding: 15px 15px;
             background: var(--light);
-            margin-top: 10px; /* Espaço acima do campo */
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
+            border-top: 1px solid var(--border);
+            margin-top: auto; /* Garante que fique no rodapé */
         }
 
         .message-input {
@@ -791,11 +794,14 @@
             font-family: 'Inter', sans-serif;
             min-height: 40px;
             max-height: 150px;
+            background: var(--light);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .message-input:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05), 0 0 0 2px rgba(44, 125, 160, 0.2);
         }
 
         .btn-send {
@@ -893,8 +899,11 @@
             transition: transform 0.2s;
         }
 
-        .patient-toggle-icon.open {
-            transform: rotate(180deg);
+        /* CORREÇÃO: Ocultar toggle icon no desktop por padrão */
+        @media (min-width: 993px) {
+            .patient-toggle-icon {
+                display: none !important;
+            }
         }
 
         /* Botão passar plantão no header */
@@ -910,6 +919,19 @@
         /* Adicione esta classe para controle de visibilidade */
         .hidden {
             display: none !important;
+        }
+
+        /* CORREÇÃO: Botão de alta alinhado corretamente */
+        #btnAlta {
+            display: none;
+            margin-top: 0;
+            margin-right: 10px;
+            align-self: center;
+        }
+
+        /* NOVO: Estilo para botão de alta visível */
+        .btn-alta-visible {
+            display: block;
         }
 
         @media (max-width: 992px) {
@@ -999,15 +1021,17 @@
                 padding-bottom: 80px; /* Espaço extra para o campo de entrada */
             }
 
-            /* Posicionamento do toggle perto do nome do paciente */
+            /* CORREÇÃO: Botão de alta na mesma linha no mobile */
             .patient-title-container {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
             }
             
             .patient-title-wrapper {
-                width: 100%;
+                flex: 1;
+                min-width: 0;
             }
             
             .patient-toggle-icon {
@@ -1022,8 +1046,17 @@
             }
             
             #btnAlta {
-                align-self: flex-end;
-                margin-top: 8px;
+                align-self: center;
+                margin-top: 0;
+            }
+
+            /* Ajuste para botão de alta visível no mobile */
+            .btn-alta-visible {
+                display: inline-block !important;
+                margin-left: auto;
+                flex-shrink: 0;
+                padding: 6px 10px;
+                white-space: nowrap;
             }
         }
 
@@ -1214,7 +1247,7 @@
                             <span>Selecione um paciente</span>
                         </div>
                     </div>
-                    <button class="btn btn-success" id="btnAlta" style="display: none;">Alta</button>
+                    <button class="btn btn-success" id="btnAlta">Alta</button>
                 </div>
                 <div class="patient-details" id="patientDetails" style="display: none;">
                     <!-- Detalhes do paciente serão carregados aqui -->
@@ -1841,7 +1874,7 @@
             // Atualizar header do paciente
             DOM.patientTitle.innerHTML = `
                 <span>${paciente.nome}</span>
-                <div class="patient-toggle-icon" id="patientToggleIcon">▼</div>
+                ${window.innerWidth <= 992 ? '<div class="patient-toggle-icon" id="patientToggleIcon">▼</div>' : ''}
             `;
             DOM.patientDetails.innerHTML = `
                 <div class="detail-item">${paciente.idade} anos, ${paciente.sexo === 'M' ? 'Masculino' : 'Feminino'}</div>
@@ -1850,7 +1883,11 @@
             `;
             
             // Mostrar/ocultar botão de alta
-            DOM.btnAlta.style.display = paciente.alta ? 'none' : 'block';
+            if (paciente.alta) {
+                DOM.btnAlta.classList.remove('btn-alta-visible');
+            } else {
+                DOM.btnAlta.classList.add('btn-alta-visible');
+            }
             
             // Mostrar toggle de detalhes
             DOM.patientDetails.style.display = 'none';
@@ -2108,7 +2145,7 @@
                         });
                         
                         // Atualizar interface
-                        DOM.btnAlta.style.display = 'none';
+                        DOM.btnAlta.classList.remove('btn-alta-visible');
                         renderSetores();
                         renderChatHistory(paciente);
                         
