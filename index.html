@@ -57,7 +57,7 @@
             z-index: 1000;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 8px 0; /* Altura reduzida */
+            padding: 8px 0;
             border-bottom: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
             transition: padding 0.3s ease;
@@ -67,6 +67,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         .logo {
@@ -404,41 +407,41 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 8px 25px rgba(46, 204, 113, 0.1);
-            padding: 18px; /* Reduzido */
+            padding: 18px;
         }
 
         .pricing-header {
-            margin-bottom: 15px; /* Reduzido */
+            margin-bottom: 15px;
             position: relative;
         }
 
         .pricing-header h3 {
-            font-size: 1.3rem; /* Reduzido */
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-bottom: 6px; /* Reduzido */
+            margin-bottom: 6px;
         }
 
         .pricing-header p {
             color: var(--gray-500);
-            margin-bottom: 10px; /* Reduzido */
-            font-size: 0.9rem; /* Reduzido */
-            min-height: 40px; /* Reduzido */
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            min-height: 40px;
         }
 
         .price {
-            font-size: 1.9rem; /* Reduzido */
+            font-size: 1.9rem;
             font-weight: 700;
-            margin-bottom: 12px; /* Reduzido */
+            margin-bottom: 12px;
         }
 
         .price span {
-            font-size: 0.9rem; /* Reduzido */
+            font-size: 0.9rem;
             font-weight: 500;
             color: var(--gray-500);
         }
 
         .pricing-features {
-            margin: 12px 0; /* Reduzido */
+            margin: 12px 0;
             flex-grow: 1;
         }
 
@@ -446,8 +449,8 @@
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            margin-bottom: 8px; /* Reduzido */
-            font-size: 0.9rem; /* Reduzido */
+            margin-bottom: 8px;
+            font-size: 0.9rem;
         }
 
         .feature-item .icon {
@@ -474,21 +477,22 @@
             display: flex;
             background: var(--gray-100);
             border-radius: 8px;
-            padding: 3px; /* Reduzido */
-            margin-bottom: 12px; /* Reduzido */
-            font-size: 0.85rem; /* Reduzido para caber em uma linha */
+            padding: 3px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            white-space: nowrap;
         }
 
         .toggle-option {
             flex: 1;
             text-align: center;
-            padding: 6px; /* Reduzido */
+            padding: 6px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
             transition: all 0.2s;
-            font-size: 0.85rem; /* Reduzido */
-            white-space: nowrap; /* Evita quebra de linha */
+            font-size: 0.85rem;
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
@@ -503,13 +507,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px; /* Reduzido */
-            margin: 10px 0; /* Reduzido */
+            gap: 10px;
+            margin: 10px 0;
         }
 
         .setor-btn {
-            width: 32px; /* Reduzido */
-            height: 32px; /* Reduzido */
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: var(--light);
             border: 1px solid var(--border);
@@ -517,7 +521,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1rem; /* Reduzido */
+            font-size: 1rem;
             transition: all 0.2s;
             color: var(--gray-600);
         }
@@ -528,44 +532,44 @@
         }
 
         .setor-count {
-            font-size: 1.2rem; /* Reduzido */
+            font-size: 1.2rem;
             font-weight: 600;
-            min-width: 32px; /* Reduzido */
+            min-width: 32px;
             text-align: center;
             color: var(--dark);
         }
 
         .total-price {
             text-align: center;
-            margin: 12px 0; /* Reduzido */
-            padding: 8px; /* Reduzido */
+            margin: 12px 0;
+            padding: 8px;
             background: rgba(46, 204, 113, 0.05);
             border-radius: 8px;
             border: 1px solid rgba(46, 204, 113, 0.1);
         }
 
         .total-price .label {
-            font-size: 0.8rem; /* Reduzido */
+            font-size: 0.8rem;
             color: var(--gray-500);
-            margin-bottom: 4px; /* Reduzido */
+            margin-bottom: 4px;
         }
 
         .total-price .price {
-            font-size: 1.4rem; /* Reduzido */
+            font-size: 1.4rem;
             margin: 0;
         }
 
         .total-price .annual {
             color: var(--primary);
-            font-size: 0.8rem; /* Reduzido */
-            margin-top: 4px; /* Reduzido */
+            font-size: 0.8rem;
+            margin-top: 4px;
         }
 
         .cancel-info {
             text-align: center;
             color: var(--gray-500);
-            font-size: 0.8rem; /* Reduzido */
-            margin-top: 8px; /* Reduzido */
+            font-size: 0.8rem;
+            margin-top: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -838,7 +842,7 @@
 
         @media (max-width: 768px) {
             header {
-                padding: 8px 0; /* Altura reduzida */
+                padding: 8px 0;
             }
             
             .hero {
@@ -897,22 +901,31 @@
                 scroll-snap-align: center;
             }
             
-            /* Header mobile - Botão de login totalmente à direita */
+            /* CORREÇÃO: Alinhamento do header para mobile */
             .header-content {
-                display: grid;
-                grid-template-columns: 30px auto auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
                 gap: 10px;
             }
             
+            .mobile-menu-btn {
+                order: 1;
+                margin-right: 0;
+            }
+            
             .logo {
-                justify-self: start;
-                margin-left: 0;
-                grid-column: 2;
+                order: 2;
+                flex-grow: 1;
+                text-align: center;
+                margin: 0;
+                padding: 0 10px;
+                font-size: 1.3rem;
             }
             
             .header-buttons {
-                justify-self: end;
-                grid-column: 3;
+                order: 3;
+                margin-left: 0;
             }
         }
 
@@ -980,30 +993,38 @@
             .toggle-container {
                 font-size: 0.75rem;
             }
+            
+            /* Ajuste adicional para espaçamento no mobile */
+            .header-content {
+                gap: 5px;
+            }
+            
+            .btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header compacto -->
+    <!-- Header compacto corrigido -->
     <header>
-        <div class="container">
-            <div class="header-content">
-                <button class="mobile-menu-btn" id="mobileMenuBtn">
-                    <span class="hamburger"></span>
-                </button>
-                <div class="logo">DONTMED</div>
-                <nav>
-                    <ul>
-                        <li><a href="#features">Funcionalidades</a></li>
-                        <li><a href="#pricing">Preços</a></li>
-                        <li><a href="#highlights">Diferenciais</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                    </ul>
-                </nav>
-                <div class="header-buttons">
-                    <a href="saas.html" class="btn btn-outline">Log in</a>
-                    <a href="#pricing" class="btn btn-primary">Começar agora</a>
-                </div>
+        <div class="header-content">
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span class="hamburger"></span>
+            </button>
+            <div class="logo">DONTMED</div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Funcionalidades</a></li>
+                    <li><a href="#pricing">Preços</a></li>
+                    <li><a href="#highlights">Diferenciais</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </nav>
+            <div class="header-buttons">
+                <a href="saas.html" class="btn btn-outline">Log in</a>
+                <a href="#pricing" class="btn btn-primary">Começar agora</a>
             </div>
         </div>
     </header>
@@ -1030,7 +1051,6 @@
     <section class="hero">
         <div class="container">
             <h1 id="typed-title"></h1>
-            <!-- Alterado para "Registros médicos" -->
             <p>Registros médicos ágeis e seguros. Fluxos simplificados. Gestão em tempo real.</p>
             <div class="hero-buttons">
                 <a href="#pricing" class="btn btn-primary">Testar gratuitamente</a>
@@ -1380,12 +1400,12 @@
             mobileSidebar.classList.toggle('open');
         });
 
-        // Typing animation for hero title - Alterado para "Auditável"
+        // Typing animation for hero title
         document.addEventListener('DOMContentLoaded', function() {
             const titleElement = document.getElementById('typed-title');
             const textLines = [
                 "Otimizado para rotinas médicas.",
-                "Rápido. Seguro. Auditável." // Alterado de "Assinado" para "Auditável"
+                "Rápido. Seguro. Auditável."
             ];
             let lineIndex = 0;
             let htmlLines = ['', ''];
