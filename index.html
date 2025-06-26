@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Estilos anteriores mantidos */
         :root {
             --primary: #2ecc71;
             --primary-dark: #27ae60;
@@ -49,7 +48,7 @@
             padding: 0 20px;
         }
 
-        /* Header compacto */
+        /* Header compacto - Altura reduzida */
         header {
             position: fixed;
             top: 0;
@@ -58,7 +57,7 @@
             z-index: 1000;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 0;
+            padding: 8px 0; /* Altura reduzida */
             border-bottom: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
             transition: padding 0.3s ease;
@@ -66,9 +65,8 @@
 
         .header-content {
             display: flex;
-            justify-content: flex-start; /* Alterado para alinhar à esquerda */
+            justify-content: space-between;
             align-items: center;
-            gap: 40px; /* Espaço entre logo e menu */
         }
 
         .logo {
@@ -100,7 +98,6 @@
         .header-buttons {
             display: flex;
             gap: 12px;
-            margin-left: auto; /* Empurra os botões para a direita */
         }
 
         .btn {
@@ -841,7 +838,7 @@
 
         @media (max-width: 768px) {
             header {
-                padding: 10px 0;
+                padding: 8px 0; /* Altura reduzida */
             }
             
             .hero {
@@ -900,20 +897,22 @@
                 scroll-snap-align: center;
             }
             
-            /* Header mobile layout - Logo mais à esquerda */
+            /* Header mobile - Botão de login totalmente à direita */
             .header-content {
                 display: grid;
-                grid-template-columns: 30px auto auto; /* Alterado: menu, logo, botões */
-                gap: 10px; /* Reduzido o gap */
+                grid-template-columns: 30px auto auto;
+                gap: 10px;
             }
             
             .logo {
                 justify-self: start;
-                margin-left: 0; /* Removida margem anterior */
+                margin-left: 0;
+                grid-column: 2;
             }
             
             .header-buttons {
                 justify-self: end;
+                grid-column: 3;
             }
         }
 
@@ -970,7 +969,6 @@
                 font-size: 1.3rem;
             }
 
-            /* Forçar quebras de linha específicas no mobile */
             .hero h1 br {
                 display: block;
             }
@@ -1291,6 +1289,32 @@
                     <div class="faq-question">Posso cancelar a qualquer momento?</div>
                     <div class="faq-answer">
                         <p>Sim, todos os planos com assinatura mensal podem ser cancelados a qualquer momento, sem taxas de cancelamento. Se você cancelar no meio do período, continuará com acesso até o final do ciclo de faturamento já pago.</p>
+                    </div>
+                </div>
+                <!-- Novas perguntas adicionadas -->
+                <div class="faq-item">
+                    <div class="faq-question">Como é feita a segurança dos dados?</div>
+                    <div class="faq-answer">
+                        <p>Utilizamos criptografia de ponta a ponta em todos os registros médicos. Nossos servidores estão localizados em data centers certificados com padrões internacionais de segurança. Além disso, implementamos controles de acesso rigorosos, auditoria de atividades e conformidade com LGPD e HIPAA para garantir a proteção total das informações sensíveis.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">O sistema funciona offline?</div>
+                    <div class="faq-answer">
+                        <p>Sim, o DONTMED possui funcionalidade offline que permite a continuidade dos registros mesmo sem conexão com a internet. Todos os dados são sincronizados automaticamente quando a conexão é restabelecida, garantindo a integridade das informações e a continuidade do trabalho.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Qual a diferença para outros sistemas de prontuário?</div>
+                    <div class="faq-answer">
+                        <p>O DONTMED foi desenvolvido especificamente para rotinas hospitalares dinâmicas com equipes em transição. Diferente de sistemas tradicionais, focamos em:</p>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>Interface otimizada para uso rápido durante plantões</li>
+                            <li>Fluxos de trabalho colaborativos em tempo real</li>
+                            <li>Visualização consolidada para coordenadores</li>
+                            <li>Ferramentas específicas para transição entre equipes</li>
+                            <li>Modelo de preços transparente por setor</li>
+                        </ul>
                     </div>
                 </div>
             </div>
