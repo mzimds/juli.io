@@ -901,12 +901,12 @@
                 scroll-snap-align: center;
             }
             
-            /* CORREÇÃO: Alinhamento do header para mobile */
+            /* CORREÇÃO: Logo à esquerda com alinhamento correto */
             .header-content {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-start;
                 align-items: center;
-                gap: 10px;
+                gap: 15px;
             }
             
             .mobile-menu-btn {
@@ -916,11 +916,12 @@
             
             .logo {
                 order: 2;
-                flex-grow: 1;
-                text-align: center;
+                flex-grow: 0;
+                text-align: left;
                 margin: 0;
-                padding: 0 10px;
+                padding: 0;
                 font-size: 1.3rem;
+                margin-right: auto; /* Empurra os botões para a direita */
             }
             
             .header-buttons {
@@ -994,9 +995,13 @@
                 font-size: 0.75rem;
             }
             
-            /* Ajuste adicional para espaçamento no mobile */
+            /* Ajuste adicional para o header em telas pequenas */
             .header-content {
-                gap: 5px;
+                gap: 10px;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
             }
             
             .btn {
@@ -1007,7 +1012,7 @@
     </style>
 </head>
 <body>
-    <!-- Header compacto corrigido -->
+    <!-- Header corrigido -->
     <header>
         <div class="header-content">
             <button class="mobile-menu-btn" id="mobileMenuBtn">
