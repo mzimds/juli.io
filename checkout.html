@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Assinatura - DONTMED</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --primary-dark: #27ae60;
+            --light: #ffffff;
+            --dark: #0a0a0a;
+            --darker: #111111;
+            --gray-100: #f5f5f5;
+            --gray-200: #e0e0e0;
+            --gray-300: #cccccc;
+            --gray-400: #999999;
+            --gray-500: #666666;
+            --gray-600: #444444;
+            --gray-700: #333333;
+            --gray-800: #222222;
+            --border: rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            --success: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        .checkout-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .checkout-card {
+            background: var(--light);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+        }
+
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .checkout-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .checkout-header p {
+            color: var(--gray-600);
+        }
+
+        .plan-info {
+            background: var(--gray-100);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .plan-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .plan-details {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .plan-details li {
+            padding: 5px 0;
+            color: var(--gray-600);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+
+        footer {
+            padding: 30px 0;
+            border-top: 1px solid var(--border);
+            background: var(--light);
+            margin-top: auto;
+        }
+
+        .footer-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .copyright {
+            color: var(--gray-500);
+            font-size: 0.85rem;
+        }
+
+        .legal-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .legal-links a {
+            color: var(--gray-500);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .legal-links a:hover {
+            color: var(--dark);
+        }
+
+        /* Responsivo */
+        @media (max-width: 480px) {
+            .checkout-card {
+                padding: 20px;
+                margin: 0 15px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">DONTMED</a>
+        </div>
+    </header>
+
+    <div class="checkout-container">
+        <div class="checkout-card">
+            <div class="checkout-header">
+                <h2>Finalize sua Assinatura</h2>
+                <p>Último passo para começar a usar</p>
+            </div>
+            
+            <div class="plan-info" id="planInfo">
+                <!-- As informações do plano serão preenchidas por JavaScript -->
+            </div>
+            
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label for="cardNumber">Número do Cartão</label>
+                    <input type="text" class="form-control" id="cardNumber" placeholder="0000 0000 0000 0000" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cardName">Nome no Cartão</label>
+                    <input type="text" class="form-control" id="cardName" placeholder="Nome como está no cartão" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="expiryDate">Validade</label>
+                            <input type="text" class="form-control" id="expiryDate" placeholder="MM/AA" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Confirmar Pagamento</button>
+                <a href="index.html#pricing" class="btn btn-outline">Voltar para Planos</a>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <div class="copyright">© 2025 DONTMED. Todos os direitos reservados.</div>
+                <div class="legal-links">
+                    <a href="#">Termos de uso</a>
+                    <a href="#">Política de privacidade</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mapeamento de planos com valores reais
+        const plans = {
+            pro: {
+                name: "Pro",
+                price: "R$99",
+                period: "/mês por setor",
+                features: [
+                    "Até 5 setores",
+                    "Até 20 usuários por setor",
+                    "Histórico completo",
+                    "Suporte prioritário"
+                ]
+            },
+            enterprise: {
+                name: "Enterprise",
+                price: "R$199",
+                period: "/mês por setor",
+                features: [
+                    "Setores ilimitados",
+                    "Usuários ilimitados",
+                    "Histórico completo",
+                    "Suporte 24/7",
+                    "Backup diário"
+                ]
+            }
+        };
+
+        // Obter o plano da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const planName = urlParams.get('plan');
+
+        // Preencher informações do plano
+        const planInfo = document.getElementById('planInfo');
+        if (planName && plans[planName]) {
+            const plan = plans[planName];
+            planInfo.innerHTML = `
+                <h3>Plano ${plan.name}</h3>
+                <div class="price">${plan.price}<span style="font-size: 1rem; color: var(--gray-500);">${plan.period}</span></div>
+                <ul class="plan-details">
+                    ${plan.features.map(feature => `<li>${feature}</li>`).join('')}
+                </ul>
+            `;
+        } else {
+            // Redirecionar se plano não for reconhecido
+            window.location.href = 'index.html#pricing';
+        }
+
+        // Processar pagamento
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validar dados do cartão
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardName = document.getElementById('cardName').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            
+            if (!cardNumber || !cardName || !expiryDate || !cvv) {
+                alert('Por favor, preencha todos os campos do cartão');
+                return;
+            }
+            
+            // Simular processamento do pagamento
+            setTimeout(() => {
+                alert('Pagamento processado com sucesso! Sua assinatura está ativa.');
+                window.location.href = 'index.html'; // Redirecionar para área logada
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
