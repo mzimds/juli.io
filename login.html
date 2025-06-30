@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DONTMED - Acesso à Plataforma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --primary-dark: #27ae60;
+            --light: #ffffff;
+            --dark: #0a0a0a;
+            --darker: #111111;
+            --gray-100: #f5f5f5;
+            --gray-200: #e0e0e0;
+            --gray-300: #cccccc;
+            --gray-400: #999999;
+            --gray-500: #666666;
+            --gray-600: #444444;
+            --gray-700: #333333;
+            --gray-800: #222222;
+            --border: rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.03);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+            --success: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        .login-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .login-card {
+            background: var(--light);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+            min-height: auto;
+        }
+
+        .login-form-section {
+            padding: 40px 30px;
+        }
+
+        .form-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            color: var(--gray-600);
+        }
+
+        .tab-btn.active {
+            color: var(--dark);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+
+        .form-subtitle {
+            color: var(--gray-600);
+            margin-bottom: 30px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: var(--light);
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-500);
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: right;
+            margin-top: 5px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .forgot-password:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            margin-top: 15px;
+        }
+
+        .btn-outline:hover {
+            background: rgba(46, 204, 113, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            padding: 0 15px;
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            background: var(--light);
+            border: 1px solid var(--border);
+            font-weight: 500;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--primary);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            height: 6px;
+            background: var(--gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--danger);
+            transition: width 0.3s;
+        }
+
+        .password-strength-text {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            margin-top: 5px;
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+
+        .terms input {
+            margin-top: 4px;
+            min-width: 20px;
+        }
+
+        .terms label {
+            line-height: 1.4;
+        }
+
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            padding: 30px 0;
+            border-top: 1px solid var(--border);
+            background: var(--light);
+            margin-top: auto;
+        }
+
+        .footer-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .copyright {
+            color: var(--gray-500);
+            font-size: 0.85rem;
+        }
+
+        .legal-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .legal-links a {
+            color: var(--gray-500);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .legal-links a:hover {
+            color: var(--dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-form-section {
+                padding: 30px 20px;
+            }
+            
+            .form-title {
+                font-size: 1.6rem;
+            }
+            
+            .form-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .tab-btn {
+                font-size: 1rem;
+                padding: 12px 0;
+            }
+            
+            .header-content {
+                padding: 0 15px;
+            }
+            
+            .logo {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 20px 0;
+            }
+            
+            .login-card {
+                border-radius: 12px;
+                margin: 0 15px;
+            }
+            
+            .login-form-section {
+                padding: 25px 15px;
+            }
+            
+            .form-title {
+                font-size: 1.5rem;
+            }
+            
+            .form-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 25px;
+            }
+            
+            .form-group {
+                margin-bottom: 18px;
+            }
+            
+            .form-control {
+                padding: 12px 14px;
+                font-size: 0.95rem;
+            }
+            
+            .btn {
+                padding: 13px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .social-btn {
+                font-size: 0.95rem;
+            }
+            
+            .terms {
+                font-size: 0.85rem;
+            }
+            
+            .form-footer {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .login-form-section {
+                padding: 20px 15px;
+            }
+            
+            .form-title {
+                font-size: 1.4rem;
+            }
+            
+            .tab-btn {
+                font-size: 0.95rem;
+                padding: 10px 0;
+            }
+            
+            .terms label {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Estilo para a mensagem do plano */
+        .plan-message {
+            animation: fadeIn 0.5s ease;
+            background: rgba(46, 204, 113, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--primary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">DONTMED</a>
+            <nav>
+                <a href="index.html#pricing" class="btn btn-outline">Ver Planos</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Form Section -->
+            <div class="login-form-section">
+                <!-- Tabs -->
+                <div class="form-tabs">
+                    <button class="tab-btn active" data-tab="login">Entrar</button>
+                    <button class="tab-btn" data-tab="signup">Criar Conta</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div class="form-content active" id="loginForm">
+                    <h2 class="form-title">Bem-vindo de volta</h2>
+                    <p class="form-subtitle">Entre com suas credenciais para acessar a plataforma</p>
+                    
+                    <form id="loginFormElement">
+                        <div class="form-group">
+                            <label for="loginEmail">E-mail</label>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="seu.email@exemplo.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Senha</label>
+                            <div class="password-container">
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Digite sua senha" required>
+                                <button type="button" class="toggle-password" id="toggleLoginPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <a href="#" class="forgot-password">Esqueci minha senha</a>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </form>
+                    
+                    <div class="divider"><span>ou</span></div>
+                    
+                    <div class="social-login">
+                        <button class="social-btn">
+                            <i class="fab fa-google"></i> Entrar com Google
+                        </button>
+                        <button class="social-btn">
+                            <i class="fab fa-microsoft"></i> Entrar com Microsoft
+                        </button>
+                    </div>
+                    
+                    <p class="form-footer">
+                        Novo no DONTMED? <a href="#" id="switchToSignup">Crie uma conta</a>
+                    </p>
+                </div>
+                
+                <!-- Signup Form -->
+                <div class="form-content" id="signupForm">
+                    <h2 class="form-title">Crie sua conta</h2>
+                    <p class="form-subtitle">Comece a otimizar sua rotina médica agora mesmo</p>
+                    
+                    <form id="signupFormElement">
+                        <!-- A mensagem do plano será inserida aqui via JavaScript -->
+                        <div class="form-group">
+                            <label for="signupName">Nome Completo</label>
+                            <input type="text" class="form-control" id="signupName" placeholder="Seu nome completo" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupEmail">E-mail</label>
+                            <input type="email" class="form-control" id="signupEmail" placeholder="seu.email@exemplo.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupPassword">Senha</label>
+                            <div class="password-container">
+                                <input type="password" class="form-control" id="signupPassword" placeholder="Crie uma senha segura" required>
+                                <button type="button" class="toggle-password" id="toggleSignupPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength">
+                                <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                            </div>
+                            <div class="password-strength-text" id="passwordStrengthText">Força da senha: fraca</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupConfirmPassword">Confirme sua Senha</label>
+                            <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirme sua senha" required>
+                        </div>
+                        
+                        <div class="terms">
+                            <input type="checkbox" id="terms" required>
+                            <label for="terms">Concordo com os <a href="#">Termos de Serviço</a> e <a href="#">Política de Privacidade</a></label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Criar Conta</button>
+                    </form>
+                    
+                    <button class="btn btn-outline" onclick="location.href='index.html#pricing'">
+                        Ver Planos Disponíveis
+                    </button>
+                    
+                    <p class="form-footer">
+                        Já tem uma conta? <a href="#" id="switchToLogin">Faça login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <div class="copyright">© 2025 DONTMED. Todos os direitos reservados.</div>
+                <div class="legal-links">
+                    <a href="#">Termos de uso</a>
+                    <a href="#">Política de privacidade</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const loginTab = document.querySelector('[data-tab="login"]');
+        const signupTab = document.querySelector('[data-tab="signup"]');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const switchToSignup = document.getElementById('switchToSignup');
+        const switchToLogin = document.getElementById('switchToLogin');
+        
+        // Toggle Password Visibility
+        function setupPasswordToggle(buttonId, inputId) {
+            const toggleBtn = document.getElementById(buttonId);
+            const passwordInput = document.getElementById(inputId);
+            
+            toggleBtn.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle eye icon
+                const icon = toggleBtn.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        }
+        
+        // Password Strength Indicator
+        function setupPasswordStrength() {
+            const passwordInput = document.getElementById('signupPassword');
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
+            
+            passwordInput.addEventListener('input', () => {
+                const password = passwordInput.value;
+                let strength = 0;
+                let text = 'Fraca';
+                let color = '#e74c3c'; // Red
+                
+                // Check password length
+                if (password.length >= 8) strength += 25;
+                if (password.length >= 12) strength += 25;
+                
+                // Check for mixed case
+                if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) strength += 25;
+                
+                // Check for numbers
+                if (password.match(/([0-9])/)) strength += 15;
+                
+                // Check for special characters
+                if (password.match(/([!,@,#,$,%,^,&,*,?,_,~])/)) strength += 10;
+                
+                // Update strength bar and text
+                strengthBar.style.width = strength + '%';
+                
+                if (strength < 50) {
+                    text = 'Fraca';
+                    color = '#e74c3c'; // Red
+                } else if (strength < 75) {
+                    text = 'Média';
+                    color = '#f39c12'; // Orange
+                } else {
+                    text = 'Forte';
+                    color = '#2ecc71'; // Green
+                }
+                
+                strengthBar.style.backgroundColor = color;
+                strengthText.textContent = `Força da senha: ${text}`;
+                strengthText.style.color = color;
+            });
+        }
+        
+        // Form Submission Handlers
+        document.getElementById('loginFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simple validation
+            if (!email || !password) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            // Simulate login process
+            console.log('Login attempt with:', email, password);
+            
+            // Redirect to index.html after successful login
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        });
+        
+        document.getElementById('signupFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            // Validation
+            if (!name || !email || !password || !confirmPassword) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem. Por favor, tente novamente.');
+                return;
+            }
+            
+            if (!document.getElementById('terms').checked) {
+                alert('Por favor, aceite os Termos de Serviço e Política de Privacidade.');
+                return;
+            }
+            
+            // Simulate account creation
+            console.log('Creating account for:', name, email);
+            
+            // Show success message and redirect
+            setTimeout(() => {
+                alert('Conta criada com sucesso! Você será redirecionado para o sistema.');
+                window.location.href = 'index.html';
+            }, 1000);
+        });
+        
+        // Tab Switching
+        function switchTab(tabName) {
+            if (tabName === 'login') {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                loginForm.classList.add('active');
+                signupForm.classList.remove('active');
+            } else {
+                signupTab.classList.add('active');
+                loginTab.classList.remove('active');
+                signupForm.classList.add('active');
+                loginForm.classList.remove('active');
+            }
+        }
+        
+        // Event Listeners
+        loginTab.addEventListener('click', () => switchTab('login'));
+        signupTab.addEventListener('click', () => switchTab('signup'));
+        switchToSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchTab('signup');
+        });
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchTab('login');
+        });
+        
+        // Check URL parameter to determine which tab to show and display plan message
+        function checkUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('action');
+            const plan = urlParams.get('plan');
+            
+            if (action === 'signup') {
+                switchTab('signup');
+                
+                // Exibir mensagem conforme o plano selecionado
+                if (plan) {
+                    const planNames = {
+                        'pro': 'Pro',
+                        'enterprise': 'Enterprise'
+                    };
+                    
+                    const message = plan === 'free' 
+                        ? 'Você está criando uma conta no plano Free'
+                        : `Você está assinando o plano ${planNames[plan]}`;
+                    
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'plan-message';
+                    messageElement.innerHTML = `
+                        <i class="fas fa-info-circle"></i> ${message}
+                    `;
+                    
+                    const signupForm = document.getElementById('signupForm');
+                    // Insere a mensagem após o subtítulo
+                    const subtitle = signupForm.querySelector('.form-subtitle');
+                    subtitle.insertAdjacentElement('afterend', messageElement);
+                }
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            setupPasswordToggle('toggleLoginPassword', 'loginPassword');
+            setupPasswordToggle('toggleSignupPassword', 'signupPassword');
+            setupPasswordStrength();
+            checkUrlParams();
+        });
+    </script>
+</body>
+</html>
