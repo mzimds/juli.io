@@ -52,13 +52,19 @@
             width: 100%;
         }
 
-        /* Header */
+        /* Header super compacto */
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 12px 0;
+            padding: 0;
             border-bottom: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
+            height: 50px;
         }
 
         .header-content {
@@ -67,15 +73,32 @@
             align-items: center;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px;
+            height: 100%;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--dark);
             letter-spacing: -0.5px;
             text-decoration: none;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline:hover {
+            background: rgba(46, 204, 113, 0.05);
         }
 
         /* Main Content */
@@ -84,7 +107,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 0;
+            padding: 70px 0 30px;
         }
 
         .login-card {
@@ -95,6 +118,32 @@
             width: 100%;
             max-width: 500px;
             min-height: auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin: 0 15px;
+        }
+
+        .login-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .login-card:hover:before {
+            transform: scaleX(1);
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .login-form-section {
@@ -117,6 +166,11 @@
             cursor: pointer;
             position: relative;
             color: var(--gray-600);
+            transition: color 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
         }
 
         .tab-btn.active {
@@ -131,6 +185,12 @@
             width: 100%;
             height: 3px;
             background: var(--primary);
+            animation: tabUnderline 0.4s ease-out;
+        }
+
+        @keyframes tabUnderline {
+            from { width: 0; left: 50%; }
+            to { width: 100%; left: 0; }
         }
 
         .form-title {
@@ -139,6 +199,21 @@
             margin-bottom: 8px;
             letter-spacing: -0.02em;
             text-align: center;
+            color: var(--darker);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .form-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
         }
 
         .form-subtitle {
@@ -146,10 +221,14 @@
             margin-bottom: 30px;
             font-size: 1rem;
             text-align: center;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
 
         .form-group label {
@@ -189,6 +268,11 @@
             color: var(--gray-500);
             cursor: pointer;
             font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
         }
 
         .forgot-password {
@@ -218,6 +302,8 @@
             text-align: center;
             border: none;
             width: 100%;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary {
@@ -232,16 +318,33 @@
             box-shadow: var(--shadow-md);
         }
 
+        .btn-primary:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-primary:hover:after {
+            left: 100%;
+        }
+
         .btn-outline {
             border: 1px solid var(--primary);
             background: transparent;
             color: var(--primary);
             margin-top: 15px;
+            transition: all 0.3s ease;
         }
 
         .btn-outline:hover {
             background: rgba(46, 204, 113, 0.05);
             transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(46, 204, 113, 0.15);
         }
 
         .divider {
@@ -303,18 +406,36 @@
             color: var(--primary);
             text-decoration: none;
             font-weight: 500;
+            position: relative;
         }
 
-        .form-footer a:hover {
-            text-decoration: underline;
+        .form-footer a:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .form-footer a:hover:after {
+            width: 100%;
         }
 
         .form-content {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
 
         .form-content.active {
             display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .password-strength {
@@ -350,6 +471,7 @@
         .terms input {
             margin-top: 4px;
             min-width: 20px;
+            accent-color: var(--primary);
         }
 
         .terms label {
@@ -359,10 +481,45 @@
         .terms a {
             color: var(--primary);
             text-decoration: none;
+            position: relative;
         }
 
-        .terms a:hover {
-            text-decoration: underline;
+        .terms a:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .terms a:hover:after {
+            width: 100%;
+        }
+
+        /* Estilo para a mensagem do plano - Versão otimizada */
+        .plan-message {
+            background: rgba(46, 204, 113, 0.08);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            color: var(--gray-700);
+            border: 1px solid rgba(46, 204, 113, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: fadeIn 0.5s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .plan-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            min-width: 40px;
         }
 
         /* Footer */
@@ -404,8 +561,12 @@
             color: var(--dark);
         }
 
-        /* Responsive */
+        /* Responsive - Otimizado para mobile */
         @media (max-width: 768px) {
+            .login-container {
+                padding: 65px 0 20px;
+            }
+            
             .login-form-section {
                 padding: 30px 20px;
             }
@@ -424,53 +585,63 @@
             }
             
             .header-content {
-                padding: 0 15px;
+                padding: 0 12px;
             }
             
             .logo {
                 font-size: 1.3rem;
             }
+            
+            .btn-outline {
+                padding: 4px 10px;
+                font-size: 0.8rem;
+            }
         }
 
         @media (max-width: 480px) {
+            header {
+                height: 45px;
+            }
+            
             .login-container {
-                padding: 20px 0;
+                padding: 60px 0 15px;
             }
             
             .login-card {
                 border-radius: 12px;
-                margin: 0 15px;
             }
             
             .login-form-section {
-                padding: 25px 15px;
+                padding: 15px;
             }
             
             .form-title {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
+                margin-bottom: 5px;
             }
             
             .form-subtitle {
-                font-size: 0.9rem;
-                margin-bottom: 25px;
+                font-size: 0.85rem;
+                margin-bottom: 20px;
             }
             
             .form-group {
-                margin-bottom: 18px;
+                margin-bottom: 12px;
             }
             
             .form-control {
-                padding: 12px 14px;
-                font-size: 0.95rem;
+                padding: 10px 12px;
+                font-size: 0.9rem;
             }
             
             .btn {
-                padding: 13px 20px;
-                font-size: 0.95rem;
+                padding: 10px;
+                font-size: 0.9rem;
             }
             
             .social-btn {
-                font-size: 0.95rem;
+                padding: 10px;
+                font-size: 0.9rem;
             }
             
             .terms {
@@ -478,53 +649,76 @@
             }
             
             .form-footer {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
+                margin-top: 15px;
+            }
+            
+            .plan-message {
+                padding: 10px;
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+            }
+            
+            .divider {
+                margin: 15px 0;
             }
         }
 
         @media (max-width: 360px) {
+            header {
+                height: 42px;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
+            }
+            
+            .btn-outline {
+                padding: 3px 8px;
+                font-size: 0.75rem;
+            }
+            
+            .login-container {
+                padding: 55px 0 10px;
+            }
+            
             .login-form-section {
-                padding: 20px 15px;
+                padding: 12px;
             }
             
             .form-title {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
+                padding-bottom: 5px;
+            }
+            
+            .form-title:after {
+                height: 2px;
             }
             
             .tab-btn {
-                font-size: 0.95rem;
-                padding: 10px 0;
+                font-size: 0.9rem;
+                padding: 8px 0;
             }
             
             .terms label {
                 font-size: 0.8rem;
             }
-        }
-
-        /* Estilo para a mensagem do plano */
-        .plan-message {
-            animation: fadeIn 0.5s ease;
-            background: rgba(46, 204, 113, 0.1);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 20px;
-            border: 1px solid var(--primary);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            
+            .form-subtitle {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header super compacto -->
     <header>
         <div class="header-content">
-            <a href="index.html" class="logo">DONTMED</a>
+            <a href="index.html" class="logo">
+                DONTMED
+            </a>
             <nav>
-                <a href="index.html#pricing" class="btn btn-outline">Ver Planos</a>
+                <a href="index.html#pricing" class="btn-outline">Ver Planos</a>
             </nav>
         </div>
     </header>
@@ -562,17 +756,19 @@
                             <a href="#" class="forgot-password">Esqueci minha senha</a>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary">Entrar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i>Entrar
+                        </button>
                     </form>
                     
                     <div class="divider"><span>ou</span></div>
                     
                     <div class="social-login">
                         <button class="social-btn">
-                            <i class="fab fa-google"></i> Entrar com Google
+                            <i class="fab fa-google" style="color: #DB4437;"></i> Entrar com Google
                         </button>
                         <button class="social-btn">
-                            <i class="fab fa-microsoft"></i> Entrar com Microsoft
+                            <i class="fab fa-microsoft" style="color: #0078D7;"></i> Entrar com Microsoft
                         </button>
                     </div>
                     
@@ -622,11 +818,13 @@
                             <label for="terms">Concordo com os <a href="#">Termos de Serviço</a> e <a href="#">Política de Privacidade</a></label>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary">Criar Conta</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus" style="margin-right: 8px;"></i>Criar Conta
+                        </button>
                     </form>
                     
                     <button class="btn btn-outline" onclick="location.href='index.html#pricing'">
-                        Ver Planos Disponíveis
+                        <i class="fas fa-search" style="margin-right: 8px;"></i>Ver Planos Disponíveis
                     </button>
                     
                     <p class="form-footer">
@@ -737,10 +935,17 @@
             // Simulate login process
             console.log('Login attempt with:', email, password);
             
+            // Add loading effect
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            submitBtn.disabled = true;
+            
             // Redirect to index.html after successful login
             setTimeout(() => {
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+                submitBtn.disabled = false;
                 window.location.href = 'index.html';
-            }, 1000);
+            }, 1500);
         });
         
         document.getElementById('signupFormElement').addEventListener('submit', function(e) {
@@ -767,14 +972,28 @@
                 return;
             }
             
-            // Simulate account creation
-            console.log('Creating account for:', name, email);
+            // Add loading effect
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+            submitBtn.disabled = true;
             
-            // Show success message and redirect
+            // Get selected plan from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const plan = urlParams.get('plan');
+            
+            // Simulate account creation
             setTimeout(() => {
-                alert('Conta criada com sucesso! Você será redirecionado para o sistema.');
-                window.location.href = 'index.html';
-            }, 1000);
+                submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Criar Conta';
+                submitBtn.disabled = false;
+                
+                if (plan && plan !== 'free') {
+                    // Redirect to checkout for paid plans
+                    window.location.href = `checkout.html?plan=${plan}`;
+                } else {
+                    // For free plan, redirect to index
+                    window.location.href = 'index.html';
+                }
+            }, 1500);
         });
         
         // Tab Switching
@@ -813,21 +1032,32 @@
             if (action === 'signup') {
                 switchTab('signup');
                 
-                // Exibir mensagem conforme o plano selecionado
+                // Exibir mensagem otimizada conforme o plano selecionado
                 if (plan) {
                     const planNames = {
                         'pro': 'Pro',
-                        'enterprise': 'Enterprise'
+                        'enterprise': 'Enterprise',
+                        'free': 'Free'
                     };
                     
-                    const message = plan === 'free' 
-                        ? 'Você está criando uma conta no plano Free'
-                        : `Você está assinando o plano ${planNames[plan]}`;
+                    let message = '';
+                    let icon = '';
+                    
+                    if (plan === 'free') {
+                        message = 'Explore todos os recursos gratuitos por tempo ilimitado.';
+                        icon = 'fas fa-gift';
+                    } else {
+                        message = `Você selecionou o plano ${planNames[plan]} - Aproveite recursos premium!`;
+                        icon = 'fas fa-rocket';
+                    }
                     
                     const messageElement = document.createElement('div');
                     messageElement.className = 'plan-message';
                     messageElement.innerHTML = `
-                        <i class="fas fa-info-circle"></i> ${message}
+                        <div class="plan-icon">
+                            <i class="${icon}"></i>
+                        </div>
+                        <div>${message}</div>
                     `;
                     
                     const signupForm = document.getElementById('signupForm');
