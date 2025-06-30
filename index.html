@@ -186,7 +186,7 @@
             gap: 12px;
         }
 
-        /* Botão de menu mobile */
+        /* Botão de menu mobile - AGORA COM TRÊS LINHAS */
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -199,43 +199,46 @@
             z-index: 100;
         }
 
-        .mobile-menu-btn .hamburger,
+        .mobile-menu-btn .hamburger {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--dark);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
         .mobile-menu-btn .hamburger:before,
         .mobile-menu-btn .hamburger:after {
             content: '';
             position: absolute;
-            width: 100%;
-            height: 2px;
+            width: 25px;
+            height: 3px;
             background: var(--dark);
-            transition: all 0.3s ease;
             left: 0;
-        }
-
-        .mobile-menu-btn .hamburger {
-            top: 30%;
+            transition: all 0.3s ease;
         }
 
         .mobile-menu-btn .hamburger:before {
-            top: 50%;
-            transform: translateY(-50%);
+            top: -8px;
         }
 
         .mobile-menu-btn .hamburger:after {
-            top: 70%;
+            top: 8px;
         }
 
         .mobile-menu-btn.open .hamburger {
-            transform: rotate(45deg);
-            top: 50%;
+            background: transparent;
         }
 
         .mobile-menu-btn.open .hamburger:before {
-            opacity: 0;
+            top: 0;
+            transform: rotate(45deg);
         }
 
         .mobile-menu-btn.open .hamburger:after {
-            transform: rotate(-90deg);
-            top: 50%;
+            top: 0;
+            transform: rotate(-45deg);
         }
 
         /* Hero Section */
@@ -1028,7 +1031,7 @@
                 </ul>
             </nav>
             <div class="header-buttons">
-                <a href="saas.html" class="btn btn-outline">Log in</a>
+                <a href="login.html" class="btn btn-outline">Log in</a>
                 <a href="#pricing" class="btn btn-primary">Começar agora</a>
             </div>
         </div>
@@ -1045,7 +1048,7 @@
                     <li><a href="#faq">FAQ</a></li>
                 </ul>
                 <div class="mobile-sidebar-buttons">
-                    <a href="saas.html" class="btn btn-outline">Log in</a>
+                    <a href="login.html" class="btn btn-outline">Log in</a>
                     <a href="#pricing" class="btn btn-primary">Começar agora</a>
                 </div>
             </nav>
@@ -1158,7 +1161,7 @@
                     <div class="temporary-note">
                         <p>As informações são mantidas apenas durante o plantão, em memória volátil. Após o término, todos os dados são descartados automaticamente.</p>
                     </div>
-                    <a href="#" class="btn btn-outline" style="width: 100%; text-align: center;">Começar gratuitamente</a>
+                    <a href="login.html?action=signup&plan=free" class="btn btn-outline">Começar gratuitamente</a>
                 </div>
                 
                 <!-- Pro Plan -->
@@ -1206,7 +1209,7 @@
                             <p>Analytics em tempo real</p>
                         </div>
                     </div>
-                    <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Assinar Pro</a>
+                    <a href="login.html?action=signup&plan=pro" class="btn btn-primary">Assinar Pro</a>
                     <p class="cancel-info" id="proCancelInfo"><i class="fas fa-check"></i> Cancelamento a qualquer momento</p>
                 </div>
                 
@@ -1255,7 +1258,7 @@
                             <p>Analytics em tempo real</p>
                         </div>
                     </div>
-                    <a href="#" class="btn btn-outline" style="width: 100%; text-align: center;">Assinar Enterprise</a>
+                    <a href="login.html?action=signup&plan=enterprise" class="btn btn-outline">Assinar Enterprise</a>
                     <p class="cancel-info" id="enterpriseCancelInfo"><i class="fas fa-check"></i> Cancelamento a qualquer momento</p>
                 </div>
             </div>
@@ -1403,6 +1406,11 @@
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenuBtn.classList.toggle('open');
             mobileSidebar.classList.toggle('open');
+            
+            // Bloquear scroll quando menu aberto
+            document.body.style.overflow = mobileSidebar.classList.contains('open') 
+                ? 'hidden' 
+                : '';
         });
 
         // Typing animation for hero title
@@ -1516,6 +1524,7 @@
                     if (mobileSidebar.classList.contains('open')) {
                         mobileMenuBtn.classList.remove('open');
                         mobileSidebar.classList.remove('open');
+                        document.body.style.overflow = '';
                     }
                 }
             });
