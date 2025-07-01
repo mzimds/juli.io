@@ -975,98 +975,58 @@
             align-items: center;
         }
 
-        /* Estado de onboarding */
-        .onboarding-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .onboarding-content {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 90%;
-            width: 500px;
-            text-align: center;
-            position: relative;
-        }
-
-        .onboarding-step {
-            display: none;
-        }
-
-        .onboarding-step.active {
-            display: block;
-        }
-
-        .onboarding-content h2 {
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-
-        .onboarding-content p {
-            margin-bottom: 25px;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .onboarding-progress {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 25px;
-        }
-
-        .onboarding-step-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(44, 125, 160, 0.3);
-        }
-
-        .onboarding-step-indicator.active {
-            background: var(--primary);
-            transform: scale(1.2);
-        }
-
         /* Turnos no modal de setor */
         .turno-section {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             padding: 15px;
             background: var(--light-gray);
             border-radius: 8px;
+            position: relative;
+            border: 1px solid var(--border);
         }
 
         .turno-section h4 {
             margin-bottom: 10px;
             font-size: 1rem;
             color: var(--darker);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .turno-section h4::before {
-            content: '';
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--primary);
         }
 
         .turno-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
+        }
+
+        .btn-remove-turno {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .btn-remove-turno:hover {
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .has-error {
+            border-color: var(--danger) !important;
         }
 
         ::-webkit-scrollbar {
@@ -1295,30 +1255,6 @@
         <span id="toast-message">Operação realizada com sucesso!</span>
     </div>
 
-    <!-- Modal de onboarding -->
-    <div class="onboarding-modal" id="onboardingModal">
-        <div class="onboarding-content card">
-            <h2>Bem-vindo ao DONTMED</h2>
-            <div class="onboarding-progress">
-                <div class="onboarding-step-indicator active" data-step="1"></div>
-                <div class="onboarding-step-indicator" data-step="2"></div>
-                <div class="onboarding-step-indicator" data-step="3"></div>
-            </div>
-            <div class="onboarding-step active" data-step="1">
-                <p>Vamos começar criando seu primeiro setor para organizar os pacientes</p>
-                <button class="btn btn-success" id="btnStartSetor">Criar Setor</button>
-            </div>
-            <div class="onboarding-step" data-step="2">
-                <p>Agora adicione pacientes ao setor criado</p>
-                <button class="btn btn-success" id="btnStartPaciente">Adicionar Paciente</button>
-            </div>
-            <div class="onboarding-step" data-step="3">
-                <p>Selecione um paciente para começar a fazer anotações</p>
-                <button class="btn btn-success" id="btnStartNotes">Entendi</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Header -->
     <header>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -1479,6 +1415,7 @@
                         <option value="Dr. Pedro Oliveira">Dr. Pedro Oliveira</option>
                         <option value="Dra. Juliana Costa">Dra. Juliana Costa</option>
                     </select>
+                    <div class="error-message" id="medicoRecebeError">Selecione um médico</div>
                 </div>
                 
                 <h3 style="margin: 20px 0 15px; font-size: 1.1rem; font-weight: 600; border-top: 1px solid var(--border); padding-top: 15px;">
@@ -1487,19 +1424,19 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
                     <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
+                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkVisitados">
                         <span>Todos os pacientes foram visitados</span>
                     </label>
                     <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
+                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkRepassado">
                         <span>Plantão repassado para o médico seguinte</span>
                     </label>
                     <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
+                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkPrescricoes">
                         <span>Todas as prescrições foram atualizadas</span>
                     </label>
                     <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);">
+                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkDocumentacao">
                         <span>Documentação completa de todos os atendimentos</span>
                     </label>
                 </div>
@@ -1540,54 +1477,18 @@
             </div>
             
             <div class="form-group">
-                <label>Nome do Setor</label>
+                <label>Nome do Setor <span style="color: var(--danger);">*</span></label>
                 <input type="text" class="form-control" id="setorName" placeholder="Ex: UTI Adulto, Emergência">
+                <div class="error-message" id="setorNameError">Informe o nome do setor</div>
             </div>
             
-            <!-- Horários de Turno -->
-            <h3 style="margin: 15px 0 10px; font-size: 1rem; font-weight: 600; color: var(--darker);">Horários de Turno</h3>
-            
-            <div class="turno-section">
-                <h4>Manhã</h4>
-                <div class="turno-grid">
-                    <div class="form-group">
-                        <label>Início</label>
-                        <input type="time" class="form-control" id="manhaInicio" value="07:00">
-                    </div>
-                    <div class="form-group">
-                        <label>Fim</label>
-                        <input type="time" class="form-control" id="manhaFim" value="12:00">
-                    </div>
-                </div>
+            <!-- Turnos personalizados -->
+            <h3 style="margin: 15px 0 10px; font-size: 1rem; font-weight: 600; color: var(--darker);">Turnos</h3>
+            <div id="turnosContainer">
+                <!-- Turnos serão adicionados dinamicamente aqui -->
             </div>
-            
-            <div class="turno-section">
-                <h4>Tarde</h4>
-                <div class="turno-grid">
-                    <div class="form-group">
-                        <label>Início</label>
-                        <input type="time" class="form-control" id="tardeInicio" value="13:00">
-                    </div>
-                    <div class="form-group">
-                        <label>Fim</label>
-                        <input type="time" class="form-control" id="tardeFim" value="18:00">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="turno-section">
-                <h4>Noite</h4>
-                <div class="turno-grid">
-                    <div class="form-group">
-                        <label>Início</label>
-                        <input type="time" class="form-control" id="noiteInicio" value="19:00">
-                    </div>
-                    <div class="form-group">
-                        <label>Fim</label>
-                        <input type="time" class="form-control" id="noiteFim" value="23:00">
-                    </div>
-                </div>
-            </div>
+            <button class="btn" id="btnAddTurno" style="margin-top: 10px; width: 100%;">+ Adicionar Turno</button>
+            <div class="error-message" id="turnosError">Adicione pelo menos um turno</div>
             
             <div class="modal-footer">
                 <button class="btn" id="btnCancelSetor" style="background: rgba(0,0,0,0.08); color: var(--dark);">
@@ -1608,35 +1509,40 @@
             </div>
             
             <div class="form-group">
-                <label>Nome Completo</label>
+                <label>Nome Completo <span style="color: var(--danger);">*</span></label>
                 <input type="text" class="form-control" id="pacienteName" placeholder="Nome do paciente">
+                <div class="error-message" id="pacienteNameError">Informe o nome do paciente</div>
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                 <div class="form-group">
-                    <label>Idade</label>
-                    <input type="number" class="form-control" id="pacienteIdade" placeholder="Idade">
+                    <label>Idade <span style="color: var(--danger);">*</span></label>
+                    <input type="number" class="form-control" id="pacienteIdade" placeholder="Idade" min="0" max="120">
+                    <div class="error-message" id="pacienteIdadeError">Informe uma idade válida</div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Sexo Biológico</label>
+                    <label>Sexo Biológico <span style="color: var(--danger);">*</span></label>
                     <select class="form-control" id="pacienteSexo">
                         <option value="">Selecione</option>
                         <option value="M">Masculino</option>
                         <option value="F">Feminino</option>
                     </select>
+                    <div class="error-message" id="pacienteSexoError">Selecione o sexo biológico</div>
                 </div>
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                 <div class="form-group">
-                    <label>Leito</label>
+                    <label>Leito <span style="color: var(--danger);">*</span></label>
                     <input type="text" class="form-control" id="pacienteLeito" placeholder="Número do leito">
+                    <div class="error-message" id="pacienteLeitoError">Informe o número do leito</div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Nº Atendimento</label>
+                    <label>Nº Atendimento <span style="color: var(--danger);">*</span></label>
                     <input type="text" class="form-control" id="pacienteAtendimento" placeholder="Número do atendimento">
+                    <div class="error-message" id="pacienteAtendimentoError">Informe o número do atendimento</div>
                 </div>
             </div>
             
@@ -1659,8 +1565,9 @@
             </div>
             
             <div class="form-group">
-                <label>Tipo de Alta</label>
+                <label>Tipo de Alta <span style="color: var(--danger);">*</span></label>
                 <select class="form-control" id="tipoAlta">
+                    <option value="">Selecione o tipo de alta</option>
                     <option value="melhora">Alta por melhora clínica</option>
                     <option value="pedido">Alta a pedido</option>
                     <option value="domiciliar">Alta com encaminhamento para cuidados domiciliares</option>
@@ -1670,11 +1577,13 @@
                     <option value="administrativa">Alta administrativa</option>
                     <option value="contra_indicacao">Alta contra indicação médica</option>
                 </select>
+                <div class="error-message" id="tipoAltaError">Selecione o tipo de alta</div>
             </div>
             
             <div class="form-group">
-                <label>Data e Hora</label>
+                <label>Data e Hora <span style="color: var(--danger);">*</span></label>
                 <input type="datetime-local" class="form-control" id="dataAlta">
+                <div class="error-message" id="dataAltaError">Informe a data e hora da alta</div>
             </div>
             
             <div class="form-group">
@@ -1700,11 +1609,11 @@
                 {
                     id: 1,
                     nome: "UTI Adulto",
-                    turnos: {
-                        manha: { inicio: "07:00", fim: "12:00" },
-                        tarde: { inicio: "13:00", fim: "18:00" },
-                        noite: { inicio: "19:00", fim: "23:00" }
-                    },
+                    turnos: [
+                        { nome: "Manhã", inicio: "07:00", fim: "12:00" },
+                        { nome: "Tarde", inicio: "13:00", fim: "18:00" },
+                        { nome: "Noite", inicio: "19:00", fim: "23:00" }
+                    ],
                     pacientes: [
                         {
                             id: 101,
@@ -1754,11 +1663,11 @@
                 {
                     id: 2,
                     nome: "Emergência",
-                    turnos: {
-                        manha: { inicio: "07:00", fim: "12:00" },
-                        tarde: { inicio: "13:00", fim: "18:00" },
-                        noite: { inicio: "19:00", fim: "23:00" }
-                    },
+                    turnos: [
+                        { nome: "Manhã", inicio: "07:00", fim: "12:00" },
+                        { nome: "Tarde", inicio: "13:00", fim: "18:00" },
+                        { nome: "Noite", inicio: "19:00", fim: "23:00" }
+                    ],
                     pacientes: [
                         {
                             id: 201,
@@ -1795,25 +1704,34 @@
             btnCancelPass: document.getElementById('btnCancelPass'),
             btnConfirmPass: document.getElementById('btnConfirmPass'),
             medicoRecebe: document.getElementById('medicoRecebe'),
+            medicoRecebeError: document.getElementById('medicoRecebeError'),
             assinatura: document.getElementById('assinatura'),
             toast: document.getElementById('toast'),
             toastMessage: document.getElementById('toast-message'),
             newSetorModal: document.getElementById('newSetorModal'),
             setorName: document.getElementById('setorName'),
+            setorNameError: document.getElementById('setorNameError'),
             btnCancelSetor: document.getElementById('btnCancelSetor'),
             btnSaveSetor: document.getElementById('btnSaveSetor'),
             newPacienteModal: document.getElementById('newPacienteModal'),
             pacienteName: document.getElementById('pacienteName'),
+            pacienteNameError: document.getElementById('pacienteNameError'),
             pacienteIdade: document.getElementById('pacienteIdade'),
+            pacienteIdadeError: document.getElementById('pacienteIdadeError'),
             pacienteSexo: document.getElementById('pacienteSexo'),
+            pacienteSexoError: document.getElementById('pacienteSexoError'),
             pacienteLeito: document.getElementById('pacienteLeito'),
+            pacienteLeitoError: document.getElementById('pacienteLeitoError'),
             pacienteAtendimento: document.getElementById('pacienteAtendimento'),
+            pacienteAtendimentoError: document.getElementById('pacienteAtendimentoError'),
             btnCancelPaciente: document.getElementById('btnCancelPaciente'),
             btnSavePaciente: document.getElementById('btnSavePaciente'),
             btnAlta: document.getElementById('btnAlta'),
             altaModal: document.getElementById('altaModal'),
             tipoAlta: document.getElementById('tipoAlta'),
+            tipoAltaError: document.getElementById('tipoAltaError'),
             dataAlta: document.getElementById('dataAlta'),
+            dataAltaError: document.getElementById('dataAltaError'),
             obsAlta: document.getElementById('obsAlta'),
             btnCancelAlta: document.getElementById('btnCancelAlta'),
             btnConfirmAlta: document.getElementById('btnConfirmAlta'),
@@ -1828,17 +1746,9 @@
             patientHeader: document.getElementById('patientHeader'),
             editorContainer: document.getElementById('editorContainer'),
             btnQuickSetor: document.getElementById('btnQuickSetor'),
-            btnQuickPaciente: document.getElementById('btnQuickPaciente'),
-            onboardingModal: document.getElementById('onboardingModal'),
-            btnStartSetor: document.getElementById('btnStartSetor'),
-            btnStartPaciente: document.getElementById('btnStartPaciente'),
-            btnStartNotes: document.getElementById('btnStartNotes'),
-            manhaInicio: document.getElementById('manhaInicio'),
-            manhaFim: document.getElementById('manhaFim'),
-            tardeInicio: document.getElementById('tardeInicio'),
-            tardeFim: document.getElementById('tardeFim'),
-            noiteInicio: document.getElementById('noiteInicio'),
-            noiteFim: document.getElementById('noiteFim')
+            btnAddTurno: document.getElementById('btnAddTurno'),
+            turnosContainer: document.getElementById('turnosContainer'),
+            turnosError: document.getElementById('turnosError')
         };
 
         // Estado da aplicação
@@ -1847,7 +1757,7 @@
             currentPaciente: null,
             currentDoctor: "Dr. Carlos Silva",
             lastEdit: new Date().toISOString(),
-            firstUse: true
+            turnoCount: 0
         };
 
         // Função para destacar termos de busca
@@ -1967,11 +1877,11 @@
                 DOM.btnPassPlantaoHeader.classList.add('hidden');
             }
             
-            // Mostrar onboarding no primeiro acesso
-            initOnboarding();
-            
             // Mostrar estado inicial
             updateEmptyState();
+            
+            // Inicializar turnos
+            addTurno();
         }
         
         // Atualizar barra de progresso de setores
@@ -2260,7 +2170,7 @@
             DOM.btnConfirmPass.addEventListener('click', () => {
                 const medicoRecebe = DOM.medicoRecebe.value.trim();
                 if (!medicoRecebe) {
-                    showToast('Selecione o médico que receberá o plantão', 'error');
+                    showError(DOM.medicoRecebeError, 'Selecione o médico que receberá o plantão');
                     return;
                 }
                 
@@ -2283,43 +2193,87 @@
             });
             
             DOM.btnSaveSetor.addEventListener('click', () => {
+                // Resetar erros
+                hideAllErrors();
+                
                 const nomeSetor = DOM.setorName.value.trim();
-                if (nomeSetor) {
-                    const novoSetor = {
-                        id: Date.now(),
-                        nome: nomeSetor,
-                        turnos: {
-                            manha: { 
-                                inicio: DOM.manhaInicio.value, 
-                                fim: DOM.manhaFim.value 
-                            },
-                            tarde: { 
-                                inicio: DOM.tardeInicio.value, 
-                                fim: DOM.tardeFim.value 
-                            },
-                            noite: { 
-                                inicio: DOM.noiteInicio.value, 
-                                fim: DOM.noiteFim.value 
-                            }
-                        },
-                        pacientes: []
-                    };
-                    dados.setores.push(novoSetor);
-                    renderSetores();
-                    DOM.newSetorModal.classList.remove('active');
-                    DOM.setorName.value = '';
-                    updateSetorProgress();
-                    showToast(`Setor "${nomeSetor}" criado com sucesso!`, 'success');
-                    
-                    // Se for o primeiro setor, fechar onboarding
-                    if (dados.setores.length === 1) {
-                        state.firstUse = false;
-                        advanceOnboarding();
-                    }
-                } else {
-                    showToast('Por favor, informe o nome do setor', 'error');
+                if (!nomeSetor) {
+                    showError(DOM.setorNameError, 'Informe o nome do setor');
+                    DOM.setorName.focus();
+                    return;
                 }
+                
+                // Validar turnos
+                const turnos = [];
+                const turnoElements = document.querySelectorAll('.turno-section');
+                let hasTurnoError = false;
+                
+                if (turnoElements.length === 0) {
+                    showError(DOM.turnosError, 'Adicione pelo menos um turno');
+                    return;
+                }
+                
+                // Coletar e validar turnos
+                for (let i = 0; i < turnoElements.length; i++) {
+                    const turnoEl = turnoElements[i];
+                    const nomeTurno = turnoEl.querySelector('.turno-name').value.trim();
+                    const inicio = turnoEl.querySelector('.turno-inicio').value;
+                    const fim = turnoEl.querySelector('.turno-fim').value;
+                    
+                    if (!nomeTurno) {
+                        showError(turnoEl.querySelector('.turno-name-error'), 'Informe o nome do turno');
+                        hasTurnoError = true;
+                    }
+                    
+                    if (!inicio) {
+                        showError(turnoEl.querySelector('.turno-inicio-error'), 'Informe o horário de início');
+                        hasTurnoError = true;
+                    }
+                    
+                    if (!fim) {
+                        showError(turnoEl.querySelector('.turno-fim-error'), 'Informe o horário de término');
+                        hasTurnoError = true;
+                    }
+                    
+                    if (inicio && fim && inicio >= fim) {
+                        showError(turnoEl.querySelector('.turno-fim-error'), 'Término deve ser após o início');
+                        hasTurnoError = true;
+                    }
+                    
+                    if (!hasTurnoError) {
+                        turnos.push({
+                            nome: nomeTurno,
+                            inicio: inicio,
+                            fim: fim
+                        });
+                    }
+                }
+                
+                if (hasTurnoError) return;
+                
+                // Verificar sobreposição de turnos
+                if (hasSobreposicaoTurnos(turnos)) {
+                    showToast('Existe sobreposição de horários entre turnos', 'error');
+                    return;
+                }
+                
+                const novoSetor = {
+                    id: Date.now(),
+                    nome: nomeSetor,
+                    turnos: turnos,
+                    pacientes: []
+                };
+                
+                dados.setores.push(novoSetor);
+                renderSetores();
+                DOM.newSetorModal.classList.remove('active');
+                DOM.setorName.value = '';
+                updateSetorProgress();
+                showToast(`Setor "${nomeSetor}" criado com sucesso!`, 'success');
             });
+            
+            // Botão para adicionar turno
+            DOM.btnAddTurno.addEventListener('click', addTurno);
             
             // Modal novo paciente
             DOM.btnCancelPaciente.addEventListener('click', () => {
@@ -2327,14 +2281,42 @@
             });
             
             DOM.btnSavePaciente.addEventListener('click', () => {
+                // Resetar erros
+                hideAllErrors();
+                
                 const nome = DOM.pacienteName.value.trim();
                 const idade = parseInt(DOM.pacienteIdade.value);
                 const sexo = DOM.pacienteSexo.value;
                 const leito = DOM.pacienteLeito.value.trim();
                 const atendimento = DOM.pacienteAtendimento.value.trim();
                 
-                if (!nome || isNaN(idade) || !sexo || !leito || !atendimento) {
-                    showToast('Por favor, preencha todos os campos', 'error');
+                if (!nome) {
+                    showError(DOM.pacienteNameError, 'Informe o nome do paciente');
+                    DOM.pacienteName.focus();
+                    return;
+                }
+                
+                if (isNaN(idade) || idade <= 0 || idade > 120) {
+                    showError(DOM.pacienteIdadeError, 'Informe uma idade válida');
+                    DOM.pacienteIdade.focus();
+                    return;
+                }
+                
+                if (!sexo) {
+                    showError(DOM.pacienteSexoError, 'Selecione o sexo biológico');
+                    DOM.pacienteSexo.focus();
+                    return;
+                }
+                
+                if (!leito) {
+                    showError(DOM.pacienteLeitoError, 'Informe o número do leito');
+                    DOM.pacienteLeito.focus();
+                    return;
+                }
+                
+                if (!atendimento) {
+                    showError(DOM.pacienteAtendimentoError, 'Informe o número do atendimento');
+                    DOM.pacienteAtendimento.focus();
                     return;
                 }
                 
@@ -2377,9 +2359,6 @@
                     if (setor.pacientes.length === 1) {
                         selectPaciente(novoPaciente.id);
                     }
-                    
-                    // Avançar onboarding
-                    advanceOnboarding();
                 }
             });
             
@@ -2391,14 +2370,25 @@
             });
             
             DOM.btnConfirmAlta.addEventListener('click', () => {
+                // Resetar erros
+                hideAllErrors();
+                
                 const tipo = DOM.tipoAlta.value;
                 const data = DOM.dataAlta.value;
-                const obs = DOM.obsAlta.value.trim();
                 
                 if (!tipo) {
-                    showToast('Selecione o tipo de alta', 'error');
+                    showError(DOM.tipoAltaError, 'Selecione o tipo de alta');
+                    DOM.tipoAlta.focus();
                     return;
                 }
+                
+                if (!data) {
+                    showError(DOM.dataAltaError, 'Informe a data e hora da alta');
+                    DOM.dataAlta.focus();
+                    return;
+                }
+                
+                const obs = DOM.obsAlta.value.trim();
                 
                 // Encontrar paciente
                 for (const setor of dados.setores) {
@@ -2430,7 +2420,7 @@
                         DOM.altaModal.classList.remove('active');
                         
                         // Resetar campos
-                        DOM.tipoAlta.value = 'melhora';
+                        DOM.tipoAlta.value = '';
                         DOM.obsAlta.value = '';
                         
                         // Mostrar toast
@@ -2479,59 +2469,91 @@
             DOM.btnQuickSetor.addEventListener('click', openNewSetorModal);
         }
 
-        // Inicializar onboarding
-        function initOnboarding() {
-            // Verificar se é o primeiro acesso
-            const onboarded = localStorage.getItem('dontmed_onboarded');
-            if (onboarded) {
-                DOM.onboardingModal.style.display = 'none';
-                return;
-            }
+        // Adicionar novo turno
+        function addTurno() {
+            state.turnoCount++;
+            const turnoId = state.turnoCount;
             
-            // Mostrar onboarding apenas se não houver setores
-            if (dados.setores.length === 0) {
-                DOM.onboardingModal.style.display = 'flex';
-            } else {
-                DOM.onboardingModal.style.display = 'none';
-            }
+            const turnoEl = document.createElement('div');
+            turnoEl.className = 'turno-section';
+            turnoEl.innerHTML = `
+                <button class="btn-remove-turno" data-id="${turnoId}">×</button>
+                <div class="form-group">
+                    <label>Nome do Turno <span style="color: var(--danger);">*</span></label>
+                    <input type="text" class="form-control turno-name" placeholder="Ex: Manhã, Tarde, Noite">
+                    <div class="error-message turno-name-error"></div>
+                </div>
+                <div class="turno-grid">
+                    <div class="form-group">
+                        <label>Início <span style="color: var(--danger);">*</span></label>
+                        <input type="time" class="form-control turno-inicio" value="07:00">
+                        <div class="error-message turno-inicio-error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Fim <span style="color: var(--danger);">*</span></label>
+                        <input type="time" class="form-control turno-fim" value="12:00">
+                        <div class="error-message turno-fim-error"></div>
+                    </div>
+                </div>
+            `;
             
-            // Atualizar indicadores de progresso
-            updateOnboardingProgress(1);
-        }
-        
-        // Atualizar indicadores de progresso do onboarding
-        function updateOnboardingProgress(step) {
-            document.querySelectorAll('.onboarding-step-indicator').forEach((indicator, index) => {
-                if (index + 1 <= step) {
-                    indicator.classList.add('active');
+            DOM.turnosContainer.appendChild(turnoEl);
+            
+            // Evento para remover turno
+            turnoEl.querySelector('.btn-remove-turno').addEventListener('click', function() {
+                if (document.querySelectorAll('.turno-section').length > 1) {
+                    turnoEl.remove();
+                    DOM.turnosError.style.display = 'none';
                 } else {
-                    indicator.classList.remove('active');
+                    showToast('Deve haver pelo menos um turno', 'error');
                 }
             });
+            
+            // Esconder mensagem de erro de turnos
+            DOM.turnosError.style.display = 'none';
         }
         
-        // Avançar no onboarding
-        function advanceOnboarding() {
-            if (!state.firstUse) return;
-            
-            if (dados.setores.length === 0) {
-                updateOnboardingProgress(1);
-                DOM.btnStartSetor.addEventListener('click', openNewSetorModal);
-            } else if (dados.setores.some(s => s.pacientes.length === 0)) {
-                updateOnboardingProgress(2);
-                DOM.btnStartPaciente.addEventListener('click', () => {
-                    if (dados.setores.length > 0) {
-                        openNewPacienteModal(dados.setores[0].id);
+        // Verificar sobreposição de turnos
+        function hasSobreposicaoTurnos(turnos) {
+            for (let i = 0; i < turnos.length; i++) {
+                for (let j = i + 1; j < turnos.length; j++) {
+                    const turnoA = turnos[i];
+                    const turnoB = turnos[j];
+                    
+                    // Converter para minutos para facilitar comparação
+                    const inicioA = timeToMinutes(turnoA.inicio);
+                    const fimA = timeToMinutes(turnoA.fim);
+                    const inicioB = timeToMinutes(turnoB.inicio);
+                    const fimB = timeToMinutes(turnoB.fim);
+                    
+                    // Verificar sobreposição
+                    if ((inicioA >= inicioB && inicioA < fimB) || 
+                        (fimA > inicioB && fimA <= fimB) || 
+                        (inicioB >= inicioA && inicioB < fimA)) {
+                        return true;
                     }
-                });
-            } else {
-                updateOnboardingProgress(3);
-                DOM.btnStartNotes.addEventListener('click', () => {
-                    localStorage.setItem('dontmed_onboarded', 'true');
-                    DOM.onboardingModal.style.display = 'none';
-                    state.firstUse = false;
-                });
+                }
             }
+            return false;
+        }
+        
+        // Converter tempo para minutos
+        function timeToMinutes(time) {
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+        
+        // Mostrar erro
+        function showError(element, message) {
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+        
+        // Ocultar todos os erros
+        function hideAllErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
         }
 
         // Enviar mensagem
@@ -2580,10 +2602,15 @@
             
             DOM.dataAlta.value = `${year}-${month}-${day}T${hours}:${minutes}`;
             DOM.altaModal.classList.add('active');
+            DOM.tipoAlta.focus();
         }
 
         // Abrir modal novo setor
         function openNewSetorModal() {
+            // Resetar turnos
+            DOM.turnosContainer.innerHTML = '';
+            addTurno();
+            
             DOM.newSetorModal.classList.add('active');
             DOM.setorName.focus();
         }
@@ -2602,6 +2629,7 @@
             const timeStr = now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
             DOM.assinatura.value = `${state.currentDoctor} - ${dateStr} ${timeStr}`;
             DOM.passPlantaoModal.classList.add('active');
+            DOM.medicoRecebe.focus();
         }
 
         // Atualizar hora atual
