@@ -26,6 +26,7 @@
             --shadow-md: 0 4px 6px rgba(0,0,0,0.03);
             --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
             --success: #2ecc71;
+            --growth-highlight: #00c853;
         }
 
         * {
@@ -135,6 +136,20 @@
 
         .btn-primary:hover {
             background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-growth {
+            background: var(--growth-highlight);
+            color: white;
+            border: none;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-growth:hover {
+            background: #009624;
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
@@ -406,11 +421,23 @@
         }
 
         .pricing-card.featured {
-            border: 2px solid var(--primary);
+            border: 2px solid var(--growth-highlight);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.1);
             padding: 18px;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--growth-highlight);
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 0 0 0 8px;
         }
 
         .pricing-header {
@@ -1150,22 +1177,22 @@
                             <p>Memória temporária durante o plantão</p>
                         </div>
                         <div class="feature-item">
-                            <div class="icon"><i class="fas fa-times" style="color: var(--gray-500);"></i></div>
-                            <p>Dados não são salvos após o encerramento</p>
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Histórico reduzido (apenas plantão atual e anterior)</p>
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-times" style="color: var(--gray-500);"></i></div>
-                            <p>Histórico completo</p>
+                            <p>Histórico completo ilimitado</p>
                         </div>
                     </div>
                     <div class="temporary-note">
-                        <p>As informações são mantidas apenas durante o plantão, em memória volátil. Após o término, todos os dados são descartados automaticamente.</p>
+                        <p>As informações são mantidas apenas durante o plantão atual e o anterior. Após isso, os dados são automaticamente removidos.</p>
                     </div>
                     <a href="login.html?action=signup&plan=free" class="btn btn-outline">Começar gratuitamente</a>
                 </div>
                 
                 <!-- Pro Plan -->
-                <div class="pricing-card featured">
+                <div class="pricing-card">
                     <div class="pricing-header">
                         <h3>Pro</h3>
                         <p>Para equipes que buscam escalabilidade com segurança clínica</p>
@@ -1182,7 +1209,7 @@
                     <div class="pricing-features">
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
-                            <p>Até 5 setores.</p>
+                            <p>Até 3 setores</p>
                         </div>
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
@@ -1208,9 +1235,67 @@
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
                             <p>Analytics em tempo real</p>
                         </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-times" style="color: var(--gray-500);"></i></div>
+                            <p>Exportação de dados</p>
+                        </div>
                     </div>
                     <a href="login.html?action=signup&plan=pro" class="btn btn-primary">Assinar Pro</a>
                     <p class="cancel-info" id="proCancelInfo"><i class="fas fa-check"></i> Cancelamento a qualquer momento</p>
+                </div>
+                
+                <!-- Growth Plan (destaque) -->
+                <div class="pricing-card featured">
+                    <div class="featured-badge">MAIS POPULAR</div>
+                    <div class="pricing-header">
+                        <h3>Growth</h3>
+                        <p>Para hospitais de médio porte com múltiplas equipes</p>
+                        
+                        <!-- Toggle para seleção de plano -->
+                        <div class="toggle-container">
+                            <div class="toggle-option active" data-plan="monthly">Mensal</div>
+                            <div class="toggle-option" data-plan="annual">Anual</div>
+                        </div>
+                        
+                        <div class="price" id="growthPrice">R$179<span>/setor/mês</span></div>
+                    </div>
+                    
+                    <div class="pricing-features">
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Setores ilimitados</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Até 50 usuários por setor</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Salvamento e histórico completo</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Assinatura eletrônica integrada</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Logs e rastreabilidade avançada</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Multiusuário com controle de acesso</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Analytics em tempo real</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Exportação de dados</p>
+                        </div>
+                    </div>
+                    <a href="login.html?action=signup&plan=growth" class="btn btn-growth">Assinar Growth</a>
+                    <p class="cancel-info" id="growthCancelInfo"><i class="fas fa-check"></i> Cancelamento a qualquer momento</p>
                 </div>
                 
                 <!-- Enterprise Plan -->
@@ -1225,7 +1310,7 @@
                             <div class="toggle-option" data-plan="annual">Anual</div>
                         </div>
                         
-                        <div class="price" id="enterprisePrice">R$199<span>/setor/mês</span></div>
+                        <div class="price" id="enterprisePrice">R$249<span>/setor/mês</span></div>
                     </div>
                     
                     <div class="pricing-features">
@@ -1256,6 +1341,18 @@
                         <div class="feature-item">
                             <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
                             <p>Analytics em tempo real</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Exportação de dados</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Suporte prioritário 24/7</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="icon"><i class="fas fa-check" style="color: var(--success);"></i></div>
+                            <p>Integrações avançadas</p>
                         </div>
                     </div>
                     <a href="login.html?action=signup&plan=enterprise" class="btn btn-outline">Assinar Enterprise</a>
@@ -1319,30 +1416,16 @@
                         <p>Sim, todos os planos com assinatura mensal podem ser cancelados a qualquer momento, sem taxas de cancelamento. Se você cancelar no meio do período, continuará com acesso até o final do ciclo de faturamento já pago.</p>
                     </div>
                 </div>
-                <!-- Novas perguntas adicionadas -->
                 <div class="faq-item">
-                    <div class="faq-question">Como é feita a segurança dos dados?</div>
+                    <div class="faq-question">Como é o armazenamento no plano Free?</div>
                     <div class="faq-answer">
-                        <p>Utilizamos criptografia de ponta a ponta em todos os registros médicos. Nossos servidores estão localizados em data centers certificados com padrões internacionais de segurança. Além disso, implementamos controles de acesso rigorosos, auditoria de atividades e conformidade com LGPD e HIPAA para garantir a proteção total das informações sensíveis.</p>
+                        <p>No plano Free, os dados são mantidos apenas durante o plantão atual e o anterior. Após esse período, os dados mais antigos são automaticamente removidos. Esta estratégia permite oferecer um plano gratuito sustentável, mantendo a funcionalidade básica para pequenas equipes.</p>
                     </div>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">O sistema funciona offline?</div>
+                    <div class="faq-question">Qual é a diferença entre o Growth e o Enterprise?</div>
                     <div class="faq-answer">
-                        <p>Sim, o DONTMED possui funcionalidade offline que permite a continuidade dos registros mesmo sem conexão com a internet. Todos os dados são sincronizados automaticamente quando a conexão é restabelecida, garantindo a integridade das informações e a continuidade do trabalho.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">Qual a diferença para outros sistemas de prontuário?</div>
-                    <div class="faq-answer">
-                        <p>O DONTMED foi desenvolvido especificamente para rotinas hospitalares dinâmicas com equipes em transição. Diferente de sistemas tradicionais, focamos em:</p>
-                        <ul style="margin-top: 10px; padding-left: 20px;">
-                            <li>Interface otimizada para uso rápido durante plantões</li>
-                            <li>Fluxos de trabalho colaborativos em tempo real</li>
-                            <li>Visualização consolidada para coordenadores</li>
-                            <li>Ferramentas específicas para transição entre equipes</li>
-                            <li>Modelo de preços transparente por setor</li>
-                        </ul>
+                        <p>O plano Growth é ideal para hospitais de médio porte, com até 50 usuários por setor. O Enterprise oferece usuários ilimitados por setor, suporte prioritário 24/7 e integrações avançadas com outros sistemas hospitalares. Ambos oferecem setores ilimitados.</p>
                     </div>
                 </div>
             </div>
@@ -1460,14 +1543,17 @@
 
         // Preços base
         const monthlyPricePro = 99;
+        const monthlyPriceGrowth = 179;
+        const monthlyPriceEnterprise = 249;
+        
         const annualDiscount = 0.2; // 20% de desconto
         const annualPricePro = monthlyPricePro * (1 - annualDiscount);
-        
-        const monthlyPriceEnterprise = 199;
+        const annualPriceGrowth = monthlyPriceGrowth * (1 - annualDiscount);
         const annualPriceEnterprise = monthlyPriceEnterprise * (1 - annualDiscount);
         
         // Referências para elementos de cancelamento
         const proCancelInfo = document.getElementById('proCancelInfo');
+        const growthCancelInfo = document.getElementById('growthCancelInfo');
         const enterpriseCancelInfo = document.getElementById('enterpriseCancelInfo');
         
         // Função para atualizar preços e estado do cancelamento
@@ -1479,25 +1565,27 @@
             
             // Atualizar preços
             if(planType === 'monthly') {
-                document.querySelectorAll('.price').forEach((element, index) => {
-                    if (index === 0) return; // Ignorar plano Free
-                    const price = index === 1 ? monthlyPricePro : monthlyPriceEnterprise;
-                    element.innerHTML = `R$${price.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
-                });
+                document.getElementById('proPrice').innerHTML = `R$${monthlyPricePro.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
+                document.getElementById('growthPrice').innerHTML = `R$${monthlyPriceGrowth.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
+                document.getElementById('enterprisePrice').innerHTML = `R$${monthlyPriceEnterprise.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
                 
                 // Mostrar texto de cancelamento
                 proCancelInfo.style.display = 'flex';
+                growthCancelInfo.style.display = 'flex';
                 enterpriseCancelInfo.style.display = 'flex';
             } else {
-                document.querySelectorAll('.price').forEach((element, index) => {
-                    if (index === 0) return; // Ignorar plano Free
-                    const price = index === 1 ? annualPricePro : annualPriceEnterprise;
-                    element.innerHTML = `R$${price.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
-                    element.innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
-                });
+                document.getElementById('proPrice').innerHTML = `R$${annualPricePro.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
+                document.getElementById('proPrice').innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
+                
+                document.getElementById('growthPrice').innerHTML = `R$${annualPriceGrowth.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
+                document.getElementById('growthPrice').innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
+                
+                document.getElementById('enterprisePrice').innerHTML = `R$${annualPriceEnterprise.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
+                document.getElementById('enterprisePrice').innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
                 
                 // Ocultar texto de cancelamento
                 proCancelInfo.style.display = 'none';
+                growthCancelInfo.style.display = 'none';
                 enterpriseCancelInfo.style.display = 'none';
             }
         }

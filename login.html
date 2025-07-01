@@ -52,7 +52,7 @@
             width: 100%;
         }
 
-        /* Header compacto - Altura reduzida - IGUAL AO INDEX.HTML */
+        /* Header compacto - Altura reduzida */
         header {
             position: fixed;
             top: 0;
@@ -108,12 +108,12 @@
             gap: 12px;
         }
 
-        /* CORREÇÃO: Botões do header com mesmo estilo do index.html */
+        /* Botões do header */
         .btn {
-            padding: 9px 18px; /* Mesmo padding do index.html */
+            padding: 9px 18px;
             border-radius: 8px;
-            font-weight: 500; /* Mesmo weight do index.html */
-            font-size: 0.95rem; /* Mesmo tamanho do index.html */
+            font-weight: 500;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.2s ease;
             text-decoration: none;
@@ -145,7 +145,7 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Menu lateral mobile - IGUAL AO INDEX.HTML */
+        /* Menu lateral mobile */
         .mobile-sidebar {
             position: fixed;
             left: 0;
@@ -253,7 +253,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 140px 0 30px; /* Aumentado para compensar o header */
+            padding: 140px 0 30px;
         }
 
         .login-card {
@@ -377,13 +377,7 @@
             position: relative;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--dark);
-        }
-
+        /* Removido label dos campos */
         .form-control {
             width: 100%;
             padding: 14px 16px;
@@ -436,7 +430,7 @@
             text-decoration: underline;
         }
 
-        /* CORREÇÃO: Botões do formulário mantêm estilo próprio */
+        /* Botões do formulário */
         .login-form-section .btn {
             padding: 14px 20px;
             border-radius: 8px;
@@ -646,7 +640,7 @@
             width: 100%;
         }
 
-        /* Estilo para a mensagem do plano - Versão otimizada */
+        /* Estilo para a mensagem do plano */
         .plan-message {
             background: rgba(46, 204, 113, 0.08);
             padding: 15px;
@@ -708,7 +702,7 @@
             color: var(--dark);
         }
 
-        /* Responsive - Otimizado para mobile */
+        /* Responsive */
         @media (max-width: 768px) {
             header {
                 padding: 8px 0;
@@ -862,7 +856,7 @@
     </style>
 </head>
 <body>
-    <!-- Header igual ao index.html -->
+    <!-- Header -->
     <header>
         <div class="header-content">
             <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -918,12 +912,10 @@
                     
                     <form id="loginFormElement">
                         <div class="form-group">
-                            <label for="loginEmail">E-mail</label>
-                            <input type="email" class="form-control" id="loginEmail" placeholder="seu.email@exemplo.com" required>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="Seu e-mail" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="loginPassword">Senha</label>
                             <div class="password-container">
                                 <input type="password" class="form-control" id="loginPassword" placeholder="Digite sua senha" required>
                                 <button type="button" class="toggle-password" id="toggleLoginPassword">
@@ -962,17 +954,14 @@
                     <form id="signupFormElement">
                         <!-- A mensagem do plano será inserida aqui via JavaScript -->
                         <div class="form-group">
-                            <label for="signupName">Nome Completo</label>
-                            <input type="text" class="form-control" id="signupName" placeholder="Seu nome completo" required>
+                            <input type="text" class="form-control" id="signupName" placeholder="Nome completo" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="signupEmail">E-mail</label>
-                            <input type="email" class="form-control" id="signupEmail" placeholder="seu.email@exemplo.com" required>
+                            <input type="email" class="form-control" id="signupEmail" placeholder="Seu e-mail" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="signupPassword">Senha</label>
                             <div class="password-container">
                                 <input type="password" class="form-control" id="signupPassword" placeholder="Crie uma senha segura" required>
                                 <button type="button" class="toggle-password" id="toggleSignupPassword">
@@ -986,7 +975,6 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="signupConfirmPassword">Confirme sua Senha</label>
                             <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirme sua senha" required>
                         </div>
                         
