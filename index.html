@@ -40,6 +40,8 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            /* Adicionado para mobile */
+            min-height: -webkit-fill-available;
         }
 
         .card {
@@ -87,7 +89,9 @@
             padding: 12px;
             gap: 12px;
             background: var(--light-gray);
-            height: calc(100vh - var(--header-height)); /* Ajuste para mobile */
+            /* Ajuste para mobile com altura dinâmica */
+            height: calc(100dvh - var(--header-height));
+            min-height: 0;
         }
 
         .sidebar {
@@ -470,57 +474,57 @@
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
         }
 
-        /* Novo ícone hambúrguer/X */
+        /* Novo ícone hambúrguer/X corrigido */
         .mobile-menu-btn {
             display: none;
             background: none;
             border: none;
-            color: var(--darker);
-            font-size: 1.4rem;
             cursor: pointer;
             margin-right: 12px;
             width: 30px;
             height: 30px;
             position: relative;
+            z-index: 110;
         }
 
-        .mobile-menu-btn .hamburger,
-        .mobile-menu-btn .hamburger:before,
-        .mobile-menu-btn .hamburger:after {
+        .mobile-menu-btn span,
+        .mobile-menu-btn span::before,
+        .mobile-menu-btn span::after {
             content: '';
             position: absolute;
             width: 100%;
-            height: 2px;
+            height: 3px;
             background: var(--darker);
+            border-radius: 2px;
             transition: all 0.3s ease;
             left: 0;
         }
 
-        .mobile-menu-btn .hamburger {
-            top: 30%;
-        }
-
-        .mobile-menu-btn .hamburger:before {
+        .mobile-menu-btn span {
             top: 50%;
             transform: translateY(-50%);
         }
 
-        .mobile-menu-btn .hamburger:after {
-            top: 70%;
+        .mobile-menu-btn span::before {
+            top: -8px;
         }
 
-        .mobile-menu-btn.open .hamburger {
+        .mobile-menu-btn span::after {
+            top: 8px;
+        }
+
+        .mobile-menu-btn.open span {
+            background: transparent;
+        }
+
+        .mobile-menu-btn.open span::before {
+            top: 0;
             transform: rotate(45deg);
-            top: 50%;
         }
 
-        .mobile-menu-btn.open .hamburger:before {
-            opacity: 0;
-        }
-
-        .mobile-menu-btn.open .hamburger:after {
-            transform: rotate(-90deg);
-            top: 50%;
+        .mobile-menu-btn.open span::after {
+            top: 0;
+            transform: rotate(-45deg);
         }
 
         .modal {
@@ -934,6 +938,133 @@
         .btn-alta-visible {
             display: block;
         }
+        
+        /* Novo: Estado inicial quando nenhum paciente selecionado */
+        .empty-state {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .empty-content {
+            max-width: 500px;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--darker);
+        }
+
+        .empty-state p {
+            color: var(--gray);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .empty-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .empty-actions .btn {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .empty-actions .btn span {
+            font-size: 1.2rem;
+        }
+
+        /* Ajuste para botão "Passar Plantão" mobile */
+        .btn-pass-mobile-container {
+            padding: 15px;
+            position: sticky;
+            bottom: 0;
+            background: var(--light);
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-pass-mobile {
+            width: 100%;
+            padding: 12px;
+            font-weight: 600;
+        }
+
+        /* Estado de onboarding */
+        .onboarding-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .onboarding-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 90%;
+            width: 500px;
+            text-align: center;
+        }
+
+        .onboarding-step {
+            display: none;
+        }
+
+        .onboarding-step.active {
+            display: block;
+        }
+
+        .onboarding-content h2 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .onboarding-content p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(180, 180, 180, 0.5);
+            border-radius: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(150, 150, 150, 0.7);
+        }
 
         @media (max-width: 992px) {
             .sidebar {
@@ -956,24 +1087,13 @@
                 display: block;
             }
 
-            .sidebar .btn-pass {
-                position: sticky;
-                bottom: 10px;
-                margin: 15px;
-                z-index: 10;
-            }
-            
-            #btnPassPlantao {
-                display: none;
-            }
-
             .container {
                 padding: 8px;
-                height: calc(100vh - var(--header-height));
+                height: calc(100dvh - var(--header-height) - 16px);
             }
             
             .main-content {
-                max-height: calc(100vh - var(--header-height) - 16px);
+                max-height: calc(100dvh - var(--header-height) - 16px);
             }
 
             /* Quick actions mobile */
@@ -1007,10 +1127,8 @@
             }
 
             /* Correção para o botão Passar Plantão Mobile */
-            #btnPassPlantaoMobile {
+            .btn-pass-mobile-container {
                 display: block;
-                width: calc(100% - 30px);
-                margin: 15px auto;
             }
 
             /* CORREÇÃO: Botão de alta na mesma linha no mobile */
@@ -1053,7 +1171,7 @@
         }
 
         @media (min-width: 993px) {
-            #btnPassPlantaoMobile {
+            .btn-pass-mobile-container {
                 display: none;
             }
             
@@ -1067,7 +1185,7 @@
             }
 
             /* Ocultar botão passar plantão no footer no desktop */
-            #btnPassPlantao {
+            .btn-pass-mobile-container {
                 display: none !important;
             }
         }
@@ -1152,25 +1270,6 @@
                 padding: 8px 10px;
             }
         }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
-            border-radius: 8px;
-        }
-
-       ::-webkit-scrollbar-thumb {
-       background: rgba(180, 180, 180, 0.5);
-       border-radius: 8px;
-       }
-
-     ::-webkit-scrollbar-thumb:hover {
-     background: rgba(150, 150, 150, 0.7);
-        }
     </style>
 </head>
 <body>
@@ -1179,10 +1278,29 @@
         <span id="toast-message">Operação realizada com sucesso!</span>
     </div>
 
+    <!-- Modal de onboarding -->
+    <div class="onboarding-modal" id="onboardingModal">
+        <div class="onboarding-content card">
+            <h2>Bem-vindo ao DONTMED</h2>
+            <div class="onboarding-step active" data-step="1">
+                <p>Comece criando seu primeiro setor para organizar os pacientes</p>
+                <button class="btn btn-success" id="btnStartSetor">Criar Setor</button>
+            </div>
+            <div class="onboarding-step" data-step="2">
+                <p>Agora adicione pacientes ao setor criado</p>
+                <button class="btn btn-success" id="btnStartPaciente">Adicionar Paciente</button>
+            </div>
+            <div class="onboarding-step" data-step="3">
+                <p>Selecione um paciente para começar a fazer anotações</p>
+                <button class="btn btn-success" id="btnStartNotes">Entendi</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <span class="hamburger"></span>
+            <span></span>
         </button>
         <div class="logo">
             DONTMED
@@ -1223,16 +1341,11 @@
             <div class="scrollable-content" id="setoresList">
                 <!-- Setores serão carregados aqui dinamicamente -->
             </div>
-            
-            <!-- Botão "Passar Plantão" na sidebar (mobile) -->
-            <button class="btn btn-pass" id="btnPassPlantaoMobile">
-                Passar Plantão
-            </button>
         </div>
 
         <!-- Main Content -->
         <div class="main-content card">
-            <div class="patient-header">
+            <div class="patient-header" id="patientHeader">
                 <div class="patient-title-container">
                     <div class="patient-title-wrapper">
                         <div class="patient-title" id="patientTitle">
@@ -1246,7 +1359,24 @@
                 </div>
             </div>
             
-            <div class="editor-container">
+            <!-- Estado inicial: nenhum paciente selecionado -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-content">
+                    <div class="empty-icon">👨‍⚕️</div>
+                    <h3>Nenhum paciente selecionado</h3>
+                    <p>Selecione um paciente na lista ao lado para ver detalhes e registrar anotações</p>
+                    <div class="empty-actions">
+                        <button class="btn" id="btnQuickSetor">
+                            <span>+</span> Criar Setor
+                        </button>
+                        <button class="btn" id="btnQuickPaciente">
+                            <span>+</span> Adicionar Paciente
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="editor-container" id="editorContainer">
                 <!-- Chat de mensagens -->
                 <div class="editor-content active" id="chat">
                     <div class="editor-header">
@@ -1300,9 +1430,14 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- REMOVIDO: editor-footer -->
         </div>
+    </div>
+    
+    <!-- Botão "Passar Plantão" mobile com área maior -->
+    <div class="btn-pass-mobile-container" id="btnPassPlantaoMobile">
+        <button class="btn btn-pass btn-pass-mobile">
+            Passar Plantão
+        </button>
     </div>
 
     <!-- Modal Passar Plantão -->
@@ -1581,7 +1716,7 @@
             autocompleteContainer: document.getElementById('autocompleteContainer'),
             soapTabs: document.querySelectorAll('.soap-tab'),
             editorContents: document.querySelectorAll('.editor-content'),
-            btnPassPlantaoMobile: document.getElementById('btnPassPlantaoMobile'),
+            btnPassPlantaoMobile: document.querySelector('.btn-pass-mobile'),
             btnPassPlantaoHeader: document.getElementById('btnPassPlantaoHeader'),
             passPlantaoModal: document.getElementById('passPlantaoModal'),
             btnCancelPass: document.getElementById('btnCancelPass'),
@@ -1615,7 +1750,16 @@
             currentSetorCount: document.getElementById('currentSetorCount'),
             progressFill: document.getElementById('progressFill'),
             maxSetorMessage: document.getElementById('maxSetorMessage'),
-            maxSetor: document.getElementById('maxSetor')
+            maxSetor: document.getElementById('maxSetor'),
+            emptyState: document.getElementById('emptyState'),
+            patientHeader: document.getElementById('patientHeader'),
+            editorContainer: document.getElementById('editorContainer'),
+            btnQuickSetor: document.getElementById('btnQuickSetor'),
+            btnQuickPaciente: document.getElementById('btnQuickPaciente'),
+            onboardingModal: document.getElementById('onboardingModal'),
+            btnStartSetor: document.getElementById('btnStartSetor'),
+            btnStartPaciente: document.getElementById('btnStartPaciente'),
+            btnStartNotes: document.getElementById('btnStartNotes')
         };
 
         // Estado da aplicação
@@ -1623,7 +1767,8 @@
             currentSetor: null,
             currentPaciente: null,
             currentDoctor: "Dr. Carlos Silva",
-            lastEdit: new Date().toISOString()
+            lastEdit: new Date().toISOString(),
+            firstUse: true
         };
 
         // Função para destacar termos de busca
@@ -1742,6 +1887,12 @@
             if (window.innerWidth <= 992) {
                 DOM.btnPassPlantaoHeader.classList.add('hidden');
             }
+            
+            // Mostrar onboarding no primeiro acesso
+            initOnboarding();
+            
+            // Mostrar estado inicial
+            updateEmptyState();
         }
         
         // Atualizar barra de progresso de setores
@@ -1769,6 +1920,21 @@
         // Renderizar setores e pacientes
         function renderSetores() {
             DOM.setoresList.innerHTML = '';
+            
+            // Se não houver setores, mostrar mensagem
+            if (dados.setores.length === 0) {
+                DOM.setoresList.innerHTML = `
+                    <div style="padding: 20px; text-align: center; color: var(--gray);">
+                        <p>Nenhum setor criado</p>
+                        <button class="btn" style="margin-top: 15px;" id="btnFirstSetor">
+                            Criar Primeiro Setor
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById('btnFirstSetor').addEventListener('click', openNewSetorModal);
+                return;
+            }
             
             dados.setores.forEach(setor => {
                 const isExpanded = state.currentSetor === setor.id;
@@ -1890,10 +2056,26 @@
             // Atualizar sidebar
             renderSetores();
             
+            // Atualizar estado vazio
+            updateEmptyState();
+            
             // Fechar menu no mobile
             if (window.innerWidth <= 992) {
                 DOM.sidebar.classList.remove('open');
                 DOM.mobileMenuBtn.classList.remove('open');
+            }
+        }
+        
+        // Atualizar estado vazio
+        function updateEmptyState() {
+            if (!state.currentPaciente) {
+                DOM.emptyState.style.display = 'flex';
+                DOM.patientHeader.style.display = 'none';
+                DOM.editorContainer.style.display = 'none';
+            } else {
+                DOM.emptyState.style.display = 'none';
+                DOM.patientHeader.style.display = 'flex';
+                DOM.editorContainer.style.display = 'flex';
             }
         }
 
@@ -1978,23 +2160,8 @@
             });
             
             // Passar plantão
-            // Correção do clique do botão mobile
-            DOM.btnPassPlantaoMobile.addEventListener('click', (e) => {
-                e.stopPropagation(); // Impede a propagação para o elemento pai
-                openPassPlantaoModal();
-            });
-            
+            DOM.btnPassPlantaoMobile.addEventListener('click', openPassPlantaoModal);
             DOM.btnPassPlantaoHeader.addEventListener('click', openPassPlantaoModal);
-            
-            // Permitir clique em qualquer parte dos botões
-            [DOM.btnPassPlantaoMobile, DOM.btnPassPlantaoHeader].forEach(btn => {
-                btn.style.cursor = 'pointer';
-                if (btn.querySelectorAll) {
-                    btn.querySelectorAll('*').forEach(child => {
-                        child.style.pointerEvents = 'none';
-                    });
-                }
-            });
             
             DOM.btnCancelPass.addEventListener('click', () => {
                 DOM.passPlantaoModal.classList.remove('active');
@@ -2039,6 +2206,11 @@
                     DOM.setorName.value = '';
                     updateSetorProgress();
                     showToast(`Setor "${nomeSetor}" criado com sucesso!`, 'success');
+                    
+                    // Se for o primeiro setor, fechar onboarding
+                    if (dados.setores.length === 1) {
+                        state.firstUse = false;
+                    }
                 } else {
                     showToast('Por favor, informe o nome do setor', 'error');
                 }
@@ -2095,6 +2267,11 @@
                     DOM.pacienteAtendimento.value = '';
                     
                     showToast(`Paciente "${nome}" adicionado com sucesso!`, 'success');
+                    
+                    // Se for o primeiro paciente, selecionar automaticamente
+                    if (setor.pacientes.length === 1) {
+                        selectPaciente(novoPaciente.id);
+                    }
                 }
             });
             
@@ -2188,6 +2365,70 @@
                 } else {
                     DOM.btnPassPlantaoHeader.classList.remove('hidden');
                 }
+            });
+            
+            // Botões de ação rápida
+            DOM.btnQuickSetor.addEventListener('click', openNewSetorModal);
+            DOM.btnQuickPaciente.addEventListener('click', () => {
+                if (dados.setores.length > 0) {
+                    openNewPacienteModal(dados.setores[0].id);
+                } else {
+                    showToast('Crie um setor primeiro', 'error');
+                    openNewSetorModal();
+                }
+            });
+        }
+
+        // Inicializar onboarding
+        function initOnboarding() {
+            // Verificar se é o primeiro acesso
+            const onboarded = localStorage.getItem('dontmed_onboarded');
+            if (onboarded) {
+                DOM.onboardingModal.style.display = 'none';
+                return;
+            }
+            
+            // Mostrar onboarding apenas se não houver setores
+            if (dados.setores.length === 0) {
+                DOM.onboardingModal.style.display = 'flex';
+            } else {
+                DOM.onboardingModal.style.display = 'none';
+            }
+            
+            let currentStep = 1;
+            
+            function showStep(step) {
+                document.querySelectorAll('.onboarding-step').forEach(el => {
+                    el.classList.remove('active');
+                });
+                document.querySelector(`.onboarding-step[data-step="${step}"]`).classList.add('active');
+                currentStep = step;
+            }
+            
+            DOM.btnStartSetor.addEventListener('click', () => {
+                DOM.onboardingModal.style.display = 'none';
+                openNewSetorModal();
+                setTimeout(() => {
+                    DOM.onboardingModal.style.display = 'flex';
+                    showStep(2);
+                }, 500);
+            });
+            
+            DOM.btnStartPaciente.addEventListener('click', () => {
+                DOM.onboardingModal.style.display = 'none';
+                if (dados.setores.length > 0) {
+                    openNewPacienteModal(dados.setores[0].id);
+                }
+                setTimeout(() => {
+                    DOM.onboardingModal.style.display = 'flex';
+                    showStep(3);
+                }, 500);
+            });
+            
+            DOM.btnStartNotes.addEventListener('click', () => {
+                localStorage.setItem('dontmed_onboarded', 'true');
+                DOM.onboardingModal.style.display = 'none';
+                state.firstUse = false;
             });
         }
 
