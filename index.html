@@ -990,19 +990,11 @@
             font-size: 1.2rem;
         }
 
-        /* Ajuste para botão "Passar Plantão" mobile */
-        .btn-pass-mobile-container {
+        /* Botão Passar Plantão dentro da sidebar (mobile) */
+        .pass-plantao-sidebar {
             padding: 15px;
-            position: sticky;
-            bottom: 0;
-            background: var(--light);
             border-top: 1px solid var(--border);
-        }
-
-        .btn-pass-mobile {
-            width: 100%;
-            padding: 12px;
-            font-weight: 600;
+            display: none;
         }
 
         /* Estado de onboarding */
@@ -1126,8 +1118,8 @@
                 display: none !important;
             }
 
-            /* Correção para o botão Passar Plantão Mobile */
-            .btn-pass-mobile-container {
+            /* Botão Passar Plantão dentro da sidebar (mobile) */
+            .pass-plantao-sidebar {
                 display: block;
             }
 
@@ -1171,7 +1163,7 @@
         }
 
         @media (min-width: 993px) {
-            .btn-pass-mobile-container {
+            .pass-plantao-sidebar {
                 display: none;
             }
             
@@ -1182,11 +1174,6 @@
             /* Adicionado para evitar quebra de linha no header */
             .header-info {
                 flex-wrap: nowrap;
-            }
-
-            /* Ocultar botão passar plantão no footer no desktop */
-            .btn-pass-mobile-container {
-                display: none !important;
             }
         }
 
@@ -1341,6 +1328,13 @@
             <div class="scrollable-content" id="setoresList">
                 <!-- Setores serão carregados aqui dinamicamente -->
             </div>
+            
+            <!-- Botão "Passar Plantão" dentro da sidebar (mobile) -->
+            <div class="pass-plantao-sidebar" id="passPlantaoSidebar">
+                <button class="btn btn-pass" id="btnPassPlantaoSidebar">
+                    Passar Plantão
+                </button>
+            </div>
         </div>
 
         <!-- Main Content -->
@@ -1362,15 +1356,11 @@
             <!-- Estado inicial: nenhum paciente selecionado -->
             <div class="empty-state" id="emptyState">
                 <div class="empty-content">
-                    <div class="empty-icon">👨‍⚕️</div>
-                    <h3>Nenhum paciente selecionado</h3>
-                    <p>Selecione um paciente na lista ao lado para ver detalhes e registrar anotações</p>
+                    <h3>Nenhum setor criado</h3>
+                    <p>Crie um setor para começar a adicionar pacientes</p>
                     <div class="empty-actions">
                         <button class="btn" id="btnQuickSetor">
                             <span>+</span> Criar Setor
-                        </button>
-                        <button class="btn" id="btnQuickPaciente">
-                            <span>+</span> Adicionar Paciente
                         </button>
                     </div>
                 </div>
@@ -1431,13 +1421,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Botão "Passar Plantão" mobile com área maior -->
-    <div class="btn-pass-mobile-container" id="btnPassPlantaoMobile">
-        <button class="btn btn-pass btn-pass-mobile">
-            Passar Plantão
-        </button>
     </div>
 
     <!-- Modal Passar Plantão -->
@@ -1716,7 +1699,7 @@
             autocompleteContainer: document.getElementById('autocompleteContainer'),
             soapTabs: document.querySelectorAll('.soap-tab'),
             editorContents: document.querySelectorAll('.editor-content'),
-            btnPassPlantaoMobile: document.querySelector('.btn-pass-mobile'),
+            btnPassPlantaoSidebar: document.getElementById('btnPassPlantaoSidebar'),
             btnPassPlantaoHeader: document.getElementById('btnPassPlantaoHeader'),
             passPlantaoModal: document.getElementById('passPlantaoModal'),
             btnCancelPass: document.getElementById('btnCancelPass'),
@@ -2068,11 +2051,22 @@
         
         // Atualizar estado vazio
         function updateEmptyState() {
-            if (!state.currentPaciente) {
+            // Se não houver setores, mostrar estado vazio
+            if (dados.setores.length === 0) {
                 DOM.emptyState.style.display = 'flex';
                 DOM.patientHeader.style.display = 'none';
                 DOM.editorContainer.style.display = 'none';
-            } else {
+            } 
+            // Se houver setores mas nenhum paciente selecionado
+            else if (!state.currentPaciente) {
+                DOM.emptyState.style.display = 'none';
+                DOM.patientHeader.style.display = 'flex';
+                DOM.editorContainer.style.display = 'none';
+                DOM.patientTitle.innerHTML = '<span>Selecione um paciente</span>';
+                DOM.patientDetails.style.display = 'none';
+            } 
+            // Se houver paciente selecionado
+            else {
                 DOM.emptyState.style.display = 'none';
                 DOM.patientHeader.style.display = 'flex';
                 DOM.editorContainer.style.display = 'flex';
@@ -2160,7 +2154,7 @@
             });
             
             // Passar plantão
-            DOM.btnPassPlantaoMobile.addEventListener('click', openPassPlantaoModal);
+            DOM.btnPassPlantaoSidebar.addEventListener('click', openPassPlantaoModal);
             DOM.btnPassPlantaoHeader.addEventListener('click', openPassPlantaoModal);
             
             DOM.btnCancelPass.addEventListener('click', () => {
@@ -2369,14 +2363,6 @@
             
             // Botões de ação rápida
             DOM.btnQuickSetor.addEventListener('click', openNewSetorModal);
-            DOM.btnQuickPaciente.addEventListener('click', () => {
-                if (dados.setores.length > 0) {
-                    openNewPacienteModal(dados.setores[0].id);
-                } else {
-                    showToast('Crie um setor primeiro', 'error');
-                    openNewSetorModal();
-                }
-            });
         }
 
         // Inicializar onboarding
