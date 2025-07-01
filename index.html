@@ -40,7 +40,6 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            /* Adicionado para mobile */
             min-height: -webkit-fill-available;
         }
 
@@ -89,7 +88,6 @@
             padding: 12px;
             gap: 12px;
             background: var(--light-gray);
-            /* Ajuste para mobile com altura dinâmica */
             height: calc(100dvh - var(--header-height));
             min-height: 0;
         }
@@ -180,7 +178,6 @@
             border-color: var(--primary);
         }
 
-        /* Autocomplete styles */
         .autocomplete-container {
             position: absolute;
             top: calc(100% + 5px);
@@ -332,7 +329,7 @@
             flex-direction: column;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            min-height: 0; /* Adicionado para mobile */
+            min-height: 0;
         }
 
         .patient-header {
@@ -391,7 +388,6 @@
             overflow: hidden;
             background: var(--light);
             min-height: 0;
-            /* Correção para mobile */
             height: 100%;
         }
 
@@ -401,7 +397,6 @@
             flex-direction: column;
             padding: 12px;
             overflow: hidden;
-            /* Correção para mobile */
             min-height: 0;
         }
 
@@ -474,7 +469,6 @@
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
         }
 
-        /* Novo ícone hambúrguer/X corrigido */
         .mobile-menu-btn {
             display: none;
             background: none;
@@ -729,7 +723,7 @@
             font-weight: 600;
         }
 
-        /* Estilos para chat - LEVE */
+        /* Estilos para chat */
         .chat-history {
             flex: 1;
             overflow-y: auto;
@@ -769,14 +763,12 @@
             color: var(--gray);
         }
 
-        /* Novo estilo para assinatura */
         .message-signature {
             font-size: 0.8rem;
             color: var(--gray);
             margin-top: 4px;
         }
 
-        /* CORREÇÃO: Campo de entrada com fechamento visual */
         .message-input-container {
             position: relative;
             display: flex;
@@ -785,13 +777,12 @@
             border-radius: 0 0 8px 8px;
             box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
             border-top: 1px solid var(--border);
-            margin-top: auto; /* Garante que fique no rodapé */
+            margin-top: auto;
         }
 
-        /* CORREÇÃO: Ajuste no campo de entrada */
         .message-input {
             flex: 1;
-            padding: 10px 50px 10px 12px; /* Aumentado padding direito para 50px */
+            padding: 10px 50px 10px 12px;
             border: 1px solid var(--border);
             border-radius: 20px;
             resize: none;
@@ -811,7 +802,7 @@
 
         .btn-send {
             position: absolute;
-            right: 20px; /* Ajustado para 20px */
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
             background: var(--pass-plantao);
@@ -876,7 +867,6 @@
             margin-top: 8px;
         }
 
-        /* ALTERAÇÕES PARA O TOGGLE ICON - CORREÇÃO */
         .patient-title-wrapper {
             display: flex;
             align-items: center;
@@ -897,36 +887,13 @@
             cursor: pointer;
             color: var(--gray);
             font-size: 0.9rem;
-            display: none; /* Inicialmente oculto */
+            display: none;
             align-self: center;
             flex-shrink: 0;
             margin: 0 10px;
             transition: transform 0.2s;
         }
 
-        /* CORREÇÃO: Ocultar toggle icon no desktop por padrão */
-        @media (min-width: 993px) {
-            .patient-toggle-icon {
-                display: none !important;
-            }
-        }
-
-        /* Botão passar plantão no header */
-        .btn-pass-header {
-            margin-right: 15px;
-            background: var(--pass-plantao);
-            color: white;
-            font-weight: 500;
-            font-size: 0.85rem;
-            padding: 5px 10px;
-        }
-
-        /* Adicione esta classe para controle de visibilidade */
-        .hidden {
-            display: none !important;
-        }
-
-        /* CORREÇÃO: Botão de alta alinhado corretamente */
         #btnAlta {
             display: none;
             margin-top: 0;
@@ -934,12 +901,11 @@
             align-self: center;
         }
 
-        /* NOVO: Estilo para botão de alta visível */
         .btn-alta-visible {
             display: block;
         }
         
-        /* Novo: Estado inicial quando nenhum paciente selecionado */
+        /* Estado inicial quando nenhum paciente selecionado */
         .empty-state {
             display: flex;
             flex: 1;
@@ -996,6 +962,18 @@
             border-top: 1px solid var(--border);
             display: none;
         }
+        
+        /* Botão Passar Plantão mobile - Ajustes para UX */
+        .pass-plantao-sidebar .btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
         /* Estado de onboarding */
         .onboarding-modal {
@@ -1004,7 +982,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             z-index: 10000;
             display: flex;
             justify-content: center;
@@ -1018,6 +996,7 @@
             max-width: 90%;
             width: 500px;
             text-align: center;
+            position: relative;
         }
 
         .onboarding-step {
@@ -1037,6 +1016,57 @@
             margin-bottom: 25px;
             font-size: 1.1rem;
             line-height: 1.6;
+        }
+
+        .onboarding-progress {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .onboarding-step-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(44, 125, 160, 0.3);
+        }
+
+        .onboarding-step-indicator.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        /* Turnos no modal de setor */
+        .turno-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--light-gray);
+            border-radius: 8px;
+        }
+
+        .turno-section h4 {
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: var(--darker);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .turno-section h4::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        .turno-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
         ::-webkit-scrollbar {
@@ -1088,7 +1118,6 @@
                 max-height: calc(100dvh - var(--header-height) - 16px);
             }
 
-            /* Quick actions mobile */
             .quick-actions {
                 overflow-x: auto;
                 padding-bottom: 8px;
@@ -1118,12 +1147,10 @@
                 display: none !important;
             }
 
-            /* Botão Passar Plantão dentro da sidebar (mobile) */
             .pass-plantao-sidebar {
                 display: block;
             }
 
-            /* CORREÇÃO: Botão de alta na mesma linha no mobile */
             .patient-title-container {
                 flex-direction: row;
                 flex-wrap: wrap;
@@ -1152,7 +1179,6 @@
                 margin-top: 0;
             }
 
-            /* Ajuste para botão de alta visível no mobile */
             .btn-alta-visible {
                 display: inline-block !important;
                 margin-left: auto;
@@ -1171,7 +1197,6 @@
                 display: block !important;
             }
 
-            /* Adicionado para evitar quebra de linha no header */
             .header-info {
                 flex-wrap: nowrap;
             }
@@ -1256,6 +1281,11 @@
             .message-input {
                 padding: 8px 10px;
             }
+            
+            .pass-plantao-sidebar .btn {
+                padding: 15px 10px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -1269,8 +1299,13 @@
     <div class="onboarding-modal" id="onboardingModal">
         <div class="onboarding-content card">
             <h2>Bem-vindo ao DONTMED</h2>
+            <div class="onboarding-progress">
+                <div class="onboarding-step-indicator active" data-step="1"></div>
+                <div class="onboarding-step-indicator" data-step="2"></div>
+                <div class="onboarding-step-indicator" data-step="3"></div>
+            </div>
             <div class="onboarding-step active" data-step="1">
-                <p>Comece criando seu primeiro setor para organizar os pacientes</p>
+                <p>Vamos começar criando seu primeiro setor para organizar os pacientes</p>
                 <button class="btn btn-success" id="btnStartSetor">Criar Setor</button>
             </div>
             <div class="onboarding-step" data-step="2">
@@ -1356,8 +1391,9 @@
             <!-- Estado inicial: nenhum paciente selecionado -->
             <div class="empty-state" id="emptyState">
                 <div class="empty-content">
+                    <div class="empty-icon">🏥</div>
                     <h3>Nenhum setor criado</h3>
-                    <p>Crie um setor para começar a adicionar pacientes</p>
+                    <p>Crie seu primeiro setor para começar a organizar os pacientes</p>
                     <div class="empty-actions">
                         <button class="btn" id="btnQuickSetor">
                             <span>+</span> Criar Setor
@@ -1387,7 +1423,6 @@
                             <div class="quick-action" data-text="Paciente refere dor intensa">
                                 Dor
                             </div>
-                            <!-- Novas quick actions -->
                             <div class="quick-action" data-text="Paciente consciente, orientado, em bom estado geral">
                                 Estado Geral
                             </div>
@@ -1509,6 +1544,51 @@
                 <input type="text" class="form-control" id="setorName" placeholder="Ex: UTI Adulto, Emergência">
             </div>
             
+            <!-- Horários de Turno -->
+            <h3 style="margin: 15px 0 10px; font-size: 1rem; font-weight: 600; color: var(--darker);">Horários de Turno</h3>
+            
+            <div class="turno-section">
+                <h4>Manhã</h4>
+                <div class="turno-grid">
+                    <div class="form-group">
+                        <label>Início</label>
+                        <input type="time" class="form-control" id="manhaInicio" value="07:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Fim</label>
+                        <input type="time" class="form-control" id="manhaFim" value="12:00">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="turno-section">
+                <h4>Tarde</h4>
+                <div class="turno-grid">
+                    <div class="form-group">
+                        <label>Início</label>
+                        <input type="time" class="form-control" id="tardeInicio" value="13:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Fim</label>
+                        <input type="time" class="form-control" id="tardeFim" value="18:00">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="turno-section">
+                <h4>Noite</h4>
+                <div class="turno-grid">
+                    <div class="form-group">
+                        <label>Início</label>
+                        <input type="time" class="form-control" id="noiteInicio" value="19:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Fim</label>
+                        <input type="time" class="form-control" id="noiteFim" value="23:00">
+                    </div>
+                </div>
+            </div>
+            
             <div class="modal-footer">
                 <button class="btn" id="btnCancelSetor" style="background: rgba(0,0,0,0.08); color: var(--dark);">
                     Cancelar
@@ -1620,6 +1700,11 @@
                 {
                     id: 1,
                     nome: "UTI Adulto",
+                    turnos: {
+                        manha: { inicio: "07:00", fim: "12:00" },
+                        tarde: { inicio: "13:00", fim: "18:00" },
+                        noite: { inicio: "19:00", fim: "23:00" }
+                    },
                     pacientes: [
                         {
                             id: 101,
@@ -1669,6 +1754,11 @@
                 {
                     id: 2,
                     nome: "Emergência",
+                    turnos: {
+                        manha: { inicio: "07:00", fim: "12:00" },
+                        tarde: { inicio: "13:00", fim: "18:00" },
+                        noite: { inicio: "19:00", fim: "23:00" }
+                    },
                     pacientes: [
                         {
                             id: 201,
@@ -1742,7 +1832,13 @@
             onboardingModal: document.getElementById('onboardingModal'),
             btnStartSetor: document.getElementById('btnStartSetor'),
             btnStartPaciente: document.getElementById('btnStartPaciente'),
-            btnStartNotes: document.getElementById('btnStartNotes')
+            btnStartNotes: document.getElementById('btnStartNotes'),
+            manhaInicio: document.getElementById('manhaInicio'),
+            manhaFim: document.getElementById('manhaFim'),
+            tardeInicio: document.getElementById('tardeInicio'),
+            tardeFim: document.getElementById('tardeFim'),
+            noiteInicio: document.getElementById('noiteInicio'),
+            noiteFim: document.getElementById('noiteFim')
         };
 
         // Estado da aplicação
@@ -2192,6 +2288,20 @@
                     const novoSetor = {
                         id: Date.now(),
                         nome: nomeSetor,
+                        turnos: {
+                            manha: { 
+                                inicio: DOM.manhaInicio.value, 
+                                fim: DOM.manhaFim.value 
+                            },
+                            tarde: { 
+                                inicio: DOM.tardeInicio.value, 
+                                fim: DOM.tardeFim.value 
+                            },
+                            noite: { 
+                                inicio: DOM.noiteInicio.value, 
+                                fim: DOM.noiteFim.value 
+                            }
+                        },
                         pacientes: []
                     };
                     dados.setores.push(novoSetor);
@@ -2204,6 +2314,7 @@
                     // Se for o primeiro setor, fechar onboarding
                     if (dados.setores.length === 1) {
                         state.firstUse = false;
+                        advanceOnboarding();
                     }
                 } else {
                     showToast('Por favor, informe o nome do setor', 'error');
@@ -2266,6 +2377,9 @@
                     if (setor.pacientes.length === 1) {
                         selectPaciente(novoPaciente.id);
                     }
+                    
+                    // Avançar onboarding
+                    advanceOnboarding();
                 }
             });
             
@@ -2381,41 +2495,43 @@
                 DOM.onboardingModal.style.display = 'none';
             }
             
-            let currentStep = 1;
-            
-            function showStep(step) {
-                document.querySelectorAll('.onboarding-step').forEach(el => {
-                    el.classList.remove('active');
-                });
-                document.querySelector(`.onboarding-step[data-step="${step}"]`).classList.add('active');
-                currentStep = step;
-            }
-            
-            DOM.btnStartSetor.addEventListener('click', () => {
-                DOM.onboardingModal.style.display = 'none';
-                openNewSetorModal();
-                setTimeout(() => {
-                    DOM.onboardingModal.style.display = 'flex';
-                    showStep(2);
-                }, 500);
-            });
-            
-            DOM.btnStartPaciente.addEventListener('click', () => {
-                DOM.onboardingModal.style.display = 'none';
-                if (dados.setores.length > 0) {
-                    openNewPacienteModal(dados.setores[0].id);
+            // Atualizar indicadores de progresso
+            updateOnboardingProgress(1);
+        }
+        
+        // Atualizar indicadores de progresso do onboarding
+        function updateOnboardingProgress(step) {
+            document.querySelectorAll('.onboarding-step-indicator').forEach((indicator, index) => {
+                if (index + 1 <= step) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
                 }
-                setTimeout(() => {
-                    DOM.onboardingModal.style.display = 'flex';
-                    showStep(3);
-                }, 500);
             });
+        }
+        
+        // Avançar no onboarding
+        function advanceOnboarding() {
+            if (!state.firstUse) return;
             
-            DOM.btnStartNotes.addEventListener('click', () => {
-                localStorage.setItem('dontmed_onboarded', 'true');
-                DOM.onboardingModal.style.display = 'none';
-                state.firstUse = false;
-            });
+            if (dados.setores.length === 0) {
+                updateOnboardingProgress(1);
+                DOM.btnStartSetor.addEventListener('click', openNewSetorModal);
+            } else if (dados.setores.some(s => s.pacientes.length === 0)) {
+                updateOnboardingProgress(2);
+                DOM.btnStartPaciente.addEventListener('click', () => {
+                    if (dados.setores.length > 0) {
+                        openNewPacienteModal(dados.setores[0].id);
+                    }
+                });
+            } else {
+                updateOnboardingProgress(3);
+                DOM.btnStartNotes.addEventListener('click', () => {
+                    localStorage.setItem('dontmed_onboarded', 'true');
+                    DOM.onboardingModal.style.display = 'none';
+                    state.firstUse = false;
+                });
+            }
         }
 
         // Enviar mensagem
