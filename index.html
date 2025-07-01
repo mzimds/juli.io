@@ -1324,20 +1324,6 @@
                 </div>
             </div>
             
-            <!-- Estado inicial: nenhum paciente selecionado -->
-            <div class="empty-state" id="emptyState">
-                <div class="empty-content">
-                    <div class="empty-icon">🏥</div>
-                    <h3>Nenhum setor criado</h3>
-                    <p>Crie seu primeiro setor para começar a organizar os pacientes</p>
-                    <div class="empty-actions">
-                        <button class="btn" id="btnQuickSetor">
-                            <span>+</span> Criar Setor
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
             <div class="editor-container" id="editorContainer">
                 <!-- Chat de mensagens -->
                 <div class="editor-content active" id="chat">
@@ -1418,11 +1404,7 @@
                     <div class="error-message" id="medicoRecebeError">Selecione um médico</div>
                 </div>
                 
-                <h3 style="margin: 20px 0 15px; font-size: 1.1rem; font-weight: 600; border-top: 1px solid var(--border); padding-top: 15px;">
-                    Checklist de Passagem
-                </h3>
-                
-                <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px;">
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; margin-bottom: 25px;">
                     <label style="display: flex; align-items: center; gap: 12px;">
                         <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkVisitados">
                         <span>Todos os pacientes foram visitados</span>
@@ -1477,13 +1459,12 @@
             </div>
             
             <div class="form-group">
-                <label>Nome do Setor <span style="color: var(--danger);">*</span></label>
+                <label>Nome do Setor</label>
                 <input type="text" class="form-control" id="setorName" placeholder="Ex: UTI Adulto, Emergência">
                 <div class="error-message" id="setorNameError">Informe o nome do setor</div>
             </div>
             
             <!-- Turnos personalizados -->
-            <h3 style="margin: 15px 0 10px; font-size: 1rem; font-weight: 600; color: var(--darker);">Turnos</h3>
             <div id="turnosContainer">
                 <!-- Turnos serão adicionados dinamicamente aqui -->
             </div>
@@ -1509,20 +1490,20 @@
             </div>
             
             <div class="form-group">
-                <label>Nome Completo <span style="color: var(--danger);">*</span></label>
+                <label>Nome Completo</label>
                 <input type="text" class="form-control" id="pacienteName" placeholder="Nome do paciente">
                 <div class="error-message" id="pacienteNameError">Informe o nome do paciente</div>
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                 <div class="form-group">
-                    <label>Idade <span style="color: var(--danger);">*</span></label>
+                    <label>Idade</label>
                     <input type="number" class="form-control" id="pacienteIdade" placeholder="Idade" min="0" max="120">
                     <div class="error-message" id="pacienteIdadeError">Informe uma idade válida</div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Sexo Biológico <span style="color: var(--danger);">*</span></label>
+                    <label>Sexo Biológico</label>
                     <select class="form-control" id="pacienteSexo">
                         <option value="">Selecione</option>
                         <option value="M">Masculino</option>
@@ -1534,13 +1515,13 @@
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                 <div class="form-group">
-                    <label>Leito <span style="color: var(--danger);">*</span></label>
+                    <label>Leito</label>
                     <input type="text" class="form-control" id="pacienteLeito" placeholder="Número do leito">
                     <div class="error-message" id="pacienteLeitoError">Informe o número do leito</div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Nº Atendimento <span style="color: var(--danger);">*</span></label>
+                    <label>Nº Atendimento</label>
                     <input type="text" class="form-control" id="pacienteAtendimento" placeholder="Número do atendimento">
                     <div class="error-message" id="pacienteAtendimentoError">Informe o número do atendimento</div>
                 </div>
@@ -1565,7 +1546,7 @@
             </div>
             
             <div class="form-group">
-                <label>Tipo de Alta <span style="color: var(--danger);">*</span></label>
+                <label>Tipo de Alta</label>
                 <select class="form-control" id="tipoAlta">
                     <option value="">Selecione o tipo de alta</option>
                     <option value="melhora">Alta por melhora clínica</option>
@@ -1581,7 +1562,7 @@
             </div>
             
             <div class="form-group">
-                <label>Data e Hora <span style="color: var(--danger);">*</span></label>
+                <label>Data e Hora</label>
                 <input type="datetime-local" class="form-control" id="dataAlta">
                 <div class="error-message" id="dataAltaError">Informe a data e hora da alta</div>
             </div>
@@ -1742,10 +1723,8 @@
             progressFill: document.getElementById('progressFill'),
             maxSetorMessage: document.getElementById('maxSetorMessage'),
             maxSetor: document.getElementById('maxSetor'),
-            emptyState: document.getElementById('emptyState'),
             patientHeader: document.getElementById('patientHeader'),
             editorContainer: document.getElementById('editorContainer'),
-            btnQuickSetor: document.getElementById('btnQuickSetor'),
             btnAddTurno: document.getElementById('btnAddTurno'),
             turnosContainer: document.getElementById('turnosContainer'),
             turnosError: document.getElementById('turnosError')
@@ -1876,9 +1855,6 @@
             if (window.innerWidth <= 992) {
                 DOM.btnPassPlantaoHeader.classList.add('hidden');
             }
-            
-            // Mostrar estado inicial
-            updateEmptyState();
             
             // Inicializar turnos
             addTurno();
@@ -2045,9 +2021,6 @@
             // Atualizar sidebar
             renderSetores();
             
-            // Atualizar estado vazio
-            updateEmptyState();
-            
             // Fechar menu no mobile
             if (window.innerWidth <= 992) {
                 DOM.sidebar.classList.remove('open');
@@ -2057,15 +2030,8 @@
         
         // Atualizar estado vazio
         function updateEmptyState() {
-            // Se não houver setores, mostrar estado vazio
-            if (dados.setores.length === 0) {
-                DOM.emptyState.style.display = 'flex';
-                DOM.patientHeader.style.display = 'none';
-                DOM.editorContainer.style.display = 'none';
-            } 
             // Se houver setores mas nenhum paciente selecionado
-            else if (!state.currentPaciente) {
-                DOM.emptyState.style.display = 'none';
+            if (!state.currentPaciente) {
                 DOM.patientHeader.style.display = 'flex';
                 DOM.editorContainer.style.display = 'none';
                 DOM.patientTitle.innerHTML = '<span>Selecione um paciente</span>';
@@ -2073,7 +2039,6 @@
             } 
             // Se houver paciente selecionado
             else {
-                DOM.emptyState.style.display = 'none';
                 DOM.patientHeader.style.display = 'flex';
                 DOM.editorContainer.style.display = 'flex';
             }
@@ -2464,9 +2429,6 @@
                     DOM.btnPassPlantaoHeader.classList.remove('hidden');
                 }
             });
-            
-            // Botões de ação rápida
-            DOM.btnQuickSetor.addEventListener('click', openNewSetorModal);
         }
 
         // Adicionar novo turno
@@ -2479,18 +2441,18 @@
             turnoEl.innerHTML = `
                 <button class="btn-remove-turno" data-id="${turnoId}">×</button>
                 <div class="form-group">
-                    <label>Nome do Turno <span style="color: var(--danger);">*</span></label>
+                    <label>Nome do Turno</label>
                     <input type="text" class="form-control turno-name" placeholder="Ex: Manhã, Tarde, Noite">
                     <div class="error-message turno-name-error"></div>
                 </div>
                 <div class="turno-grid">
                     <div class="form-group">
-                        <label>Início <span style="color: var(--danger);">*</span></label>
+                        <label>Início</label>
                         <input type="time" class="form-control turno-inicio" value="07:00">
                         <div class="error-message turno-inicio-error"></div>
                     </div>
                     <div class="form-group">
-                        <label>Fim <span style="color: var(--danger);">*</span></label>
+                        <label>Fim</label>
                         <input type="time" class="form-control turno-fim" value="12:00">
                         <div class="error-message turno-fim-error"></div>
                     </div>
