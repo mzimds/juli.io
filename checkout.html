@@ -26,6 +26,7 @@
             --shadow-md: 0 4px 6px rgba(0,0,0,0.03);
             --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
             --success: #2ecc71;
+            --growth-highlight: #00c853;
         }
 
         * {
@@ -128,7 +129,24 @@
             font-size: 2rem;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: 5px;
+        }
+
+        .price-detail {
+            font-size: 1rem;
+            color: var(--gray-500);
+            margin-bottom: 5px;
+        }
+
+        .savings-info {
+            color: var(--success);
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 0.95rem;
+            background: rgba(46, 204, 113, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-block;
         }
 
         .plan-details {
@@ -378,40 +396,81 @@
         const plans = {
             pro: {
                 name: "Pro",
-                price: "R$99",
-                period: "/mês por setor",
+                monthlyPrice: 99,
+                annualDiscount: 0.2, // 20% de desconto
                 features: [
-                    "Até 5 setores",
+                    "Até 3 setores",
                     "Até 20 usuários por setor",
-                    "Histórico completo",
-                    "Suporte prioritário"
+                    "Salvamento e histórico completo",
+                    "Assinatura eletrônica integrada",
+                    "Logs e rastreabilidade",
+                    "Multiusuário com acesso seguro",
+                    "Analytics em tempo real"
+                ]
+            },
+            growth: {
+                name: "Growth",
+                monthlyPrice: 179,
+                annualDiscount: 0.2,
+                features: [
+                    "Setores ilimitados",
+                    "Até 50 usuários por setor",
+                    "Salvamento e histórico completo",
+                    "Assinatura eletrônica integrada",
+                    "Logs e rastreabilidade avançada",
+                    "Multiusuário com controle de acesso",
+                    "Analytics em tempo real",
+                    "Exportação de dados"
                 ]
             },
             enterprise: {
                 name: "Enterprise",
-                price: "R$199",
-                period: "/mês por setor",
+                monthlyPrice: 249,
+                annualDiscount: 0.2,
                 features: [
                     "Setores ilimitados",
-                    "Usuários ilimitados",
-                    "Histórico completo",
-                    "Suporte 24/7",
-                    "Backup diário"
+                    "Usuários ilimitados por setor",
+                    "Salvamento e histórico completo",
+                    "Assinatura eletrônica integrada",
+                    "Logs e rastreabilidade avançada",
+                    "Multiusuário com controle de acesso",
+                    "Analytics em tempo real",
+                    "Exportação de dados",
+                    "Suporte prioritário 24/7",
+                    "Integrações avançadas"
                 ]
             }
         };
 
-        // Obter o plano da URL
+        // Obter o plano e periodicidade da URL
         const urlParams = new URLSearchParams(window.location.search);
         const planName = urlParams.get('plan');
+        const billing = urlParams.get('billing') || 'monthly'; // Default para mensal
 
         // Preencher informações do plano
         const planInfo = document.getElementById('planInfo');
         if (planName && plans[planName]) {
             const plan = plans[planName];
+            const isAnnual = billing === 'annual';
+            
+            // Calcular valores
+            const monthlyPrice = plan.monthlyPrice;
+            const monthlyPriceWithDiscount = monthlyPrice * (1 - plan.annualDiscount);
+            const annualPrice = monthlyPriceWithDiscount * 12;
+            
             planInfo.innerHTML = `
                 <h3>Plano ${plan.name}</h3>
-                <div class="price">${plan.price}<span style="font-size: 1rem; color: var(--gray-500);">${plan.period}</span></div>
+                
+                ${isAnnual ? `
+                    <div class="price">R$${monthlyPriceWithDiscount.toFixed(2).replace('.', ',')}</div>
+                    <div class="price-detail">por setor/mês (com desconto)</div>
+                    <div class="price-detail">Total anual: R$${annualPrice.toFixed(2).replace('.', ',')}</div>
+                    <div class="savings-info">Economia de 20% em relação ao plano mensal</div>
+                ` : `
+                    <div class="price">R$${monthlyPrice.toFixed(2).replace('.', ',')}</div>
+                    <div class="price-detail">por setor/mês</div>
+                `}
+                
                 <ul class="plan-details">
                     ${plan.features.map(feature => `<li>${feature}</li>`).join('')}
                 </ul>

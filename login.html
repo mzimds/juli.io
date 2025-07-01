@@ -26,6 +26,7 @@
             --shadow-md: 0 4px 6px rgba(0,0,0,0.03);
             --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
             --success: #2ecc71;
+            --growth-highlight: #00c853;
         }
 
         * {
@@ -652,6 +653,7 @@
             border: 1px solid rgba(46, 204, 113, 0.15);
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
             animation: fadeIn 0.5s ease;
             box-shadow: 0 2px 10px rgba(0,0,0,0.03);
@@ -1177,9 +1179,10 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
             submitBtn.disabled = true;
             
-            // Get selected plan from URL
+            // Get selected plan and billing from URL
             const urlParams = new URLSearchParams(window.location.search);
             const plan = urlParams.get('plan');
+            const billing = urlParams.get('billing');
             
             // Simulate account creation
             setTimeout(() => {
@@ -1188,7 +1191,7 @@
                 
                 if (plan && plan !== 'free') {
                     // Redirect to checkout for paid plans
-                    window.location.href = `checkout.html?plan=${plan}`;
+                    window.location.href = `checkout.html?plan=${plan}&billing=${billing}`;
                 } else {
                     // For free plan, redirect to index
                     window.location.href = 'index.html';
@@ -1228,6 +1231,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const action = urlParams.get('action');
             const plan = urlParams.get('plan');
+            const billing = urlParams.get('billing');
             
             if (action === 'signup') {
                 switchTab('signup');
@@ -1236,29 +1240,23 @@
                 if (plan) {
                     const planNames = {
                         'pro': 'Pro',
+                        'growth': 'Growth',
                         'enterprise': 'Enterprise',
                         'free': 'Free'
                     };
                     
                     let message = '';
-                    let icon = '';
                     
                     if (plan === 'free') {
                         message = 'Explore todos os recursos gratuitos por tempo ilimitado.';
-                        icon = 'fas fa-gift';
                     } else {
-                        message = `Você selecionou o plano ${planNames[plan]} - Aproveite recursos premium!`;
-                        icon = 'fas fa-rocket';
+                        const billingText = billing === 'annual' ? 'anual' : 'mensal';
+                        message = `Você selecionou o plano ${planNames[plan]} (${billingText}) - Aproveite recursos premium!`;
                     }
                     
                     const messageElement = document.createElement('div');
                     messageElement.className = 'plan-message';
-                    messageElement.innerHTML = `
-                        <div class="plan-icon">
-                            <i class="${icon}"></i>
-                        </div>
-                        <div>${message}</div>
-                    `;
+                    messageElement.innerHTML = `<div>${message}</div>`;
                     
                     const signupForm = document.getElementById('signupForm');
                     // Insere a mensagem após o subtítulo

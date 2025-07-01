@@ -375,15 +375,18 @@
 
         .pricing-cards {
             display: flex;
-            gap: 25px;
+            gap: 15px; /* Reduzido para caber mais cards */
             justify-content: center;
             max-width: 1200px;
             margin: 0 auto;
-            overflow-x: auto;
             padding: 10px 0 30px;
+            overflow-x: auto;
             scrollbar-width: thin;
             scrollbar-color: var(--primary) transparent;
             scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            flex-wrap: nowrap; /* Garante que não quebre linha */
         }
 
         .pricing-cards::-webkit-scrollbar {
@@ -404,8 +407,9 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 20px;
-            min-width: 300px;
-            max-width: 350px;
+            width: 280px;
+            min-width: 280px;
+            max-width: 280px; /* Ajustado para tamanho fixo */
             transition: all 0.3s ease;
             box-shadow: var(--shadow-sm);
             flex-shrink: 0;
@@ -853,6 +857,20 @@
             }
         }
 
+        @media (min-width: 1200px) {
+            .pricing-cards {
+                gap: 15px; /* Espaço reduzido */
+                justify-content: center;
+                overflow-x: visible;
+            }
+            
+            .pricing-card {
+                min-width: 270px;
+                max-width: 280px;
+                flex: 1; /* Distribui espaço igualmente */
+            }
+        }
+
         @media (max-width: 992px) {
             .hero h1 {
                 font-size: 2.6rem;
@@ -1145,7 +1163,7 @@
             </div>
             <div class="pricing-cards">
                 <!-- Free Plan -->
-                <div class="pricing-card">
+                <div class="pricing-card" data-billing="monthly">
                     <div class="pricing-header">
                         <h3>Free</h3>
                         <p>Para testes e pequenas equipes</p>
@@ -1188,14 +1206,14 @@
                     <div class="temporary-note">
                         <p>As informações são mantidas apenas durante o plantão atual e o anterior. Após isso, os dados são automaticamente removidos.</p>
                     </div>
-                    <a href="login.html?action=signup&plan=free" class="btn btn-outline">Começar gratuitamente</a>
+                    <a href="login.html?action=signup&plan=free&billing=monthly" class="btn btn-outline">Começar gratuitamente</a>
                 </div>
                 
                 <!-- Pro Plan -->
-                <div class="pricing-card">
+                <div class="pricing-card" data-billing="monthly">
                     <div class="pricing-header">
                         <h3>Pro</h3>
-                        <p>Para equipes que buscam escalabilidade com segurança clínica</p>
+                        <p>Para equipes que buscam escalabilidade com segurança</p>
                         
                         <!-- Toggle para seleção de plano -->
                         <div class="toggle-container">
@@ -1240,12 +1258,12 @@
                             <p>Exportação de dados</p>
                         </div>
                     </div>
-                    <a href="login.html?action=signup&plan=pro" class="btn btn-primary">Assinar Pro</a>
+                    <a href="#" class="btn btn-primary" onclick="signupWithPlan('pro', this)">Assinar Pro</a>
                     <p class="cancel-info" id="proCancelInfo"><i class="fas fa-check"></i> Cancelamento a qualquer momento</p>
                 </div>
                 
                 <!-- Growth Plan (destaque) -->
-                <div class="pricing-card featured">
+                <div class="pricing-card featured" data-billing="monthly">
                     <div class="featured-badge">MAIS POPULAR</div>
                     <div class="pricing-header">
                         <h3>Growth</h3>
@@ -1294,12 +1312,12 @@
                             <p>Exportação de dados</p>
                         </div>
                     </div>
-                    <a href="login.html?action=signup&plan=growth" class="btn btn-growth">Assinar Growth</a>
+                    <a href="#" class="btn btn-growth" onclick="signupWithPlan('growth', this)">Assinar Growth</a>
                     <p class="cancel-info" id="growthCancelInfo"><i class="fas fa-check"></i> Cancelamento a qualquer momento</p>
                 </div>
                 
                 <!-- Enterprise Plan -->
-                <div class="pricing-card">
+                <div class="pricing-card" data-billing="monthly">
                     <div class="pricing-header">
                         <h3>Enterprise</h3>
                         <p>Para operações hospitalares complexas e alta demanda</p>
@@ -1355,7 +1373,8 @@
                             <p>Integrações avançadas</p>
                         </div>
                     </div>
-                    <a href="login.html?action=signup&plan=enterprise" class="btn btn-outline">Assinar Enterprise</a>
+                    <!-- Botão Enterprise alterado para verde -->
+                    <a href="#" class="btn btn-primary" onclick="signupWithPlan('enterprise', this)">Assinar Enterprise</a>
                     <p class="cancel-info" id="enterpriseCancelInfo"><i class="fas fa-check"></i> Cancelamento a qualquer momento</p>
                 </div>
             </div>
@@ -1406,7 +1425,9 @@
                 <div class="faq-item">
                     <div class="faq-question">Posso migrar entre planos?</div>
                     <div class="faq-answer">
-                        <p>Sim, você pode realizar upgrade do Pro para o Enterprise a qualquer momento, sem custos adicionais de migração. Seus dados, usuários e configurações são mantidos, e o acesso aos recursos avançados é liberado imediatamente.</p>
+                        <p>Sim! Você pode realizar upgrades de plano a qualquer momento, sem custos adicionais de migração. É possível migrar do Pro para o Growth, do Growth para o Enterprise, ou até mesmo do Pro diretamente para o Enterprise — ou seja, você pode subir um ou dois níveis conforme a sua necessidade.
+
+Seus dados, usuários e configurações são mantidos, e o acesso aos recursos avançados do novo plano é liberado imediatamente após a mudança.</p>
                         <p style="margin-top:10px;font-weight:500">Downgrade de plano não está disponível para evitar perda de dados e conflitos com usuários ativos.</p>
                     </div>
                 </div>
@@ -1557,43 +1578,62 @@
         const enterpriseCancelInfo = document.getElementById('enterpriseCancelInfo');
         
         // Função para atualizar preços e estado do cancelamento
-        function updatePricing(planType) {
-            // Atualizar todos os toggles
-            document.querySelectorAll('.toggle-option').forEach(option => {
+        function updatePricing(planType, optionElement) {
+            // Atualizar o atributo data-billing do card
+            const card = optionElement.closest('.pricing-card');
+            card.dataset.billing = planType;
+            
+            // Atualizar todos os toggles do mesmo card
+            const toggleOptions = card.querySelectorAll('.toggle-option');
+            toggleOptions.forEach(option => {
                 option.classList.toggle('active', option.dataset.plan === planType);
             });
             
             // Atualizar preços
             if(planType === 'monthly') {
-                document.getElementById('proPrice').innerHTML = `R$${monthlyPricePro.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
-                document.getElementById('growthPrice').innerHTML = `R$${monthlyPriceGrowth.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
-                document.getElementById('enterprisePrice').innerHTML = `R$${monthlyPriceEnterprise.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
+                const priceElement = card.querySelector('.price');
+                if (priceElement) {
+                    if (card.querySelector('.pricing-header h3').textContent === 'Pro') {
+                        priceElement.innerHTML = `R$${monthlyPricePro.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
+                    } else if (card.querySelector('.pricing-header h3').textContent === 'Growth') {
+                        priceElement.innerHTML = `R$${monthlyPriceGrowth.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
+                    } else if (card.querySelector('.pricing-header h3').textContent === 'Enterprise') {
+                        priceElement.innerHTML = `R$${monthlyPriceEnterprise.toFixed(0).replace('.', ',')}<span>/setor/mês</span>`;
+                    }
+                }
                 
                 // Mostrar texto de cancelamento
-                proCancelInfo.style.display = 'flex';
-                growthCancelInfo.style.display = 'flex';
-                enterpriseCancelInfo.style.display = 'flex';
+                const cancelInfo = card.querySelector('.cancel-info');
+                if (cancelInfo) {
+                    cancelInfo.style.display = 'flex';
+                }
             } else {
-                document.getElementById('proPrice').innerHTML = `R$${annualPricePro.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
-                document.getElementById('proPrice').innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
-                
-                document.getElementById('growthPrice').innerHTML = `R$${annualPriceGrowth.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
-                document.getElementById('growthPrice').innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
-                
-                document.getElementById('enterprisePrice').innerHTML = `R$${annualPriceEnterprise.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
-                document.getElementById('enterprisePrice').innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
+                const priceElement = card.querySelector('.price');
+                if (priceElement) {
+                    let annualPrice;
+                    if (card.querySelector('.pricing-header h3').textContent === 'Pro') {
+                        annualPrice = annualPricePro;
+                    } else if (card.querySelector('.pricing-header h3').textContent === 'Growth') {
+                        annualPrice = annualPriceGrowth;
+                    } else if (card.querySelector('.pricing-header h3').textContent === 'Enterprise') {
+                        annualPrice = annualPriceEnterprise;
+                    }
+                    priceElement.innerHTML = `R$${annualPrice.toFixed(2).replace('.', ',')}<span>/setor/mês</span>`;
+                    priceElement.innerHTML += '<div style="font-size: 0.8rem; color: var(--primary); margin-top: 5px;">Economia de 20% no plano anual</div>';
+                }
                 
                 // Ocultar texto de cancelamento
-                proCancelInfo.style.display = 'none';
-                growthCancelInfo.style.display = 'none';
-                enterpriseCancelInfo.style.display = 'none';
+                const cancelInfo = card.querySelector('.cancel-info');
+                if (cancelInfo) {
+                    cancelInfo.style.display = 'none';
+                }
             }
         }
         
         // Event listeners para os toggles
         document.querySelectorAll('.toggle-option').forEach(option => {
             option.addEventListener('click', () => {
-                updatePricing(option.dataset.plan);
+                updatePricing(option.dataset.plan, option);
             });
         });
         
@@ -1617,6 +1657,38 @@
                 }
             });
         });
+        
+        // Função para redirecionar para login com plano e periodicidade
+        function signupWithPlan(plan, element) {
+            const card = element.closest('.pricing-card');
+            const billing = card.dataset.billing;
+            window.location.href = `login.html?action=signup&plan=${plan}&billing=${billing}`;
+        }
+
+        // Equalizar altura dos cards
+        function equalizeCardHeights() {
+            const cards = document.querySelectorAll('.pricing-card');
+            let maxHeight = 0;
+            
+            // Resetar alturas
+            cards.forEach(card => card.style.height = '');
+            
+            // Encontrar a altura máxima
+            cards.forEach(card => {
+                if (card.offsetHeight > maxHeight) {
+                    maxHeight = card.offsetHeight;
+                }
+            });
+            
+            // Aplicar altura máxima
+            cards.forEach(card => {
+                card.style.height = `${maxHeight}px`;
+            });
+        }
+
+        // Executar ao carregar e redimensionar
+        window.addEventListener('load', equalizeCardHeights);
+        window.addEventListener('resize', equalizeCardHeights);
     </script>
 </body>
 </html>
