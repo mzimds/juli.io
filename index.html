@@ -528,6 +528,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             display: flex;
             justify-content: center;
@@ -1046,6 +1047,21 @@
 
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(150, 150, 150, 0.7);
+        }
+
+        /* Modal de seleção de paciente (mobile) */
+        .selection-modal-content {
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            max-width: 95%;
+            width: 100%;
+        }
+        
+        .selection-modal-content .scrollable-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
         }
 
         @media (max-width: 992px) {
@@ -1583,6 +1599,16 @@
         </div>
     </div>
 
+    <!-- Modal de Seleção de Paciente (Mobile) -->
+    <div class="modal" id="selectionModal">
+        <div class="modal-content card selection-modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Selecione um Paciente</h2>
+            </div>
+            <div class="scrollable-content" id="selectionModalContent"></div>
+        </div>
+    </div>
+
     <script>
         // Dados de exemplo para demonstração
         const dados = {
@@ -1727,7 +1753,9 @@
             editorContainer: document.getElementById('editorContainer'),
             btnAddTurno: document.getElementById('btnAddTurno'),
             turnosContainer: document.getElementById('turnosContainer'),
-            turnosError: document.getElementById('turnosError')
+            turnosError: document.getElementById('turnosError'),
+            selectionModal: document.getElementById('selectionModal'),
+            selectionModalContent: document.getElementById('selectionModalContent')
         };
 
         // Estado da aplicação
@@ -1858,6 +1886,20 @@
             
             // Inicializar turnos
             addTurno();
+            
+            // Cenário 1: Se não houver setores, abrir modal de novo setor
+            if (dados.setores.length === 0) {
+                setTimeout(() => {
+                    openNewSetorModal();
+                }, 300);
+            }
+            
+            // Cenário 2: Se mobile e não há paciente selecionado, abrir modal de seleção
+            if (window.innerWidth <= 992 && !state.currentPaciente && dados.setores.length > 0) {
+                setTimeout(() => {
+                    openSelectionModal();
+                }, 300);
+            }
         }
         
         // Atualizar barra de progresso de setores
@@ -1883,21 +1925,21 @@
         }
 
         // Renderizar setores e pacientes
-        function renderSetores() {
-            DOM.setoresList.innerHTML = '';
+        function renderSetores(container = DOM.setoresList, isModal = false) {
+            container.innerHTML = '';
             
             // Se não houver setores, mostrar mensagem
             if (dados.setores.length === 0) {
-                DOM.setoresList.innerHTML = `
+                container.innerHTML = `
                     <div style="padding: 20px; text-align: center; color: var(--gray);">
                         <p>Nenhum setor criado</p>
-                        <button class="btn" style="margin-top: 15px;" id="btnFirstSetor">
-                            Criar Primeiro Setor
-                        </button>
+                        ${isModal ? '' : `<button class="btn" style="margin-top: 15px;" id="btnFirstSetor">Criar Primeiro Setor</button>`}
                     </div>
                 `;
                 
-                document.getElementById('btnFirstSetor').addEventListener('click', openNewSetorModal);
+                if (!isModal) {
+                    document.getElementById('btnFirstSetor').addEventListener('click', openNewSetorModal);
+                }
                 return;
             }
             
@@ -1925,9 +1967,7 @@
                                 </div>
                             </div>
                         `).join('')}
-                        <button class="btn" style="margin-top: 10px; width: 100%;" data-setor="${setor.id}">
-                            Adicionar Paciente
-                        </button>
+                        ${isModal ? '' : `<button class="btn" style="margin-top: 10px; width: 100%;" data-setor="${setor.id}">Adicionar Paciente</button>`}
                     </div>
                 `;
                 
@@ -1938,25 +1978,30 @@
                         } else {
                             state.currentSetor = setor.id;
                         }
-                        renderSetores();
+                        renderSetores(container, isModal);
                     }
                 });
                 
-                DOM.setoresList.appendChild(setorEl);
+                container.appendChild(setorEl);
                 
                 // Eventos para pacientes
                 setorEl.querySelectorAll('.paciente-item').forEach(item => {
                     item.addEventListener('click', () => {
                         const pacienteId = parseInt(item.getAttribute('data-id'));
                         selectPaciente(pacienteId);
+                        if (isModal) {
+                            DOM.selectionModal.classList.remove('active');
+                        }
                     });
                 });
                 
                 // Evento para botão de adicionar paciente
-                setorEl.querySelector('button').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openNewPacienteModal(setor.id);
-                });
+                if (!isModal) {
+                    setorEl.querySelector('button').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openNewPacienteModal(setor.id);
+                    });
+                }
             });
         }
 
@@ -2235,6 +2280,13 @@
                 DOM.setorName.value = '';
                 updateSetorProgress();
                 showToast(`Setor "${nomeSetor}" criado com sucesso!`, 'success');
+                
+                // Se for o primeiro setor, abrir modal de seleção em mobile
+                if (dados.setores.length === 1 && window.innerWidth <= 992) {
+                    setTimeout(() => {
+                        openSelectionModal();
+                    }, 300);
+                }
             });
             
             // Botão para adicionar turno
@@ -2425,10 +2477,22 @@
             window.addEventListener('resize', () => {
                 if (window.innerWidth <= 992) {
                     DOM.btnPassPlantaoHeader.classList.add('hidden');
+                    // Se não há paciente selecionado, abrir modal de seleção
+                    if (!state.currentPaciente && dados.setores.length > 0) {
+                        openSelectionModal();
+                    }
                 } else {
                     DOM.btnPassPlantaoHeader.classList.remove('hidden');
+                    // Fechar o modal de seleção se estiver aberto
+                    DOM.selectionModal.classList.remove('active');
                 }
             });
+        }
+
+        // Abrir modal de seleção de paciente (mobile)
+        function openSelectionModal() {
+            renderSetores(DOM.selectionModalContent, true);
+            DOM.selectionModal.classList.add('active');
         }
 
         // Adicionar novo turno
