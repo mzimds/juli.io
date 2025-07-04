@@ -223,12 +223,6 @@
             background-color: rgba(44, 125, 160, 0.05);
         }
         
-        .autocomplete-icon {
-            margin-right: 10px;
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
-        
         .highlight {
             background-color: rgba(255, 217, 0, 0.3);
             font-weight: 600;
@@ -289,8 +283,6 @@
             margin: 5px 0;
             transition: all 0.2s ease;
             background: var(--light);
-            display: flex;
-            align-items: center;
         }
 
         .paciente-item:hover {
@@ -302,8 +294,14 @@
         }
 
         .paciente-info {
-            flex: 1;
             min-width: 0;
+        }
+
+        .paciente-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
         }
 
         .paciente-name {
@@ -314,6 +312,12 @@
             font-size: 0.95rem;
             margin-bottom: 4px;
             color: var(--darker);
+            flex: 1;
+        }
+
+        .paciente-status {
+            display: flex;
+            gap: 4px;
         }
 
         .paciente-details {
@@ -711,10 +715,11 @@
         }
 
         .setor-name span:last-child {
-            background: rgba(44, 125, 160, 0.1);
-            padding: 2px 8px;
-            border-radius: 10px;
+            background: none;
+            padding: 0;
+            border-radius: 0;
             font-weight: 600;
+            color: var(--darker);
         }
 
         .disabled {
@@ -729,7 +734,6 @@
             border-radius: 12px;
             font-size: 0.75rem;
             font-weight: 600;
-            margin-left: 8px;
             background: white;
             border: 1px solid var(--dark);
             color: var(--dark);
@@ -1259,6 +1263,36 @@
         .pendencia-card.expanded .pendencia-header {
             border-bottom: 1px solid var(--border);
             margin-bottom: 10px;
+        }
+
+        /* Menu de contexto (três pontos) */
+        .context-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 6px;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            display: none;
+            width: 180px;
+            overflow: hidden;
+        }
+
+        .context-menu.visible {
+            display: block;
+        }
+
+        .context-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--dark);
+            transition: background-color 0.2s;
+        }
+
+        .context-item:hover {
+            background-color: rgba(44, 125, 160, 0.1);
         }
         
         @media (max-width: 992px) {
@@ -2068,7 +2102,6 @@
                     const item = document.createElement('div');
                     item.className = 'autocomplete-item';
                     item.innerHTML = `
-                        <div class="autocomplete-icon">👤</div>
                         <div>
                             <div>${highlightText(paciente.nome, searchTerm)}</div>
                             <div style="font-size: 0.8rem; color: var(--gray);">${paciente.setorNome}</div>
@@ -2091,7 +2124,6 @@
                     const item = document.createElement('div');
                     item.className = 'autocomplete-item';
                     item.innerHTML = `
-                        <div class="autocomplete-icon">🏥</div>
                         <div>${highlightText(setor.nome, searchTerm)}</div>
                     `;
                     
@@ -2265,9 +2297,12 @@
                         ${setor.pacientes.map(paciente => `
                             <div class="paciente-item ${state.currentPaciente === paciente.id ? 'active' : ''}" data-id="${paciente.id}">
                                 <div class="paciente-info">
-                                    <div class="paciente-name">${paciente.nome} 
-                                        ${paciente.alta ? `<span class="status-badge alta">Alta</span>` : ''}
-                                        ${paciente.pendencias && paciente.pendencias.some(p => !p.resolvidoEm) ? `<span class="status-badge pendencia">Pendência</span>` : ''}
+                                    <div class="paciente-header">
+                                        <div class="paciente-name">${paciente.nome}</div>
+                                        <div class="paciente-status">
+                                            ${paciente.alta ? `<span class="status-badge alta">Alta</span>` : ''}
+                                            ${paciente.pendencias && paciente.pendencias.some(p => !p.resolvidoEm) ? `<span class="status-badge pendencia">Pendência</span>` : ''}
+                                        </div>
                                     </div>
                                     <div class="paciente-details">
                                         <span>${paciente.idade} anos</span>
@@ -2427,11 +2462,10 @@
                                     <div class="pendencia-meta">${pendencia.criadoPor} • ${dateStr} ${timeStr}</div>
                                 </div>
                             </div>
-                            <button class="btn-resolver" data-id="${pendencia.id}">Resolver</button>
                         </div>
                         <div class="pendencia-desc">${pendencia.descricao}</div>
                         <div class="pendencia-footer">
-                            <button class="btn-resolver" data-id="${pendencia.id}">Resolver Pendência</button>
+                            <button class="btn-resolver" data-id="${pendencia.id}">Resolver</button>
                         </div>
                     </div>
                 `;
