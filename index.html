@@ -25,6 +25,8 @@
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
             --pending: #222; /* Alterado para cinza escuro */
+            --lavender: #9A85F9;
+            --skyblue: #58B7F4;
         }
 
         * {
@@ -116,9 +118,9 @@
 
         .btn {
             padding: 8px 12px;
-            background: var(--darker);
-            color: white;
-            border: none;
+            background: var(--light);
+            color: var(--darker);
+            border: 1px solid var(--darker);
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
@@ -128,7 +130,7 @@
         }
 
         .btn:hover {
-            background: var(--dark);
+            background: rgba(0, 0, 0, 0.05);
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
         }
@@ -139,14 +141,20 @@
 
         .btn-danger {
             background: var(--danger);
+            color: white;
+            border-color: var(--danger);
         }
 
         .btn-success {
-            background: var(--success);
+            background: var(--light);
+            color: var(--dark);
+            border-color: var(--dark);
         }
 
         .btn-pass {
-            background: var(--pass-plantao);
+            background: var(--light);
+            color: var(--dark);
+            border-color: var(--dark);
         }
 
         .search-container {
@@ -349,6 +357,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer; /* Adicionado cursor pointer para indicar clique */
         }
 
         .soap-tabs {
@@ -705,25 +714,26 @@
         }
 
         /* Novos estilos para alta */
-        .alta-badge {
-            background: var(--success) !important;
-            color: white !important;
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
             margin-left: 8px;
-            padding: 2px 8px !important;
-            border-radius: 12px !important;
-            font-size: 0.75rem !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            background: white;
+            border: 1px solid var(--dark);
+            color: var(--dark);
         }
 
-        .alta-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.85rem;
+        .status-badge.alta {
+            border-color: var(--success);
             color: var(--success);
-            font-weight: 600;
+        }
+
+        .status-badge.pendencia {
+            border-color: var(--pending);
+            color: var(--pending);
         }
 
         /* ESTILOS ATUALIZADOS PARA CHAT RESPONSIVO */
@@ -861,11 +871,11 @@
         }
 
         .btn-send:not(:disabled) {
-            background: var(--success) !important;
+            background: linear-gradient(90deg, var(--lavender), var(--skyblue));
         }
 
         .btn-send:hover:not(:disabled) {
-            background: var(--success-dark);
+            opacity: 0.9;
         }
 
         /* Progress bar */
@@ -918,186 +928,6 @@
             gap: 5px;
             flex: 1;
             min-width: 0;
-        }
-
-        .patient-title {
-            flex: 1;
-            min-width: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-align: left;
-        }
-
-        .patient-toggle-icon {
-            cursor: pointer;
-            color: var(--gray);
-            font-size: 0.9rem;
-            display: flex;
-            align-self: center;
-            flex-shrink: 0;
-            transition: transform 0.2s;
-        }
-
-        /* MENU DE CONTEXTO PARA ALTA E PENDÊNCIA */
-        .patient-actions {
-            position: relative;
-            display: none; /* Inicialmente oculto */
-            align-items: center;
-        }
-
-        .btn-context {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--darker);
-            padding: 5px 10px;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 36px;
-            width: 36px;
-        }
-
-        .btn-context:hover {
-            background-color: rgba(0,0,0,0.05);
-        }
-
-        .context-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: var(--shadow-md);
-            z-index: 10;
-            display: none;
-            min-width: 180px;
-            overflow: hidden;
-        }
-
-        .context-menu.visible {
-            display: block;
-        }
-
-        .context-item {
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-
-        .context-item:hover {
-            background-color: rgba(44, 125, 160, 0.05);
-        }
-
-        /* ESTILOS PARA PENDÊNCIAS - ATUALIZADOS */
-        .pendencia-badge {
-            background: var(--pending) !important;
-            color: white !important;
-            margin-left: 8px;
-            padding: 2px 8px !important;
-            border-radius: 12px !important;
-            font-size: 0.75rem !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pendencia-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.85rem;
-            color: var(--pending);
-            font-weight: 600;
-        }
-
-        .pendencia-card {
-            background: rgba(0, 0, 0, 0.03);
-            border-radius: 8px;
-            margin-top: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-            max-height: 45px;
-            transition: max-height 0.3s ease;
-            overflow: hidden;
-        }
-
-        .pendencia-card.expanded {
-            max-height: 300px;
-        }
-
-        .pendencia-content {
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .pendencia-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
-
-        .pendencia-header-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .pendencia-desc {
-            font-size: 0.9rem;
-            color: var(--dark);
-            line-height: 1.4;
-            margin-top: 8px;
-        }
-
-        .pendencia-meta {
-            font-size: 0.8rem;
-            color: var(--gray);
-        }
-
-        .pendencia-footer {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
-
-        .btn-resolver {
-            padding: 6px 12px;
-            background: var(--pending);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
-
-        .btn-resolver:hover {
-            background: #444;
-        }
-        
-        .pendencias-container {
-            padding: 0 15px 10px;
-            background: var(--light);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
         }
         
         /* Estado inicial quando nenhum paciente selecionado */
@@ -1279,8 +1109,7 @@
         }
 
         /* Paciente selecionado */
-        .patient-selected .patient-actions,
-        .patient-selected .patient-toggle-icon {
+        .patient-selected .patient-actions {
             display: flex;
         }
 
@@ -1290,6 +1119,115 @@
             margin-top: 10px;
         }
 
+        /* ESTILOS PARA PENDÊNCIAS - ATUALIZADOS */
+        .pendencia-badge {
+            background: var(--light) !important;
+            color: var(--pending) !important;
+            margin-left: 8px;
+            padding: 2px 8px !important;
+            border-radius: 12px !important;
+            font-size: 0.75rem !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--pending);
+        }
+
+        .pendencia-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            color: var(--pending);
+            font-weight: 600;
+        }
+
+        .pendencia-card {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 8px;
+            margin-top: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            max-height: 45px;
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+        }
+
+        .pendencia-card.expanded {
+            max-height: 300px;
+        }
+
+        .pendencia-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .pendencia-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .pendencia-header-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pendencia-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .pendencia-desc {
+            font-size: 0.9rem;
+            color: var(--dark);
+            line-height: 1.4;
+            margin-top: 8px;
+        }
+
+        .pendencia-meta {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .pendencia-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .btn-resolver {
+            padding: 6px 12px;
+            background: var(--pending);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn-resolver:hover {
+            background: #444;
+        }
+        
+        .pendencias-container {
+            padding: 0 15px 10px;
+            background: var(--light);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
         @media (max-width: 992px) {
             .sidebar {
                 position: absolute;
@@ -1361,11 +1299,6 @@
                 min-width: 0;
             }
             
-            .patient-toggle-icon {
-                display: flex;
-                margin: 0;
-            }
-            
             .patient-title {
                 display: flex;
                 align-items: center;
@@ -1398,10 +1331,6 @@
 
             .header-info {
                 flex-wrap: nowrap;
-            }
-            
-            .patient-toggle-icon {
-                display: flex;
             }
         }
 
@@ -1547,11 +1476,10 @@
         <div class="main-content card">
             <div class="patient-header" id="patientHeader">
                 <div class="patient-title-container">
-                    <div class="patient-title-wrapper">
+                    <div class="patient-title-wrapper" id="patientToggle">
                         <div class="patient-title" id="patientTitle">
                             <span>Selecione um paciente</span>
                         </div>
-                        <div class="patient-toggle-icon" id="patientToggleIcon">▼</div>
                     </div>
                     <div class="patient-actions">
                         <button class="btn-context" id="btnContextMenu">⋮</button>
@@ -1849,6 +1777,22 @@
                 <h2 class="modal-title">Criar Pendência</h2>
             </div>
             <div class="form-group">
+                <label>Título</label>
+                <select class="form-control" id="pendenciaTitulo">
+                    <option value="">Selecione um título</option>
+                    <option value="Exames pendentes">Exames pendentes</option>
+                    <option value="Medicação não administrada">Medicação não administrada</option>
+                    <option value="Alta pendente">Alta pendente</option>
+                    <option value="Transferência pendente">Transferência pendente</option>
+                    <option value="Outra">Outra</option>
+                </select>
+                <div class="error-message" id="pendenciaTituloError"></div>
+            </div>
+            <div class="form-group" id="outraPendenciaGroup" style="display: none;">
+                <label>Especificar</label>
+                <input type="text" class="form-control" id="outraPendencia" placeholder="Descreva a pendência">
+            </div>
+            <div class="form-group">
                 <label>Descrição</label>
                 <textarea class="form-control" id="pendenciaDesc" rows="3" placeholder="Descreva a pendência"></textarea>
                 <div class="error-message" id="pendenciaDescError"></div>
@@ -1933,6 +1877,7 @@
                             pendencias: [
                                 {
                                     id: 2001,
+                                    titulo: "Exames pendentes",
                                     descricao: "Realizar tomografia de tórax",
                                     criadoPor: "Dr. Carlos Silva",
                                     criadoEm: "2023-06-25T10:35:00",
@@ -1976,7 +1921,7 @@
             btnNewSetor: document.getElementById('btnNewSetor'),
             patientTitle: document.getElementById('patientTitle'),
             patientDetails: document.getElementById('patientDetails'),
-            patientToggleIcon: document.getElementById('patientToggleIcon'),
+            patientToggle: document.getElementById('patientToggle'),
             searchInput: document.getElementById('searchInput'),
             autocompleteContainer: document.getElementById('autocompleteContainer'),
             soapTabs: document.querySelectorAll('.soap-tab'),
@@ -2033,6 +1978,10 @@
             btnContextMenu: document.getElementById('btnContextMenu'),
             contextMenu: document.getElementById('contextMenu'),
             pendenciaModal: document.getElementById('pendenciaModal'),
+            pendenciaTitulo: document.getElementById('pendenciaTitulo'),
+            pendenciaTituloError: document.getElementById('pendenciaTituloError'),
+            outraPendencia: document.getElementById('outraPendencia'),
+            outraPendenciaGroup: document.getElementById('outraPendenciaGroup'),
             pendenciaDesc: document.getElementById('pendenciaDesc'),
             pendenciaDescError: document.getElementById('pendenciaDescError'),
             btnCancelPendencia: document.getElementById('btnCancelPendencia'),
@@ -2312,8 +2261,8 @@
                             <div class="paciente-item ${state.currentPaciente === paciente.id ? 'active' : ''}" data-id="${paciente.id}">
                                 <div class="paciente-info">
                                     <div class="paciente-name">${paciente.nome} 
-                                        ${paciente.alta ? `<span class="alta-badge">Alta</span>` : ''}
-                                        ${paciente.pendencias && paciente.pendencias.some(p => !p.resolvidoEm) ? `<span class="pendencia-badge">Pendência</span>` : ''}
+                                        ${paciente.alta ? `<span class="status-badge alta">Alta</span>` : ''}
+                                        ${paciente.pendencias && paciente.pendencias.some(p => !p.resolvidoEm) ? `<span class="status-badge pendencia">Pendência</span>` : ''}
                                     </div>
                                     <div class="paciente-details">
                                         <span>${paciente.idade} anos</span>
@@ -2469,8 +2418,8 @@
                                     <path d="M2 12L12 17L22 12" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
-                                    <div>${pendencia.criadoPor}</div>
-                                    <div class="pendencia-meta">${dateStr} • ${timeStr}</div>
+                                    <div class="pendencia-title">${pendencia.titulo}</div>
+                                    <div class="pendencia-meta">${pendencia.criadoPor} • ${dateStr} ${timeStr}</div>
                                 </div>
                             </div>
                             <button class="btn-resolver" data-id="${pendencia.id}">Resolver</button>
@@ -2874,12 +2823,29 @@
                 // Resetar erros
                 hideAllErrors();
                 
+                const titulo = DOM.pendenciaTitulo.value.trim();
                 const desc = DOM.pendenciaDesc.value.trim();
+                
+                if (!titulo) {
+                    showError(DOM.pendenciaTituloError, 'Selecione um título');
+                    DOM.pendenciaTitulo.focus();
+                    return;
+                }
                 
                 if (!desc) {
                     showError(DOM.pendenciaDescError, 'Informe a descrição da pendência');
                     DOM.pendenciaDesc.focus();
                     return;
+                }
+                
+                // Se selecionou "Outra", usar o campo de texto
+                let tituloFinal = titulo;
+                if (titulo === "Outra") {
+                    tituloFinal = DOM.outraPendencia.value.trim();
+                    if (!tituloFinal) {
+                        showError(DOM.pendenciaDescError, 'Informe o título da pendência');
+                        return;
+                    }
                 }
                 
                 // Encontrar paciente
@@ -2890,6 +2856,7 @@
                         paciente.pendencias = paciente.pendencias || [];
                         paciente.pendencias.push({
                             id: Date.now(),
+                            titulo: tituloFinal,
                             descricao: desc,
                             criadoPor: state.currentDoctor,
                             criadoEm: new Date().toISOString(),
@@ -2899,7 +2866,7 @@
                         // Adicionar mensagem no histórico
                         paciente.anotacoes.push({
                             id: Date.now(),
-                            texto: `Pendência criada: ${desc}`,
+                            texto: `Pendência criada: ${tituloFinal}`,
                             timestamp: new Date().toISOString(),
                             medico: state.currentDoctor,
                             tipo: "system"
@@ -2912,7 +2879,10 @@
                         DOM.pendenciaModal.classList.remove('active');
                         
                         // Resetar campos
+                        DOM.pendenciaTitulo.value = '';
+                        DOM.outraPendencia.value = '';
                         DOM.pendenciaDesc.value = '';
+                        DOM.outraPendenciaGroup.style.display = 'none';
                         
                         // Mostrar toast
                         showToast('Pendência criada com sucesso!', 'success');
@@ -3013,14 +2983,9 @@
             });
 
             // Toggle de detalhes do paciente
-            document.addEventListener('click', function(e) {
-                const toggleIcon = document.getElementById('patientToggleIcon');
-                if (toggleIcon && (e.target === toggleIcon || e.target.closest('#patientToggleIcon'))) {
-                    const isVisible = DOM.patientDetails.style.display === 'block';
-                    DOM.patientDetails.style.display = isVisible ? 'none' : 'block';
-                    toggleIcon.textContent = isVisible ? '▼' : '▲';
-                    toggleIcon.classList.toggle('open', !isVisible);
-                }
+            DOM.patientToggle.addEventListener('click', function(e) {
+                const isVisible = DOM.patientDetails.style.display === 'block';
+                DOM.patientDetails.style.display = isVisible ? 'none' : 'block';
             });
             
             // Listener para redimensionamento da tela
@@ -3035,6 +3000,15 @@
                     DOM.btnPassPlantaoHeader.classList.remove('hidden');
                     // Fechar o modal de seleção se estiver aberto
                     DOM.selectionModal.classList.remove('active');
+                }
+            });
+
+            // Evento para o campo de título da pendência
+            DOM.pendenciaTitulo.addEventListener('change', function() {
+                if (this.value === "Outra") {
+                    DOM.outraPendenciaGroup.style.display = 'block';
+                } else {
+                    DOM.outraPendenciaGroup.style.display = 'none';
                 }
             });
         }
@@ -3217,7 +3191,7 @@
                         // Adicionar mensagem ao histórico
                         paciente.anotacoes.push({
                             id: Date.now(),
-                            texto: `Pendência resolvida: ${pendencia.descricao}`,
+                            texto: `Pendência resolvida: ${pendencia.titulo}`,
                             timestamp: new Date().toISOString(),
                             medico: state.currentDoctor,
                             tipo: "system"
@@ -3249,7 +3223,7 @@
         // Abrir modal de pendência
         function openPendenciaModal() {
             DOM.pendenciaModal.classList.add('active');
-            DOM.pendenciaDesc.focus();
+            DOM.pendenciaTitulo.focus();
         }
 
         // Abrir modal novo setor
