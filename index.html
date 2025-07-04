@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>DONTMED - Sistema de Plantão Médico</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -724,7 +724,24 @@
             font-weight: 600;
         }
 
-        /* Estilos para chat */
+        /* ESTILOS ATUALIZADOS PARA CHAT RESPONSIVO */
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-history-container {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            padding-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .chat-history {
             flex: 1;
             overflow-y: auto;
@@ -778,7 +795,24 @@
             border-radius: 0 0 8px 8px;
             box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
             border-top: 1px solid var(--border);
-            margin-top: auto;
+            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+
+        .keyboard-open .message-input-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background: white;
+            border-radius: 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .keyboard-open .chat-history-container {
+            padding-bottom: 70px; /* Espaço para o input quando teclado está aberto */
         }
 
         .message-input {
@@ -1115,10 +1149,6 @@
                 height: 100%;
             }
 
-            .message-input-container {
-                padding: 8px;
-            }
-
             #btnPassPlantaoHeader {
                 display: none !important;
             }
@@ -1161,6 +1191,27 @@
                 flex-shrink: 0;
                 padding: 6px 10px;
                 white-space: nowrap;
+            }
+            
+            /* Ajustes para chat em mobile */
+            .chat-history {
+                padding: 8px;
+            }
+            
+            .message {
+                padding: 8px 12px;
+                max-width: 85%;
+            }
+            
+            .message-input {
+                font-size: 1rem;
+                padding: 12px 50px 12px 15px;
+            }
+            
+            .btn-send {
+                width: 36px;
+                height: 36px;
+                right: 15px;
             }
         }
 
@@ -1250,14 +1301,6 @@
                 font-size: 0.95rem;
             }
 
-            .message-input-container {
-                padding: 8px;
-            }
-            
-            .message-input {
-                padding: 8px 10px;
-            }
-            
             .pass-plantao-sidebar .btn {
                 padding: 15px 10px;
                 font-size: 1rem;
@@ -1384,12 +1427,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="chat-history" id="chatHistory">
-                        <!-- Mensagens serão carregadas aqui -->
-                    </div>
-                    <div class="message-input-container">
-                        <textarea class="message-input" id="messageInput" placeholder="Escreva uma nova anotação clínica..." rows="1"></textarea>
-                        <button class="btn-send" id="btnSendMessage" disabled>➤</button>
+                    <div class="chat-area">
+                        <div class="chat-history-container">
+                            <div class="chat-history" id="chatHistory">
+                                <!-- Mensagens serão carregadas aqui -->
+                            </div>
+                        </div>
+                        <div class="message-input-container">
+                            <textarea class="message-input" id="messageInput" placeholder="Escreva uma nova anotação clínica..." rows="1"></textarea>
+                            <button class="btn-send" id="btnSendMessage" disabled>➤</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1764,7 +1811,8 @@
             currentPaciente: null,
             currentDoctor: "Dr. Carlos Silva",
             lastEdit: new Date().toISOString(),
-            turnoCount: 0
+            turnoCount: 0,
+            keyboardOpen: false
         };
 
         // Função para destacar termos de busca
@@ -1878,6 +1926,7 @@
             updateTime();
             setInterval(updateTime, 60000);
             updateSetorProgress();
+            setupKeyboardDetection();
             
             // Garantir que o botão do header esteja oculto em mobile inicialmente
             if (window.innerWidth <= 992) {
@@ -1902,6 +1951,75 @@
             }
         }
         
+        // Detectar quando o teclado virtual é aberto/fechado
+        function setupKeyboardDetection() {
+            // Para iOS
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', handleViewportResize);
+            }
+            
+            // Para Android
+            window.addEventListener('resize', handleWindowResize);
+            
+            // Eventos de foco para detectar quando o input está ativo
+            DOM.messageInput.addEventListener('focus', () => {
+                state.keyboardOpen = true;
+                document.body.classList.add('keyboard-open');
+                scrollToLatestMessage();
+            });
+            
+            DOM.messageInput.addEventListener('blur', () => {
+                setTimeout(() => {
+                    state.keyboardOpen = false;
+                    document.body.classList.remove('keyboard-open');
+                }, 300);
+            });
+        }
+        
+        function handleViewportResize() {
+            // iOS usa visualViewport para detectar mudanças no teclado
+            const viewport = window.visualViewport;
+            const keyboardHeight = window.innerHeight - viewport.height;
+            
+            if (keyboardHeight > 100) {
+                state.keyboardOpen = true;
+                document.body.classList.add('keyboard-open');
+                scrollToLatestMessage();
+            } else {
+                state.keyboardOpen = false;
+                document.body.classList.remove('keyboard-open');
+            }
+        }
+        
+        function handleWindowResize() {
+            // Android não fornece visualViewport confiável
+            const keyboardHeight = window.innerHeight - document.documentElement.clientHeight;
+            
+            if (keyboardHeight > 100 && !state.keyboardOpen) {
+                state.keyboardOpen = true;
+                document.body.classList.add('keyboard-open');
+                scrollToLatestMessage();
+            } else if (keyboardHeight < 100 && state.keyboardOpen) {
+                state.keyboardOpen = false;
+                document.body.classList.remove('keyboard-open');
+            }
+        }
+        
+        function scrollToLatestMessage() {
+            if (DOM.chatHistory.children.length > 0) {
+                const lastMessage = DOM.chatHistory.lastElementChild;
+                lastMessage.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'end'
+                });
+                
+                // Scroll adicional para garantir visibilidade
+                setTimeout(() => {
+                    DOM.chatHistory.scrollTop += 50;
+                }, 300);
+            }
+        }
+
         // Atualizar barra de progresso de setores
         function updateSetorProgress() {
             const count = dados.setores.length;
@@ -2124,7 +2242,9 @@
             });
             
             // Rolagem automática para o final
-            DOM.chatHistory.scrollTop = DOM.chatHistory.scrollHeight;
+            setTimeout(() => {
+                scrollToLatestMessage();
+            }, 50);
         }
 
         // Configurar event listeners
@@ -2460,6 +2580,17 @@
             // Habilitar/desabilitar botão de enviar
             DOM.messageInput.addEventListener('input', function() {
                 DOM.btnSendMessage.disabled = this.value.trim() === '';
+                
+                // Ajustar altura do textarea conforme o conteúdo
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+                
+                // Limitar altura máxima
+                if (this.scrollHeight > 150) {
+                    this.style.overflowY = 'auto';
+                } else {
+                    this.style.overflowY = 'hidden';
+                }
             });
 
             // Toggle de detalhes do paciente
@@ -2611,6 +2742,9 @@
                     // Limpar campo
                     DOM.messageInput.value = '';
                     DOM.btnSendMessage.disabled = true;
+                    
+                    // Scroll para a nova mensagem
+                    setTimeout(scrollToLatestMessage, 100);
                     break;
                 }
             }
