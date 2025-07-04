@@ -998,9 +998,9 @@
             background-color: rgba(44, 125, 160, 0.05);
         }
 
-        /* ESTILOS PARA PENDÊNCIAS */
+        /* ESTILOS PARA PENDÊNCIAS - ATUALIZADOS */
         .pendencia-badge {
-            background: var(--pending) !important;
+            background: var(--warning) !important;
             color: white !important;
             margin-left: 8px;
             padding: 2px 8px !important;
@@ -1016,29 +1016,57 @@
             align-items: center;
             gap: 5px;
             font-size: 0.85rem;
-            color: var(--pending);
+            color: var(--warning);
             font-weight: 600;
         }
 
-        .pendencia-info {
-            background: rgba(70, 143, 175, 0.05);
-            border-left: 3px solid var(--pending);
-            padding: 10px;
-            border-radius: 0 6px 6px 0;
+        .pendencia-card {
+            background: rgba(243, 156, 18, 0.05);
+            border-radius: 8px;
             margin-top: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
 
         .pendencia-header {
+            padding: 10px 15px;
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+        }
+
+        .pendencia-title {
             font-weight: 600;
-            color: var(--pending);
-            margin-bottom: 5px;
+            color: var(--darker);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pendencia-icon {
+            font-size: 0.9rem;
+            transition: transform 0.3s;
+        }
+
+        .pendencia-card.expanded .pendencia-icon {
+            transform: rotate(180deg);
+        }
+
+        .pendencia-content {
+            padding: 0 15px 15px;
+            display: none;
+        }
+
+        .pendencia-card.expanded .pendencia-content {
+            display: block;
         }
 
         .pendencia-desc {
-            font-size: 0.9rem;
             margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--dark);
         }
 
         .pendencia-meta {
@@ -1050,6 +1078,15 @@
 
         .pendencia-resolved {
             color: var(--success);
+        }
+        
+        .pendencias-container {
+            padding: 0 15px 10px;
+            background: var(--light);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         
         /* Estado inicial quando nenhum paciente selecionado */
@@ -1122,7 +1159,7 @@
             align-items: center;
         }
 
-        /* Turnos no modal de setor */
+        /* Turnos no modal de setor - ATUALIZADO */
         .turno-section {
             margin-bottom: 15px;
             padding: 15px;
@@ -1176,6 +1213,26 @@
             border-color: var(--danger) !important;
         }
 
+        .btn-add-turno {
+            background: rgba(44, 125, 160, 0.1);
+            color: var(--primary-dark);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            margin-left: auto;
+            font-size: 0.85rem;
+        }
+
+        .btn-add-turno:hover {
+            background: rgba(44, 125, 160, 0.2);
+        }
+
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -1208,29 +1265,6 @@
             flex: 1;
             overflow-y: auto;
             padding: 10px;
-        }
-
-        /* Barra de pendências */
-        .pendencias-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            background: rgba(70, 143, 175, 0.1);
-            border-radius: 6px;
-            margin-top: 8px;
-            font-size: 0.9rem;
-        }
-
-        .btn-resolver {
-            padding: 4px 8px;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            margin-left: auto;
         }
 
         /* Paciente selecionado */
@@ -1526,11 +1560,9 @@
                 </div>
             </div>
             
-            <!-- Barra de pendências ativas -->
-            <div class="pendencias-header" id="pendenciasHeader" style="display: none;">
-                <span>⚠️ Pendências ativas:</span>
-                <span id="pendenciaCount">0</span>
-                <button class="btn-resolver" id="btnResolverPendencias">Resolver</button>
+            <!-- Área de pendências individuais -->
+            <div class="pendencias-container" id="pendenciasContainer" style="display: none;">
+                <!-- Pendências serão carregadas aqui dinamicamente -->
             </div>
             
             <div class="editor-container" id="editorContainer">
@@ -1812,16 +1844,6 @@
                 <textarea class="form-control" id="pendenciaDesc" rows="3" placeholder="Descreva a pendência"></textarea>
                 <div class="error-message" id="pendenciaDescError"></div>
             </div>
-            <div class="form-group">
-                <label>Responsável pela Resolução</label>
-                <select class="form-control" id="pendenciaResponsavel">
-                    <option value="">Selecione o responsável</option>
-                    <option value="Dra. Ana Santos">Dra. Ana Santos</option>
-                    <option value="Dr. Pedro Oliveira">Dr. Pedro Oliveira</option>
-                    <option value="Dra. Juliana Costa">Dra. Juliana Costa</option>
-                </select>
-                <div class="error-message" id="pendenciaResponsavelError"></div>
-            </div>
             <div class="modal-footer">
                 <button class="btn" id="btnCancelPendencia" style="background: rgba(0,0,0,0.08); color: var(--dark);">
                     Cancelar
@@ -1903,7 +1925,6 @@
                                 {
                                     id: 2001,
                                     descricao: "Realizar tomografia de tórax",
-                                    responsavel: "Dr. Pedro Oliveira",
                                     criadoPor: "Dr. Carlos Silva",
                                     criadoEm: "2023-06-25T10:35:00",
                                     resolvidoEm: null
@@ -2006,13 +2027,10 @@
             pendenciaModal: document.getElementById('pendenciaModal'),
             pendenciaDesc: document.getElementById('pendenciaDesc'),
             pendenciaDescError: document.getElementById('pendenciaDescError'),
-            pendenciaResponsavel: document.getElementById('pendenciaResponsavel'),
-            pendenciaResponsavelError: document.getElementById('pendenciaResponsavelError'),
             btnCancelPendencia: document.getElementById('btnCancelPendencia'),
             btnSavePendencia: document.getElementById('btnSavePendencia'),
-            pendenciasHeader: document.getElementById('pendenciasHeader'),
-            pendenciaCount: document.getElementById('pendenciaCount'),
-            btnResolverPendencias: document.getElementById('btnResolverPendencias')
+            pendenciasContainer: document.getElementById('pendenciasContainer'),
+            selectionModalContent: document.getElementById('selectionModalContent')
         };
 
         // Estado da aplicação
@@ -2384,51 +2402,10 @@
                 <div class="detail-item">Atendimento: ${paciente.atendimento}</div>
             `;
             
-            // Adicionar pendências se houver
-            if (paciente.pendencias && paciente.pendencias.length > 0) {
-                const pendenteCount = paciente.pendencias.filter(p => !p.resolvidoEm).length;
-                const resolvidaCount = paciente.pendencias.filter(p => p.resolvidoEm).length;
-                
-                detailsHTML += `
-                    <div class="pendencia-info">
-                        <div class="pendencia-header">
-                            <span>Pendências</span>
-                            <span>${pendenteCount} pendente(s), ${resolvidaCount} resolvida(s)</span>
-                        </div>
-                        ${paciente.pendencias.map(pendencia => `
-                            <div class="pendencia-desc">
-                                ${pendencia.descricao}
-                            </div>
-                            <div class="pendencia-meta">
-                                <span>Criada por: ${pendencia.criadoPor}</span>
-                                <span>Responsável: ${pendencia.responsavel}</span>
-                                ${pendencia.resolvidoEm ? 
-                                    `<span class="pendencia-resolved">Resolvida em: ${formatDateTime(pendencia.resolvidoEm)}</span>` : 
-                                    `<span>Pendente desde: ${formatDateTime(pendencia.criadoEm)}</span>`
-                                }
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-            
             DOM.patientDetails.innerHTML = detailsHTML;
             
-            // Atualizar barra de pendências
-            if (paciente.pendencias && paciente.pendencias.some(p => !p.resolvidoEm)) {
-                const pendenteCount = paciente.pendencias.filter(p => !p.resolvidoEm).length;
-                DOM.pendenciasHeader.style.display = 'flex';
-                DOM.pendenciaCount.textContent = pendenteCount;
-            } else {
-                DOM.pendenciasHeader.style.display = 'none';
-            }
-            
-            // Mostrar/ocultar botão de alta
-            if (paciente.alta) {
-                DOM.btnAlta?.classList?.remove('btn-alta-visible');
-            } else {
-                DOM.btnAlta?.classList?.add('btn-alta-visible');
-            }
+            // Renderizar pendências individuais
+            renderPendencias(paciente);
             
             // Mostrar toggle de detalhes
             DOM.patientDetails.style.display = 'none';
@@ -2444,6 +2421,75 @@
                 DOM.sidebar.classList.remove('open');
                 DOM.mobileMenuBtn.classList.remove('open');
             }
+        }
+        
+        // Renderizar pendências
+        function renderPendencias(paciente) {
+            DOM.pendenciasContainer.innerHTML = '';
+            
+            if (!paciente.pendencias || paciente.pendencias.length === 0) {
+                DOM.pendenciasContainer.style.display = 'none';
+                return;
+            }
+            
+            // Filtrar apenas pendências não resolvidas
+            const pendenciasAtivas = paciente.pendencias.filter(p => !p.resolvidoEm);
+            
+            if (pendenciasAtivas.length === 0) {
+                DOM.pendenciasContainer.style.display = 'none';
+                return;
+            }
+            
+            DOM.pendenciasContainer.style.display = 'block';
+            
+            pendenciasAtivas.forEach((pendencia, index) => {
+                const pendenciaCard = document.createElement('div');
+                pendenciaCard.className = 'pendencia-card';
+                pendenciaCard.innerHTML = `
+                    <div class="pendencia-header">
+                        <div class="pendencia-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 17L12 22L22 17" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 12L12 17L22 12" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Pendência #${index + 1}
+                        </div>
+                        <div class="pendencia-icon">▼</div>
+                    </div>
+                    <div class="pendencia-content">
+                        <div class="pendencia-desc">${pendencia.descricao}</div>
+                        <div class="pendencia-meta">
+                            <span>Criada por: ${pendencia.criadoPor}</span>
+                            <span>Data: ${formatDate(pendencia.criadoEm)}</span>
+                        </div>
+                        <button class="btn btn-resolver" data-id="${pendencia.id}">Marcar como Resolvida</button>
+                    </div>
+                `;
+                
+                // Evento para expandir/recolher pendência
+                pendenciaCard.querySelector('.pendencia-header').addEventListener('click', function() {
+                    pendenciaCard.classList.toggle('expanded');
+                });
+                
+                // Evento para resolver pendência
+                pendenciaCard.querySelector('.btn-resolver').addEventListener('click', function() {
+                    const pendenciaId = this.getAttribute('data-id');
+                    resolverPendencia(pendenciaId);
+                });
+                
+                DOM.pendenciasContainer.appendChild(pendenciaCard);
+            });
+        }
+        
+        // Formatar data
+        function formatDate(datetime) {
+            const date = new Date(datetime);
+            return date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
         }
         
         // Formatar data/hora
@@ -2568,7 +2614,7 @@
             DOM.btnConfirmPass.addEventListener('click', () => {
                 const medicoRecebe = DOM.medicoRecebe.value.trim();
                 if (!medicoRecebe) {
-                    showError(DOM.medicoRecebeError, 'Selecione o médico que receberá o plantão');
+                    showError(DOM.medicoRecebeError, 'Selecione um médico');
                     return;
                 }
                 
@@ -2803,17 +2849,10 @@
                 hideAllErrors();
                 
                 const desc = DOM.pendenciaDesc.value.trim();
-                const responsavel = DOM.pendenciaResponsavel.value.trim();
                 
                 if (!desc) {
                     showError(DOM.pendenciaDescError, 'Informe a descrição da pendência');
                     DOM.pendenciaDesc.focus();
-                    return;
-                }
-                
-                if (!responsavel) {
-                    showError(DOM.pendenciaResponsavelError, 'Selecione o responsável');
-                    DOM.pendenciaResponsavel.focus();
                     return;
                 }
                 
@@ -2826,7 +2865,6 @@
                         paciente.pendencias.push({
                             id: Date.now(),
                             descricao: desc,
-                            responsavel: responsavel,
                             criadoPor: state.currentDoctor,
                             criadoEm: new Date().toISOString(),
                             resolvidoEm: null
@@ -2849,7 +2887,6 @@
                         
                         // Resetar campos
                         DOM.pendenciaDesc.value = '';
-                        DOM.pendenciaResponsavel.value = '';
                         
                         // Mostrar toast
                         showToast('Pendência criada com sucesso!', 'success');
@@ -2974,35 +3011,6 @@
                     DOM.selectionModal.classList.remove('active');
                 }
             });
-            
-            // Resolver pendências
-            DOM.btnResolverPendencias.addEventListener('click', () => {
-                // Encontrar paciente
-                for (const setor of dados.setores) {
-                    const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
-                    if (paciente && paciente.pendencias) {
-                        // Marcar todas como resolvidas
-                        paciente.pendencias.forEach(p => {
-                            if (!p.resolvidoEm) {
-                                p.resolvidoEm = new Date().toISOString();
-                                
-                                // Adicionar ao histórico
-                                paciente.anotacoes.push({
-                                    id: Date.now(),
-                                    texto: `Pendência resolvida: ${p.descricao}`,
-                                    timestamp: new Date().toISOString(),
-                                    medico: state.currentDoctor,
-                                    tipo: "system"
-                                });
-                            }
-                        });
-                        
-                        // Atualizar interface
-                        selectPaciente(paciente.id);
-                        showToast('Pendências marcadas como resolvidas', 'success');
-                    }
-                }
-            });
         }
 
         // Abrir modal de seleção de paciente (mobile)
@@ -3037,6 +3045,13 @@
                         <div class="error-message turno-fim-error"></div>
                     </div>
                 </div>
+                <button class="btn-add-turno" data-id="${turnoId}">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M5 12H19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Adicionar Turno
+                </button>
             `;
             
             DOM.turnosContainer.appendChild(turnoEl);
@@ -3049,6 +3064,11 @@
                 } else {
                     showToast('Deve haver pelo menos um turno', 'error');
                 }
+            });
+            
+            // Evento para adicionar novo turno
+            turnoEl.querySelector('.btn-add-turno').addEventListener('click', function() {
+                addTurno();
             });
             
             // Esconder mensagem de erro de turnos
@@ -3132,6 +3152,34 @@
                     // Scroll para a nova mensagem
                     setTimeout(scrollToLatestMessage, 100);
                     break;
+                }
+            }
+        }
+        
+        // Resolver pendência
+        function resolverPendencia(pendenciaId) {
+            // Encontrar paciente
+            for (const setor of dados.setores) {
+                const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
+                if (paciente && paciente.pendencias) {
+                    // Encontrar pendência
+                    const pendencia = paciente.pendencias.find(p => p.id == pendenciaId);
+                    if (pendencia) {
+                        pendencia.resolvidoEm = new Date().toISOString();
+                        
+                        // Adicionar mensagem ao histórico
+                        paciente.anotacoes.push({
+                            id: Date.now(),
+                            texto: `Pendência resolvida: ${pendencia.descricao}`,
+                            timestamp: new Date().toISOString(),
+                            medico: state.currentDoctor,
+                            tipo: "system"
+                        });
+                        
+                        // Atualizar interface
+                        selectPaciente(paciente.id);
+                        showToast('Pendência marcada como resolvida', 'success');
+                    }
                 }
             }
         }
