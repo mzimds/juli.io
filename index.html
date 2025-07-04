@@ -184,6 +184,9 @@
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
             outline: none;
             border-color: var(--primary);
+            /* Gradiente para borda */
+            border-image: linear-gradient(90deg, var(--lavender), var(--skyblue));
+            border-image-slice: 1;
         }
 
         .autocomplete-container {
@@ -326,8 +329,8 @@
             font-size: 0.75rem;
             padding: 3px 8px;
             border-radius: 10px;
-            background-color: rgba(44, 125, 160, 0.1);
-            color: var(--primary-dark);
+            background: linear-gradient(90deg, var(--lavender), var(--skyblue));
+            color: white !important;
             font-weight: 500;
         }
 
@@ -477,6 +480,9 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
+            /* Gradiente para borda */
+            border-image: linear-gradient(90deg, var(--lavender), var(--skyblue));
+            border-image-slice: 1;
         }
 
         .mobile-menu-btn {
@@ -610,6 +616,9 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
+            /* Gradiente para borda */
+            border-image: linear-gradient(90deg, var(--lavender), var(--skyblue));
+            border-image-slice: 1;
         }
 
         .modal-footer {
@@ -625,7 +634,7 @@
             right: 20px;
             padding: 12px 20px;
             border-radius: 6px;
-            background: var(--darker);
+            background: linear-gradient(90deg, var(--lavender), var(--skyblue));
             color: white;
             font-weight: 500;
             box-shadow: var(--shadow-md);
@@ -644,7 +653,7 @@
         }
 
         .toast-success {
-            background: var(--success);
+            background: linear-gradient(90deg, var(--lavender), var(--skyblue));
         }
 
         .toast-success::before {
@@ -814,6 +823,9 @@
         .message-input-container:focus-within {
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
+            /* Gradiente para borda */
+            border-image: linear-gradient(90deg, var(--lavender), var(--skyblue));
+            border-image-slice: 1;
         }
 
         .keyboard-open .message-input-container {
@@ -898,7 +910,7 @@
         
         .progress-fill {
             height: 100%;
-            background: var(--darker);
+            background: linear-gradient(90deg, var(--lavender), var(--skyblue));
             border-radius: 2px;
         }
 
@@ -1028,7 +1040,7 @@
             right: 10px;
             background: none;
             border: none;
-            color: var(--danger);
+            color: var(--darker); /* Alterado para preto */
             cursor: pointer;
             font-size: 1.2rem;
             width: 24px;
@@ -1040,7 +1052,7 @@
         }
 
         .btn-remove-turno:hover {
-            background: rgba(231, 76, 60, 0.1);
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .error-message {
@@ -1055,8 +1067,8 @@
         }
 
         .btn-add-turno {
-            background: rgba(44, 125, 160, 0.1);
-            color: var(--primary-dark);
+            background: linear-gradient(90deg, var(--lavender), var(--skyblue));
+            color: white;
             border: none;
             padding: 5px 10px;
             border-radius: 6px;
@@ -1071,7 +1083,7 @@
         }
 
         .btn-add-turno:hover {
-            background: rgba(44, 125, 160, 0.2);
+            opacity: 0.9;
         }
 
         ::-webkit-scrollbar {
@@ -1150,12 +1162,13 @@
             border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
             max-height: 45px;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.3s ease, padding 0.3s ease;
             overflow: hidden;
         }
 
         .pendencia-card.expanded {
             max-height: 300px;
+            padding: 0;
         }
 
         .pendencia-content {
@@ -1172,6 +1185,7 @@
             gap: 10px;
             margin-bottom: 5px;
             cursor: pointer;
+            padding: 10px 15px;
         }
 
         .pendencia-header-info {
@@ -1190,22 +1204,25 @@
             color: var(--dark);
             line-height: 1.4;
             margin-top: 8px;
+            display: none;
         }
 
         .pendencia-meta {
             font-size: 0.8rem;
             color: var(--gray);
+            display: none;
         }
 
         .pendencia-footer {
             display: flex;
             justify-content: flex-end;
             margin-top: 10px;
+            display: none;
         }
 
         .btn-resolver {
             padding: 6px 12px;
-            background: var(--pending);
+            background: linear-gradient(90deg, var(--lavender), var(--skyblue));
             color: white;
             border: none;
             border-radius: 6px;
@@ -1216,7 +1233,7 @@
         }
 
         .btn-resolver:hover {
-            background: #444;
+            opacity: 0.9;
         }
         
         .pendencias-container {
@@ -1226,6 +1243,22 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+        }
+
+        /* Estado expandido da pendência */
+        .pendencia-card.expanded .pendencia-content {
+            padding: 15px;
+        }
+        
+        .pendencia-card.expanded .pendencia-desc,
+        .pendencia-card.expanded .pendencia-meta,
+        .pendencia-card.expanded .pendencia-footer {
+            display: block;
+        }
+        
+        .pendencia-card.expanded .pendencia-header {
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 10px;
         }
         
         @media (max-width: 992px) {
@@ -1484,12 +1517,8 @@
                     <div class="patient-actions">
                         <button class="btn-context" id="btnContextMenu">⋮</button>
                         <div class="context-menu" id="contextMenu">
-                            <div class="context-item" data-action="alta">
-                                Registrar Alta
-                            </div>
-                            <div class="context-item" data-action="pendencia">
-                                Criar Pendência
-                            </div>
+                            <div class="context-item" data-action="alta">Registrar Alta</div>
+                            <div class="context-item" data-action="pendencia">Criar Pendência</div>
                         </div>
                     </div>
                 </div>
@@ -1509,42 +1538,18 @@
                     <div class="editor-header">
                         <div class="editor-title">Anotações Clínicas</div>
                         <div class="quick-actions">
-                            <div class="quick-action" data-text="PA: 120/80 mmHg | FC: 78 bpm | FR: 16 rpm | Temp: 36.5°C">
-                                Sinais Vitais
-                            </div>
-                            <div class="quick-action" data-text="Exame físico: abdômen flácido, indolor à palpação">
-                                Exame Físico
-                            </div>
-                            <div class="quick-action" data-text="Exames laboratoriais dentro dos parâmetros normais">
-                                Exames
-                            </div>
-                            <div class="quick-action" data-text="Paciente relata melhora do quadro">
-                                Melhora
-                            </div>
-                            <div class="quick-action" data-text="Paciente refere dor intensa">
-                                Dor
-                            </div>
-                            <div class="quick-action" data-text="Paciente consciente, orientado, em bom estado geral">
-                                Estado Geral
-                            </div>
-                            <div class="quick-action" data-text="Queixa principal: dor abdominal difusa há 2 dias">
-                                Queixas
-                            </div>
-                            <div class="quick-action" data-text="Conduta: manter hidratação venosa, analgesia e reavaliação em 6h">
-                                Conduta
-                            </div>
-                            <div class="quick-action" data-text="Prescrição: dipirona 1g IV 6/6h, omeprazol 40mg VO 1x/dia">
-                                Prescrição
-                            </div>
-                            <div class="quick-action" data-text="Paciente evolui estável, sem intercorrências">
-                                Evolução Estável
-                            </div>
-                            <div class="quick-action" data-text="Encaminhado para realização de exames laboratoriais e imagem">
-                                Encaminhamento
-                            </div>
-                            <div class="quick-action" data-text="Informado à equipe de enfermagem para monitorização contínua dos sinais vitais">
-                                Enfermagem
-                            </div>
+                            <div class="quick-action" data-text="PA: 120/80 mmHg | FC: 78 bpm | FR: 16 rpm | Temp: 36.5°C">Sinais Vitais</div>
+                            <div class="quick-action" data-text="Exame físico: abdômen flácido, indolor à palpação">Exame Físico</div>
+                            <div class="quick-action" data-text="Exames laboratoriais dentro dos parâmetros normais">Exames</div>
+                            <div class="quick-action" data-text="Paciente relata melhora do quadro">Melhora</div>
+                            <div class="quick-action" data-text="Paciente refere dor intensa">Dor</div>
+                            <div class="quick-action" data-text="Paciente consciente, orientado, em bom estado geral">Estado Geral</div>
+                            <div class="quick-action" data-text="Queixa principal: dor abdominal difusa há 2 dias">Queixas</div>
+                            <div class="quick-action" data-text="Conduta: manter hidratação venosa, analgesia e reavaliação em 6h">Conduta</div>
+                            <div class="quick-action" data-text="Prescrição: dipirona 1g IV 6/6h, omeprazol 40mg VO 1x/dia">Prescrição</div>
+                            <div class="quick-action" data-text="Paciente evolui estável, sem intercorrências">Evolução Estável</div>
+                            <div class="quick-action" data-text="Encaminhado para realização de exames laboratoriais e imagem">Encaminhamento</div>
+                            <div class="quick-action" data-text="Informado à equipe de enfermagem para monitorização contínua dos sinais vitais">Enfermagem</div>
                         </div>
                     </div>
                     <div class="chat-area">
@@ -2413,9 +2418,9 @@
                         <div class="pendencia-header" onclick="togglePendencia(this)">
                             <div class="pendencia-header-info">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M2 17L12 22L22 17" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M2 12L12 17L22 12" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="var(--lavender)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 17L12 22L22 17" stroke="var(--lavender)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 12L12 17L22 12" stroke="var(--lavender)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                                 <div>
                                     <div class="pendencia-title">${pendencia.titulo}</div>
@@ -2425,6 +2430,9 @@
                             <button class="btn-resolver" data-id="${pendencia.id}">Resolver</button>
                         </div>
                         <div class="pendencia-desc">${pendencia.descricao}</div>
+                        <div class="pendencia-footer">
+                            <button class="btn-resolver" data-id="${pendencia.id}">Resolver Pendência</button>
+                        </div>
                     </div>
                 `;
                 
@@ -3048,8 +3056,8 @@
                 <div class="turno-actions">
                     <button class="btn-add-turno" data-id="${turnoId}">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 5V19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M5 12H19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                         Adicionar Turno
                     </button>
@@ -3080,8 +3088,8 @@
                             btnContainer.innerHTML = `
                                 <button class="btn-add-turno">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 5V19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
-                                        <path d="M5 12H19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
                                     </svg>
                                     Adicionar Turno
                                 </button>
