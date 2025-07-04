@@ -24,7 +24,7 @@
             --header-height: 60px;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
-            --pending: #00b0ff; /* Nova cor vibrante para pendências */
+            --pending: #222; /* Alterado para cinza escuro */
         }
 
         * {
@@ -589,6 +589,7 @@
             padding: 10px 12px;
             border: 1px solid var(--border);
             border-radius: 6px;
+            resize: none;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
             background: var(--light);
@@ -929,7 +930,6 @@
         }
 
         .patient-toggle-icon {
-            display: none; /* Inicialmente oculto */
             cursor: pointer;
             color: var(--gray);
             font-size: 0.9rem;
@@ -1020,12 +1020,19 @@
         }
 
         .pendencia-card {
-            background: rgba(0, 176, 255, 0.05);
+            background: rgba(0, 0, 0, 0.03);
             border-radius: 8px;
             margin-top: 8px;
             overflow: hidden;
             border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
+            max-height: 45px;
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+        }
+
+        .pendencia-card.expanded {
+            max-height: 300px;
         }
 
         .pendencia-content {
@@ -1038,19 +1045,26 @@
         .pendencia-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 10px;
             margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .pendencia-header-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .pendencia-desc {
             font-size: 0.9rem;
             color: var(--dark);
             line-height: 1.4;
+            margin-top: 8px;
         }
 
         .pendencia-meta {
-            display: flex;
-            gap: 15px;
             font-size: 0.8rem;
             color: var(--gray);
         }
@@ -1074,7 +1088,7 @@
         }
 
         .btn-resolver:hover {
-            background: #0091ea;
+            background: #444;
         }
         
         .pendencias-container {
@@ -2447,18 +2461,21 @@
                 
                 pendenciaCard.innerHTML = `
                     <div class="pendencia-content">
-                        <div class="pendencia-header">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M2 17L12 22L22 17" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M2 12L12 17L22 12" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            <div class="pendencia-meta">${dateStr} • ${timeStr}</div>
-                        </div>
-                        <div class="pendencia-desc">${pendencia.descricao}</div>
-                        <div class="pendencia-footer">
+                        <div class="pendencia-header" onclick="togglePendencia(this)">
+                            <div class="pendencia-header-info">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 17L12 22L22 17" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 12L12 17L22 12" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <div>
+                                    <div>${pendencia.criadoPor}</div>
+                                    <div class="pendencia-meta">${dateStr} • ${timeStr}</div>
+                                </div>
+                            </div>
                             <button class="btn-resolver" data-id="${pendencia.id}">Resolver</button>
                         </div>
+                        <div class="pendencia-desc">${pendencia.descricao}</div>
                     </div>
                 `;
                 
@@ -2470,6 +2487,12 @@
                 
                 DOM.pendenciasContainer.appendChild(pendenciaCard);
             });
+        }
+
+        // Alternar visibilidade da pendência
+        function togglePendencia(element) {
+            const card = element.closest('.pendencia-card');
+            card.classList.toggle('expanded');
         }
         
         // Formatar data
@@ -2555,8 +2578,17 @@
         function setupEventListeners() {
             // Menu mobile
             DOM.mobileMenuBtn.addEventListener('click', () => {
+                const wasOpen = DOM.sidebar.classList.contains('open');
                 DOM.sidebar.classList.toggle('open');
                 DOM.mobileMenuBtn.classList.toggle('open');
+
+                if (wasOpen) {
+                    // Se estava aberto e agora fechou, colapsar todos os setores
+                    state.currentSetor = null;
+                } else {
+                    // Se estava fechado e agora abriu, renderizar os setores (já colapsados)
+                    renderSetores();
+                }
             });
             
             // Novo setor
@@ -3050,6 +3082,12 @@
                 </div>
             `;
             
+            // Remover botão "Adicionar Turno" do turno anterior
+            const lastTurnoBtn = document.querySelector('.btn-add-turno');
+            if (lastTurnoBtn) {
+                lastTurnoBtn.remove();
+            }
+            
             DOM.turnosContainer.appendChild(turnoEl);
             
             // Evento para remover turno (apenas se não for o primeiro)
@@ -3057,6 +3095,26 @@
                 turnoEl.querySelector('.btn-remove-turno').addEventListener('click', function() {
                     turnoEl.remove();
                     DOM.turnosError.style.display = 'none';
+                    state.turnoCount--;
+                    
+                    // Se não houver mais botão de adicionar, adicionar ao último turno
+                    if (!document.querySelector('.btn-add-turno')) {
+                        const lastTurno = DOM.turnosContainer.lastElementChild;
+                        if (lastTurno) {
+                            const btnContainer = document.createElement('div');
+                            btnContainer.className = 'turno-actions';
+                            btnContainer.innerHTML = `
+                                <button class="btn-add-turno">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 5V19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M5 12H19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    Adicionar Turno
+                                </button>
+                            `;
+                            lastTurno.appendChild(btnContainer);
+                        }
+                    }
                 });
             }
             
