@@ -24,7 +24,7 @@
             --header-height: 60px;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
-            --pending: #468faf; /* Nova cor para pendências */
+            --pending: #00b0ff; /* Nova cor vibrante para pendências */
         }
 
         * {
@@ -106,7 +106,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border);
         }
 
         .section-title {
@@ -1000,7 +999,7 @@
 
         /* ESTILOS PARA PENDÊNCIAS - ATUALIZADOS */
         .pendencia-badge {
-            background: var(--warning) !important;
+            background: var(--pending) !important;
             color: white !important;
             margin-left: 8px;
             padding: 2px 8px !important;
@@ -1016,12 +1015,12 @@
             align-items: center;
             gap: 5px;
             font-size: 0.85rem;
-            color: var(--warning);
+            color: var(--pending);
             font-weight: 600;
         }
 
         .pendencia-card {
-            background: rgba(243, 156, 18, 0.05);
+            background: rgba(0, 176, 255, 0.05);
             border-radius: 8px;
             margin-top: 8px;
             overflow: hidden;
@@ -1029,44 +1028,24 @@
             box-shadow: var(--shadow-sm);
         }
 
-        .pendencia-header {
-            padding: 10px 15px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .pendencia-title {
-            font-weight: 600;
-            color: var(--darker);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .pendencia-icon {
-            font-size: 0.9rem;
-            transition: transform 0.3s;
-        }
-
-        .pendencia-card.expanded .pendencia-icon {
-            transform: rotate(180deg);
-        }
-
         .pendencia-content {
-            padding: 0 15px 15px;
-            display: none;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .pendencia-card.expanded .pendencia-content {
-            display: block;
+        .pendencia-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
         }
 
         .pendencia-desc {
-            margin-bottom: 8px;
             font-size: 0.9rem;
             color: var(--dark);
+            line-height: 1.4;
         }
 
         .pendencia-meta {
@@ -1076,8 +1055,26 @@
             color: var(--gray);
         }
 
-        .pendencia-resolved {
-            color: var(--success);
+        .pendencia-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .btn-resolver {
+            padding: 6px 12px;
+            background: var(--pending);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn-resolver:hover {
+            background: #0091ea;
         }
         
         .pendencias-container {
@@ -1273,11 +1270,10 @@
             display: flex;
         }
 
-        /* Botão Adicionar Turno */
-        #btnAddTurno {
-            margin-top: 15px;
-            padding: 10px;
-            font-size: 1rem;
+        .turno-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
         }
 
         @media (max-width: 992px) {
@@ -1718,7 +1714,6 @@
             <div id="turnosContainer">
                 <!-- Turnos serão adicionados dinamicamente aqui -->
             </div>
-            <button class="btn" id="btnAddTurno" style="margin-top: 15px; width: 100%;">+ Adicionar Turno</button>
             <div class="error-message" id="turnosError">Adicione pelo menos um turno</div>
             
             <div class="modal-footer">
@@ -2017,7 +2012,6 @@
             maxSetor: document.getElementById('maxSetor'),
             patientHeader: document.getElementById('patientHeader'),
             editorContainer: document.getElementById('editorContainer'),
-            btnAddTurno: document.getElementById('btnAddTurno'),
             turnosContainer: document.getElementById('turnosContainer'),
             turnosError: document.getElementById('turnosError'),
             selectionModal: document.getElementById('selectionModal'),
@@ -2442,35 +2436,31 @@
             
             DOM.pendenciasContainer.style.display = 'block';
             
-            pendenciasAtivas.forEach((pendencia, index) => {
+            pendenciasAtivas.forEach((pendencia) => {
                 const pendenciaCard = document.createElement('div');
                 pendenciaCard.className = 'pendencia-card';
+                
+                // Formatar data/hora
+                const date = new Date(pendencia.criadoEm);
+                const dateStr = date.toLocaleDateString('pt-BR');
+                const timeStr = date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+                
                 pendenciaCard.innerHTML = `
-                    <div class="pendencia-header">
-                        <div class="pendencia-title">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M2 17L12 22L22 17" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M2 12L12 17L22 12" stroke="var(--warning)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Pendência #${index + 1}
-                        </div>
-                        <div class="pendencia-icon">▼</div>
-                    </div>
                     <div class="pendencia-content">
-                        <div class="pendencia-desc">${pendencia.descricao}</div>
-                        <div class="pendencia-meta">
-                            <span>Criada por: ${pendencia.criadoPor}</span>
-                            <span>Data: ${formatDate(pendencia.criadoEm)}</span>
+                        <div class="pendencia-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 17L12 22L22 17" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 12L12 17L22 12" stroke="var(--pending)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <div class="pendencia-meta">${dateStr} • ${timeStr}</div>
                         </div>
-                        <button class="btn btn-resolver" data-id="${pendencia.id}">Marcar como Resolvida</button>
+                        <div class="pendencia-desc">${pendencia.descricao}</div>
+                        <div class="pendencia-footer">
+                            <button class="btn-resolver" data-id="${pendencia.id}">Resolver</button>
+                        </div>
                     </div>
                 `;
-                
-                // Evento para expandir/recolher pendência
-                pendenciaCard.querySelector('.pendencia-header').addEventListener('click', function() {
-                    pendenciaCard.classList.toggle('expanded');
-                });
                 
                 // Evento para resolver pendência
                 pendenciaCard.querySelector('.btn-resolver').addEventListener('click', function() {
@@ -2724,7 +2714,11 @@
             });
             
             // Botão para adicionar turno
-            DOM.btnAddTurno.addEventListener('click', addTurno);
+            DOM.turnosContainer.addEventListener('click', function(e) {
+                if (e.target.closest('.btn-add-turno')) {
+                    addTurno();
+                }
+            });
             
             // Modal novo paciente
             DOM.btnCancelPaciente.addEventListener('click', () => {
@@ -3027,7 +3021,7 @@
             const turnoEl = document.createElement('div');
             turnoEl.className = 'turno-section';
             turnoEl.innerHTML = `
-                <button class="btn-remove-turno" data-id="${turnoId}">×</button>
+                ${state.turnoCount > 1 ? `<button class="btn-remove-turno" data-id="${turnoId}">×</button>` : ''}
                 <div class="form-group">
                     <label>Nome do Turno</label>
                     <input type="text" class="form-control turno-name" placeholder="Ex: Manhã, Tarde, Noite">
@@ -3045,31 +3039,26 @@
                         <div class="error-message turno-fim-error"></div>
                     </div>
                 </div>
-                <button class="btn-add-turno" data-id="${turnoId}">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 5V19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M5 12H19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    Adicionar Turno
-                </button>
+                <div class="turno-actions">
+                    <button class="btn-add-turno" data-id="${turnoId}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5V19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M5 12H19" stroke="var(--primary-dark)" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Adicionar Turno
+                    </button>
+                </div>
             `;
             
             DOM.turnosContainer.appendChild(turnoEl);
             
-            // Evento para remover turno
-            turnoEl.querySelector('.btn-remove-turno').addEventListener('click', function() {
-                if (document.querySelectorAll('.turno-section').length > 1) {
+            // Evento para remover turno (apenas se não for o primeiro)
+            if (state.turnoCount > 1) {
+                turnoEl.querySelector('.btn-remove-turno').addEventListener('click', function() {
                     turnoEl.remove();
                     DOM.turnosError.style.display = 'none';
-                } else {
-                    showToast('Deve haver pelo menos um turno', 'error');
-                }
-            });
-            
-            // Evento para adicionar novo turno
-            turnoEl.querySelector('.btn-add-turno').addEventListener('click', function() {
-                addTurno();
-            });
+                });
+            }
             
             // Esconder mensagem de erro de turnos
             DOM.turnosError.style.display = 'none';
@@ -3209,6 +3198,7 @@
         function openNewSetorModal() {
             // Resetar turnos
             DOM.turnosContainer.innerHTML = '';
+            state.turnoCount = 0;
             addTurno();
             
             DOM.newSetorModal.classList.add('active');
