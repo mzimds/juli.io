@@ -172,7 +172,9 @@
             padding: 10px 12px;
             border: 1px solid var(--border);
             border-radius: 6px;
+            resize: none;
             font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
             background: var(--light);
             transition: all 0.2s ease;
             font-family: 'Inter', sans-serif;
@@ -1135,10 +1137,40 @@
             margin-top: 10px;
         }
 
+        /* CORREÇÃO: Estilo do ícone de três pontos */
+        .btn-context {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--darker);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-context:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        
+        .btn-context svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* CORREÇÃO: Leito e atendimento em negrito */
+        .paciente-leito-atendimento {
+            font-weight: 600;
+        }
+
         /* ESTILOS PARA PENDÊNCIAS - ATUALIZADOS */
         .pendencia-badge {
-            background: var(--light) !important;
-            color: var(--pending) !important;
+            background: linear-gradient(90deg, var(--lavender), var(--skyblue)) !important;
+            color: white !important;
             margin-left: 8px;
             padding: 2px 8px !important;
             border-radius: 12px !important;
@@ -1146,7 +1178,6 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--pending);
         }
 
         .pendencia-item {
@@ -1168,20 +1199,15 @@
             border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
             max-height: 45px;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
 
         .pendencia-card.expanded {
             max-height: 300px;
-            padding: 0;
         }
 
         .pendencia-content {
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            padding: 0;
         }
 
         .pendencia-header {
@@ -1189,16 +1215,19 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            margin-bottom: 5px;
+            padding: 8px 15px; /* Reduzido o padding vertical */
             cursor: pointer;
-            padding: 10px 15px;
         }
 
         .pendencia-header-info {
             display: flex;
-            align-items: center;
+            align-items: center; /* Alinhamento vertical */
             gap: 8px;
             flex: 1;
+        }
+
+        .pendencia-header-info svg {
+            margin-top: 0; /* Removido ajuste de topo */
         }
 
         .pendencia-title {
@@ -1206,32 +1235,25 @@
             font-size: 0.95rem;
             line-height: 1.2;
         }
-        
+
         .pendencia-meta {
             font-size: 0.8rem;
             color: var(--gray);
             line-height: 1.2;
-        }
-        
-        /* CORREÇÃO: Alinhamento vertical */
-        .pendencia-header-info > div {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         .pendencia-desc {
             font-size: 0.9rem;
             color: var(--dark);
             line-height: 1.4;
-            margin-top: 8px;
+            padding: 0 15px 15px 15px;
             display: none;
         }
 
         .pendencia-footer {
             display: flex;
             justify-content: flex-end;
-            margin-top: 10px;
+            padding: 0 15px 15px 15px;
             display: none;
         }
 
@@ -1257,23 +1279,22 @@
             border-bottom: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px; /* Espaço reduzido entre cards */
         }
 
         /* Estado expandido da pendência */
         .pendencia-card.expanded .pendencia-content {
-            padding: 15px;
+            padding: 0;
         }
         
         .pendencia-card.expanded .pendencia-desc,
-        .pendencia-card.expanded .pendencia-meta,
         .pendencia-card.expanded .pendencia-footer {
             display: block;
         }
         
         .pendencia-card.expanded .pendencia-header {
             border-bottom: 1px solid var(--border);
-            margin-bottom: 10px;
+            padding-bottom: 10px;
         }
 
         /* Menu de contexto (três pontos) */
@@ -1304,36 +1325,6 @@
 
         .context-item:hover {
             background-color: rgba(44, 125, 160, 0.1);
-        }
-        
-        /* CORREÇÃO: Estilo do ícone de três pontos */
-        .btn-context {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--darker);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            transition: background-color 0.2s;
-        }
-        
-        .btn-context:hover {
-            background-color: rgba(0,0,0,0.05);
-        }
-        
-        .btn-context svg {
-            width: 24px;
-            height: 24px;
-        }
-        
-        /* CORREÇÃO: Leito e atendimento em negrito */
-        .paciente-leito-atendimento {
-            font-weight: 600;
         }
         
         @media (max-width: 992px) {
@@ -2348,7 +2339,7 @@
                                         <div class="paciente-name">${paciente.nome}</div>
                                         <div class="paciente-status">
                                             ${paciente.alta ? `<span class="status-badge alta">Alta</span>` : ''}
-                                            ${paciente.pendencias && paciente.pendencias.some(p => !p.resolvidoEm) ? `<span class="status-badge pendencia">Pendência</span>` : ''}
+                                            ${paciente.pendencias && paciente.pendencias.some(p => !p.resolvidoEm) ? `<span class="badge pendencia-badge">Pendência</span>` : ''}
                                         </div>
                                     </div>
                                     <div class="paciente-details">
@@ -2952,13 +2943,13 @@
                             resolvidoEm: null
                         });
                         
-                        // Adicionar mensagem no histórico
+                        // Adicionar mensagem completa no histórico
                         paciente.anotacoes.push({
                             id: Date.now(),
-                            texto: `Pendência criada: ${tituloFinal}`,
+                            texto: `PENDÊNCIA CRIADA: ${tituloFinal}\n${desc}`,
                             timestamp: new Date().toISOString(),
                             medico: state.currentDoctor,
-                            tipo: "system"
+                            tipo: "texto"
                         });
                         
                         // Atualizar interface
@@ -3280,10 +3271,10 @@
                         // Adicionar mensagem ao histórico
                         paciente.anotacoes.push({
                             id: Date.now(),
-                            texto: `Pendência resolvida: ${pendencia.titulo}`,
+                            texto: `PENDÊNCIA RESOLVIDA: ${pendencia.titulo}`,
                             timestamp: new Date().toISOString(),
                             medico: state.currentDoctor,
-                            tipo: "system"
+                            tipo: "texto"
                         });
                         
                         // Atualizar interface
