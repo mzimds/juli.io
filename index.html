@@ -1159,6 +1159,8 @@
         }
 
         .pendencia-card {
+            display: flex;
+            flex-direction: column;
             background: rgba(0, 0, 0, 0.03);
             border-radius: 8px;
             margin-top: 8px;
@@ -1196,11 +1198,26 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex: 1;
         }
 
         .pendencia-title {
             font-weight: 600;
             font-size: 0.95rem;
+            line-height: 1.2;
+        }
+        
+        .pendencia-meta {
+            font-size: 0.8rem;
+            color: var(--gray);
+            line-height: 1.2;
+        }
+        
+        /* CORREÇÃO: Alinhamento vertical */
+        .pendencia-header-info > div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .pendencia-desc {
@@ -1208,12 +1225,6 @@
             color: var(--dark);
             line-height: 1.4;
             margin-top: 8px;
-            display: none;
-        }
-
-        .pendencia-meta {
-            font-size: 0.8rem;
-            color: var(--gray);
             display: none;
         }
 
@@ -1293,6 +1304,36 @@
 
         .context-item:hover {
             background-color: rgba(44, 125, 160, 0.1);
+        }
+        
+        /* CORREÇÃO: Estilo do ícone de três pontos */
+        .btn-context {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--darker);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-context:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        
+        .btn-context svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* CORREÇÃO: Leito e atendimento em negrito */
+        .paciente-leito-atendimento {
+            font-weight: 600;
         }
         
         @media (max-width: 992px) {
@@ -1549,7 +1590,13 @@
                         </div>
                     </div>
                     <div class="patient-actions">
-                        <button class="btn-context" id="btnContextMenu">⋮</button>
+                        <button class="btn-context" id="btnContextMenu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
+                                <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                                <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
+                            </svg>
+                        </button>
                         <div class="context-menu" id="contextMenu">
                             <div class="context-item" data-action="alta">Registrar Alta</div>
                             <div class="context-item" data-action="pendencia">Criar Pendência</div>
@@ -2306,8 +2353,8 @@
                                     </div>
                                     <div class="paciente-details">
                                         <span>${paciente.idade} anos</span>
-                                        <span class="badge">${paciente.leito}</span>
-                                        <span class="badge">${paciente.atendimento}</span>
+                                        <strong>${paciente.leito}</strong>
+                                        <strong>${paciente.atendimento}</strong>
                                         ${paciente.alta ? `<span class="alta-item">${formatAltaType(paciente.alta.tipo)}</span>` : ''}
                                     </div>
                                 </div>
