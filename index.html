@@ -24,7 +24,7 @@
             --header-height: 60px;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
-            --pending: #222; /* Alterado para cinza escuro */
+            --pending: #222;
             --lavender: #9A85F9;
             --skyblue: #58B7F4;
         }
@@ -186,7 +186,6 @@
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
             outline: none;
             border-color: var(--primary);
-            /* Gradiente para borda */
             border-image: linear-gradient(90deg, var(--lavender), var(--skyblue));
             border-image-slice: 1;
         }
@@ -366,7 +365,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            cursor: pointer; /* Adicionado cursor pointer para indicar clique */
+            cursor: pointer;
         }
 
         .soap-tabs {
@@ -486,7 +485,6 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
-            /* Gradiente para borda */
             border-image: linear-gradient(90deg, var(--lavender), var(--skyblue));
             border-image-slice: 1;
         }
@@ -622,7 +620,6 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
-            /* Gradiente para borda */
             border-image: linear-gradient(90deg, var(--lavender), var(--skyblue));
             border-image-slice: 1;
         }
@@ -729,7 +726,6 @@
             pointer-events: none;
         }
 
-        /* Novos estilos para alta */
         .status-badge {
             display: inline-block;
             padding: 2px 8px;
@@ -751,7 +747,6 @@
             color: var(--pending);
         }
 
-        /* ESTILOS ATUALIZADOS PARA CHAT RESPONSIVO */
         .chat-area {
             display: flex;
             flex-direction: column;
@@ -814,7 +809,6 @@
             margin-top: 4px;
         }
 
-        /* NOVO ESTILO PARA O CAMPO DE MENSAGEM (IGUAL AO CAMPO DE BUSCA) */
         .message-input-container {
             position: relative;
             display: flex;
@@ -824,13 +818,12 @@
             border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
             transition: all 0.2s ease;
-            z-index: 30; /* Aumentado o z-index */
+            z-index: 30;
         }
 
         .message-input-container:focus-within {
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(44, 125, 160, 0.2);
-            /* Gradiente para borda */
             border-image: linear-gradient(90deg, var(--lavender), var(--skyblue));
             border-image-slice: 1;
         }
@@ -848,7 +841,7 @@
         }
 
         .keyboard-open .chat-history-container {
-            padding-bottom: 70px; /* Espaço para o input quando teclado está aberto */
+            padding-bottom: 70px;
         }
 
         .message-input {
@@ -859,7 +852,7 @@
             resize: none;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
-            min-height: 60px; /* Altura aumentada */
+            min-height: 60px;
             max-height: 150px;
             background: transparent;
             outline: none;
@@ -870,7 +863,6 @@
             outline: none;
         }
 
-        /* NOVO ESTILO PARA O BOTÃO DE ENVIAR */
         .btn-send {
             background: var(--gray);
             color: white;
@@ -883,7 +875,7 @@
             justify-content: center;
             transition: all 0.2s ease;
             flex-shrink: 0;
-            z-index: 35; /* Aumentado o z-index */
+            z-index: 35;
         }
 
         .btn-send:disabled {
@@ -898,7 +890,6 @@
             opacity: 0.9;
         }
 
-        /* Progress bar */
         .progress-container {
             margin-bottom: 15px;
         }
@@ -922,7 +913,6 @@
             border-radius: 2px;
         }
 
-        /* Header compacto do paciente */
         .patient-title-container {
             display: flex;
             justify-content: space-between;
@@ -950,7 +940,6 @@
             min-width: 0;
         }
         
-        /* Estado inicial quando nenhum paciente selecionado */
         .empty-state {
             display: flex;
             flex: 1;
@@ -1001,14 +990,12 @@
             font-size: 1.2rem;
         }
 
-        /* Botão Passar Plantão dentro da sidebar (mobile) */
         .pass-plantao-sidebar {
             padding: 15px;
             border-top: 1px solid var(--border);
             display: none;
         }
         
-        /* Botão Passar Plantão mobile - Ajustes para UX */
         .pass-plantao-sidebar .btn {
             width: 100%;
             padding: 15px;
@@ -1020,7 +1007,6 @@
             align-items: center;
         }
 
-        /* Turnos no modal de setor - ATUALIZADO */
         .turno-section {
             margin-bottom: 15px;
             padding: 15px;
@@ -1048,7 +1034,7 @@
             right: 10px;
             background: none;
             border: none;
-            color: var(--darker); /* Alterado para preto */
+            color: var(--darker);
             cursor: pointer;
             font-size: 1.2rem;
             width: 24px;
@@ -1100,10 +1086,9 @@
             border-bottom: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            gap: 8px; /* Espaço reduzido entre cards */
+            gap: 8px;
         }
 
-        /* Estado expandido da pendência */
         .pendencia-card.expanded .pendencia-content {
             padding: 0;
         }
@@ -1118,7 +1103,6 @@
             padding-bottom: 10px;
         }
 
-        /* Menu de contexto (três pontos) */
         .context-menu {
             position: absolute;
             top: 100%;
@@ -1142,13 +1126,14 @@
             font-size: 0.9rem;
             color: var(--dark);
             transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
         }
 
         .context-item:hover {
             background-color: rgba(44, 125, 160, 0.1);
         }
         
-        /* CORREÇÃO: Estilo do ícone de três pontos */
         .btn-context {
             background: none;
             border: none;
@@ -1173,12 +1158,10 @@
             height: 24px;
         }
         
-        /* CORREÇÃO: Leito e atendimento em negrito */
         .paciente-leito-atendimento {
             font-weight: 600;
         }
 
-        /* ESTILOS PARA PENDÊNCIAS - ATUALIZADOS */
         .pendencia-badge {
             background: linear-gradient(90deg, var(--lavender), var(--skyblue)) !important;
             color: white !important;
@@ -1226,19 +1209,19 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            padding: 8px 15px; /* Reduzido o padding vertical */
+            padding: 8px 15px;
             cursor: pointer;
         }
 
         .pendencia-header-info {
             display: flex;
-            align-items: center; /* Alinhamento vertical */
+            align-items: center;
             gap: 8px;
             flex: 1;
         }
 
         .pendencia-header-info svg {
-            margin-top: 0; /* Removido ajuste de topo */
+            margin-top: 0;
         }
 
         .pendencia-title {
@@ -1263,7 +1246,7 @@
 
         .pendencia-footer {
             display: flex;
-            justify-content: flex-end; /* Alterado para alinhar à direita */
+            justify-content: flex-end;
             padding: 0 15px 15px 15px;
             display: none;
         }
@@ -1284,22 +1267,33 @@
             opacity: 0.9;
         }
         
-        /* CORREÇÕES PARA O MENU DE CONTEXTO */
         .patient-actions {
-            position: relative; /* Referência para posicionamento absoluto */
-            display: none; /* Inicialmente oculto */
+            position: relative;
+            display: none;
         }
 
         .context-menu {
-            top: calc(100% + 5px); /* Posiciona abaixo do botão */
+            top: calc(100% + 5px);
             right: 0;
-            margin-top: 5px; /* Espaçamento adicional */
+            margin-top: 5px;
         }
 
-        /* Garante que o menu fique acima de outros elementos */
         .context-menu.visible {
             display: block;
             z-index: 1001;
+        }
+
+        /* Novos estilos para o modal de exclusão */
+        .delete-modal-content {
+            max-width: 500px;
+        }
+        
+        .delete-warning {
+            background-color: #fff8f8;
+            border-left: 4px solid var(--danger);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 4px 4px 0;
         }
 
         @media (max-width: 992px) {
@@ -1379,7 +1373,6 @@
                 gap: 8px;
             }
             
-            /* Ajustes para chat em mobile */
             .chat-history {
                 padding: 8px;
             }
@@ -1555,7 +1548,7 @@
                             <span>Selecione um paciente</span>
                         </div>
                     </div>
-                    <!-- Container de ações do paciente (corrigido) -->
+                    <!-- Container de ações do paciente -->
                     <div class="patient-actions" id="patientActions" style="display: none;">
                         <button class="btn-context" id="btnContextMenu">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1567,6 +1560,15 @@
                         <div class="context-menu" id="contextMenu">
                             <div class="context-item" data-action="alta">Registrar Alta</div>
                             <div class="context-item" data-action="pendencia">Criar Pendência</div>
+                            <div class="context-item" data-action="excluir" style="color: var(--danger);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+                                    <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Excluir
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1871,6 +1873,37 @@
         </div>
     </div>
 
+    <!-- Modal de Confirmação de Exclusão (NOVO) -->
+    <div class="modal" id="confirmDeleteModal">
+        <div class="modal-content card delete-modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Confirmar Exclusão</h2>
+            </div>
+            <div style="padding: 20px;">
+                <p>Tem certeza que deseja excluir o paciente <strong id="patientNameToDelete"></strong>?</p>
+                
+                <div class="delete-warning">
+                    <p style="color: var(--danger); font-weight: 500;">Esta ação não pode ser desfeita e todos os dados serão perdidos.</p>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <p>Se o paciente recebeu alta, recomendamos registrar a alta em vez de excluir.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="btnCancelDelete" style="background: rgba(0,0,0,0.08); color: var(--dark);">
+                    Cancelar
+                </button>
+                <button class="btn btn-success" id="btnIsAlta">
+                    É uma Alta
+                </button>
+                <button class="btn btn-danger" id="btnConfirmDelete">
+                    Excluir Definitivamente
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Dados de exemplo para demonstração
         const dados = {
@@ -2041,7 +2074,12 @@
             btnSavePendencia: document.getElementById('btnSavePendencia'),
             pendenciasContainer: document.getElementById('pendenciasContainer'),
             selectionModalContent: document.getElementById('selectionModalContent'),
-            patientActions: document.getElementById('patientActions') // Novo elemento
+            patientActions: document.getElementById('patientActions'),
+            confirmDeleteModal: document.getElementById('confirmDeleteModal'),
+            patientNameToDelete: document.getElementById('patientNameToDelete'),
+            btnCancelDelete: document.getElementById('btnCancelDelete'),
+            btnIsAlta: document.getElementById('btnIsAlta'),
+            btnConfirmDelete: document.getElementById('btnConfirmDelete')
         };
 
         // Estado da aplicação
@@ -2051,7 +2089,8 @@
             currentDoctor: "Dr. Carlos Silva",
             lastEdit: new Date().toISOString(),
             turnoCount: 0,
-            keyboardOpen: false
+            keyboardOpen: false,
+            resizeTimer: null
         };
 
         // Função para destacar termos de busca
@@ -2195,9 +2234,6 @@
                 window.visualViewport.addEventListener('resize', handleViewportResize);
             }
             
-            // Para Android
-            window.addEventListener('resize', handleWindowResize);
-            
             // Eventos de foco para detectar quando o input está ativo
             DOM.messageInput.addEventListener('focus', () => {
                 state.keyboardOpen = true;
@@ -2228,20 +2264,6 @@
             }
         }
         
-        function handleWindowResize() {
-            // Android não fornece visualViewport confiável
-            const keyboardHeight = window.innerHeight - document.documentElement.clientHeight;
-            
-            if (keyboardHeight > 100 && !state.keyboardOpen) {
-                state.keyboardOpen = true;
-                document.body.classList.add('keyboard-open');
-                scrollToLatestMessage();
-            } else if (keyboardHeight < 100 && state.keyboardOpen) {
-                state.keyboardOpen = false;
-                document.body.classList.remove('keyboard-open');
-            }
-        }
-        
         function scrollToLatestMessage() {
             if (DOM.chatHistory.children.length > 0) {
                 const lastMessage = DOM.chatHistory.lastElementChild;
@@ -2249,11 +2271,6 @@
                     behavior: 'smooth',
                     block: 'end'
                 });
-                
-                // Scroll adicional para garantir visibilidade
-                setTimeout(() => {
-                    DOM.chatHistory.scrollTop += 50;
-                }, 300);
             }
         }
 
@@ -2535,7 +2552,7 @@
                 DOM.patientTitle.innerHTML = '<span>Selecione um paciente</span>';
                 DOM.patientDetails.style.display = 'none';
                 DOM.patientHeader.classList.remove('patient-selected');
-                DOM.patientActions.style.display = 'none'; // Ocultar ações
+                DOM.patientActions.style.display = 'none';
             } 
             // Se houver paciente selecionado
             else {
@@ -2862,7 +2879,7 @@
                 }
             });
             
-            // Menu de contexto (Alta e Pendência)
+            // Menu de contexto (Alta, Pendência e Excluir)
             DOM.btnContextMenu.addEventListener('click', (e) => {
                 e.stopPropagation();
                 DOM.contextMenu.classList.toggle('visible');
@@ -2883,6 +2900,8 @@
                         openAltaModal();
                     } else if (action === 'pendencia') {
                         openPendenciaModal();
+                    } else if (action === 'excluir') {
+                        openDeleteConfirmationModal();
                     }
                 });
             });
@@ -3045,14 +3064,10 @@
                 
                 // Ajustar altura do textarea conforme o conteúdo
                 this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
+                this.style.height = Math.min(this.scrollHeight, 150) + 'px';
                 
                 // Limitar altura máxima
-                if (this.scrollHeight > 150) {
-                    this.style.overflowY = 'auto';
-                } else {
-                    this.style.overflowY = 'hidden';
-                }
+                this.style.overflowY = this.scrollHeight > 150 ? 'auto' : 'hidden';
             });
 
             // Toggle de detalhes do paciente
@@ -3063,17 +3078,20 @@
             
             // Listener para redimensionamento da tela
             window.addEventListener('resize', () => {
-                if (window.innerWidth <= 992) {
-                    DOM.btnPassPlantaoHeader.classList.add('hidden');
-                    // Se não há paciente selecionado, abrir modal de seleção
-                    if (!state.currentPaciente && dados.setores.length > 0) {
-                        openSelectionModal();
+                clearTimeout(state.resizeTimer);
+                state.resizeTimer = setTimeout(() => {
+                    if (window.innerWidth <= 992) {
+                        DOM.btnPassPlantaoHeader.classList.add('hidden');
+                        // Se não há paciente selecionado, abrir modal de seleção
+                        if (!state.currentPaciente && dados.setores.length > 0) {
+                            openSelectionModal();
+                        }
+                    } else {
+                        DOM.btnPassPlantaoHeader.classList.remove('hidden');
+                        // Fechar o modal de seleção se estiver aberto
+                        DOM.selectionModal.classList.remove('active');
                     }
-                } else {
-                    DOM.btnPassPlantaoHeader.classList.remove('hidden');
-                    // Fechar o modal de seleção se estiver aberto
-                    DOM.selectionModal.classList.remove('active');
-                }
+                }, 200);
             });
 
             // Evento para o campo de título da pendência
@@ -3084,6 +3102,57 @@
                     DOM.outraPendenciaGroup.style.display = 'none';
                 }
             });
+            
+            // Modal de exclusão
+            DOM.btnCancelDelete.addEventListener('click', () => {
+                DOM.confirmDeleteModal.classList.remove('active');
+            });
+            
+            DOM.btnIsAlta.addEventListener('click', () => {
+                DOM.confirmDeleteModal.classList.remove('active');
+                openAltaModal();
+            });
+            
+            DOM.btnConfirmDelete.addEventListener('click', deletePaciente);
+        }
+
+        // Abrir modal de confirmação de exclusão
+        function openDeleteConfirmationModal() {
+            // Encontrar paciente
+            for (const setor of dados.setores) {
+                const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
+                if (paciente) {
+                    DOM.patientNameToDelete.textContent = paciente.nome;
+                    DOM.confirmDeleteModal.classList.add('active');
+                    break;
+                }
+            }
+        }
+        
+        // Excluir paciente definitivamente
+        function deletePaciente() {
+            // Encontrar paciente e setor
+            for (const setor of dados.setores) {
+                const pacienteIndex = setor.pacientes.findIndex(p => p.id === state.currentPaciente);
+                if (pacienteIndex !== -1) {
+                    // Remover paciente
+                    setor.pacientes.splice(pacienteIndex, 1);
+                    
+                    // Fechar modal
+                    DOM.confirmDeleteModal.classList.remove('active');
+                    
+                    // Resetar estado
+                    state.currentPaciente = null;
+                    
+                    // Atualizar interface
+                    renderSetores();
+                    updateEmptyState();
+                    
+                    // Mostrar toast
+                    showToast('Paciente excluído com sucesso', 'success');
+                    break;
+                }
+            }
         }
 
         // Abrir modal de seleção de paciente (mobile)
