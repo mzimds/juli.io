@@ -837,7 +837,7 @@
             background: white;
             border-radius: 0;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
+            z-index: 2000; /* Aumentado para 2000 */
         }
 
         .keyboard-open .chat-history-container {
@@ -1283,17 +1283,17 @@
             z-index: 1001;
         }
 
-        /* Novos estilos para o modal de exclusão */
+        /* Estilo atualizado para o modal de exclusão */
         .delete-modal-content {
             max-width: 500px;
         }
         
         .delete-warning {
-            background-color: #fff8f8;
-            border-left: 4px solid var(--danger);
+            background-color: rgba(231, 76, 60, 0.1);
             padding: 15px;
             margin: 15px 0;
-            border-radius: 0 4px 4px 0;
+            border-radius: 8px;
+            color: var(--darker);
         }
 
         @media (max-width: 992px) {
@@ -1883,7 +1883,7 @@
                 <p>Tem certeza que deseja excluir o paciente <strong id="patientNameToDelete"></strong>?</p>
                 
                 <div class="delete-warning">
-                    <p style="color: var(--danger); font-weight: 500;">Esta ação não pode ser desfeita e todos os dados serão perdidos.</p>
+                    <p style="font-weight: 500;">Esta ação não pode ser desfeita e todos os dados serão perdidos.</p>
                 </div>
                 
                 <div style="margin-top: 20px;">
@@ -1898,7 +1898,7 @@
                     É uma Alta
                 </button>
                 <button class="btn btn-danger" id="btnConfirmDelete">
-                    Excluir Definitivamente
+                    Excluir
                 </button>
             </div>
         </div>
