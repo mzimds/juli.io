@@ -824,6 +824,7 @@
             border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
             transition: all 0.2s ease;
+            z-index: 30; /* Aumentado o z-index */
         }
 
         .message-input-container:focus-within {
@@ -882,6 +883,7 @@
             justify-content: center;
             transition: all 0.2s ease;
             flex-shrink: 0;
+            z-index: 35; /* Aumentado o z-index */
         }
 
         .btn-send:disabled {
@@ -1261,7 +1263,7 @@
 
         .pendencia-footer {
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-end; /* Alterado para alinhar à direita */
             padding: 0 15px 15px 15px;
             display: none;
         }
@@ -1547,8 +1549,8 @@
         <!-- Main Content -->
         <div class="main-content card">
             <div class="patient-header" id="patientHeader">
-                <div class="patient-title-container">
-                    <div class="patient-title-wrapper" id="patientToggle">
+                <div class="patient-title-container" id="patientToggle">
+                    <div class="patient-title-wrapper">
                         <div class="patient-title" id="patientTitle">
                             <span>Selecione um paciente</span>
                         </div>
@@ -2599,6 +2601,18 @@
                 }
             });
             
+            // Fechar menu lateral ao clicar fora (mobile)
+            document.addEventListener('click', function(event) {
+                const isClickInsideSidebar = DOM.sidebar.contains(event.target);
+                const isClickOnMenuButton = DOM.mobileMenuBtn.contains(event.target);
+                
+                if (window.innerWidth <= 992 && DOM.sidebar.classList.contains('open') && 
+                    !isClickInsideSidebar && !isClickOnMenuButton) {
+                    DOM.sidebar.classList.remove('open');
+                    DOM.mobileMenuBtn.classList.remove('open');
+                }
+            });
+            
             // Novo setor
             DOM.btnNewSetor.addEventListener('click', openNewSetorModal);
             
@@ -2925,7 +2939,7 @@
                         // Adicionar mensagem completa no histórico
                         paciente.anotacoes.push({
                             id: Date.now(),
-                            texto: `PENDÊNCIA CRIADA: ${tituloFinal}\n${desc}`,
+                            texto: `Pendência Criada: ${tituloFinal}\n${desc}`,
                             timestamp: new Date().toISOString(),
                             medico: state.currentDoctor,
                             tipo: "texto"
@@ -3250,7 +3264,7 @@
                         // Adicionar mensagem ao histórico
                         paciente.anotacoes.push({
                             id: Date.now(),
-                            texto: `PENDÊNCIA RESOLVIDA: ${pendencia.titulo}`,
+                            texto: `Pendência Resolvida: ${pendencia.titulo}`,
                             timestamp: new Date().toISOString(),
                             medico: state.currentDoctor,
                             tipo: "texto"
