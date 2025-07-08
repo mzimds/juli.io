@@ -1220,7 +1220,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            flex: 1;
         }
 
         .pendencia-header-info svg {
@@ -1286,6 +1285,16 @@
             z-index: 1001;
         }
 
+        /* Alerta visual em destaque */
+        .delete-warning {
+            background-color: #fdecea; /* Vermelho claro */
+            color: #d93025; /* Vermelho escuro */
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid rgba(217, 48, 37, 0.2);
+        }
+
         /* Modal de Confirmação de Exclusão (MODERNIZADO) */
         .delete-modal-content {
             border-radius: 12px;
@@ -1317,17 +1326,18 @@
         }
         
         .delete-warning {
-            background-color: rgba(231, 76, 60, 0.05);
+            background-color: #fdecea;
             padding: 15px;
             margin: 15px 0;
             border-radius: 8px;
             text-align: left;
             border: 1px solid rgba(231, 76, 60, 0.2);
+            color: #d93025;
         }
 
         .delete-warning p {
             margin-bottom: 10px;
-            color: var(--danger);
+            color: #d93025;
             font-weight: 500;
         }
 
@@ -1378,6 +1388,15 @@
             background: rgba(0,0,0,0.15);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
+        }
+        
+        /* Botão desabilitado para exclusão */
+        .btn-delete-disabled {
+            background: #cccccc !important;
+            color: #666666 !important;
+            cursor: not-allowed !important;
+            opacity: 0.7;
+            pointer-events: none;
         }
 
         @media (max-width: 992px) {
@@ -1967,17 +1986,24 @@
                 <p>Tem certeza que deseja excluir o paciente <strong id="patientNameToDelete"></strong>?</p>
                 <div class="delete-warning">
                     <p><strong>Esta ação não pode ser desfeita</strong> e todos os dados serão perdidos.</p>
-                    <p>Se o paciente recebeu alta, recomendamos registrar a alta em vez de excluir.</p>
+                </div>
+                <p style="margin-top: 15px; color: var(--dark);">
+                    <strong>Recomendação:</strong> Se o paciente recebeu alta, utilize a opção "Registrar Alta" em vez de excluir.
+                </p>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Para confirmar, digite "excluir" no campo abaixo.</label>
+                    <input type="text" class="form-control" id="confirmDeleteInput" placeholder="Digite excluir">
+                    <div class="error-message" id="confirmDeleteError" style="display: none;">Digite "excluir" para confirmar</div>
                 </div>
             </div>
             <div class="delete-modal-footer">
                 <button class="btn btn-secondary" id="btnCancelDelete">
                     Cancelar
                 </button>
-                <button class="btn btn-secondary" id="btnIsAlta">
+                <button class="btn" id="btnIsAlta" style="background: white; color: var(--dark); border: 1px solid var(--dark);">
                     É uma Alta
                 </button>
-                <button class="btn btn-danger" id="btnConfirmDelete">
+                <button class="btn btn-delete-disabled" id="btnConfirmDelete" disabled>
                     Excluir
                 </button>
             </div>
@@ -2159,7 +2185,9 @@
             patientNameToDelete: document.getElementById('patientNameToDelete'),
             btnCancelDelete: document.getElementById('btnCancelDelete'),
             btnIsAlta: document.getElementById('btnIsAlta'),
-            btnConfirmDelete: document.getElementById('btnConfirmDelete')
+            btnConfirmDelete: document.getElementById('btnConfirmDelete'),
+            confirmDeleteInput: document.getElementById('confirmDeleteInput'),
+            confirmDeleteError: document.getElementById('confirmDeleteError')
         };
 
         // Estado da aplicação
@@ -3197,6 +3225,31 @@
             });
             
             DOM.btnConfirmDelete.addEventListener('click', deletePaciente);
+            
+            // Validação do campo de confirmação de exclusão
+            DOM.confirmDeleteInput.addEventListener('input', function() {
+                const confirmText = this.value.trim().toLowerCase();
+                const isConfirmed = confirmText === 'excluir';
+                
+                // Atualizar estado do botão
+                DOM.btnConfirmDelete.disabled = !isConfirmed;
+                
+                // Atualizar estilo do botão
+                if (isConfirmed) {
+                    DOM.btnConfirmDelete.classList.remove('btn-delete-disabled');
+                    DOM.btnConfirmDelete.classList.add('btn-danger');
+                } else {
+                    DOM.btnConfirmDelete.classList.remove('btn-danger');
+                    DOM.btnConfirmDelete.classList.add('btn-delete-disabled');
+                }
+                
+                // Mostrar/ocultar mensagem de erro
+                if (confirmText !== '' && !isConfirmed) {
+                    DOM.confirmDeleteError.style.display = 'block';
+                } else {
+                    DOM.confirmDeleteError.style.display = 'none';
+                }
+            });
         }
 
         // Abrir modal de confirmação de exclusão
@@ -3206,7 +3259,18 @@
                 const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
                 if (paciente) {
                     DOM.patientNameToDelete.textContent = paciente.nome;
+                    
+                    // Resetar campo de confirmação
+                    DOM.confirmDeleteInput.value = '';
+                    DOM.btnConfirmDelete.disabled = true;
+                    DOM.confirmDeleteError.style.display = 'none';
+                    
+                    // Resetar estilo do botão
+                    DOM.btnConfirmDelete.classList.remove('btn-danger');
+                    DOM.btnConfirmDelete.classList.add('btn-delete-disabled');
+                    
                     DOM.confirmDeleteModal.classList.add('active');
+                    DOM.confirmDeleteInput.focus();
                     break;
                 }
             }
