@@ -14,6 +14,7 @@
             --dark: #333333;
             --darker: #222222;
             --danger: #e74c3c;
+            --danger-dark: #c0392b;
             --success: #2ecc71;
             --warning: #f39c12;
             --pass-plantao: #2ecc71;
@@ -24,6 +25,7 @@
             --header-height: 60px;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
             --shadow-md: 0 4px 6px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
             --pending: #222;
             --lavender: #9A85F9;
             --skyblue: #58B7F4;
@@ -584,6 +586,7 @@
             margin-bottom: 15px;
             padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
+            text-align: left;
         }
 
         .modal-title {
@@ -1283,17 +1286,98 @@
             z-index: 1001;
         }
 
-        /* Estilo atualizado para o modal de exclusão */
+        /* Modal de Confirmação de Exclusão (MODERNIZADO) */
         .delete-modal-content {
+            border-radius: 12px;
+            background: var(--light);
+            box-shadow: var(--shadow-lg);
             max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--border);
+        }
+
+        .delete-modal-header {
+            padding: 20px 20px 10px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .delete-modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--darker);
+            margin-bottom: 5px;
+        }
+
+        .delete-modal-body {
+            padding: 20px;
+            color: var(--dark);
+            line-height: 1.6;
+            text-align: left;
         }
         
         .delete-warning {
-            background-color: rgba(231, 76, 60, 0.1);
+            background-color: rgba(231, 76, 60, 0.05);
             padding: 15px;
             margin: 15px 0;
             border-radius: 8px;
-            color: var(--darker);
+            text-align: left;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .delete-warning p {
+            margin-bottom: 10px;
+            color: var(--danger);
+            font-weight: 500;
+        }
+
+        .delete-warning p:last-child {
+            margin-bottom: 0;
+        }
+
+        .delete-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 20px;
+            background: transparent;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            background: var(--darker);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-danger:hover {
+            background: #111;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: rgba(0,0,0,0.08);
+            color: var(--dark);
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         @media (max-width: 992px) {
@@ -1873,28 +1957,24 @@
         </div>
     </div>
 
-    <!-- Modal de Confirmação de Exclusão (NOVO) -->
+    <!-- Modal de Confirmação de Exclusão (MODERNIZADO) -->
     <div class="modal" id="confirmDeleteModal">
-        <div class="modal-content card delete-modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Confirmar Exclusão</h2>
+        <div class="modal-content delete-modal-content">
+            <div class="delete-modal-header">
+                <h2 class="delete-modal-title">Confirmar Exclusão</h2>
             </div>
-            <div style="padding: 20px;">
+            <div class="delete-modal-body">
                 <p>Tem certeza que deseja excluir o paciente <strong id="patientNameToDelete"></strong>?</p>
-                
                 <div class="delete-warning">
-                    <p style="font-weight: 500;">Esta ação não pode ser desfeita e todos os dados serão perdidos.</p>
-                </div>
-                
-                <div style="margin-top: 20px;">
+                    <p><strong>Esta ação não pode ser desfeita</strong> e todos os dados serão perdidos.</p>
                     <p>Se o paciente recebeu alta, recomendamos registrar a alta em vez de excluir.</p>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn" id="btnCancelDelete" style="background: rgba(0,0,0,0.08); color: var(--dark);">
+            <div class="delete-modal-footer">
+                <button class="btn btn-secondary" id="btnCancelDelete">
                     Cancelar
                 </button>
-                <button class="btn btn-success" id="btnIsAlta">
+                <button class="btn btn-secondary" id="btnIsAlta">
                     É uma Alta
                 </button>
                 <button class="btn btn-danger" id="btnConfirmDelete">
@@ -2397,6 +2477,28 @@
             };
             return tipos[tipo] || tipo;
         }
+        
+        // Formatar data
+        function formatDate(datetime) {
+            const date = new Date(datetime);
+            return date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+        
+        // Formatar data/hora
+        function formatDateTime(datetime) {
+            const date = new Date(datetime);
+            return date.toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
 
         // Selecionar paciente
         function selectPaciente(pacienteId) {
@@ -2453,6 +2555,9 @@
                 DOM.sidebar.classList.remove('open');
                 DOM.mobileMenuBtn.classList.remove('open');
             }
+            
+            // CORREÇÃO: Garantir que o editor seja exibido
+            DOM.editorContainer.style.display = 'flex';
         }
         
         // Renderizar pendências
@@ -2520,43 +2625,21 @@
             const card = element.closest('.pendencia-card');
             card.classList.toggle('expanded');
         }
-        
-        // Formatar data
-        function formatDate(datetime) {
-            const date = new Date(datetime);
-            return date.toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
-        }
-        
-        // Formatar data/hora
-        function formatDateTime(datetime) {
-            const date = new Date(datetime);
-            return date.toLocaleString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-        
+
         // Atualizar estado vazio
         function updateEmptyState() {
             // Se houver setores mas nenhum paciente selecionado
             if (!state.currentPaciente) {
-                DOM.patientHeader.style.display = 'flex';
-                DOM.editorContainer.style.display = 'none';
                 DOM.patientTitle.innerHTML = '<span>Selecione um paciente</span>';
                 DOM.patientDetails.style.display = 'none';
                 DOM.patientHeader.classList.remove('patient-selected');
                 DOM.patientActions.style.display = 'none';
+                DOM.pendenciasContainer.style.display = 'none';
+                DOM.chatHistory.innerHTML = '';
             } 
             // Se houver paciente selecionado
             else {
-                DOM.patientHeader.style.display = 'flex';
+                // Garantir que o editor seja exibido
                 DOM.editorContainer.style.display = 'flex';
             }
         }
@@ -3143,6 +3226,7 @@
                     
                     // Resetar estado
                     state.currentPaciente = null;
+                    state.currentSetor = null;
                     
                     // Atualizar interface
                     renderSetores();
@@ -3313,7 +3397,9 @@
                     DOM.messageInput.style.height = 'auto';
                     
                     // Scroll para a nova mensagem
-                    setTimeout(scrollToLatestMessage, 100);
+                    setTimeout(() => {
+                        scrollToLatestMessage();
+                    }, 100);
                     break;
                 }
             }
