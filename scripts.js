@@ -435,7 +435,7 @@
                                         <span>${paciente.idade} anos</span>
                                         <strong>${paciente.leito}</strong>
                                         <strong>${paciente.atendimento}</strong>
-                                        ${paciente.alta ? `<span class="alta-item">${formatAltaType(paciente.alta.tipo)}</span>` : ''}
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -782,7 +782,14 @@
                 DOM.btnConfirmPass.disabled = true;
                 
                 setTimeout(() => {
-                    showToast(`Plantão passado para ${medicoRecebe} com sucesso!`, 'success');
+                    
+    showToast(`Plantão passado para ${medicoRecebe} com sucesso!`, 'success');
+    dados.setores.forEach(setor => {
+        setor.pacientes = setor.pacientes.filter(p => !p.alta);
+    });
+    renderSetores();
+    updateEmptyState();
+    
                     DOM.passPlantaoModal.classList.remove('active');
                     DOM.btnConfirmPass.innerHTML = 'Confirmar Passagem';
                     DOM.btnConfirmPass.disabled = false;
@@ -1631,3 +1638,37 @@ function renderTurnoAtual(setor) {
     ? `<div class="turno-badge">${turno.nome}</div>` 
     : `<div class="turno-badge empty">Sem turno</div>`;
 }
+function resetPassagemModal() {
+    DOM.medicoRecebe.value = "";
+    DOM.checkVisitados.checked = false;
+    DOM.checkRepassado.checked = false;
+    DOM.checkPrescricoes.checked = false;
+    DOM.checkDocumentacao.checked = false;
+    DOM.assinatura.value = "";
+}
+DOM.btnPassPlantaoSidebar.addEventListener('click', () => {
+    resetPassagemModal();
+    openPassPlantaoModal();
+});
+DOM.btnPassPlantaoHeader.addEventListener('click', () => {
+    resetPassagemModal();
+    openPassPlantaoModal();
+});
+
+DOM.chatHistory.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    const target = e.target.closest('.message');
+    if (target) {
+        const confirmar = confirm("Deseja apagar esta mensagem?");
+        if (confirmar) {
+            const index = Array.from(DOM.chatHistory.children).indexOf(target);
+            if (index !== -1 && state.currentPaciente) {
+                const paciente = getPacienteById(state.currentPaciente);
+                if (paciente && paciente.anotacoes) {
+                    paciente.anotacoes.splice(index, 1);
+                    renderChatHistory(paciente);
+                }
+            }
+        }
+    }
+});
