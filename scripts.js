@@ -417,8 +417,8 @@
                 setorEl.className = `setor-item ${isExpanded ? 'expanded' : ''} ${state.currentSetor === setor.id ? 'active' : ''}`;
                 setorEl.innerHTML = `
                     <div class="setor-name">
-                        <span>${setor.nome}</span>
-                        <span>${setor.pacientes.length}</span>
+                        <span class="setor-nome-com-contador">${setor.nome}<sup class="pacientes-contador">${setor.pacientes.length}</sup></span>
+                        ${renderTurnoAtual(setor)}
                     </div>
                     <div class="pacientes-container">
                         ${setor.pacientes.map(paciente => `
@@ -1556,3 +1556,78 @@
 
         // Inicializar aplicação
         document.addEventListener('DOMContentLoaded', init);
+
+// === Início: Lógica de Turno Atual ===
+function getCurrentTurno(setor) {
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  return setor.turnos.find(turno => {
+    const [startHour, startMinute] = turno.inicio.split(':').map(Number);
+    const [endHour, endMinute] = turno.fim.split(':').map(Number);
+
+    const startTotal = startHour * 60 + startMinute;
+    const endTotal = endHour * 60 + endMinute;
+
+    if (endTotal < startTotal) {
+      return currentMinutes >= startTotal || currentMinutes < endTotal;
+    }
+    return currentMinutes >= startTotal && currentMinutes < endTotal;
+  });
+}
+// === Fim: Lógica de Turno Atual ===
+
+// === Início: Classe Plantao e Passagem ===
+class Plantao {
+  constructor(setorId, turnoId, responsavel) {
+    this.id = uuid();
+    this.setorId = setorId;
+    this.turnoId = turnoId;
+    this.inicio = new Date(); 
+    this.fim = null;
+    this.responsavel = responsavel;
+    this.status = 'ativo';
+    this.pacientes = [];
+    this.pendencias = [];
+  }
+}
+
+function iniciarPassagem(setor) {
+  const turno = getCurrentTurno(setor);
+  if (!turno) {
+    alert("Nenhum turno ativo no momento.");
+    return;
+  }
+  const plantaoAtual = new Plantao(setor.id, turno.nome, state.currentDoctor);
+  console.log("Plantão iniciado:", plantaoAtual);
+  mostrarRelatorioTransicao(setor, plantaoAtual);
+}
+
+function mostrarRelatorioTransicao(setor, plantao) {
+  const pendencias = setor.pacientes
+    .flatMap(p => p.pendencias || [])
+    .filter(p => !p.resolvidoEm);
+
+  console.log(`\n=== Relatório de Transição ===`);
+  console.log(`Setor: ${setor.nome}`);
+  console.log(`Turno: ${plantao.turnoId}`);
+  console.log(`Responsável: ${plantao.responsavel}`);
+  console.log(`Pendências:`);
+  pendencias.forEach(p => console.log(`- [ ] ${p.titulo}`));
+}
+// === Fim: Classe Plantao e Passagem ===
+
+function renderTurnoAtual(setor) {
+  const turno = getCurrentTurno(setor);
+  return turno 
+    ? `<div class="badge turno-badge">${turno.nome}</div>` 
+    : `<div class="badge turno-badge empty">Sem turno ativo</div>`;
+}
+
+function renderTurnoAtual(setor) {
+  const turno = getCurrentTurno(setor);
+  const count = setor.pacientes.length;
+  return turno 
+    ? `<div class="turno-badge">${turno.nome}</div>` 
+    : `<div class="turno-badge empty">Sem turno</div>`;
+}
