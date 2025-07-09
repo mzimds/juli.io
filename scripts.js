@@ -1672,3 +1672,36 @@ DOM.chatHistory.addEventListener('contextmenu', function(e) {
         }
     }
 });
+
+
+
+let mensagemSelecionada = null;
+
+DOM.chatHistory.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    const target = e.target.closest('.message');
+    if (target) {
+        mensagemSelecionada = target;
+        document.getElementById('modalApagarMensagem').classList.add('active');
+    }
+});
+
+document.getElementById('btnCancelarApagar').addEventListener('click', () => {
+    document.getElementById('modalApagarMensagem').classList.remove('active');
+    mensagemSelecionada = null;
+});
+
+document.getElementById('btnConfirmarApagar').addEventListener('click', () => {
+    if (mensagemSelecionada) {
+        const index = Array.from(DOM.chatHistory.children).indexOf(mensagemSelecionada);
+        if (index !== -1 && state.currentPaciente) {
+            const paciente = getPacienteById(state.currentPaciente);
+            if (paciente && paciente.anotacoes) {
+                paciente.anotacoes.splice(index, 1);
+                renderChatHistory(paciente);
+            }
+        }
+    }
+    document.getElementById('modalApagarMensagem').classList.remove('active');
+    mensagemSelecionada = null;
+});
