@@ -205,7 +205,8 @@ const DOM = {
     btnCancelDeleteSetor: document.getElementById('btnCancelDeleteSetor'),
     btnConfirmDeleteSetor: document.getElementById('btnConfirmDeleteSetor'),
     confirmDeleteSetorInput: document.getElementById('confirmDeleteSetorInput'),
-    confirmDeleteSetorError: document.getElementById('confirmDeleteSetorError')
+    confirmDeleteSetorError: document.getElementById('confirmDeleteSetorError'),
+    mainContent: document.querySelector('.main-content')
 };
 
 // Estado da aplicação
@@ -221,7 +222,12 @@ let state = {
     editingPacienteId: null,
     currentTab: 'resumo',
     longPressTimer: null,
-    hasShownPatientModal: false // Novo estado para controle do modal de paciente
+    hasShownPatientModal: false,
+    touchStartX: 0,
+    touchStartY: 0,
+    touchEndX: 0,
+    touchEndY: 0,
+    sidebarPlaceholder: null
 };
 
 // Função para destacar termos de busca
@@ -350,6 +356,11 @@ function init() {
     
     // Inicializar abas
     switchTab('resumo');
+    
+    // Adicionar evento de toque para navegação por gestos
+    DOM.mainContent.addEventListener('touchstart', handleTouchStart, false);
+    DOM.mainContent.addEventListener('touchmove', handleTouchMove, false);
+    DOM.mainContent.addEventListener('touchend', handleTouchEnd, false);
 }
 
 // Detectar quando o teclado virtual é aberto/fechado
@@ -455,8 +466,8 @@ function renderSetores(container = DOM.setoresList, isModal = false) {
                 ${renderTurnoAtual(setor)}
                 <button class="btn-edit-setor" data-id="${setor.id}">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
             </div>
@@ -480,7 +491,7 @@ function renderSetores(container = DOM.setoresList, isModal = false) {
                         </div>
                     </div>
                 `).join('')}
-                ${isModal ? '' : `<button class="btn" style="margin-top: 10px; width: 100%;" data-setor="${setor.id}">Adicionar Paciente</button>`}
+                ${isModal ? '' : `<button class="btn btn-add-paciente" style="margin-top: 10px; width: 100%;" data-setor="${setor.id}">Adicionar Paciente</button>`}
             </div>
         `;
         
@@ -501,29 +512,6 @@ function renderSetores(container = DOM.setoresList, isModal = false) {
             openEditSetorModal(setor.id);
         });
         
-        // Adicionar eventos de long press para turnos (mobile)
-        const turnoBadge = setorEl.querySelector('.turno-badge');
-        if (turnoBadge) {
-            turnoBadge.addEventListener('touchstart', (e) => {
-                e.stopPropagation();
-                state.longPressTimer = setTimeout(() => {
-                    openEditSetorModal(setor.id);
-                }, 500);
-            });
-            
-            turnoBadge.addEventListener('touchend', (e) => {
-                e.stopPropagation();
-                clearTimeout(state.longPressTimer);
-            });
-            
-            turnoBadge.addEventListener('touchmove', (e) => {
-                e.stopPropagation();
-                clearTimeout(state.longPressTimer);
-            });
-        }
-        
-        container.appendChild(setorEl);
-        
         // Eventos para pacientes
         setorEl.querySelectorAll('.paciente-item').forEach(item => {
             item.addEventListener('click', () => {
@@ -537,11 +525,14 @@ function renderSetores(container = DOM.setoresList, isModal = false) {
         
         // Evento para botão de adicionar paciente
         if (!isModal) {
-            setorEl.querySelector('button').addEventListener('click', (e) => {
+            const addPacienteBtn = setorEl.querySelector('.btn-add-paciente');
+            addPacienteBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 openNewPacienteModal(setor.id);
             });
         }
+        
+        container.appendChild(setorEl);
     });
 }
 
@@ -1413,6 +1404,73 @@ function switchTab(tabName) {
         }
     } else if (tabName === 'historico') {
         DOM.historicoContent.style.display = 'block';
+    }
+    
+    // Atualizar conteúdo da sidebar conforme aba ativa
+    updateSidebarContent();
+}
+
+// Atualizar conteúdo da sidebar conforme aba
+function updateSidebarContent() {
+    if (state.currentTab === 'diario') {
+        // Mostrar setores e pacientes
+        DOM.searchInput.parentElement.style.display = 'block';
+        DOM.setoresList.style.display = 'block';
+        DOM.sectionHeader.style.display = 'flex';
+        
+        // Esconder placeholder se existir
+        if (DOM.sidebarPlaceholder) {
+            DOM.sidebarPlaceholder.style.display = 'none';
+        }
+    } else {
+        // Esconder setores e pacientes
+        DOM.searchInput.parentElement.style.display = 'none';
+        DOM.setoresList.style.display = 'none';
+        DOM.sectionHeader.style.display = 'none';
+        
+        // Criar ou mostrar placeholder
+        if (!DOM.sidebarPlaceholder) {
+            DOM.sidebarPlaceholder = document.createElement('div');
+            DOM.sidebarPlaceholder.className = 'sidebar-placeholder';
+            DOM.sidebarPlaceholder.innerHTML = `
+                <div style="padding: 20px; text-align: center; color: var(--gray);">
+                    <p>Selecione a aba "Diário Clínico" para ver os setores e pacientes.</p>
+                </div>
+            `;
+            DOM.sidebar.querySelector('.scrollable-content').appendChild(DOM.sidebarPlaceholder);
+        } else {
+            DOM.sidebarPlaceholder.style.display = 'block';
+        }
+    }
+}
+
+// Navegação por gestos (swipe)
+function handleTouchStart(e) {
+    state.touchStartX = e.touches[0].clientX;
+    state.touchStartY = e.touches[0].clientY;
+}
+
+function handleTouchMove(e) {
+    state.touchEndX = e.touches[0].clientX;
+    state.touchEndY = e.touches[0].clientY;
+}
+
+function handleTouchEnd() {
+    const diffX = state.touchStartX - state.touchEndX;
+    const diffY = state.touchStartY - state.touchEndY;
+    
+    // Verificar se é um swipe horizontal (e não vertical)
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        const tabs = ['resumo', 'diario', 'historico'];
+        const currentIndex = tabs.indexOf(state.currentTab);
+        
+        if (diffX > 0 && currentIndex < tabs.length - 1) {
+            // Swipe para esquerda -> próxima aba
+            switchTab(tabs[currentIndex + 1]);
+        } else if (diffX < 0 && currentIndex > 0) {
+            // Swipe para direita -> aba anterior
+            switchTab(tabs[currentIndex - 1]);
+        }
     }
 }
 
