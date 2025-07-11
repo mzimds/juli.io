@@ -24,8 +24,8 @@
         
         <!-- Tabs para desktop -->
         <div class="main-tabs desktop-tabs">
-            <div class="main-tab active" data-tab="overview">Overview</div>
-            <div class="main-tab" data-tab="plantao">Plantão</div>
+            <div class="main-tab active" data-tab="resumo">Resumo</div>
+            <div class="main-tab" data-tab="diario">Diário Clínico</div>
             <div class="main-tab" data-tab="historico">Histórico</div>
         </div>
         
@@ -45,8 +45,8 @@
 
     <!-- Tabs para mobile -->
     <div class="main-tabs mobile-tabs">
-        <div class="main-tab active" data-tab="overview">Overview</div>
-        <div class="main-tab" data-tab="plantao">Plantão</div>
+        <div class="main-tab active" data-tab="resumo">Resumo</div>
+        <div class="main-tab" data-tab="diario">Diário Clínico</div>
         <div class="main-tab" data-tab="historico">Histórico</div>
     </div>
 
@@ -83,82 +83,115 @@
 
         <!-- Main Content -->
         <div class="main-content card">
-            <div class="patient-header" id="patientHeader">
-                <div class="patient-title-container" id="patientToggle">
-                    <div class="patient-title-wrapper">
-                        <div class="patient-title" id="patientTitle">
-                            <span>Selecione um paciente</span>
-                        </div>
-                    </div>
-                    <!-- Container de ações do paciente -->
-                    <div class="patient-actions" id="patientActions" style="display: none;">
-                        <button class="btn-context" id="btnContextMenu">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
-                                <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-                                <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
-                            </svg>
-                        </button>
-                        <div class="context-menu" id="contextMenu">
-                            <div class="context-item" data-action="alta">Registrar Alta</div>
-                            <div class="context-item" data-action="pendencia">Criar Pendência</div>
-                            <div class="context-item" data-action="excluir" style="color: var(--danger);">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
-                                    <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                Excluir
-                            </div>
-                        </div>
+            <!-- Conteúdo da aba Resumo -->
+            <div class="tab-content" id="resumoContent">
+                <!-- Conteúdo do Resumo (vazio) -->
+                <div class="empty-state">
+                    <div class="empty-content">
+                        <h3>Resumo</h3>
+                        <p>Em breve, informações resumidas sobre o plantão.</p>
                     </div>
                 </div>
-                <div class="patient-details" id="patientDetails" style="display: none;">
-                    <!-- Detalhes do paciente serão carregados aqui -->
-                </div>
             </div>
-            
-            <!-- Área de pendências individuais -->
-            <div class="pendencias-container" id="pendenciasContainer" style="display: none;">
-                <!-- Pendências serão carregadas aqui dinamicamente -->
-            </div>
-            
-            <div class="editor-container" id="editorContainer">
-                <!-- Chat de mensagens -->
-                <div class="editor-content active" id="chat">
-                    <div class="editor-header">
-                        <div class="editor-title">Anotações Clínicas</div>
-                        <div class="quick-actions">
-                            <div class="quick-action" data-text="PA: 120/80 mmHg | FC: 78 bpm | FR: 16 rpm | Temp: 36.5°C">Sinais Vitais</div>
-                            <div class="quick-action" data-text="Exame físico: abdômen flácido, indolor à palpação">Exame Físico</div>
-                            <div class="quick-action" data-text="Exames laboratoriais dentro dos parâmetros normais">Exames</div>
-                            <div class="quick-action" data-text="Paciente relata melhora do quadro">Melhora</div>
-                            <div class="quick-action" data-text="Paciente refere dor intensa">Dor</div>
-                            <div class="quick-action" data-text="Paciente consciente, orientado, em bom estado geral">Estado Geral</div>
-                            <div class="quick-action" data-text="Queixa principal: dor abdominal difusa há 2 dias">Queixas</div>
-                            <div class="quick-action" data-text="Conduta: manter hidratação venosa, analgesia e reavaliação em 6h">Conduta</div>
-                            <div class="quick-action" data-text="Prescrição: dipirona 1g IV 6/6h, omeprazol 40mg VO 1x/dia">Prescrição</div>
-                            <div class="quick-action" data-text="Paciente evolui estável, sem intercorrências">Evolução Estável</div>
-                            <div class="quick-action" data-text="Encaminhado para realização de exames laboratoriais e imagem">Encaminhamento</div>
-                            <div class="quick-action" data-text="Informado à equipe de enfermagem para monitorização contínua dos sinais vitais">Enfermagem</div>
-                        </div>
-                    </div>
-                    <div class="chat-area">
-                        <div class="chat-history-container">
-                            <div class="chat-history" id="chatHistory">
-                                <!-- Mensagens serão carregadas aqui -->
+
+            <!-- Conteúdo da aba Diário Clínico -->
+            <div class="tab-content active" id="diarioContent">
+                <div class="patient-header" id="patientHeader">
+                    <div class="patient-title-container" id="patientToggle">
+                        <div class="patient-title-wrapper">
+                            <div class="patient-title" id="patientTitle">
+                                <span>Selecione um paciente</span>
                             </div>
                         </div>
-                        <div class="message-input-container">
-                            <textarea class="message-input" id="messageInput" placeholder="Escreva uma nova anotação clínica..." rows="1"></textarea>
-                            <button class="btn-send" id="btnSendMessage" disabled>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Container de ações do paciente -->
+                        <div class="patient-actions" id="patientActions" style="display: none;">
+                            <button class="btn-context" id="btnContextMenu">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
+                                    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                                    <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
                                 </svg>
                             </button>
+                            <div class="context-menu" id="contextMenu">
+                                <div class="context-item" data-action="editar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+                                        <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Editar
+                                </div>
+                                <div class="context-item" data-action="alta">Registrar Alta</div>
+                                <div class="context-item" data-action="pendencia">Criar Pendência</div>
+                                <div class="context-item" data-action="excluir" style="color: var(--danger);">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+                                        <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Excluir
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="patient-details" id="patientDetails" style="display: none;">
+                        <!-- Detalhes do paciente serão carregados aqui -->
+                    </div>
+                </div>
+                
+                <!-- Área de pendências individuais -->
+                <div class="pendencias-container" id="pendenciasContainer" style="display: none;">
+                    <!-- Pendências serão carregadas aqui dinamicamente -->
+                </div>
+                
+                <div class="editor-container" id="editorContainer">
+                    <!-- Chat de mensagens -->
+                    <div class="editor-content active" id="chat">
+                        <div class="editor-header">
+                            <div class="editor-title">Anotações Clínicas</div>
+                            <div class="quick-actions">
+                                <div class="quick-action" data-text="PA: 120/80 mmHg | FC: 78 bpm | FR: 16 rpm | Temp: 36.5°C">Sinais Vitais</div>
+                                <div class="quick-action" data-text="Exame físico: abdômen flácido, indolor à palpação">Exame Físico</div>
+                                <div class="quick-action" data-text="Exames laboratoriais dentro dos parâmetros normais">Exames</div>
+                                <div class="quick-action" data-text="Paciente relata melhora do quadro">Melhora</div>
+                                <div class="quick-action" data-text="Paciente refere dor intensa">Dor</div>
+                                <div class="quick-action" data-text="Paciente consciente, orientado, em bom estado geral">Estado Geral</div>
+                                <div class="quick-action" data-text="Queixa principal: dor abdominal difusa há 2 dias">Queixas</div>
+                                <div class="quick-action" data-text="Conduta: manter hidratação venosa, analgesia e reavaliação em 6h">Conduta</div>
+                                <div class="quick-action" data-text="Prescrição: dipirona 1g IV 6/6h, omeprazol 40mg VO 1x/dia">Prescrição</div>
+                                <div class="quick-action" data-text="Paciente evolui estável, sem intercorrências">Evolução Estável</div>
+                                <div class="quick-action" data-text="Encaminhado para realização de exames laboratoriais e imagem">Encaminhamento</div>
+                                <div class="quick-action" data-text="Informado à equipe de enfermagem para monitorização contínua dos sinais vitais">Enfermagem</div>
+                            </div>
+                        </div>
+                        <div class="chat-area">
+                            <div class="chat-history-container">
+                                <div class="chat-history" id="chatHistory">
+                                    <!-- Mensagens serão carregadas aqui -->
+                                </div>
+                            </div>
+                            <div class="message-input-container">
+                                <textarea class="message-input" id="messageInput" placeholder="Escreva uma nova anotação clínica..." rows="1"></textarea>
+                                <button class="btn-send" id="btnSendMessage" disabled>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fim da aba Diário Clínico -->
+            
+            <!-- Conteúdo da aba Histórico -->
+            <div class="tab-content" id="historicoContent">
+                <!-- Conteúdo do Histórico (vazio) -->
+                <div class="empty-state">
+                    <div class="empty-content">
+                        <h3>Histórico</h3>
+                        <p>Em breve, histórico completo das anotações.</p>
                     </div>
                 </div>
             </div>
@@ -351,6 +384,62 @@
         </div>
     </div>
 
+    <!-- Modal Editar Paciente -->
+    <div class="modal" id="editPacienteModal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2 class="modal-title">Editar Paciente</h2>
+            </div>
+            
+            <div class="form-group">
+                <label>Nome Completo</label>
+                <input type="text" class="form-control" id="editPacienteName" placeholder="Nome do paciente">
+                <div class="error-message" id="editPacienteNameError">Informe o nome do paciente</div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div class="form-group">
+                    <label>Idade</label>
+                    <input type="number" class="form-control" id="editPacienteIdade" placeholder="Idade" min="0" max="120">
+                    <div class="error-message" id="editPacienteIdadeError">Informe uma idade válida</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Sexo Biológico</label>
+                    <select class="form-control" id="editPacienteSexo">
+                        <option value="">Selecione</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Feminino</option>
+                    </select>
+                    <div class="error-message" id="editPacienteSexoError">Selecione o sexo biológico</div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div class="form-group">
+                    <label>Leito</label>
+                    <input type="text" class="form-control" id="editPacienteLeito" placeholder="Número do leito">
+                    <div class="error-message" id="editPacienteLeitoError">Informe o número do leito</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Nº Atendimento</label>
+                    <input type="text" class="form-control" id="editPacienteAtendimento" placeholder="Número do atendimento">
+                    <div class="error-message" id="editPacienteAtendimentoError">Informe o número do atendimento</div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn" id="btnCancelEditPaciente" style="background: rgba(0,0,0,0.08); color: var(--dark);">
+                    Cancelar
+                </button>
+                <button class="btn btn-success" id="btnSaveEditPaciente">
+                    Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Alta -->
     <div class="modal" id="altaModal">
         <div class="modal-content card">
@@ -444,7 +533,7 @@
         </div>
     </div>
 
-    <!-- Modal de Confirmação de Exclusão (MODERNIZADO) -->
+    <!-- Modal de Confirmação de Exclusão de Paciente -->
     <div class="modal" id="confirmDeleteModal">
         <div class="modal-content delete-modal-content">
             <div class="delete-modal-header">
@@ -473,6 +562,34 @@
                 </button>
                 <button class="btn btn-delete-disabled" id="btnConfirmDelete" disabled>
                     Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão de Setor -->
+    <div class="modal" id="confirmDeleteSetorModal">
+        <div class="modal-content delete-modal-content">
+            <div class="delete-modal-header">
+                <h2 class="delete-modal-title">Confirmar Exclusão de Setor</h2>
+            </div>
+            <div class="delete-modal-body">
+                <p>Tem certeza que deseja excluir o setor <strong id="setorNameToDelete"></strong>?</p>
+                <div class="delete-warning">
+                    <p><strong>Esta ação não pode ser desfeita</strong> e todos os pacientes e dados relacionados serão perdidos.</p>
+                </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Para confirmar, digite "excluir" no campo abaixo.</label>
+                    <input type="text" class="form-control" id="confirmDeleteSetorInput" placeholder="Digite excluir">
+                    <div class="error-message" id="confirmDeleteSetorError" style="display: none;">Digite "excluir" para confirmar</div>
+                </div>
+            </div>
+            <div class="delete-modal-footer">
+                <button class="btn btn-secondary" id="btnCancelDeleteSetor">
+                    Cancelar
+                </button>
+                <button class="btn btn-delete-disabled" id="btnConfirmDeleteSetor" disabled>
+                    Excluir Setor
                 </button>
             </div>
         </div>

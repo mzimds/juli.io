@@ -183,7 +183,29 @@ const DOM = {
     btnCancelEditSetor: document.getElementById('btnCancelEditSetor'),
     btnSaveEditSetor: document.getElementById('btnSaveEditSetor'),
     btnDeleteSetor: document.getElementById('btnDeleteSetor'),
-    mainTabs: document.querySelectorAll('.main-tab')
+    mainTabs: document.querySelectorAll('.main-tab'),
+    resumoContent: document.getElementById('resumoContent'),
+    diarioContent: document.getElementById('diarioContent'),
+    historicoContent: document.getElementById('historicoContent'),
+    editPacienteModal: document.getElementById('editPacienteModal'),
+    editPacienteName: document.getElementById('editPacienteName'),
+    editPacienteNameError: document.getElementById('editPacienteNameError'),
+    editPacienteIdade: document.getElementById('editPacienteIdade'),
+    editPacienteIdadeError: document.getElementById('editPacienteIdadeError'),
+    editPacienteSexo: document.getElementById('editPacienteSexo'),
+    editPacienteSexoError: document.getElementById('editPacienteSexoError'),
+    editPacienteLeito: document.getElementById('editPacienteLeito'),
+    editPacienteLeitoError: document.getElementById('editPacienteLeitoError'),
+    editPacienteAtendimento: document.getElementById('editPacienteAtendimento'),
+    editPacienteAtendimentoError: document.getElementById('editPacienteAtendimentoError'),
+    btnCancelEditPaciente: document.getElementById('btnCancelEditPaciente'),
+    btnSaveEditPaciente: document.getElementById('btnSaveEditPaciente'),
+    confirmDeleteSetorModal: document.getElementById('confirmDeleteSetorModal'),
+    setorNameToDelete: document.getElementById('setorNameToDelete'),
+    btnCancelDeleteSetor: document.getElementById('btnCancelDeleteSetor'),
+    btnConfirmDeleteSetor: document.getElementById('btnConfirmDeleteSetor'),
+    confirmDeleteSetorInput: document.getElementById('confirmDeleteSetorInput'),
+    confirmDeleteSetorError: document.getElementById('confirmDeleteSetorError')
 };
 
 // Estado da aplicação
@@ -196,7 +218,9 @@ let state = {
     keyboardOpen: false,
     resizeTimer: null,
     editingSetorId: null,
-    currentTab: 'plantao'
+    editingPacienteId: null,
+    currentTab: 'resumo',
+    longPressTimer: null
 };
 
 // Função para destacar termos de busca
@@ -333,7 +357,7 @@ function init() {
     }
     
     // Inicializar abas
-    switchTab('plantao');
+    switchTab('resumo');
 }
 
 // Detectar quando o teclado virtual é aberto/fechado
@@ -478,6 +502,27 @@ function renderSetores(container = DOM.setoresList, isModal = false) {
             e.stopPropagation();
             openEditSetorModal(setor.id);
         });
+        
+        // Adicionar eventos de long press para turnos (mobile)
+        const turnoBadge = setorEl.querySelector('.turno-badge');
+        if (turnoBadge) {
+            turnoBadge.addEventListener('touchstart', (e) => {
+                e.stopPropagation();
+                state.longPressTimer = setTimeout(() => {
+                    openEditSetorModal(setor.id);
+                }, 500);
+            });
+            
+            turnoBadge.addEventListener('touchend', (e) => {
+                e.stopPropagation();
+                clearTimeout(state.longPressTimer);
+            });
+            
+            turnoBadge.addEventListener('touchmove', (e) => {
+                e.stopPropagation();
+                clearTimeout(state.longPressTimer);
+            });
+        }
         
         container.appendChild(setorEl);
         
@@ -836,6 +881,14 @@ function setupEventListeners() {
             return;
         }
         
+        // Verificar se já existe setor com mesmo nome
+        const setorExistente = dados.setores.find(s => s.nome.toLowerCase() === nomeSetor.toLowerCase());
+        if (setorExistente) {
+            showError(DOM.setorNameError, 'Já existe um setor com este nome');
+            DOM.setorName.focus();
+            return;
+        }
+        
         // Validar turnos
         const turnos = [];
         const turnoElements = document.querySelectorAll('.turno-section');
@@ -933,6 +986,8 @@ function setupEventListeners() {
         const sexo = DOM.pacienteSexo.value;
         const leito = DOM.pacienteLeito.value.trim();
         const atendimento = DOM.pacienteAtendimento.value.trim();
+        const setorId = parseInt(DOM.newPacienteModal.getAttribute('data-setor'));
+        const setor = dados.setores.find(s => s.id === setorId);
         
         if (!nome) {
             showError(DOM.pacienteNameError, 'Informe o nome do paciente');
@@ -964,9 +1019,15 @@ function setupEventListeners() {
             return;
         }
         
-        // Encontrar setor
-        const setorId = parseInt(DOM.newPacienteModal.getAttribute('data-setor'));
-        const setor = dados.setores.find(s => s.id === setorId);
+        // Verificar se já existe paciente com mesmo leito e atendimento no mesmo setor
+        const pacienteExistente = setor.pacientes.find(p => 
+            p.leito === leito && p.atendimento === atendimento
+        );
+        
+        if (pacienteExistente) {
+            showError(DOM.pacienteAtendimentoError, 'Já existe um paciente com este leito e atendimento neste setor');
+            return;
+        }
         
         if (setor) {
             const novoPaciente = {
@@ -1007,7 +1068,7 @@ function setupEventListeners() {
         }
     });
     
-    // Menu de contexto (Alta, Pendência e Excluir)
+    // Menu de contexto (Editar, Alta, Pendência e Excluir)
     DOM.btnContextMenu.addEventListener('click', (e) => {
         e.stopPropagation();
         DOM.contextMenu.classList.toggle('visible');
@@ -1024,7 +1085,9 @@ function setupEventListeners() {
             DOM.contextMenu.classList.remove('visible');
             const action = item.getAttribute('data-action');
             
-            if (action === 'alta') {
+            if (action === 'editar') {
+                openEditPacienteModal();
+            } else if (action === 'alta') {
                 openAltaModal();
             } else if (action === 'pendencia') {
                 openPendenciaModal();
@@ -1231,7 +1294,7 @@ function setupEventListeners() {
         }
     });
     
-    // Modal de exclusão
+    // Modal de exclusão de paciente
     DOM.btnCancelDelete.addEventListener('click', () => {
         DOM.confirmDeleteModal.classList.remove('active');
     });
@@ -1243,7 +1306,7 @@ function setupEventListeners() {
     
     DOM.btnConfirmDelete.addEventListener('click', deletePaciente);
     
-    // Validação do campo de confirmação de exclusão
+    // Validação do campo de confirmação de exclusão de paciente
     DOM.confirmDeleteInput.addEventListener('input', function() {
         const confirmText = this.value.trim().toLowerCase();
         const isConfirmed = confirmText === 'excluir';
@@ -1268,6 +1331,38 @@ function setupEventListeners() {
         }
     });
     
+    // Modal de exclusão de setor
+    DOM.btnCancelDeleteSetor.addEventListener('click', () => {
+        DOM.confirmDeleteSetorModal.classList.remove('active');
+    });
+    
+    DOM.btnConfirmDeleteSetor.addEventListener('click', deleteSetor);
+    
+    // Validação do campo de confirmação de exclusão de setor
+    DOM.confirmDeleteSetorInput.addEventListener('input', function() {
+        const confirmText = this.value.trim().toLowerCase();
+        const isConfirmed = confirmText === 'excluir';
+        
+        // Atualizar estado do botão
+        DOM.btnConfirmDeleteSetor.disabled = !isConfirmed;
+        
+        // Atualizar estilo do botão
+        if (isConfirmed) {
+            DOM.btnConfirmDeleteSetor.classList.remove('btn-delete-disabled');
+            DOM.btnConfirmDeleteSetor.classList.add('btn-danger');
+        } else {
+            DOM.btnConfirmDeleteSetor.classList.remove('btn-danger');
+            DOM.btnConfirmDeleteSetor.classList.add('btn-delete-disabled');
+        }
+        
+        // Mostrar/ocultar mensagem de erro
+        if (confirmText !== '' && !isConfirmed) {
+            DOM.confirmDeleteSetorError.style.display = 'block';
+        } else {
+            DOM.confirmDeleteSetorError.style.display = 'none';
+        }
+    });
+    
     // Eventos para abas principais
     DOM.mainTabs.forEach(tab => {
         tab.addEventListener('click', function() {
@@ -1282,7 +1377,14 @@ function setupEventListeners() {
     });
     
     DOM.btnSaveEditSetor.addEventListener('click', saveEditedSetor);
-    DOM.btnDeleteSetor.addEventListener('click', deleteSetor);
+    DOM.btnDeleteSetor.addEventListener('click', openDeleteSetorConfirmationModal);
+    
+    // Eventos para modal de edição de paciente
+    DOM.btnCancelEditPaciente.addEventListener('click', () => {
+        DOM.editPacienteModal.classList.remove('active');
+    });
+    
+    DOM.btnSaveEditPaciente.addEventListener('click', saveEditedPaciente);
 }
 
 // Alternar entre abas
@@ -1295,15 +1397,28 @@ function switchTab(tabName) {
     });
     
     // Atualizar conteúdo
-    if (tabName === 'plantao') {
-        // Mostrar conteúdo do plantão
-        DOM.editorContainer.style.display = 'flex';
-    } else {
-        // Esconder conteúdo do plantão para outras abas
-        DOM.editorContainer.style.display = 'none';
-    }
+    DOM.resumoContent.style.display = 'none';
+    DOM.diarioContent.style.display = 'none';
+    DOM.historicoContent.style.display = 'none';
     
-    // Implementar lógica para outras abas se necessário
+    // Esconder o conteúdo do paciente quando não estiver na aba diário
+    DOM.patientHeader.style.display = 'none';
+    DOM.pendenciasContainer.style.display = 'none';
+    DOM.editorContainer.style.display = 'none';
+    
+    if (tabName === 'resumo') {
+        DOM.resumoContent.style.display = 'block';
+    } else if (tabName === 'diario') {
+        DOM.diarioContent.style.display = 'block';
+        // Mostrar o conteúdo do paciente apenas se estiver selecionado
+        if (state.currentPaciente) {
+            DOM.patientHeader.style.display = 'flex';
+            DOM.pendenciasContainer.style.display = 'block';
+            DOM.editorContainer.style.display = 'flex';
+        }
+    } else if (tabName === 'historico') {
+        DOM.historicoContent.style.display = 'block';
+    }
 }
 
 // Abrir modal de edição de setor
@@ -1451,44 +1566,162 @@ function saveEditedSetor() {
     }
 }
 
-// Excluir setor
+// Abrir modal de confirmação para exclusão de setor
+function openDeleteSetorConfirmationModal() {
+    const setor = dados.setores.find(s => s.id === state.editingSetorId);
+    if (!setor) return;
+    
+    DOM.setorNameToDelete.textContent = setor.nome;
+    
+    // Resetar campo de confirmação
+    DOM.confirmDeleteSetorInput.value = '';
+    DOM.btnConfirmDeleteSetor.disabled = true;
+    DOM.confirmDeleteSetorError.style.display = 'none';
+    
+    // Resetar estilo do botão
+    DOM.btnConfirmDeleteSetor.classList.remove('btn-danger');
+    DOM.btnConfirmDeleteSetor.classList.add('btn-delete-disabled');
+    
+    DOM.confirmDeleteSetorModal.classList.add('active');
+    DOM.confirmDeleteSetorInput.focus();
+}
+
+// Excluir setor definitivamente
 function deleteSetor() {
     const setorIndex = dados.setores.findIndex(s => s.id === state.editingSetorId);
     if (setorIndex !== -1) {
         const setorNome = dados.setores[setorIndex].nome;
         dados.setores.splice(setorIndex, 1);
         renderSetores();
+        DOM.confirmDeleteSetorModal.classList.remove('active');
         DOM.editSetorModal.classList.remove('active');
-        showToast(`Setor "${setorNome}" excluído com sucesso!`, 'success');
         
         // Resetar estado se necessário
         state.currentSetor = null;
         updateEmptyState();
+        
+        showToast(`Setor "${setorNome}" excluído com sucesso!`, 'success');
     }
 }
 
-// Abrir modal de confirmação de exclusão
-function openDeleteConfirmationModal() {
+// Abrir modal de edição de paciente
+function openEditPacienteModal() {
+    const paciente = dados.setores.flatMap(s => s.pacientes).find(p => p.id === state.currentPaciente);
+    if (!paciente) return;
+    
+    state.editingPacienteId = paciente.id;
+    
+    // Preencher campos do modal
+    DOM.editPacienteName.value = paciente.nome;
+    DOM.editPacienteIdade.value = paciente.idade;
+    DOM.editPacienteSexo.value = paciente.sexo;
+    DOM.editPacienteLeito.value = paciente.leito;
+    DOM.editPacienteAtendimento.value = paciente.atendimento;
+    
+    DOM.editPacienteModal.classList.add('active');
+}
+
+// Salvar paciente editado
+function saveEditedPaciente() {
+    // Resetar erros
+    hideAllErrors();
+    
+    const nome = DOM.editPacienteName.value.trim();
+    const idade = parseInt(DOM.editPacienteIdade.value);
+    const sexo = DOM.editPacienteSexo.value;
+    const leito = DOM.editPacienteLeito.value.trim();
+    const atendimento = DOM.editPacienteAtendimento.value.trim();
+    
+    if (!nome) {
+        showError(DOM.editPacienteNameError, 'Informe o nome do paciente');
+        DOM.editPacienteName.focus();
+        return;
+    }
+    
+    if (isNaN(idade) || idade <= 0 || idade > 120) {
+        showError(DOM.editPacienteIdadeError, 'Informe uma idade válida');
+        DOM.editPacienteIdade.focus();
+        return;
+    }
+    
+    if (!sexo) {
+        showError(DOM.editPacienteSexoError, 'Selecione o sexo biológico');
+        DOM.editPacienteSexo.focus();
+        return;
+    }
+    
+    if (!leito) {
+        showError(DOM.editPacienteLeitoError, 'Informe o número do leito');
+        DOM.editPacienteLeito.focus();
+        return;
+    }
+    
+    if (!atendimento) {
+        showError(DOM.editPacienteAtendimentoError, 'Informe o número do atendimento');
+        DOM.editPacienteAtendimento.focus();
+        return;
+    }
+    
     // Encontrar paciente
-    for (const setor of dados.setores) {
-        const paciente = setor.pacientes.find(p => p.id === state.currentPaciente);
+    let paciente = null;
+    let setor = null;
+    for (const s of dados.setores) {
+        paciente = s.pacientes.find(p => p.id === state.editingPacienteId);
         if (paciente) {
-            DOM.patientNameToDelete.textContent = paciente.nome;
-            
-            // Resetar campo de confirmação
-            DOM.confirmDeleteInput.value = '';
-            DOM.btnConfirmDelete.disabled = true;
-            DOM.confirmDeleteError.style.display = 'none';
-            
-            // Resetar estilo do botão
-            DOM.btnConfirmDelete.classList.remove('btn-danger');
-            DOM.btnConfirmDelete.classList.add('btn-delete-disabled');
-            
-            DOM.confirmDeleteModal.classList.add('active');
-            DOM.confirmDeleteInput.focus();
+            setor = s;
             break;
         }
     }
+    
+    if (!paciente || !setor) return;
+    
+    // Verificar se já existe paciente com mesmo leito e atendimento no mesmo setor
+    const pacienteExistente = setor.pacientes.find(p => 
+        p.id !== paciente.id && 
+        p.leito === leito && 
+        p.atendimento === atendimento
+    );
+    
+    if (pacienteExistente) {
+        showError(DOM.editPacienteAtendimentoError, 'Já existe um paciente com este leito e atendimento neste setor');
+        return;
+    }
+    
+    // Atualizar dados do paciente
+    paciente.nome = nome;
+    paciente.idade = idade;
+    paciente.sexo = sexo;
+    paciente.leito = leito;
+    paciente.atendimento = atendimento;
+    
+    // Atualizar interface
+    selectPaciente(paciente.id);
+    
+    // Fechar modal
+    DOM.editPacienteModal.classList.remove('active');
+    
+    showToast('Paciente atualizado com sucesso!', 'success');
+}
+
+// Abrir modal de confirmação de exclusão de paciente
+function openDeleteConfirmationModal() {
+    // Encontrar paciente
+    const paciente = dados.setores.flatMap(s => s.pacientes).find(p => p.id === state.currentPaciente);
+    if (!paciente) return;
+    
+    DOM.patientNameToDelete.textContent = paciente.nome;
+    
+    // Resetar campo de confirmação
+    DOM.confirmDeleteInput.value = '';
+    DOM.btnConfirmDelete.disabled = true;
+    DOM.confirmDeleteError.style.display = 'none';
+    
+    // Resetar estilo do botão
+    DOM.btnConfirmDelete.classList.remove('btn-danger');
+    DOM.btnConfirmDelete.classList.add('btn-delete-disabled');
+    
+    DOM.confirmDeleteModal.classList.add('active');
+    DOM.confirmDeleteInput.focus();
 }
 
 // Excluir paciente definitivamente
