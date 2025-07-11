@@ -6,8 +6,6 @@
   <title>Nauren - Go beyond notes</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
 </head>
 <body>
     <!-- Toast Container -->
@@ -23,6 +21,14 @@
         <div class="logo">
             nauren
         </div>
+        
+        <!-- Tabs para desktop -->
+        <div class="main-tabs desktop-tabs">
+            <div class="main-tab active" data-tab="overview">Overview</div>
+            <div class="main-tab" data-tab="plantao">Plantão</div>
+            <div class="main-tab" data-tab="historico">Histórico</div>
+        </div>
+        
         <div class="header-info">
             <!-- Botão passar plantão no header (desktop) -->
             <button class="btn btn-pass btn-pass-header" id="btnPassPlantaoHeader">
@@ -36,6 +42,13 @@
             </div>
         </div>
     </header>
+
+    <!-- Tabs para mobile -->
+    <div class="main-tabs mobile-tabs">
+        <div class="main-tab active" data-tab="overview">Overview</div>
+        <div class="main-tab" data-tab="plantao">Plantão</div>
+        <div class="main-tab" data-tab="historico">Histórico</div>
+    </div>
 
     <div class="container">
         <!-- Sidebar -->
@@ -189,10 +202,6 @@
                         <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkPrescricoes">
                         <span>Todas as prescrições foram atualizadas</span>
                     </label>
-                    <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkDocumentacao">
-                        <span>Documentação completa de todos os atendimentos</span>
-                    </label>
                 </div>
                 
                 <div class="form-group">
@@ -248,6 +257,39 @@
                 </button>
                 <button class="btn btn-success" id="btnSaveSetor">
                     Salvar Setor
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Setor -->
+    <div class="modal" id="editSetorModal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2 class="modal-title">Editar Setor</h2>
+            </div>
+            
+            <div class="form-group">
+                <label>Nome do Setor</label>
+                <input type="text" class="form-control" id="editSetorName" placeholder="Ex: UTI Adulto, Emergência">
+                <div class="error-message" id="editSetorNameError">Informe o nome do setor</div>
+            </div>
+            
+            <!-- Turnos personalizados -->
+            <div id="editTurnosContainer">
+                <!-- Turnos serão adicionados dinamicamente aqui -->
+            </div>
+            <div class="error-message" id="editTurnosError">Adicione pelo menos um turno</div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="btnDeleteSetor" style="margin-right: auto;">
+                    Excluir Setor
+                </button>
+                <button class="btn" id="btnCancelEditSetor" style="background: rgba(0,0,0,0.08); color: var(--dark);">
+                    Cancelar
+                </button>
+                <button class="btn btn-success" id="btnSaveEditSetor">
+                    Salvar Alterações
                 </button>
             </div>
         </div>
@@ -436,22 +478,6 @@
         </div>
     </div>
 
-    
-<script src="scripts.js"></script>
-
-<!-- Modal de confirmação de exclusão -->
-<div id="modalApagarMensagem" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title">Apagar mensagem</h2>
-    </div>
-    <p>Tem certeza que deseja apagar esta mensagem?</p>
-    <div class="modal-footer">
-      <button id="btnCancelarApagar" class="btn">Cancelar</button>
-      <button id="btnConfirmarApagar" class="btn btn-danger">Apagar</button>
-    </div>
-  </div>
-</div>
-
+    <script src="scripts.js"></script>
 </body>
 </html>
