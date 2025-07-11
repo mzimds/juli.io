@@ -260,6 +260,12 @@ header {
     color: var(--darker);
 }
 
+.setor-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .pacientes-container {
     margin-top: 8px;
     max-height: 0;
@@ -421,13 +427,6 @@ header {
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
-
-.editor-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--darker);
-    text-align: left;
 }
 
 .quick-actions {
@@ -1542,6 +1541,8 @@ header {
     
     .main-content {
         max-height: calc(100dvh - var(--header-height) - 16px);
+        border-radius: 0;
+        box-shadow: none;
     }
     
     .editor-container {
