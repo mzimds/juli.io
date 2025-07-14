@@ -465,8 +465,8 @@ function renderSetores(container = DOM.setoresList, isModal = false) {
                     ${renderTurnoAtual(setor)}
                     ${!isModal ? `
                     <button class="btn-edit-setor" data-id="${setor.id}">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13.9456 5.2396L17.702 8.99604M4.87613 19.1239L10.1661 18.2493C10.4778 18.1993 10.7738 18.0765 11.0316 17.8904L19.3097 11.7445C19.7139 11.4523 19.9999 11.0251 20.1267 10.5388C20.2535 10.0525 20.2061 9.53533 19.9928 9.07736L18.652 6.34801C18.4386 5.88999 18.0733 5.52465 17.6153 5.3113C14.9151 4.09557 12.043 4.58599 9.99996 6.62897L4.10958 12.9684C3.92351 13.2262 3.80071 13.5222 3.75068 13.8339L2.87613 19.1239C2.84244 19.3268 2.86734 19.5351 2.94818 19.7257C3.02902 19.9163 3.16254 20.0816 3.33365 20.2022C3.50476 20.3229 3.70658 20.394 3.91578 20.4075C4.12497 20.4209 4.33347 20.3761 4.51776 20.2781L9.80777 19.4035C10.1195 19.3535 10.4155 19.2307 10.6733 19.0446L13.9456 5.2396Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.9456 5.2396L17.702 8.99604M4.87613 19.1239L10.1661 18.2493C10.4778 18.1993 10.7738 18.0765 11.0316 17.8904L19.3097 11.7445C19.7139 11.4523 19.9999 11.0251 20.1267 10.5388C20.2535 10.0525 20.2061 9.53533 19.9928 9.07736L18.652 6.34801C18.4386 5.88999 18.0733 5.52465 17.6153 5.3113C14.9151 4.09557 12.043 4.58599 9.99996 6.62897L4.10958 12.9684C3.92351 13.2262 3.80071 13.5222 3.75068 13.8339L2.87613 19.1239C2.84244 19.3268 2.86734 19.5351 2.94818 19.7257C3.02902 19.9163 3.16254 20.0816 3.33365 20.2022C3.50476 20.3229 3.70658 20.394 3.91578 20.4075C4.12497 20.4209 4.33347 20.3761 4.51776 20.2781L9.80777 19.4035C10.1195 19.3535 10.4155 19.2307 10.6733 19.0446L13.9456 5.2396Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
                     ` : ''}
@@ -637,7 +637,7 @@ function selectPaciente(pacienteId) {
         DOM.mobileMenuBtn.classList.remove('open');
     }
     
-    // CORREÇÃO: Garantir que o editor seja exibido
+    // Garantir que o editor seja exibido
     DOM.editorContainer.style.display = 'flex';
 }
 
@@ -1518,7 +1518,7 @@ function addTurnoToEditModal(nome = '', inicio = '', fim = '', index = null) {
     const turnoEl = document.createElement('div');
     turnoEl.className = 'turno-section';
     turnoEl.innerHTML = `
-        ${index !== null ? `<button class="btn-remove-turno" data-id="${turnoId}">×</button>` : ''}
+        <button class="btn-remove-turno" data-id="${turnoId}">×</button>
         <div class="form-group">
             <label>Nome do Turno</label>
             <input type="text" class="form-control turno-name" placeholder="Ex: Manhã, Tarde, Noite" value="${nome}">
@@ -1539,11 +1539,9 @@ function addTurnoToEditModal(nome = '', inicio = '', fim = '', index = null) {
     `;
     
     // Evento para remover turno
-    if (index !== null) {
-        turnoEl.querySelector('.btn-remove-turno').addEventListener('click', function() {
-            turnoEl.remove();
-        });
-    }
+    turnoEl.querySelector('.btn-remove-turno').addEventListener('click', function() {
+        turnoEl.remove();
+    });
     
     DOM.editTurnosContainer.appendChild(turnoEl);
 }
@@ -1818,7 +1816,7 @@ function addTurno() {
     const turnoEl = document.createElement('div');
     turnoEl.className = 'turno-section';
     turnoEl.innerHTML = `
-        ${state.turnoCount > 1 ? `<button class="btn-remove-turno" data-id="${turnoId}">×</button>` : ''}
+        <button class="btn-remove-turno" data-id="${turnoId}">×</button>
         <div class="form-group">
             <label>Nome do Turno</label>
             <input type="text" class="form-control turno-name" placeholder="Ex: Manhã, Tarde, Noite">
@@ -1840,14 +1838,12 @@ function addTurno() {
     
     DOM.turnosContainer.appendChild(turnoEl);
     
-    // Evento para remover turno (apenas se não for o primeiro)
-    if (state.turnoCount > 1) {
-        turnoEl.querySelector('.btn-remove-turno').addEventListener('click', function() {
-            turnoEl.remove();
-            DOM.turnosError.style.display = 'none';
-            state.turnoCount--;
-        });
-    }
+    // Evento para remover turno
+    turnoEl.querySelector('.btn-remove-turno').addEventListener('click', function() {
+        turnoEl.remove();
+        DOM.turnosError.style.display = 'none';
+        state.turnoCount--;
+    });
     
     // Esconder mensagem de erro de turnos
     DOM.turnosError.style.display = 'none';
