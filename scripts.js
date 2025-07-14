@@ -207,7 +207,8 @@ const DOM = {
     confirmDeleteSetorError: document.getElementById('confirmDeleteSetorError'),
     mainContent: document.querySelector('.main-content'),
     btnAddTurno: document.getElementById('btnAddTurno'),
-    btnAddEditTurno: document.getElementById('btnAddEditTurno')
+    btnAddEditTurno: document.getElementById('btnAddEditTurno'),
+    chatHistoryContainer: document.getElementById('chatHistoryContainer')
 };
 
 // Estado da aplicação
@@ -403,11 +404,7 @@ function handleViewportResize() {
 
 function scrollToLatestMessage() {
     if (DOM.chatHistory.children.length > 0) {
-        const lastMessage = DOM.chatHistory.lastElementChild;
-        lastMessage.scrollIntoView({
-            behavior: 'smooth',
-            block: 'end'
-        });
+        DOM.chatHistoryContainer.scrollTop = DOM.chatHistoryContainer.scrollHeight;
     }
 }
 
@@ -466,12 +463,13 @@ function renderSetores(container = DOM.setoresList, isModal = false) {
                 <span class="setor-nome-com-contador">${setor.nome}<sup class="pacientes-contador">${setor.pacientes.length}</sup></span>
                 <div class="setor-info">
                     ${renderTurnoAtual(setor)}
+                    ${!isModal ? `
                     <button class="btn-edit-setor" data-id="${setor.id}">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M13.9456 5.2396L17.702 8.99604M4.87613 19.1239L10.1661 18.2493C10.4778 18.1993 10.7738 18.0765 11.0316 17.8904L19.3097 11.7445C19.7139 11.4523 19.9999 11.0251 20.1267 10.5388C20.2535 10.0525 20.2061 9.53533 19.9928 9.07736L18.652 6.34801C18.4386 5.88999 18.0733 5.52465 17.6153 5.3113C14.9151 4.09557 12.043 4.58599 9.99996 6.62897L4.10958 12.9684C3.92351 13.2262 3.80071 13.5222 3.75068 13.8339L2.87613 19.1239C2.84244 19.3268 2.86734 19.5351 2.94818 19.7257C3.02902 19.9163 3.16254 20.0816 3.33365 20.2022C3.50476 20.3229 3.70658 20.394 3.91578 20.4075C4.12497 20.4209 4.33347 20.3761 4.51776 20.2781L9.80777 19.4035C10.1195 19.3535 10.4155 19.2307 10.6733 19.0446L13.9456 5.2396Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
+                    ` : ''}
                 </div>
             </div>
             <div class="pacientes-container">
@@ -510,10 +508,15 @@ function renderSetores(container = DOM.setoresList, isModal = false) {
         });
         
         // Adicionar evento para editar setor
-        setorEl.querySelector('.btn-edit-setor').addEventListener('click', (e) => {
-            e.stopPropagation();
-            openEditSetorModal(setor.id);
-        });
+        if (!isModal) {
+            const editBtn = setorEl.querySelector('.btn-edit-setor');
+            if (editBtn) {
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openEditSetorModal(setor.id);
+                });
+            }
+        }
         
         // Eventos para pacientes
         setorEl.querySelectorAll('.paciente-item').forEach(item => {
@@ -529,10 +532,12 @@ function renderSetores(container = DOM.setoresList, isModal = false) {
         // Evento para botão de adicionar paciente
         if (!isModal) {
             const addPacienteBtn = setorEl.querySelector('.btn-add-paciente');
-            addPacienteBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openNewPacienteModal(setor.id);
-            });
+            if (addPacienteBtn) {
+                addPacienteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openNewPacienteModal(setor.id);
+                });
+            }
         }
         
         container.appendChild(setorEl);
@@ -1398,6 +1403,9 @@ function switchTab(tabName) {
     DOM.pendenciasContainer.style.display = 'none';
     DOM.editorContainer.style.display = 'none';
     
+    // Atualizar atributo da sidebar para controle de visibilidade
+    DOM.sidebar.setAttribute('data-current-tab', tabName);
+    
     if (tabName === 'resumo') {
         DOM.resumoContent.style.display = 'block';
     } else if (tabName === 'diario') {
@@ -2040,7 +2048,7 @@ function renderTurnoAtual(setor) {
   const turno = getCurrentTurno(setor);
   return turno 
     ? `<div class="badge turno-badge">${turno.nome}</div>` 
-    : `<div class="badge turno-badge empty">Sem turno ativo</div>`;
+    : `<div class="badge turno-badge empty">Inativo</div>`;
 }
 
 function resetPassagemModal() {
