@@ -82,8 +82,8 @@ header {
     display: flex;
     flex: 1;
     overflow: hidden;
-    padding: 12px;
-    gap: 12px;
+    padding: 0; /* Removido padding lateral */
+    gap: 0; /* Removido gap lateral */
     background: var(--light-gray);
     height: calc(100dvh - var(--header-height));
     min-height: 0;
@@ -96,6 +96,8 @@ header {
     overflow: hidden;
     transition: transform 0.3s ease;
     background: white; /* Fundo branco para todas as abas */
+    margin: 12px;
+    border-radius: 8px;
 }
 
 .section-header {
@@ -347,6 +349,9 @@ header {
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     min-height: 0;
+    margin: 12px;
+    margin-left: 0;
+    border-radius: 8px;
 }
 
 .patient-header {
@@ -1488,6 +1493,7 @@ header {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    height: 100%;
 }
 
 .tab-content.active {
@@ -1525,17 +1531,26 @@ header {
         top: var(--header-height);
         z-index: 80;
         background: white;
+        margin-top: 0; /* Espaçamento reduzido */
     }
     
     .container {
         height: calc(100dvh - var(--header-height) - 50px);
+        padding: 0;
+    }
+    
+    .main-content {
+        max-height: calc(100dvh - var(--header-height) - 16px);
+        border-radius: 0;
+        box-shadow: none;
+        margin: 8px;
     }
 }
 
 /* Ajustes de layout para evitar corte no mobile */
 @media (max-width: 992px) {
     .container {
-        padding: 8px;
+        padding: 0;
         height: calc(100dvh - var(--header-height) - 16px);
     }
     
@@ -1543,6 +1558,7 @@ header {
         max-height: calc(100dvh - var(--header-height) - 16px);
         border-radius: 0;
         box-shadow: none;
+        margin: 8px;
     }
     
     .editor-container {
@@ -1562,6 +1578,12 @@ header {
     .tab-content {
         max-height: calc(100dvh - var(--header-height) - 50px - 16px);
         overflow-y: auto;
+        padding-bottom: 20px; /* Adicionado padding inferior */
+    }
+    
+    /* Espaçamento para o botão de enviar quando o teclado está aberto */
+    .keyboard-open .chat-area {
+        padding-bottom: 70px;
     }
 }
 
@@ -1576,6 +1598,7 @@ header {
         width: 100%;
         max-width: 320px;
         box-shadow: var(--shadow-md);
+        margin: 0;
     }
 
     .sidebar.open {
@@ -1587,12 +1610,13 @@ header {
     }
 
     .container {
-        padding: 8px;
+        padding: 0;
         height: calc(100dvh - var(--header-height) - 16px);
     }
     
     .main-content {
         max-height: calc(100dvh - var(--header-height) - 16px);
+        margin: 8px;
     }
 
     .quick-actions {
@@ -1677,8 +1701,8 @@ header {
     }
 
     .container {
-        padding: 8px;
-        gap: 8px;
+        padding: 0;
+        gap: 0;
     }
     
     .logo {
@@ -1745,6 +1769,16 @@ header {
     .pass-plantao-sidebar .btn {
         padding: 15px 10px;
         font-size: 1rem;
+    }
+    
+    /* Ajuste de altura para evitar corte */
+    .container {
+        min-height: calc(100dvh - var(--header-height) - 20px);
+        height: auto;
+    }
+    
+    .tab-content {
+        padding-bottom: 30px;
     }
 }
 
@@ -1820,4 +1854,31 @@ header {
     display: flex;
     flex-direction: column;
     min-height: 0;
+}
+
+/* Container de turnos com rolagem */
+#turnosContainer, #editTurnosContainer {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Botão de adicionar turno */
+.btn-add-turno {
+    padding: 8px 15px;
+    background: linear-gradient(90deg, var(--lavender), var(--skyblue));
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    width: 100%;
+    justify-content: center;
 }

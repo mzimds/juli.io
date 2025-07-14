@@ -205,7 +205,9 @@ const DOM = {
     btnConfirmDeleteSetor: document.getElementById('btnConfirmDeleteSetor'),
     confirmDeleteSetorInput: document.getElementById('confirmDeleteSetorInput'),
     confirmDeleteSetorError: document.getElementById('confirmDeleteSetorError'),
-    mainContent: document.querySelector('.main-content')
+    mainContent: document.querySelector('.main-content'),
+    btnAddTurno: document.getElementById('btnAddTurno'),
+    btnAddEditTurno: document.getElementById('btnAddEditTurno')
 };
 
 // Estado da aplicação
@@ -949,10 +951,8 @@ function setupEventListeners() {
     });
     
     // Botão para adicionar turno
-    DOM.turnosContainer.addEventListener('click', function(e) {
-        if (e.target.closest('.btn-add-turno')) {
-            addTurno();
-        }
+    DOM.btnAddTurno.addEventListener('click', (e) => {
+        addTurno();
     });
     
     // Modal novo paciente
@@ -1372,6 +1372,11 @@ function setupEventListeners() {
     });
     
     DOM.btnSaveEditPaciente.addEventListener('click', saveEditedPaciente);
+    
+    // Botão para adicionar turno no modal de edição
+    DOM.btnAddEditTurno.addEventListener('click', (e) => {
+        addTurnoToEditModal();
+    });
 }
 
 // Alternar entre abas
@@ -1494,25 +1499,6 @@ function openEditSetorModal(setorId) {
     // Adicionar turnos existentes
     setor.turnos.forEach((turno, index) => {
         addTurnoToEditModal(turno.nome, turno.inicio, turno.fim, index);
-    });
-    
-    // Adicionar botão de adicionar turno ao último turno
-    const btnContainer = document.createElement('div');
-    btnContainer.className = 'turno-actions';
-    btnContainer.innerHTML = `
-        <button class="btn-add-turno">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Adicionar Turno
-        </button>
-    `;
-    DOM.editTurnosContainer.appendChild(btnContainer);
-    
-    // Evento para adicionar turno
-    btnContainer.querySelector('.btn-add-turno').addEventListener('click', () => {
-        addTurnoToEditModal();
     });
     
     DOM.editSetorModal.classList.add('active');
@@ -1842,22 +1828,7 @@ function addTurno() {
                 <div class="error-message turno-fim-error"></div>
             </div>
         </div>
-        <div class="turno-actions">
-            <button class="btn-add-turno" data-id="${turnoId}">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                Adicionar Turno
-            </button>
-        </div>
     `;
-    
-    // Remover botão "Adicionar Turno" do turno anterior
-    const lastTurnoBtn = document.querySelector('.btn-add-turno');
-    if (lastTurnoBtn) {
-        lastTurnoBtn.remove();
-    }
     
     DOM.turnosContainer.appendChild(turnoEl);
     
@@ -1867,25 +1838,6 @@ function addTurno() {
             turnoEl.remove();
             DOM.turnosError.style.display = 'none';
             state.turnoCount--;
-            
-            // Se não houver mais botão de adicionar, adicionar ao último turno
-            if (!document.querySelector('.btn-add-turno')) {
-                const lastTurno = DOM.turnosContainer.lastElementChild;
-                if (lastTurno) {
-                    const btnContainer = document.createElement('div');
-                    btnContainer.className = 'turno-actions';
-                    btnContainer.innerHTML = `
-                        <button class="btn-add-turno">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                            Adicionar Turno
-                        </button>
-                    `;
-                    lastTurno.appendChild(btnContainer);
-                }
-            }
         });
     }
     
