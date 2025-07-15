@@ -16,9 +16,10 @@ const DOM = {
     pacienteNameError: document.getElementById('pacienteNameError'),
     pacienteAtendimento: document.getElementById('pacienteAtendimento'),
     pacienteSexo: document.getElementById('pacienteSexo'),
+    pacienteIdade: document.getElementById('pacienteIdade'),
     pacienteLeito: document.getElementById('pacienteLeito'),
     pacienteLeitoError: document.getElementById('pacienteLeitoError'),
-    pacienteTags: document.getElementById('pacienteTags'),
+    pacienteSetor: document.getElementById('pacienteSetor'),
     btnCancelPaciente: document.getElementById('btnCancelPaciente'),
     btnSavePaciente: document.getElementById('btnSavePaciente'),
     passPlantaoModal: document.getElementById('passPlantaoModal'),
@@ -47,16 +48,18 @@ const DOM = {
     editPacienteNameError: document.getElementById('editPacienteNameError'),
     editPacienteAtendimento: document.getElementById('editPacienteAtendimento'),
     editPacienteSexo: document.getElementById('editPacienteSexo'),
+    editPacienteIdade: document.getElementById('editPacienteIdade'),
     editPacienteLeito: document.getElementById('editPacienteLeito'),
     editPacienteLeitoError: document.getElementById('editPacienteLeitoError'),
-    editPacienteTags: document.getElementById('editPacienteTags'),
+    editPacienteSetor: document.getElementById('editPacienteSetor'),
     btnCancelEdit: document.getElementById('btnCancelEdit'),
     btnUpdatePaciente: document.getElementById('btnUpdatePaciente'),
     hamburgerMenu: document.getElementById('hamburgerMenu'),
     mobileMenu: document.getElementById('mobileMenu'),
     noteEditor: document.getElementById('noteEditor'),
     btnNewPacienteFab: document.getElementById('btnNewPacienteFab'),
-    searchToggle: document.getElementById('searchToggle')
+    searchToggle: document.getElementById('searchToggle'),
+    container: document.querySelector('.container')
 };
 
 // Estado da aplicação
@@ -83,6 +86,7 @@ function init() {
     if (state.currentFilter === 'active') {
         DOM.noteEditor.style.display = 'block';
         document.querySelector('.fab-container').style.display = 'block';
+        DOM.container.classList.add('active-screen');
     }
 }
 
@@ -150,7 +154,7 @@ function renderPatientList() {
             </div>
             
             <div class="paciente-tags">
-                ${paciente.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                <span class="tag">${paciente.setor || 'Geral'}</span>
             </div>
             
             ${lastNoteHTML}
@@ -287,6 +291,13 @@ function setupEventListeners() {
             // Atualizar filtro
             state.currentFilter = this.dataset.status;
             
+            // Atualizar classe para espaço do editor
+            if (state.currentFilter === 'active') {
+                DOM.container.classList.add('active-screen');
+            } else {
+                DOM.container.classList.remove('active-screen');
+            }
+            
             // Mostrar/ocultar telas
             if (state.currentFilter === 'history') {
                 DOM.patientList.style.display = 'none';
@@ -325,7 +336,8 @@ function setupEventListeners() {
         
         const nome = DOM.pacienteName.value.trim();
         const leito = DOM.pacienteLeito.value.trim();
-        const tags = DOM.pacienteTags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+        const idade = parseInt(DOM.pacienteIdade.value) || null;
+        const setor = DOM.pacienteSetor.value.trim();
         const atendimento = DOM.pacienteAtendimento.value.trim();
         const sexo = DOM.pacienteSexo.value;
         
@@ -346,8 +358,9 @@ function setupEventListeners() {
             nome,
             atendimento,
             sexo,
+            idade,
             leito,
-            tags,
+            setor,
             status: "active",
             anotacoes: [],
             alta: null,
@@ -362,8 +375,9 @@ function setupEventListeners() {
         DOM.pacienteName.value = '';
         DOM.pacienteAtendimento.value = '';
         DOM.pacienteSexo.value = '';
+        DOM.pacienteIdade.value = '';
         DOM.pacienteLeito.value = '';
-        DOM.pacienteTags.value = '';
+        DOM.pacienteSetor.value = '';
         
         showToast(`Paciente "${nome}" adicionado com sucesso!`, 'success');
         
@@ -374,7 +388,7 @@ function setupEventListeners() {
             texto: `Novo paciente ${nome} adicionado no leito ${leito}`,
             timestamp: new Date().toISOString(),
             medico: state.currentDoctor,
-            setor: tags[0] || 'Geral'
+            setor: setor || 'Geral'
         });
         
         // Selecionar automaticamente
@@ -403,12 +417,8 @@ function setupEventListeners() {
         setTimeout(() => {
             showToast(`Plantão finalizado e passado para ${medicoRecebe} com sucesso!`, 'success');
             
-            // Resetar dados
-            dados.pacientes.forEach(paciente => {
-                if (paciente.status === 'active') {
-                    paciente.anotacoes = [];
-                }
-            });
+            // Resetar dados (somente pacientes ativos permanecem)
+            dados.pacientes = dados.pacientes.filter(p => p.status === 'active');
             
             // Atualizar UI
             renderPatientList();
@@ -537,13 +547,13 @@ function performSearch(searchTerm) {
     
     // Buscar pacientes
     dados.pacientes.forEach(paciente => {
-        // Verificar se o termo está no nome, leito, tags ou anotações
+        // Verificar se o termo está no nome, leito, setor ou anotações
         if (paciente.nome.toLowerCase().includes(searchTerm)) {
             addAutocompleteItem(paciente.nome, 'paciente', paciente.id);
         } else if (paciente.leito.toLowerCase().includes(searchTerm)) {
             addAutocompleteItem(`Leito ${paciente.leito}: ${paciente.nome}`, 'leito', paciente.id);
-        } else if (paciente.tags.some(tag => tag.toLowerCase().includes(searchTerm))) {
-            addAutocompleteItem(`${paciente.nome} (${paciente.tags.join(', ')})`, 'tag', paciente.id);
+        } else if (paciente.setor && paciente.setor.toLowerCase().includes(searchTerm)) {
+            addAutocompleteItem(`${paciente.nome} (${paciente.setor})`, 'setor', paciente.id);
         }
         
         // Buscar nas anotações do paciente
@@ -574,7 +584,7 @@ function filterPatientCards(searchTerm) {
         const match = 
             paciente.nome.toLowerCase().includes(searchTerm) ||
             paciente.leito.toLowerCase().includes(searchTerm) ||
-            paciente.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+            (paciente.setor && paciente.setor.toLowerCase().includes(searchTerm)) ||
             paciente.anotacoes.some(anotacao => 
                 anotacao.texto.toLowerCase().includes(searchTerm)
             );
@@ -639,8 +649,9 @@ function openEditPacienteModal(pacienteId) {
     DOM.editPacienteName.value = paciente.nome;
     DOM.editPacienteAtendimento.value = paciente.atendimento || '';
     DOM.editPacienteSexo.value = paciente.sexo || '';
+    DOM.editPacienteIdade.value = paciente.idade || '';
     DOM.editPacienteLeito.value = paciente.leito;
-    DOM.editPacienteTags.value = paciente.tags.join(', ');
+    DOM.editPacienteSetor.value = paciente.setor || '';
     
     DOM.editPacienteModal.classList.add('active');
     DOM.editPacienteName.focus();
@@ -656,7 +667,8 @@ function updatePaciente() {
     
     const nome = DOM.editPacienteName.value.trim();
     const leito = DOM.editPacienteLeito.value.trim();
-    const tags = DOM.editPacienteTags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+    const idade = parseInt(DOM.editPacienteIdade.value) || null;
+    const setor = DOM.editPacienteSetor.value.trim();
     const atendimento = DOM.editPacienteAtendimento.value.trim();
     const sexo = DOM.editPacienteSexo.value;
     
@@ -674,7 +686,8 @@ function updatePaciente() {
     
     paciente.nome = nome;
     paciente.leito = leito;
-    paciente.tags = tags;
+    paciente.idade = idade;
+    paciente.setor = setor;
     paciente.atendimento = atendimento;
     paciente.sexo = sexo;
     paciente.lastUpdated = new Date().toISOString(); // Atualizar timestamp
@@ -691,7 +704,7 @@ function updatePaciente() {
         texto: `Dados do paciente ${nome} atualizados`,
         timestamp: new Date().toISOString(),
         medico: state.currentDoctor,
-        setor: tags[0] || 'Geral'
+        setor: setor || 'Geral'
     });
 }
 
@@ -741,7 +754,7 @@ function registerAlta(pacienteId) {
         texto: `Alta médica registrada para ${paciente.nome}`,
         timestamp: new Date().toISOString(),
         medico: state.currentDoctor,
-        setor: paciente.tags[0] || 'Geral'
+        setor: paciente.setor || 'Geral'
     });
 }
 
@@ -781,7 +794,7 @@ function sendNote() {
         texto: `Nova anotação para ${paciente.nome}: ${noteText}`,
         timestamp: new Date().toISOString(),
         medico: state.currentDoctor,
-        setor: paciente.tags[0] || 'Geral'
+        setor: paciente.setor || 'Geral'
     });
     
     // Limpar campo
@@ -832,7 +845,7 @@ function deletePaciente() {
             texto: `Paciente ${paciente.nome} excluído`,
             timestamp: new Date().toISOString(),
             medico: state.currentDoctor,
-            setor: paciente.tags[0] || 'Geral'
+            setor: paciente.setor || 'Geral'
         });
         
         showToast('Paciente excluído', 'success');

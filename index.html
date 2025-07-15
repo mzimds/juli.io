@@ -36,13 +36,13 @@
             </div>
             
             <div class="header-info">
-                <button class="btn desktop-only" id="btnFinalizarPlantao">
-                    Finalizar Plantão
-                </button>
                 <div class="user-info desktop-only">
                     <span>Dr. Carlos Silva</span>
                 </div>
-                <button class="hamburger-menu" id="hamburgerMenu">
+                <button class="btn desktop-only" id="btnFinalizarPlantao">
+                    Finalizar Plantão
+                </button>
+                <button class="hamburger-menu mobile-only" id="hamburgerMenu">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -133,13 +133,9 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="pacienteName">Nome do Paciente</label>
+                    <label for="pacienteName">Nome</label>
                     <input type="text" id="pacienteName" class="form-control" placeholder="Nome completo">
                     <div id="pacienteNameError" class="error-message"></div>
-                </div>
-                <div class="form-group">
-                    <label for="pacienteAtendimento">Número de Atendimento</label>
-                    <input type="text" id="pacienteAtendimento" class="form-control" placeholder="Número de atendimento">
                 </div>
                 <div class="form-group">
                     <label for="pacienteSexo">Sexo</label>
@@ -147,9 +143,11 @@
                         <option value="">Selecione</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
-                        <option value="Outro">Outro</option>
-                        <option value="Não informado">Não informado</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="pacienteIdade">Idade</label>
+                    <input type="number" id="pacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
                 </div>
                 <div class="form-group">
                     <label for="pacienteLeito">Leito</label>
@@ -157,8 +155,12 @@
                     <div id="pacienteLeitoError" class="error-message"></div>
                 </div>
                 <div class="form-group">
-                    <label for="pacienteTags">Tags (separadas por vírgula)</label>
-                    <input type="text" id="pacienteTags" class="form-control" placeholder="Ex: UTI, Cardio">
+                    <label for="pacienteAtendimento">Nº Atendimento</label>
+                    <input type="text" id="pacienteAtendimento" class="form-control" placeholder="Número de atendimento">
+                </div>
+                <div class="form-group">
+                    <label for="pacienteSetor">Setor</label>
+                    <input type="text" id="pacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
                 </div>
             </div>
             <div class="modal-footer">
@@ -176,13 +178,9 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="editPacienteName">Nome do Paciente</label>
+                    <label for="editPacienteName">Nome</label>
                     <input type="text" id="editPacienteName" class="form-control" placeholder="Nome completo">
                     <div id="editPacienteNameError" class="error-message"></div>
-                </div>
-                <div class="form-group">
-                    <label for="editPacienteAtendimento">Número de Atendimento</label>
-                    <input type="text" id="editPacienteAtendimento" class="form-control" placeholder="Número de atendimento">
                 </div>
                 <div class="form-group">
                     <label for="editPacienteSexo">Sexo</label>
@@ -190,9 +188,11 @@
                         <option value="">Selecione</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
-                        <option value="Outro">Outro</option>
-                        <option value="Não informado">Não informado</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="editPacienteIdade">Idade</label>
+                    <input type="number" id="editPacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
                 </div>
                 <div class="form-group">
                     <label for="editPacienteLeito">Leito</label>
@@ -200,8 +200,12 @@
                     <div id="editPacienteLeitoError" class="error-message"></div>
                 </div>
                 <div class="form-group">
-                    <label for="editPacienteTags">Tags (separadas por vírgula)</label>
-                    <input type="text" id="editPacienteTags" class="form-control" placeholder="Ex: UTI, Cardio">
+                    <label for="editPacienteAtendimento">Nº Atendimento</label>
+                    <input type="text" id="editPacienteAtendimento" class="form-control" placeholder="Número de atendimento">
+                </div>
+                <div class="form-group">
+                    <label for="editPacienteSetor">Setor</label>
+                    <input type="text" id="editPacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
                 </div>
             </div>
             <div class="modal-footer">

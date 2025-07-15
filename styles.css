@@ -213,6 +213,10 @@ header {
     height: calc(100vh - 140px); /* Ajuste de altura */
 }
 
+.container.active-screen {
+    padding-bottom: 84px; /* Espaço para o editor de notas */
+}
+
 .filters {
     display: flex;
     gap: 10px;
@@ -563,6 +567,11 @@ header {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 15px;
+}
+
+.modal-footer button {
+    min-height: 40px;
+    padding: 8px 16px;
 }
 
 .toast {
