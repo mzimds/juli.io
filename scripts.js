@@ -83,8 +83,12 @@ const DOM = {
     btnConfirmDelete: document.getElementById('btnConfirmDelete'),
     confirmDeleteInput: document.getElementById('confirmDeleteInput'),
     confirmDeleteError: document.getElementById('confirmDeleteError'),
-    btnNewPacienteMobile: document.getElementById('btnNewPacienteMobile'),
-    quickTags: document.querySelectorAll('.quick-tag')
+    btnNewPaciente: document.getElementById('btnNewPaciente'),
+    quickTags: document.querySelectorAll('.quick-tag'),
+    btnOpenHistory: document.getElementById('btnOpenHistory'),
+    historyModal: document.getElementById('historyModal'),
+    historyList: document.getElementById('historyList'),
+    btnCloseHistory: document.getElementById('btnCloseHistory')
 };
 
 // Estado da aplicação
@@ -101,6 +105,36 @@ function init() {
     renderPatientList();
     setupEventListeners();
     updateResumoPlantao();
+    
+    // Inicializar histórico com dados de exemplo
+    generateSampleHistory();
+}
+
+// Gerar histórico de exemplo
+function generateSampleHistory() {
+    dados.historico = [
+        {
+            id: 2001,
+            tipo: "anotacao",
+            texto: "Adicionada nova anotação para Maria Oliveira",
+            timestamp: "2023-06-25T10:15:00",
+            medico: "Dr. Carlos Silva"
+        },
+        {
+            id: 2002,
+            tipo: "alta",
+            texto: "Carlos Santos recebeu alta médica",
+            timestamp: "2023-06-24T14:30:00",
+            medico: "Dr. Carlos Silva"
+        },
+        {
+            id: 2003,
+            tipo: "novo_paciente",
+            texto: "Novo paciente João Pereira adicionado",
+            timestamp: "2023-06-23T09:45:00",
+            medico: "Dr. Carlos Silva"
+        }
+    ];
 }
 
 // Renderizar lista de pacientes
@@ -175,12 +209,14 @@ function renderPatientList() {
                         <path d="M14 11V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
+                ${paciente.status !== 'discharged' ? `
                 <button class="btn-action alta" data-id="${paciente.id}">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 10L12 13L22 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
+                ` : ''}
             </div>
         `;
         
@@ -268,8 +304,8 @@ function setupEventListeners() {
         });
     });
     
-    // Novo paciente (mobile)
-    DOM.btnNewPacienteMobile.addEventListener('click', openNewPacienteModal);
+    // Novo paciente
+    DOM.btnNewPaciente.addEventListener('click', openNewPacienteModal);
     
     // Modal novo paciente
     DOM.btnCancelPaciente.addEventListener('click', () => {
@@ -318,6 +354,15 @@ function setupEventListeners() {
         
         showToast(`Paciente "${nome}" adicionado com sucesso!`, 'success');
         
+        // Registrar no histórico
+        dados.historico.push({
+            id: Date.now(),
+            tipo: "novo_paciente",
+            texto: `Novo paciente ${nome} adicionado no leito ${leito}`,
+            timestamp: new Date().toISOString(),
+            medico: state.currentDoctor
+        });
+        
         // Selecionar automaticamente
         selectPaciente(novoPaciente.id);
     });
@@ -353,6 +398,15 @@ function setupEventListeners() {
             
             // Atualizar UI
             renderPatientList();
+            
+            // Registrar no histórico
+            dados.historico.push({
+                id: Date.now(),
+                tipo: "passagem_plantao",
+                texto: `Plantão finalizado e passado para ${medicoRecebe}`,
+                timestamp: new Date().toISOString(),
+                medico: state.currentDoctor
+            });
             
             // Fechar modal
             DOM.passPlantaoModal.classList.remove('active');
@@ -433,13 +487,67 @@ function setupEventListeners() {
     // Busca global
     DOM.globalSearch.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
-        
-        if (searchTerm.length > 1) {
-            // Implementar busca aqui
-        } else {
-            DOM.autocompleteContainer.classList.remove('visible');
-        }
+        performSearch(searchTerm);
     });
+    
+    // Histórico
+    DOM.btnOpenHistory.addEventListener('click', () => {
+        renderHistory();
+        DOM.historyModal.classList.add('active');
+    });
+    
+    DOM.btnCloseHistory.addEventListener('click', () => {
+        DOM.historyModal.classList.remove('active');
+    });
+}
+
+// Realizar busca
+function performSearch(searchTerm) {
+    DOM.autocompleteContainer.innerHTML = '';
+    
+    if (searchTerm.length < 2) {
+        DOM.autocompleteContainer.classList.remove('visible');
+        return;
+    }
+    
+    // Buscar pacientes
+    dados.pacientes.forEach(paciente => {
+        // Verificar se o termo está no nome, leito, tags ou anotações
+        if (paciente.nome.toLowerCase().includes(searchTerm)) {
+            addAutocompleteItem(paciente.nome, 'paciente', paciente.id);
+        } else if (paciente.leito.toLowerCase().includes(searchTerm)) {
+            addAutocompleteItem(`Leito ${paciente.leito}: ${paciente.nome}`, 'leito', paciente.id);
+        } else if (paciente.tags.some(tag => tag.toLowerCase().includes(searchTerm))) {
+            addAutocompleteItem(`${paciente.nome} (${paciente.tags.join(', ')})`, 'tag', paciente.id);
+        }
+        
+        // Buscar nas anotações do paciente
+        paciente.anotacoes.forEach(anotacao => {
+            if (anotacao.texto.toLowerCase().includes(searchTerm)) {
+                addAutocompleteItem(anotacao.texto, 'anotacao', paciente.id, anotacao.id);
+            }
+        });
+    });
+    
+    if (DOM.autocompleteContainer.children.length > 0) {
+        DOM.autocompleteContainer.classList.add('visible');
+    } else {
+        DOM.autocompleteContainer.classList.remove('visible');
+    }
+}
+
+// Adicionar item ao autocomplete
+function addAutocompleteItem(text, type, pacienteId, anotacaoId = null) {
+    const item = document.createElement('div');
+    item.className = 'autocomplete-item';
+    item.innerHTML = text;
+    item.addEventListener('click', () => {
+        // Ao clicar, selecionar o paciente e fechar o autocomplete
+        selectPaciente(pacienteId);
+        DOM.autocompleteContainer.classList.remove('visible');
+        DOM.globalSearch.value = '';
+    });
+    DOM.autocompleteContainer.appendChild(item);
 }
 
 // Atualizar resumo do plantão
@@ -497,6 +605,15 @@ function registerAlta(pacienteId) {
     // Atualizar UI
     renderPatientList();
     showToast('Alta registrada com sucesso', 'success');
+    
+    // Registrar no histórico
+    dados.historico.push({
+        id: Date.now(),
+        tipo: "alta",
+        texto: `Alta médica registrada para ${paciente.nome}`,
+        timestamp: new Date().toISOString(),
+        medico: state.currentDoctor
+    });
 }
 
 // Enviar anotação
@@ -522,13 +639,15 @@ function sendNote() {
     }
     
     // Adicionar anotação
-    paciente.anotacoes.push({
+    const novaAnotacao = {
         id: Date.now(),
         texto: noteText,
         timestamp: new Date().toISOString(),
         medico: state.currentDoctor,
         tags: tags
-    });
+    };
+    
+    paciente.anotacoes.push(novaAnotacao);
     
     // Se contém tag #pendencia, criar pendência
     if (tags.includes('#pendencia')) {
@@ -544,6 +663,15 @@ function sendNote() {
     // Atualizar UI
     renderPatientList();
     updateResumoPlantao();
+    
+    // Registrar no histórico
+    dados.historico.push({
+        id: Date.now(),
+        tipo: "anotacao",
+        texto: `Nova anotação para ${paciente.nome}: ${noteText}`,
+        timestamp: new Date().toISOString(),
+        medico: state.currentDoctor
+    });
     
     // Limpar campo
     DOM.noteInput.value = '';
@@ -576,14 +704,74 @@ function openDeleteConfirmationModal(pacienteId) {
 
 // Excluir paciente
 function deletePaciente() {
+    const paciente = dados.pacientes.find(p => p.id === state.currentPaciente);
+    if (!paciente) return;
+    
     const index = dados.pacientes.findIndex(p => p.id === state.currentPaciente);
     if (index !== -1) {
         dados.pacientes.splice(index, 1);
         renderPatientList();
         DOM.confirmDeleteModal.classList.remove('active');
         state.currentPaciente = null;
+        
+        // Registrar no histórico
+        dados.historico.push({
+            id: Date.now(),
+            tipo: "exclusao",
+            texto: `Paciente ${paciente.nome} excluído`,
+            timestamp: new Date().toISOString(),
+            medico: state.currentDoctor
+        });
+        
         showToast('Paciente excluído', 'success');
     }
+}
+
+// Renderizar histórico
+function renderHistory() {
+    DOM.historyList.innerHTML = '';
+    
+    // Ordenar histórico por timestamp (mais recente primeiro)
+    const sortedHistory = [...dados.historico].sort((a, b) => 
+        new Date(b.timestamp) - new Date(a.timestamp)
+    );
+    
+    if (sortedHistory.length === 0) {
+        DOM.historyList.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-content">
+                    <p>Nenhum registro encontrado</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    sortedHistory.forEach(item => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.innerHTML = `
+            <div class="history-type">${getHistoryTypeLabel(item.tipo)}</div>
+            <div class="history-text">${item.texto}</div>
+            <div class="history-meta">
+                <span>${formatDateTime(item.timestamp)}</span>
+                <span>${item.medico}</span>
+            </div>
+        `;
+        DOM.historyList.appendChild(historyItem);
+    });
+}
+
+// Obter label para tipo de histórico
+function getHistoryTypeLabel(tipo) {
+    const labels = {
+        'anotacao': 'Anotação',
+        'alta': 'Alta Médica',
+        'novo_paciente': 'Novo Paciente',
+        'exclusao': 'Exclusão',
+        'passagem_plantao': 'Passagem de Plantão'
+    };
+    return labels[tipo] || tipo;
 }
 
 // Mostrar toast

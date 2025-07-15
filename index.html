@@ -31,6 +31,9 @@
             </div>
             
             <div class="header-info">
+                <button class="btn" id="btnOpenHistory">
+                    Histórico
+                </button>
                 <button class="btn" id="btnFinalizarPlantao">
                     Finalizar Plantão
                 </button>
@@ -54,8 +57,8 @@
             <!-- Pacientes serão carregados aqui dinamicamente -->
         </div>
 
-        <!-- Botão Flutuante para Novo Paciente (Mobile) -->
-        <button class="floating-btn" id="btnNewPacienteMobile">
+        <!-- Botão Flutuante para Novo Paciente -->
+        <button class="floating-btn" id="btnNewPaciente">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
                 <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -198,6 +201,21 @@
                 <button class="btn btn-delete-disabled" id="btnConfirmDelete" disabled>
                     Excluir
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Histórico -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2 class="modal-title">Histórico de Atividades</h2>
+            </div>
+            <div class="history-list" id="historyList">
+                <!-- Itens de histórico serão carregados aqui -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="btnCloseHistory">Fechar</button>
             </div>
         </div>
     </div>
