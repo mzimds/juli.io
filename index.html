@@ -15,326 +15,70 @@
 
     <!-- Header -->
     <header>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
-            <span></span>
-        </button>
         <div class="logo">
             nauren
         </div>
         
-        <!-- Tabs para desktop -->
-        <div class="main-tabs desktop-tabs">
-            <div class="main-tab active" data-tab="resumo">Resumo</div>
-            <div class="main-tab" data-tab="diario">Diário Clínico</div>
-            <div class="main-tab" data-tab="historico">Histórico</div>
-        </div>
-        
-        <div class="header-info">
-            <!-- Botão passar plantão no header (desktop) -->
-            <button class="btn btn-pass btn-pass-header" id="btnPassPlantaoHeader">
-                Passar Plantão
-            </button>
-            <div class="user-info">
-                <span>Dr. Carlos Silva</span>
-            </div>
-        </div>
-    </header>
-
-    <!-- Tabs para mobile -->
-    <div class="main-tabs mobile-tabs">
-        <div class="main-tab active" data-tab="resumo">Resumo</div>
-        <div class="main-tab" data-tab="diario">Diário Clínico</div>
-        <div class="main-tab" data-tab="historico">Histórico</div>
-    </div>
-
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar card" id="sidebar">
-            <div class="section-header">
-                <div class="section-title">Setores</div>
-                <button class="btn" id="btnNewSetor">
-                    Novo
-                </button>
-            </div>
-            
+        <div class="header-actions">
+            <!-- Botão de busca global -->
             <div class="search-container">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Buscar paciente ou setor...">
+                    <input type="text" id="globalSearch" placeholder="Buscar pacientes ou anotações...">
                     <div class="autocomplete-container" id="autocompleteContainer">
                         <!-- Resultados do autocomplete serão exibidos aqui -->
                     </div>
                 </div>
             </div>
             
-            <div class="scrollable-content" id="setoresList">
-                <!-- Setores serão carregados aqui dinamicamente -->
-            </div>
-            
-            <!-- Botão "Passar Plantão" dentro da sidebar (mobile) -->
-            <div class="pass-plantao-sidebar" id="passPlantaoSidebar">
-                <button class="btn btn-pass" id="btnPassPlantaoSidebar">
-                    Passar Plantão
+            <div class="header-info">
+                <button class="btn" id="btnFinalizarPlantao">
+                    Finalizar Plantão
                 </button>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content card">
-            <!-- Conteúdo da aba Resumo -->
-            <div class="tab-content" id="resumoContent">
-                <!-- Conteúdo do Resumo (vazio) -->
-                <div class="empty-state">
-                    <div class="empty-content">
-                        <h3>Resumo</h3>
-                        <p>Em breve, informações resumidas sobre o plantão.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Conteúdo da aba Diário Clínico -->
-            <div class="tab-content" id="diarioContent">
-                <div class="patient-header" id="patientHeader">
-                    <div class="patient-title-container" id="patientToggle">
-                        <div class="patient-title-wrapper">
-                            <div class="patient-title" id="patientTitle">
-                                <span>Selecione um paciente</span>
-                            </div>
-                        </div>
-                        <!-- Container de ações do paciente -->
-                        <div class="patient-actions" id="patientActions" style="display: none;">
-                            <button class="btn-context" id="btnContextMenu">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="12" cy="6" r="1.5" fill="currentColor"/>
-                                    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
-                                    <circle cx="12" cy="18" r="1.5" fill="currentColor"/>
-                                </svg>
-                            </button>
-                            <div class="context-menu" id="contextMenu">
-                                <div class="context-item" data-action="editar">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M13.9456 5.2396L17.702 8.99604M4.87613 19.1239L10.1661 18.2493C10.4778 18.1993 10.7738 18.0765 11.0316 17.8904L19.3097 11.7445C19.7139 11.4523 19.9999 11.0251 20.1267 10.5388C20.2535 10.0525 20.2061 9.53533 19.9928 9.07736L18.652 6.34801C18.4386 5.88999 18.0733 5.52465 17.6153 5.3113C14.9151 4.09557 12.043 4.58599 9.99996 6.62897L4.10958 12.9684C3.92351 13.2262 3.80071 13.5222 3.75068 13.8339L2.87613 19.1239C2.84244 19.3268 2.86734 19.5351 2.94818 19.7257C3.02902 19.9163 3.16254 20.0816 3.33365 20.2022C3.50476 20.3229 3.70658 20.394 3.91578 20.4075C4.12497 20.4209 4.33347 20.3761 4.51776 20.2781L9.80777 19.4035C10.1195 19.3535 10.4155 19.2307 10.6733 19.0446L13.9456 5.2396Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Editar
-                                </div>
-                                <div class="context-item" data-action="alta">Registrar Alta</div>
-                                <div class="context-item" data-action="pendencia">Criar Pendência</div>
-                                <div class="context-item" data-action="excluir" style="color: var(--danger);">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M3 6H5H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Excluir
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="patient-details" id="patientDetails" style="display: none;">
-                        <!-- Detalhes do paciente serão carregados aqui -->
-                    </div>
-                </div>
-                
-                <!-- Área de pendências individuais -->
-                <div class="pendencias-container" id="pendenciasContainer" style="display: none;">
-                    <!-- Pendências serão carregadas aqui dinamicamente -->
-                </div>
-                
-                <div class="editor-container" id="editorContainer">
-                    <!-- Chat de mensagens -->
-                    <div class="editor-content active" id="chat">
-                        <div class="editor-header">
-                            <!-- Título removido conforme solicitado -->
-                            <div class="quick-actions">
-                                <div class="quick-action" data-text="PA: 120/80 mmHg | FC: 78 bpm | FR: 16 rpm | Temp: 36.5°C">Sinais Vitais</div>
-                                <div class="quick-action" data-text="Exame físico: abdômen flácido, indolor à palpação">Exame Físico</div>
-                                <div class="quick-action" data-text="Exames laboratoriais dentro dos parâmetros normais">Exames</div>
-                                <div class="quick-action" data-text="Paciente relata melhora do quadro">Melhora</div>
-                                <div class="quick-action" data-text="Paciente refere dor intensa">Dor</div>
-                                <div class="quick-action" data-text="Paciente consciente, orientado, em bom estado geral">Estado Geral</div>
-                                <div class="quick-action" data-text="Queixa principal: dor abdominal difusa há 2 dias">Queixas</div>
-                                <div class="quick-action" data-text="Conduta: manter hidratação venosa, analgesia e reavaliação em 6h">Conduta</div>
-                                <div class="quick-action" data-text="Prescrição: dipirona 1g IV 6/6h, omeprazol 40mg VO 1x/dia">Prescrição</div>
-                                <div class="quick-action" data-text="Paciente evolui estável, sem intercorrências">Evolução Estável</div>
-                                <div class="quick-action" data-text="Encaminhado para realização de exames laboratoriais e imagem">Encaminhamento</div>
-                                <div class="quick-action" data-text="Informado à equipe de enfermagem para monitorização contínua dos sinais vitais">Enfermagem</div>
-                            </div>
-                        </div>
-                        <div class="chat-area">
-                            <div class="chat-history-container" id="chatHistoryContainer">
-                                <div class="chat-history" id="chatHistory">
-                                    <!-- Mensagens serão carregadas aqui -->
-                                </div>
-                            </div>
-                            <div class="message-input-container">
-                                <textarea class="message-input" id="messageInput" placeholder="Escreva uma nova anotação clínica..." rows="1"></textarea>
-                                <button class="btn-send" id="btnSendMessage" disabled>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Fim da aba Diário Clínico -->
-            
-            <!-- Conteúdo da aba Histórico -->
-            <div class="tab-content" id="historicoContent">
-                <!-- Conteúdo do Histórico (vazio) -->
-                <div class="empty-state">
-                    <div class="empty-content">
-                        <h3>Histórico</h3>
-                        <p>Em breve, histórico completo das anotações.</p>
-                    </div>
+                <div class="user-info">
+                    <span>Dr. Carlos Silva</span>
                 </div>
             </div>
         </div>
+    </header>
+
+    <div class="container">
+        <!-- Filtros de status -->
+        <div class="filters">
+            <button class="filter-btn active" data-status="active">Ativos</button>
+            <button class="filter-btn" data-status="discharged">Alta</button>
+            <button class="filter-btn" data-status="pending">Pendentes</button>
+        </div>
+
+        <!-- Lista de Pacientes -->
+        <div class="patient-list" id="patientList">
+            <!-- Pacientes serão carregados aqui dinamicamente -->
+        </div>
+
+        <!-- Botão Flutuante para Novo Paciente (Mobile) -->
+        <button class="floating-btn" id="btnNewPacienteMobile">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
     </div>
 
-    <!-- Modal Passar Plantão -->
-    <div class="modal" id="passPlantaoModal">
-        <div class="modal-content card">
-            <div class="modal-header">
-                <h2 class="modal-title">Passagem de Plantão</h2>
+    <!-- Área de Anotações Fixa -->
+    <div class="note-editor" id="noteEditor">
+        <textarea class="note-input" id="noteInput" placeholder="Digite uma nova anotação... (Use # para tags como #evolucao, #prescricao)" rows="1"></textarea>
+        <div class="editor-actions">
+            <div class="quick-tags">
+                <div class="quick-tag" data-tag="#evolucao">#evolucao</div>
+                <div class="quick-tag" data-tag="#prescricao">#prescricao</div>
+                <div class="quick-tag" data-tag="#exame">#exame</div>
+                <div class="quick-tag" data-tag="#pendencia">#pendencia</div>
             </div>
-            
-            <div>
-                <div class="form-group">
-                    <label>Médico Atual</label>
-                    <input type="text" class="form-control" value="Dr. Carlos Silva" readonly>
-                </div>
-                
-                <div class="form-group">
-                    <label>Médico que Receberá</label>
-                    <select class="form-control" id="medicoRecebe">
-                        <option value="">Selecione o médico</option>
-                        <option value="Dra. Ana Santos">Dra. Ana Santos</option>
-                        <option value="Dr. Pedro Oliveira">Dr. Pedro Oliveira</option>
-                        <option value="Dra. Juliana Costa">Dra. Juliana Costa</option>
-                    </select>
-                    <div class="error-message" id="medicoRecebeError">Selecione um médico</div>
-                </div>
-                
-                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px; margin-bottom: 25px;">
-                    <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkVisitados">
-                        <span>Todos os pacientes foram visitados</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkRepassado">
-                        <span>Plantão repassado para o médico seguinte</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--darker);" id="checkPrescricoes">
-                        <span>Todas as prescrições foram atualizadas</span>
-                    </label>
-                </div>
-                
-                <div class="form-group">
-                    <label>Assinatura Digital</label>
-                    <input type="text" class="form-control" id="assinatura" 
-                           placeholder="Digite seu nome completo para assinar" readonly>
-                </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button class="btn" id="btnCancelPass" style="background: rgba(0,0,0,0.08); color: var(--dark);">
-                    Cancelar
-                </button>
-                <button class="btn btn-success" id="btnConfirmPass">
-                    Confirmar Passagem
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Novo Setor -->
-    <div class="modal" id="newSetorModal">
-        <div class="modal-content card">
-            <div class="modal-header">
-                <h2 class="modal-title">Adicionar Novo Setor</h2>
-            </div>
-            
-            <div class="progress-container">
-                <div class="progress-header">
-                    <span>Setores: <span id="currentSetorCount">0</span>/<span id="maxSetor">5</span></span>
-                    <span id="maxSetorMessage" style="color: var(--danger); display: none;">Máximo atingido</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Nome do Setor</label>
-                <input type="text" class="form-control" id="setorName" placeholder="Ex: UTI Adulto, Emergência">
-                <div class="error-message" id="setorNameError">Informe o nome do setor</div>
-            </div>
-            
-            <!-- Turnos personalizados -->
-            <div id="turnosContainer">
-                <!-- Turnos serão adicionados dinamicamente aqui -->
-            </div>
-            <button class="btn-add-turno" id="btnAddTurno">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <button class="btn-send" id="btnSendNote">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                Adicionar Turno
             </button>
-            <div class="error-message" id="turnosError">Adicione pelo menos um turno</div>
-            
-            <div class="modal-footer">
-                <button class="btn" id="btnCancelSetor" style="background: rgba(0,0,0,0.08); color: var(--dark);">
-                    Cancelar
-                </button>
-                <button class="btn btn-success" id="btnSaveSetor">
-                    Salvar Setor
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Editar Setor -->
-    <div class="modal" id="editSetorModal">
-        <div class="modal-content card">
-            <div class="modal-header">
-                <h2 class="modal-title">Editar Setor</h2>
-            </div>
-            
-            <div class="form-group">
-                <label>Nome do Setor</label>
-                <input type="text" class="form-control" id="editSetorName" placeholder="Ex: UTI Adulto, Emergência">
-                <div class="error-message" id="editSetorNameError">Informe o nome do setor</div>
-            </div>
-            
-            <!-- Turnos personalizados -->
-            <div id="editTurnosContainer">
-                <!-- Turnos serão adicionados dinamicamente aqui -->
-            </div>
-            <button class="btn-add-turno" id="btnAddEditTurno">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                Adicionar Turno
-            </button>
-            <div class="error-message" id="editTurnosError">Adicione pelo menos um turno</div>
-            
-            <div class="modal-footer">
-                <button class="btn btn-danger" id="btnDeleteSetor" style="margin-right: auto;">
-                    Excluir
-                </button>
-                <button class="btn" id="btnCancelEditSetor" style="background: rgba(0,0,0,0.08); color: var(--dark);">
-                    Cancelar
-                </button>
-                <button class="btn btn-success" id="btnSaveEditSetor">
-                    Salvar
-                </button>
-            </div>
         </div>
     </div>
 
@@ -351,36 +95,16 @@
                 <div class="error-message" id="pacienteNameError">Informe o nome do paciente</div>
             </div>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                <div class="form-group">
-                    <label>Idade</label>
-                    <input type="number" class="form-control" id="pacienteIdade" placeholder="Idade" min="0" max="120">
-                    <div class="error-message" id="pacienteIdadeError">Informe uma idade válida</div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Sexo Biológico</label>
-                    <select class="form-control" id="pacienteSexo">
-                        <option value="">Selecione</option>
-                        <option value="M">Masculino</option>
-                        <option value="F">Feminino</option>
-                    </select>
-                    <div class="error-message" id="pacienteSexoError">Selecione o sexo biológico</div>
-                </div>
+            <div class="form-group">
+                <label>Leito</label>
+                <input type="text" class="form-control" id="pacienteLeito" placeholder="Número do leito">
+                <div class="error-message" id="pacienteLeitoError">Informe o número do leito</div>
             </div>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                <div class="form-group">
-                    <label>Leito</label>
-                    <input type="text" class="form-control" id="pacienteLeito" placeholder="Número do leito">
-                    <div class="error-message" id="pacienteLeitoError">Informe o número do leito</div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Nº Atendimento</label>
-                    <input type="text" class="form-control" id="pacienteAtendimento" placeholder="Número do atendimento">
-                    <div class="error-message" id="pacienteAtendimentoError">Informe o número do atendimento</div>
-                </div>
+            <div class="form-group">
+                <label>Tags (opcional)</label>
+                <input type="text" class="form-control" id="pacienteTags" placeholder="Ex: UTI, Emergência">
+                <div class="hint">Separe com vírgulas</div>
             </div>
             
             <div class="modal-footer">
@@ -394,152 +118,53 @@
         </div>
     </div>
 
-    <!-- Modal Editar Paciente -->
-    <div class="modal" id="editPacienteModal">
+    <!-- Modal Passar Plantão -->
+    <div class="modal" id="passPlantaoModal">
         <div class="modal-content card">
             <div class="modal-header">
-                <h2 class="modal-title">Editar Paciente</h2>
+                <h2 class="modal-title">Finalizar Plantão</h2>
+            </div>
+            
+            <div class="resumo-plantao">
+                <div class="resumo-item">
+                    <span>Pacientes Atendidos:</span>
+                    <strong id="resumoPacientes">0</strong>
+                </div>
+                <div class="resumo-item">
+                    <span>Anotações Realizadas:</span>
+                    <strong id="resumoAnotacoes">0</strong>
+                </div>
+                <div class="resumo-item">
+                    <span>Pendências Resolvidas:</span>
+                    <strong id="resumoPendencias">0</strong>
+                </div>
             </div>
             
             <div class="form-group">
-                <label>Nome Completo</label>
-                <input type="text" class="form-control" id="editPacienteName" placeholder="Nome do paciente">
-                <div class="error-message" id="editPacienteNameError">Informe o nome do paciente</div>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                <div class="form-group">
-                    <label>Idade</label>
-                    <input type="number" class="form-control" id="editPacienteIdade" placeholder="Idade" min="0" max="120">
-                    <div class="error-message" id="editPacienteIdadeError">Informe uma idade válida</div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Sexo Biológico</label>
-                    <select class="form-control" id="editPacienteSexo">
-                        <option value="">Selecione</option>
-                        <option value="M">Masculino</option>
-                        <option value="F">Feminino</option>
-                    </select>
-                    <div class="error-message" id="editPacienteSexoError">Selecione o sexo biológico</div>
-                </div>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                <div class="form-group">
-                    <label>Leito</label>
-                    <input type="text" class="form-control" id="editPacienteLeito" placeholder="Número do leito">
-                    <div class="error-message" id="editPacienteLeitoError">Informe o número do leito</div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Nº Atendimento</label>
-                    <input type="text" class="form-control" id="editPacienteAtendimento" placeholder="Número do atendimento">
-                    <div class="error-message" id="editPacienteAtendimentoError">Informe o número do atendimento</div>
-                </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button class="btn" id="btnCancelEditPaciente" style="background: rgba(0,0,0,0.08); color: var(--dark);">
-                    Cancelar
-                </button>
-                <button class="btn btn-success" id="btnSaveEditPaciente">
-                    Salvar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Alta -->
-    <div class="modal" id="altaModal">
-        <div class="modal-content card">
-            <div class="modal-header">
-                <h2 class="modal-title">Registrar Alta</h2>
-            </div>
-            
-            <div class="form-group">
-                <label>Tipo de Alta</label>
-                <select class="form-control" id="tipoAlta">
-                    <option value="">Selecione o tipo de alta</option>
-                    <option value="melhora">Alta por melhora clínica</option>
-                    <option value="pedido">Alta a pedido</option>
-                    <option value="domiciliar">Alta com encaminhamento para cuidados domiciliares</option>
-                    <option value="retorno">Alta com retorno programado</option>
-                    <option value="obito">Alta por óbito</option>
-                    <option value="transferencia">Alta por transferência</option>
-                    <option value="administrativa">Alta administrativa</option>
-                    <option value="contra_indicacao">Alta contra indicação médica</option>
+                <label>Médico que Receberá</label>
+                <select class="form-control" id="medicoRecebe">
+                    <option value="">Selecione o médico</option>
+                    <option value="Dra. Ana Santos">Dra. Ana Santos</option>
+                    <option value="Dr. Pedro Oliveira">Dr. Pedro Oliveira</option>
+                    <option value="Dra. Juliana Costa">Dra. Juliana Costa</option>
                 </select>
-                <div class="error-message" id="tipoAltaError">Selecione o tipo de alta</div>
+                <div class="error-message" id="medicoRecebeError">Selecione um médico</div>
             </div>
             
             <div class="form-group">
-                <label>Data e Hora</label>
-                <input type="datetime-local" class="form-control" id="dataAlta">
-                <div class="error-message" id="dataAltaError">Informe a data e hora da alta</div>
-            </div>
-            
-            <div class="form-group">
-                <label>Observações</label>
-                <textarea class="form-control" id="obsAlta" rows="3" placeholder="Detalhes da alta"></textarea>
+                <label>Assinatura Digital</label>
+                <input type="text" class="form-control" id="assinatura" 
+                       placeholder="Digite seu nome completo para assinar" readonly>
             </div>
             
             <div class="modal-footer">
-                <button class="btn" id="btnCancelAlta" style="background: rgba(0,0,0,0.08); color: var(--dark);">
+                <button class="btn" id="btnCancelPass" style="background: rgba(0,0,0,0.08); color: var(--dark);">
                     Cancelar
                 </button>
-                <button class="btn btn-success" id="btnConfirmAlta">
-                    Confirmar Alta
+                <button class="btn btn-success" id="btnConfirmPass">
+                    Confirmar
                 </button>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal de Pendência -->
-    <div class="modal" id="pendenciaModal">
-        <div class="modal-content card">
-            <div class="modal-header">
-                <h2 class="modal-title">Criar Pendência</h2>
-            </div>
-            <div class="form-group">
-                <label>Título</label>
-                <select class="form-control" id="pendenciaTitulo">
-                    <option value="">Selecione um título</option>
-                    <option value="Exames pendentes">Exames pendentes</option>
-                    <option value="Medicação não administrada">Medicação não administrada</option>
-                    <option value="Alta pendente">Alta pendente</option>
-                    <option value="Transferência pendente">Transferência pendente</option>
-                    <option value="Outra">Outra</option>
-                </select>
-                <div class="error-message" id="pendenciaTituloError"></div>
-            </div>
-            <div class="form-group" id="outraPendenciaGroup" style="display: none;">
-                <label>Especificar</label>
-                <input type="text" class="form-control" id="outraPendencia" placeholder="Descreva a pendência">
-            </div>
-            <div class="form-group">
-                <label>Descrição</label>
-                <textarea class="form-control" id="pendenciaDesc" rows="3" placeholder="Descreva a pendência"></textarea>
-                <div class="error-message" id="pendenciaDescError"></div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" id="btnCancelPendencia" style="background: rgba(0,0,0,0.08); color: var(--dark);">
-                    Cancelar
-                </button>
-                <button class="btn btn-success" id="btnSavePendencia">
-                    Salvar Pendência
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Seleção de Paciente (Mobile) -->
-    <div class="modal" id="selectionModal">
-        <div class="modal-content card selection-modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Selecione um Paciente</h2>
-            </div>
-            <div class="scrollable-content" id="selectionModalContent"></div>
         </div>
     </div>
 
@@ -571,34 +196,6 @@
                     É uma Alta
                 </button>
                 <button class="btn btn-delete-disabled" id="btnConfirmDelete" disabled>
-                    Excluir
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Confirmação de Exclusão de Setor -->
-    <div class="modal" id="confirmDeleteSetorModal">
-        <div class="modal-content delete-modal-content">
-            <div class="delete-modal-header">
-                <h2 class="delete-modal-title">Confirmar Exclusão de Setor</h2>
-            </div>
-            <div class="delete-modal-body">
-                <p>Tem certeza que deseja excluir o setor <strong id="setorNameToDelete"></strong>?</p>
-                <div class="delete-warning">
-                    <p><strong>Esta ação não pode ser desfeita</strong> e todos os pacientes e dados relacionados serão perdidos.</p>
-                </div>
-                <div class="form-group" style="margin-top: 20px;">
-                    <label>Para confirmar, digite "excluir" no campo abaixo.</label>
-                    <input type="text" class="form-control" id="confirmDeleteSetorInput" placeholder="Digite excluir">
-                    <div class="error-message" id="confirmDeleteSetorError" style="display: none;">Digite "excluir" para confirmar</div>
-                </div>
-            </div>
-            <div class="delete-modal-footer">
-                <button class="btn btn-secondary" id="btnCancelDeleteSetor">
-                    Cancelar
-                </button>
-                <button class="btn btn-delete-disabled" id="btnConfirmDeleteSetor" disabled>
                     Excluir
                 </button>
             </div>
