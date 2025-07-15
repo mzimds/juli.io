@@ -20,6 +20,21 @@
         </div>
         
         <div class="header-actions">
+            <!-- Botão de busca global -->
+            <div class="search-container">
+                <div class="search-box">
+                    <button class="search-icon" id="searchToggle">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <input type="text" id="globalSearch" placeholder="Buscar pacientes ou anotações...">
+                    <div class="autocomplete-container" id="autocompleteContainer">
+                        <!-- Resultados do autocomplete serão exibidos aqui -->
+                    </div>
+                </div>
+            </div>
+            
             <div class="header-info">
                 <div class="user-info desktop-only">
                     <span>Dr. Carlos Silva</span>
@@ -54,23 +69,6 @@
             <button class="filter-btn active" data-status="active">Ativos</button>
             <button class="filter-btn" data-status="discharged">Alta</button>
             <button class="filter-btn" data-status="history">Histórico</button>
-        </div>
-    </div>
-
-    <!-- Mobile Search Container -->
-    <div class="mobile-search-container">
-        <div class="search-container">
-            <div class="search-box">
-                <button class="search-icon" id="searchToggleMobile">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <input type="text" id="globalSearchMobile" placeholder="Buscar pacientes ou anotações...">
-                <div class="autocomplete-container" id="autocompleteContainerMobile">
-                    <!-- Resultados do autocomplete serão exibidos aqui -->
-                </div>
-            </div>
         </div>
     </div>
 
@@ -135,28 +133,34 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label for="pacienteName">Nome</label>
                     <input type="text" id="pacienteName" class="form-control" placeholder="Nome completo">
                     <div id="pacienteNameError" class="error-message"></div>
                 </div>
                 <div class="form-group">
+                    <label for="pacienteSexo">Sexo</label>
                     <select id="pacienteSexo" class="form-control">
-                        <option value="">Selecione o sexo</option>
+                        <option value="">Selecione</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="pacienteIdade">Idade</label>
                     <input type="number" id="pacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
                 </div>
                 <div class="form-group">
+                    <label for="pacienteLeito">Leito</label>
                     <input type="text" id="pacienteLeito" class="form-control" placeholder="Número do leito">
                     <div id="pacienteLeitoError" class="error-message"></div>
                 </div>
                 <div class="form-group">
+                    <label for="pacienteAtendimento">Nº Atendimento</label>
                     <input type="text" id="pacienteAtendimento" class="form-control" placeholder="Número de atendimento">
                 </div>
                 <div class="form-group">
-                    <input type="text" id="pacienteSetor" class="form-control" placeholder="Setor (Ex: UTI, Cardio)">
+                    <label for="pacienteSetor">Setor</label>
+                    <input type="text" id="pacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
                 </div>
             </div>
             <div class="modal-footer">
@@ -174,28 +178,34 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label for="editPacienteName">Nome</label>
                     <input type="text" id="editPacienteName" class="form-control" placeholder="Nome completo">
                     <div id="editPacienteNameError" class="error-message"></div>
                 </div>
                 <div class="form-group">
+                    <label for="editPacienteSexo">Sexo</label>
                     <select id="editPacienteSexo" class="form-control">
-                        <option value="">Selecione o sexo</option>
+                        <option value="">Selecione</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="editPacienteIdade">Idade</label>
                     <input type="number" id="editPacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
                 </div>
                 <div class="form-group">
+                    <label for="editPacienteLeito">Leito</label>
                     <input type="text" id="editPacienteLeito" class="form-control" placeholder="Número do leito">
                     <div id="editPacienteLeitoError" class="error-message"></div>
                 </div>
                 <div class="form-group">
+                    <label for="editPacienteAtendimento">Nº Atendimento</label>
                     <input type="text" id="editPacienteAtendimento" class="form-control" placeholder="Número de atendimento">
                 </div>
                 <div class="form-group">
-                    <input type="text" id="editPacienteSetor" class="form-control" placeholder="Setor (Ex: UTI, Cardio)">
+                    <label for="editPacienteSetor">Setor</label>
+                    <input type="text" id="editPacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
                 </div>
             </div>
             <div class="modal-footer">
@@ -223,11 +233,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="medicoRecebe" class="form-control" placeholder="Passar plantão para...">
+                    <label for="medicoRecebe">Passar plantão para:</label>
+                    <input type="text" id="medicoRecebe" class="form-control" placeholder="Nome do médico">
                     <div id="medicoRecebeError" class="error-message"></div>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="assinatura" class="form-control" readonly placeholder="Assinatura">
+                    <label for="assinatura">Assinatura</label>
+                    <input type="text" id="assinatura" class="form-control" readonly>
                 </div>
             </div>
             <div class="modal-footer">

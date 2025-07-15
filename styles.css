@@ -77,32 +77,6 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.filters {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-    justify-content: center; /* Centraliza os botões */
-}
-
-.filter-btn {
-    padding: 6px 14px;
-    background: var(--light-gray);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    min-height: 36px;
-}
-
-.filter-btn.active {
-    background: var(--primary);
-    color: white;
-    border-color: transparent;
-}
-
 .header-actions {
     display: flex;
     flex: 1;
@@ -237,11 +211,35 @@ header {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 140px); /* Ajuste de altura */
-    padding-top: 60px; /* Espaço para a barra de busca móvel */
 }
 
 .container.active-screen {
     padding-bottom: 84px; /* Espaço para o editor de notas */
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 6px 14px;
+    background: var(--light-gray);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    min-height: 36px;
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: transparent;
 }
 
 .patient-list {
@@ -251,7 +249,6 @@ header {
     overflow-y: auto;
     flex: 1;
     max-height: 100%;
-    padding-top: 10px; /* Espaço para a barra de busca móvel */
 }
 
 .paciente-card {
@@ -265,9 +262,9 @@ header {
     display: flex;
     flex-direction: column;
     word-break: break-word;
-    height: 220px;
+    height: auto;
     min-height: 220px;
-    max-height: 220px;
+    max-height: 250px;
     overflow: hidden;
     position: relative;
 }
@@ -539,6 +536,13 @@ header {
     margin-bottom: 15px;
 }
 
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
 .form-control {
     width: 100%;
     padding: 10px 12px;
@@ -774,31 +778,10 @@ header {
     background: var(--primary-dark);
 }
 
-.mobile-search-container {
-    display: none;
-    position: fixed;
-    top: 110px; /* Header (60px) + Filtros (50px) */
-    left: 0;
-    right: 0;
-    background: white;
-    z-index: 40;
-    padding: 10px 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
 @media (max-width: 768px) {
-    .mobile-search-container {
-        display: block;
-    }
-    
     .patient-list {
         grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
-        padding-top: 60px; /* Espaço para a barra de busca */
-    }
-    
-    .container {
-        padding-top: 0;
-        height: calc(100vh - 170px); /* Ajuste para nova altura */
+        gap: 8px;
     }
     
     .header-actions {
@@ -807,10 +790,14 @@ header {
         gap: 10px;
         flex-wrap: wrap;
         height: auto;
+        padding: 5px 0;
     }
     
     .search-container {
-        display: none; /* Esconde a busca no header no mobile */
+        max-width: none;
+        flex: 1 100%;
+        order: 3;
+        margin-top: 10px;
     }
     
     .header-info {
@@ -834,6 +821,8 @@ header {
     .filter-btn {
         flex-shrink: 0;
         min-height: 40px;
+        font-size: 0.8rem;
+        padding: 6px 10px;
     }
 
     .header-info .btn {
@@ -849,6 +838,18 @@ header {
     .hamburger-menu {
         display: block;
         min-height: 40px;
+        background: none;
+        border: none;
+        padding: 5px;
+    }
+
+    .search-icon {
+        display: flex;
+    }
+    
+    .search-box input {
+        width: 100% !important; /* Sempre expandido no mobile */
+        padding-left: 40px;
     }
     
     .mobile-menu {
@@ -870,6 +871,7 @@ header {
     
     .mobile-menu.active {
         transform: translateX(0);
+        display: flex;
     }
     
     .user-info-mobile {
@@ -881,7 +883,30 @@ header {
     }
 
     .paciente-card {
-        height: 220px;
+        height: auto;
+        min-height: 200px;
+        max-height: 220px;
+    }
+    
+    .note-editor {
+        padding: 10px;
+        z-index: 110;
+    }
+    
+    .fab-container {
+        bottom: 100px;
+        right: 15px;
+    }
+    
+    .container {
+        height: calc(100vh - 130px);
+    }
+    
+    .toast {
+        left: 20px;
+        right: 20px;
+        width: calc(100% - 40px);
+        max-width: none;
     }
 }
 
@@ -892,10 +917,6 @@ header {
     
     .hamburger-menu {
         display: none;
-    }
-    
-    .mobile-search-container {
-        display: none !important;
     }
 }
 
@@ -910,6 +931,7 @@ header {
     
     .modal-content {
         padding: 15px;
+        width: 95%;
     }
     
     .history-filters {
@@ -924,8 +946,8 @@ header {
     }
 
     .paciente-card {
-        height: 220px;
-        min-height: 220px;
+        height: auto;
+        min-height: 200px;
         max-height: 220px;
         padding: 12px;
     }
@@ -944,11 +966,12 @@ header {
     }
     
     .container {
-        height: calc(100vh - 130px);
+        height: calc(100vh - 125px);
     }
     
-    .mobile-search-container {
-        top: 105px; /* Ajuste fino para telas menores */
+    .fab {
+        width: 44px;
+        height: 44px;
     }
 }
 
@@ -957,6 +980,12 @@ header {
     font-size: 0.8rem;
     margin-top: 5px;
     display: none;
+}
+
+.hint {
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-top: 5px;
 }
 
 .delete-modal-content {
@@ -1074,4 +1103,48 @@ header {
 
 .container {
     overflow-x: hidden;
+}
+
+/* Melhorias de acessibilidade */
+button:focus, input:focus, textarea:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Animação suave para elementos interativos */
+.filter-btn, .btn, .btn-action, .fab {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Espaçamento adicional para elementos em mobile */
+@media (max-width: 768px) {
+    .paciente-actions {
+        padding-top: 8px;
+    }
+    
+    .note-input {
+        min-height: 50px;
+        font-size: 0.9rem;
+    }
+    
+    .btn-send {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* Ajuste para evitar sobreposição do teclado em mobile */
+@media (max-height: 600px) {
+    .container {
+        height: calc(100vh - 120px);
+    }
+    
+    .note-editor {
+        position: relative;
+        padding-top: 10px;
+    }
+    
+    .fab-container {
+        bottom: 70px;
+    }
 }

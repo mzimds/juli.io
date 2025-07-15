@@ -7,8 +7,8 @@ const dados = {
 // Elementos DOM
 const DOM = {
     patientList: document.getElementById('patientList'),
-    globalSearch: document.getElementById('globalSearchMobile'), // Usar a busca móvel
-    autocompleteContainer: document.getElementById('autocompleteContainerMobile'),
+    globalSearch: document.getElementById('globalSearch'),
+    autocompleteContainer: document.getElementById('autocompleteContainer'),
     toast: document.getElementById('toast'),
     toastMessage: document.getElementById('toast-message'),
     newPacienteModal: document.getElementById('newPacienteModal'),
@@ -58,8 +58,9 @@ const DOM = {
     mobileMenu: document.getElementById('mobileMenu'),
     noteEditor: document.getElementById('noteEditor'),
     btnNewPacienteFab: document.getElementById('btnNewPacienteFab'),
-    searchToggle: document.getElementById('searchToggleMobile'),
-    container: document.querySelector('.container')
+    searchToggle: document.getElementById('searchToggle'),
+    container: document.querySelector('.container'),
+    searchContainer: document.getElementById('searchContainer')
 };
 
 // Estado da aplicação
@@ -161,14 +162,14 @@ function renderPatientList() {
             
             <div class="paciente-actions">
                 ${paciente.status !== 'discharged' ? `
-                <button class="btn-action edit" data-id="${paciente.id}">
+                <button class="btn-action edit" data-id="${paciente.id}" aria-label="Editar paciente">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
                 ` : ''}
-                <button class="btn-action delete" data-id="${paciente.id}">
+                <button class="btn-action delete" data-id="${paciente.id}" aria-label="Excluir paciente">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 6H5H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -177,7 +178,7 @@ function renderPatientList() {
                     </svg>
                 </button>
                 ${paciente.status !== 'discharged' ? `
-                <button class="btn-action alta" data-id="${paciente.id}">
+                <button class="btn-action alta" data-id="${paciente.id}" aria-label="Dar alta">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 10L12 13L22 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -257,6 +258,11 @@ function selectPaciente(pacienteId) {
     const selectedCard = document.querySelector(`.paciente-card[data-id="${pacienteId}"]`);
     if (selectedCard) {
         selectedCard.classList.add('active');
+        
+        // Rolagem suave para o card selecionado
+        if (window.innerWidth < 768) {
+            selectedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
     }
     
     // Habilitar/desabilitar botão de enviar
@@ -264,7 +270,9 @@ function selectPaciente(pacienteId) {
     
     // Focar no campo de anotação
     if (state.currentFilter === 'active') {
-        DOM.noteInput.focus();
+        setTimeout(() => {
+            DOM.noteInput.focus();
+        }, 100);
     }
 }
 
@@ -493,7 +501,7 @@ function setupEventListeners() {
         }
     });
     
-    // Busca global (Mobile)
+    // Busca global
     DOM.globalSearch.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
         
@@ -507,7 +515,10 @@ function setupEventListeners() {
     
     // Toggle de busca mobile
     DOM.searchToggle.addEventListener('click', function() {
-        DOM.globalSearch.focus();
+        DOM.searchContainer.classList.toggle('active');
+        if (DOM.searchContainer.classList.contains('active')) {
+            DOM.globalSearch.focus();
+        }
     });
     
     // Filtros do histórico
@@ -532,6 +543,14 @@ function setupEventListeners() {
         if (!DOM.mobileMenu.contains(e.target) && 
             !DOM.hamburgerMenu.contains(e.target)) {
             DOM.mobileMenu.classList.remove('active');
+        }
+    });
+    
+    // Fechar busca ao clicar fora (mobile)
+    document.addEventListener('click', (e) => {
+        if (!DOM.searchContainer.contains(e.target) && 
+            !DOM.searchToggle.contains(e.target)) {
+            DOM.searchContainer.classList.remove('active');
         }
     });
 }
@@ -619,6 +638,7 @@ function addAutocompleteItem(text, type, pacienteId, anotacaoId = null) {
         selectPaciente(pacienteId);
         DOM.autocompleteContainer.classList.remove('visible');
         DOM.globalSearch.value = '';
+        DOM.searchContainer.classList.remove('active');
     });
     DOM.autocompleteContainer.appendChild(item);
 }
@@ -637,6 +657,7 @@ function openNewPacienteModal() {
     DOM.newPacienteModal.classList.add('active');
     DOM.pacienteName.focus();
     DOM.mobileMenu.classList.remove('active');
+    DOM.searchContainer.classList.remove('active');
 }
 
 // Abrir modal de edição
@@ -655,6 +676,7 @@ function openEditPacienteModal(pacienteId) {
     
     DOM.editPacienteModal.classList.add('active');
     DOM.editPacienteName.focus();
+    DOM.searchContainer.classList.remove('active');
 }
 
 // Atualizar paciente
@@ -721,6 +743,7 @@ function openPassPlantaoModal() {
     DOM.passPlantaoModal.classList.add('active');
     DOM.medicoRecebe.focus();
     DOM.mobileMenu.classList.remove('active');
+    DOM.searchContainer.classList.remove('active');
 }
 
 // Registrar alta
@@ -824,6 +847,7 @@ function openDeleteConfirmationModal(pacienteId) {
     
     DOM.confirmDeleteModal.classList.add('active');
     DOM.confirmDeleteInput.focus();
+    DOM.searchContainer.classList.remove('active');
 }
 
 // Excluir paciente
