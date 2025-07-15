@@ -244,8 +244,10 @@ header {
     display: flex;
     flex-direction: column;
     word-break: break-word;
-    min-height: 160px; /* Altura reduzida */
-    height: auto;
+    height: 200px; /* Altura fixa */
+    min-height: 200px;
+    max-height: 200px;
+    overflow: hidden;
 }
 
 .paciente-card.active {
@@ -307,6 +309,8 @@ header {
     flex-wrap: wrap;
     gap: 5px;
     margin-bottom: 8px;
+    max-height: 28px;
+    overflow: hidden;
 }
 
 .tag {
@@ -325,6 +329,8 @@ header {
     margin-bottom: 8px;
     position: relative;
     flex-grow: 1;
+    overflow: hidden;
+    max-height: 80px;
 }
 
 .note-text {
@@ -358,6 +364,10 @@ header {
     justify-content: space-between;
     font-size: 0.7rem;
     color: var(--gray);
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
 }
 
 .paciente-actions {
@@ -430,7 +440,8 @@ header {
 .btn-send {
     position: absolute;
     right: 15px;
-    bottom: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     background: var(--primary);
     color: white;
     border: none;
@@ -749,7 +760,7 @@ header {
 
 @media (max-width: 768px) {
     .patient-list {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
     }
     
     .header-actions {
@@ -808,17 +819,11 @@ header {
         display: block;
     }
     
-    .search-box input:not(:focus) {
-        width: 40px;
+    .search-box input {
+        width: 100% !important; /* Sempre expandido no mobile */
         padding-left: 40px;
-        cursor: pointer;
     }
     
-    .search-box input:focus {
-        width: 100%;
-        padding-left: 40px;
-    }
-
     .mobile-menu {
         position: fixed;
         top: 60px;
@@ -860,6 +865,10 @@ header {
 }
 
 @media (max-width: 480px) {
+    .patient-list {
+        grid-template-columns: 1fr; /* 1 coluna em telas muito pequenas */
+    }
+    
     .note-editor {
         padding: 10px;
     }
@@ -880,7 +889,9 @@ header {
     }
 
     .paciente-card {
-        min-height: auto;
+        height: 200px;
+        min-height: 200px;
+        max-height: 200px;
         padding: 12px;
     }
 

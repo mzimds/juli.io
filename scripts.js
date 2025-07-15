@@ -71,6 +71,11 @@ function init() {
     setupEventListeners();
     updateResumoPlantao();
     
+    // Setar o filtro de data do histórico para hoje
+    const today = new Date();
+    const formattedToday = today.toISOString().split('T')[0];
+    document.getElementById('historyDateFilter').value = formattedToday;
+    
     // Mostrar note-editor na tela de Ativos
     if (state.currentFilter === 'active') {
         DOM.noteEditor.style.display = 'block';
