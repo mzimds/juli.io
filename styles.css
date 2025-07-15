@@ -70,8 +70,8 @@ header {
     top: 60px; /* altura do header */
     background: white;
     z-index: 50;
-    padding: 15px 15px 0 15px;
-    margin: -15px -15px 15px -15px;
+    padding: 5px 15px 0 15px; /* Reduzido */
+    margin: -15px -15px 5px -15px; /* Reduzido */
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
@@ -202,20 +202,20 @@ header {
 .filters {
     display: flex;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px; /* Reduzido */
     flex-wrap: wrap;
 }
 
 .filter-btn {
-    padding: 8px 16px;
+    padding: 6px 14px; /* Reduzido */
     background: var(--light-gray);
     border: 1px solid var(--border);
     border-radius: 20px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Reduzido */
     transition: all 0.2s ease;
     font-weight: 500;
-    min-height: 40px;
+    min-height: 36px; /* Reduzido */
 }
 
 .filter-btn.active {
@@ -226,8 +226,8 @@ header {
 
 .patient-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Ajustado */
+    gap: 12px; /* Reduzido */
     overflow-y: auto;
     flex: 1;
 }
@@ -235,7 +235,7 @@ header {
 .paciente-card {
     background: white;
     border-radius: 8px;
-    padding: 20px;
+    padding: 15px; /* Reduzido */
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border);
     transition: all 0.2s ease;
@@ -243,6 +243,7 @@ header {
     display: flex;
     flex-direction: column;
     word-break: break-word;
+    height: auto; /* Ajustado */
 }
 
 .paciente-card.active {
@@ -259,7 +260,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 10px;
+    margin-bottom: 8px; /* Reduzido */
 }
 
 .paciente-info {
@@ -269,8 +270,8 @@ header {
 
 .paciente-name {
     font-weight: 700;
-    font-size: 1.1rem;
-    margin-bottom: 5px;
+    font-size: 1rem; /* Reduzido */
+    margin-bottom: 4px; /* Reduzido */
     color: var(--darker);
     white-space: nowrap;
     overflow: hidden;
@@ -278,7 +279,7 @@ header {
 }
 
 .paciente-leito {
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Reduzido */
     color: var(--gray);
 }
 
@@ -288,9 +289,9 @@ header {
 }
 
 .status-badge {
-    padding: 4px 10px;
+    padding: 3px 8px; /* Reduzido */
     border-radius: 12px;
-    font-size: 0.75rem;
+    font-size: 0.7rem; /* Reduzido */
     font-weight: 600;
 }
 
@@ -303,28 +304,28 @@ header {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 12px; /* Reduzido */
 }
 
 .tag {
-    padding: 4px 10px;
+    padding: 3px 8px; /* Reduzido */
     background: rgba(51, 51, 51, 0.15);
     color: var(--primary);
     border-radius: 12px;
-    font-size: 0.8rem;
+    font-size: 0.75rem; /* Reduzido */
     font-weight: 500;
 }
 
 .last-note {
     background: var(--light-gray);
-    padding: 12px;
+    padding: 10px; /* Reduzido */
     border-radius: 6px;
-    margin-bottom: 15px;
+    margin-bottom: 12px; /* Reduzido */
     position: relative;
 }
 
 .note-text {
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Reduzido */
     line-height: 1.4;
     margin-bottom: 5px;
     display: block;
@@ -341,31 +342,31 @@ header {
 
 .toggle-note {
     color: var(--primary);
-    font-size: 0.8rem;
+    font-size: 0.75rem; /* Reduzido */
     cursor: pointer;
     text-align: right;
     margin-top: 5px;
-    padding: 8px 0;
-    min-height: 32px;
+    padding: 6px 0; /* Reduzido */
+    min-height: 28px; /* Reduzido */
 }
 
 .note-meta {
     display: flex;
     justify-content: space-between;
-    font-size: 0.75rem;
+    font-size: 0.7rem; /* Reduzido */
     color: var(--gray);
 }
 
 .paciente-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 8px; /* Reduzido */
     margin-top: auto;
 }
 
 .btn-action {
-    width: 48px;
-    height: 48px;
+    width: 42px; /* Reduzido */
+    height: 42px; /* Reduzido */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -387,7 +388,7 @@ header {
     left: 0;
     right: 0;
     background: white;
-    padding: 15px;
+    padding: 12px; /* Reduzido */
     border-top: 1px solid var(--border);
     box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
     z-index: 100;
@@ -414,6 +415,7 @@ header {
     outline: none;
     box-shadow: var(--shadow-sm);
     transition: all 0.2s ease;
+    padding-right: 70px; /* Ajustado para botão */
 }
 
 .note-input:focus {
@@ -424,8 +426,8 @@ header {
 
 .btn-send {
     position: absolute;
-    right: 10px;
-    bottom: 10px;
+    right: 15px; /* Ajustado para não sobrepor scrollbar */
+    bottom: 12px; /* Ajustado */
     background: var(--primary);
     color: white;
     border: none;
@@ -723,8 +725,8 @@ header {
 }
 
 .fab {
-    width: 56px;
-    height: 56px;
+    width: 48px; /* Ajustado para mesmo tamanho do botão de enviar */
+    height: 48px; /* Ajustado para mesmo tamanho do botão de enviar */
     border-radius: 50%;
     background: var(--primary);
     color: white;
@@ -748,17 +750,20 @@ header {
     }
     
     .header-actions {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row; /* Ajustado */
+        align-items: center; 
         gap: 10px;
     }
     
     .search-container {
         max-width: none;
+        flex: 1;
     }
     
     .header-info {
-        justify-content: space-between;
+        justify-content: flex-end;
+        width: auto;
+        gap: 10px;
     }
     
     .filters {
@@ -775,13 +780,13 @@ header {
     
     .filter-btn {
         flex-shrink: 0;
-        min-height: 48px;
+        min-height: 40px; /* Reduzido */
     }
 
     .header-info .btn {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-        min-height: 48px;
+        padding: 8px 10px; /* Reduzido */
+        font-size: 0.85rem; /* Reduzido */
+        min-height: 40px; /* Reduzido */
     }
     
     .desktop-only {
@@ -790,6 +795,7 @@ header {
     
     .hamburger-menu {
         display: block;
+        min-height: 40px; /* Reduzido */
     }
 
     .search-icon {
@@ -805,6 +811,12 @@ header {
     .search-box input:focus {
         width: 100%;
         padding-left: 40px;
+    }
+
+    .mobile-menu {
+        top: 60px;
+        width: 180px; /* Reduzido */
+        padding: 10px; /* Reduzido */
     }
 }
 
@@ -835,16 +847,25 @@ header {
     .history-filters input {
         width: 100%;
         min-width: unset;
-        min-height: 48px;
+        min-height: 40px; /* Reduzido */
     }
 
     .paciente-card {
         min-height: auto;
-        padding: 15px;
+        padding: 12px; /* Reduzido */
     }
 
     .toggle-note {
-        padding: 12px 0;
+        padding: 8px 0; /* Reduzido */
+    }
+
+    .header {
+        padding: 0 10px; /* Reduzido */
+        height: 55px; /* Reduzido */
+    }
+
+    .logo {
+        font-size: 1.5rem; /* Reduzido */
     }
 }
 
@@ -971,22 +992,22 @@ header {
     border: none;
     cursor: pointer;
     padding: 5px;
-    min-height: 48px;
+    min-height: 40px; /* Reduzido */
 }
 
 .mobile-menu {
     position: fixed;
     top: 60px;
     right: 0;
-    width: 200px;
+    width: 180px; /* Reduzido */
     background: white;
     box-shadow: var(--shadow-lg);
     border-radius: 0 0 0 8px;
-    padding: 15px;
+    padding: 10px; /* Reduzido */
     z-index: 100;
     display: none;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px; /* Reduzido */
     transform: translateX(100%);
     transition: transform 0.3s ease;
 }
@@ -999,7 +1020,7 @@ header {
     width: 100%;
     text-align: left;
     justify-content: flex-start;
-    min-height: 48px;
+    min-height: 40px; /* Reduzido */
 }
 
 .container {

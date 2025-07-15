@@ -21,7 +21,8 @@ const dados = {
                     medico: "Dr. Carlos Silva"
                 }
             ],
-            alta: null
+            alta: null,
+            lastUpdated: "2023-06-25T10:20:00" // Novo campo
         },
         {
             id: 102,
@@ -37,7 +38,8 @@ const dados = {
                     medico: "Dr. Carlos Silva"
                 }
             ],
-            alta: null
+            alta: null,
+            lastUpdated: "2023-06-25T10:30:00" // Novo campo
         }
     ],
     historico: []
@@ -148,8 +150,13 @@ function renderPatientList() {
     DOM.patientList.innerHTML = '';
     
     // Filtrar pacientes pelo status selecionado
-    const filteredPacientes = dados.pacientes.filter(paciente => 
+    let filteredPacientes = dados.pacientes.filter(paciente => 
         paciente.status === state.currentFilter
+    );
+    
+    // Ordenar por lastUpdated (mais recente primeiro)
+    filteredPacientes.sort((a, b) => 
+        new Date(b.lastUpdated) - new Date(a.lastUpdated)
     );
     
     if (filteredPacientes.length === 0) {
@@ -387,10 +394,11 @@ function setupEventListeners() {
             tags,
             status: "active",
             anotacoes: [],
-            alta: null
+            alta: null,
+            lastUpdated: new Date().toISOString() // Novo campo
         };
         
-        dados.pacientes.push(novoPaciente);
+        dados.pacientes.unshift(novoPaciente); // Adicionar no início
         renderPatientList();
         DOM.newPacienteModal.classList.remove('active');
         
@@ -712,6 +720,7 @@ function updatePaciente() {
     paciente.nome = nome;
     paciente.leito = leito;
     paciente.tags = tags;
+    paciente.lastUpdated = new Date().toISOString(); // Atualizar timestamp
     
     renderPatientList();
     DOM.editPacienteModal.classList.remove('active');
@@ -754,6 +763,7 @@ function registerAlta(pacienteId) {
         timestamp: new Date().toISOString(),
         medico: state.currentDoctor
     };
+    paciente.lastUpdated = new Date().toISOString(); // Atualizar timestamp
     
     // Adicionar anotação automática
     paciente.anotacoes.push({
@@ -801,6 +811,7 @@ function sendNote() {
     };
     
     paciente.anotacoes.push(novaAnotacao);
+    paciente.lastUpdated = new Date().toISOString(); // Atualizar timestamp
     
     // Atualizar UI
     renderPatientList();
