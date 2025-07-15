@@ -75,6 +75,9 @@ header {
     z-index: 50;
     padding: 5px 15px 0 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .header-actions {
@@ -211,6 +214,7 @@ header {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 140px); /* Ajuste de altura */
+    padding-bottom: 100px; /* Espaço extra para rolagem */
 }
 
 .container.active-screen {
@@ -748,11 +752,13 @@ header {
     justify-content: space-between;
     font-size: 0.8rem;
     color: var(--gray);
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .fab-container {
     position: fixed;
-    bottom: 80px;
+    bottom: 100px; /* Subir no desktop */
     right: 20px;
     z-index: 100;
     display: block;
@@ -793,11 +799,19 @@ header {
         padding: 5px 0;
     }
     
-    .search-container {
-        max-width: none;
-        flex: 1 100%;
-        order: 3;
-        margin-top: 10px;
+    .search-container.desktop-only {
+        display: none;
+    }
+
+    .search-container.mobile-only {
+        position: sticky;
+        top: 60px;
+        z-index: 40;
+        padding: 10px 15px;
+        background: white;
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        display: block;
     }
     
     .header-info {
@@ -812,6 +826,19 @@ header {
         flex-wrap: nowrap;
         -ms-overflow-style: none;
         scrollbar-width: none;
+        display: none; /* Ocultar por padrão no mobile */
+    }
+
+    .filters-container {
+        padding: 5px 15px;
+    }
+
+    .filters-container .filters {
+        display: none;
+    }
+
+    .filters-container .filters.visible {
+        display: flex;
     }
     
     .filters::-webkit-scrollbar {
@@ -856,11 +883,11 @@ header {
         position: fixed;
         top: 60px;
         right: 0;
-        width: 180px;
+        width: 100%;
+        height: 100%;
         background: white;
         box-shadow: var(--shadow-lg);
-        border-radius: 0 0 0 8px;
-        padding: 10px;
+        padding: 20px;
         z-index: 100;
         display: none;
         flex-direction: column;
@@ -876,10 +903,18 @@ header {
     
     .user-info-mobile {
         padding: 10px 0;
-        text-align: center;
         font-weight: 500;
         border-bottom: 1px solid var(--border);
-        margin-bottom: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .edit-user {
+        background: none;
+        border: none;
+        cursor: pointer;
     }
 
     .paciente-card {
@@ -894,12 +929,13 @@ header {
     }
     
     .fab-container {
-        bottom: 100px;
+        bottom: 90px;
         right: 15px;
     }
     
     .container {
         height: calc(100vh - 130px);
+        padding-bottom: 130px;
     }
     
     .toast {
@@ -972,6 +1008,18 @@ header {
     .fab {
         width: 44px;
         height: 44px;
+    }
+
+    .filters-container {
+        justify-content: center;
+    }
+
+    .filters-container .toggle-filters {
+        display: none;
+    }
+
+    .filters {
+        display: flex;
     }
 }
 
@@ -1146,5 +1194,18 @@ button:focus, input:focus, textarea:focus {
     
     .fab-container {
         bottom: 70px;
+    }
+}
+
+.toggle-filters {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .toggle-filters {
+        display: block;
     }
 }

@@ -8,7 +8,9 @@ const dados = {
 const DOM = {
     patientList: document.getElementById('patientList'),
     globalSearch: document.getElementById('globalSearch'),
+    globalSearchMobile: document.getElementById('globalSearchMobile'),
     autocompleteContainer: document.getElementById('autocompleteContainer'),
+    autocompleteContainerMobile: document.getElementById('autocompleteContainerMobile'),
     toast: document.getElementById('toast'),
     toastMessage: document.getElementById('toast-message'),
     newPacienteModal: document.getElementById('newPacienteModal'),
@@ -59,8 +61,12 @@ const DOM = {
     noteEditor: document.getElementById('noteEditor'),
     btnNewPacienteFab: document.getElementById('btnNewPacienteFab'),
     searchToggle: document.getElementById('searchToggle'),
+    searchToggleMobile: document.getElementById('searchToggleMobile'),
     container: document.querySelector('.container'),
-    searchContainer: document.getElementById('searchContainer')
+    searchContainer: document.getElementById('searchContainer'),
+    mobileSearchContainer: document.getElementById('mobileSearchContainer'),
+    filtersContainer: document.querySelector('.filters-container'),
+    filters: document.getElementById('filters')
 };
 
 // Estado da aplicação
@@ -135,7 +141,7 @@ function renderPatientList() {
                 <div class="note-text">${showToggle ? truncatedText : lastNote.texto}</div>
                 ${showToggle ? '<div class="toggle-note">Ver mais</div>' : ''}
                 <div class="note-meta">
-                    <span>${formatDateTime(lastNote.timestamp)}</span>
+                    <span>${formatDateTimeFull(lastNote.timestamp)}</span>
                     <span>${lastNote.medico}</span>
                 </div>
             </div>
@@ -276,15 +282,10 @@ function selectPaciente(pacienteId) {
     }
 }
 
-// Formatar data/hora
-function formatDateTime(datetime) {
+// Formatar data/hora completa
+function formatDateTimeFull(datetime) {
     const date = new Date(datetime);
-    return date.toLocaleString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        hour: '2-digit',
-        minute:'2-digit'
-    });
+    return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
 }
 
 // Configurar event listeners
@@ -396,6 +397,7 @@ function setupEventListeners() {
             texto: `Novo paciente ${nome} adicionado no leito ${leito}`,
             timestamp: new Date().toISOString(),
             medico: state.currentDoctor,
+            paciente: nome,
             setor: setor || 'Geral'
         });
         
@@ -438,6 +440,7 @@ function setupEventListeners() {
                 texto: `Plantão finalizado e passado para ${medicoRecebe}`,
                 timestamp: new Date().toISOString(),
                 medico: state.currentDoctor,
+                paciente: '',
                 setor: 'Todos'
             });
             
@@ -501,23 +504,35 @@ function setupEventListeners() {
         }
     });
     
-    // Busca global
+    // Busca global (desktop)
     DOM.globalSearch.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
         
         if (state.currentFilter === 'history') {
             filterHistory(searchTerm);
         } else {
-            performSearch(searchTerm);
+            performSearch(searchTerm, 'desktop');
+            filterPatientCards(searchTerm);
+        }
+    });
+    
+    // Busca global (mobile)
+    DOM.globalSearchMobile.addEventListener('input', function() {
+        const searchTerm = this.value.trim().toLowerCase();
+        
+        if (state.currentFilter === 'history') {
+            filterHistory(searchTerm);
+        } else {
+            performSearch(searchTerm, 'mobile');
             filterPatientCards(searchTerm);
         }
     });
     
     // Toggle de busca mobile
-    DOM.searchToggle.addEventListener('click', function() {
-        DOM.searchContainer.classList.toggle('active');
-        if (DOM.searchContainer.classList.contains('active')) {
-            DOM.globalSearch.focus();
+    DOM.searchToggleMobile.addEventListener('click', function() {
+        DOM.mobileSearchContainer.classList.toggle('active');
+        if (DOM.mobileSearchContainer.classList.contains('active')) {
+            DOM.globalSearchMobile.focus();
         }
     });
     
@@ -541,26 +556,31 @@ function setupEventListeners() {
     // Fechar menu ao clicar fora
     document.addEventListener('click', (e) => {
         if (!DOM.mobileMenu.contains(e.target) && 
-            !DOM.hamburgerMenu.contains(e.target)) {
+            !DOM.hamburgerMenu.contains(e.target) &&
+            !e.target.classList.contains('edit-user')) {
             DOM.mobileMenu.classList.remove('active');
         }
     });
     
     // Fechar busca ao clicar fora (mobile)
     document.addEventListener('click', (e) => {
-        if (!DOM.searchContainer.contains(e.target) && 
-            !DOM.searchToggle.contains(e.target)) {
-            DOM.searchContainer.classList.remove('active');
+        if (!DOM.mobileSearchContainer.contains(e.target) && 
+            !DOM.searchToggleMobile.contains(e.target)) {
+            DOM.mobileSearchContainer.classList.remove('active');
         }
     });
 }
 
 // Realizar busca
-function performSearch(searchTerm) {
-    DOM.autocompleteContainer.innerHTML = '';
+function performSearch(searchTerm, platform) {
+    const container = platform === 'mobile' ? 
+        DOM.autocompleteContainerMobile : 
+        DOM.autocompleteContainer;
+    
+    container.innerHTML = '';
     
     if (searchTerm.length < 2) {
-        DOM.autocompleteContainer.classList.remove('visible');
+        container.classList.remove('visible');
         return;
     }
     
@@ -568,25 +588,25 @@ function performSearch(searchTerm) {
     dados.pacientes.forEach(paciente => {
         // Verificar se o termo está no nome, leito, setor ou anotações
         if (paciente.nome.toLowerCase().includes(searchTerm)) {
-            addAutocompleteItem(paciente.nome, 'paciente', paciente.id);
+            addAutocompleteItem(paciente.nome, 'paciente', paciente.id, container);
         } else if (paciente.leito.toLowerCase().includes(searchTerm)) {
-            addAutocompleteItem(`Leito ${paciente.leito}: ${paciente.nome}`, 'leito', paciente.id);
+            addAutocompleteItem(`Leito ${paciente.leito}: ${paciente.nome}`, 'leito', paciente.id, container);
         } else if (paciente.setor && paciente.setor.toLowerCase().includes(searchTerm)) {
-            addAutocompleteItem(`${paciente.nome} (${paciente.setor})`, 'setor', paciente.id);
+            addAutocompleteItem(`${paciente.nome} (${paciente.setor})`, 'setor', paciente.id, container);
         }
         
         // Buscar nas anotações do paciente
         paciente.anotacoes.forEach(anotacao => {
             if (anotacao.texto.toLowerCase().includes(searchTerm)) {
-                addAutocompleteItem(anotacao.texto, 'anotacao', paciente.id, anotacao.id);
+                addAutocompleteItem(anotacao.texto, 'anotacao', paciente.id, container, anotacao.id);
             }
         });
     });
     
-    if (DOM.autocompleteContainer.children.length > 0) {
-        DOM.autocompleteContainer.classList.add('visible');
+    if (container.children.length > 0) {
+        container.classList.add('visible');
     } else {
-        DOM.autocompleteContainer.classList.remove('visible');
+        container.classList.remove('visible');
     }
 }
 
@@ -622,25 +642,28 @@ function filterHistory(searchTerm) {
     const filteredHistory = dados.historico.filter(item => 
         item.texto.toLowerCase().includes(searchTerm) ||
         item.medico.toLowerCase().includes(searchTerm) ||
-        item.setor.toLowerCase().includes(searchTerm)
+        item.setor.toLowerCase().includes(searchTerm) ||
+        item.paciente.toLowerCase().includes(searchTerm)
     );
     
     renderHistory(filteredHistory);
 }
 
 // Adicionar item ao autocomplete
-function addAutocompleteItem(text, type, pacienteId, anotacaoId = null) {
+function addAutocompleteItem(text, type, pacienteId, container, anotacaoId = null) {
     const item = document.createElement('div');
     item.className = 'autocomplete-item';
     item.innerHTML = text;
     item.addEventListener('click', () => {
         // Ao clicar, selecionar o paciente e fechar o autocomplete
         selectPaciente(pacienteId);
-        DOM.autocompleteContainer.classList.remove('visible');
-        DOM.globalSearch.value = '';
-        DOM.searchContainer.classList.remove('active');
+        container.classList.remove('visible');
+        container === DOM.autocompleteContainerMobile ?
+            (DOM.globalSearchMobile.value = '') :
+            (DOM.globalSearch.value = '');
+        container.parentElement.classList.remove('active');
     });
-    DOM.autocompleteContainer.appendChild(item);
+    container.appendChild(item);
 }
 
 // Atualizar resumo do plantão
@@ -657,7 +680,7 @@ function openNewPacienteModal() {
     DOM.newPacienteModal.classList.add('active');
     DOM.pacienteName.focus();
     DOM.mobileMenu.classList.remove('active');
-    DOM.searchContainer.classList.remove('active');
+    DOM.mobileSearchContainer.classList.remove('active');
 }
 
 // Abrir modal de edição
@@ -676,7 +699,7 @@ function openEditPacienteModal(pacienteId) {
     
     DOM.editPacienteModal.classList.add('active');
     DOM.editPacienteName.focus();
-    DOM.searchContainer.classList.remove('active');
+    DOM.mobileSearchContainer.classList.remove('active');
 }
 
 // Atualizar paciente
@@ -726,6 +749,7 @@ function updatePaciente() {
         texto: `Dados do paciente ${nome} atualizados`,
         timestamp: new Date().toISOString(),
         medico: state.currentDoctor,
+        paciente: nome,
         setor: setor || 'Geral'
     });
 }
@@ -743,7 +767,7 @@ function openPassPlantaoModal() {
     DOM.passPlantaoModal.classList.add('active');
     DOM.medicoRecebe.focus();
     DOM.mobileMenu.classList.remove('active');
-    DOM.searchContainer.classList.remove('active');
+    DOM.mobileSearchContainer.classList.remove('active');
 }
 
 // Registrar alta
@@ -777,6 +801,7 @@ function registerAlta(pacienteId) {
         texto: `Alta médica registrada para ${paciente.nome}`,
         timestamp: new Date().toISOString(),
         medico: state.currentDoctor,
+        paciente: paciente.nome,
         setor: paciente.setor || 'Geral'
     });
 }
@@ -817,6 +842,7 @@ function sendNote() {
         texto: `Nova anotação para ${paciente.nome}: ${noteText}`,
         timestamp: new Date().toISOString(),
         medico: state.currentDoctor,
+        paciente: paciente.nome,
         setor: paciente.setor || 'Geral'
     });
     
@@ -847,7 +873,7 @@ function openDeleteConfirmationModal(pacienteId) {
     
     DOM.confirmDeleteModal.classList.add('active');
     DOM.confirmDeleteInput.focus();
-    DOM.searchContainer.classList.remove('active');
+    DOM.mobileSearchContainer.classList.remove('active');
 }
 
 // Excluir paciente
@@ -869,6 +895,7 @@ function deletePaciente() {
             texto: `Paciente ${paciente.nome} excluído`,
             timestamp: new Date().toISOString(),
             medico: state.currentDoctor,
+            paciente: paciente.nome,
             setor: paciente.setor || 'Geral'
         });
         
@@ -919,9 +946,8 @@ function renderHistory(filteredItems = null) {
             <div class="history-type">${getHistoryTypeLabel(item.tipo)}</div>
             <div class="history-text">${item.texto}</div>
             <div class="history-meta">
-                <span>${formatDateTime(item.timestamp)}</span>
-                <span>${item.medico}</span>
-                <span>${item.setor}</span>
+                <span>${formatDateTimeFull(item.timestamp)}</span>
+                <span>${item.medico}${item.paciente ? ' | ' + item.paciente : ''}</span>
             </div>
         `;
         DOM.historyList.appendChild(historyItem);
