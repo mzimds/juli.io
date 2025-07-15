@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Nauren - Go beyond notes</title>
+  <title>Vyva - Go beyond notes</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -16,7 +16,7 @@
     <!-- Header -->
     <header>
         <div class="logo">
-            nauren
+            Vyva
         </div>
         
         <div class="header-actions">
@@ -31,6 +31,13 @@
             </div>
             
             <div class="header-info">
+                <button class="btn" id="btnNewPacienteHeader">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Novo Paciente
+                </button>
                 <button class="btn" id="btnOpenHistory">
                     Histórico
                 </button>
@@ -50,6 +57,7 @@
             <button class="filter-btn active" data-status="active">Ativos</button>
             <button class="filter-btn" data-status="discharged">Alta</button>
             <button class="filter-btn" data-status="pending">Pendentes</button>
+            <button class="filter-btn" data-status="history">Histórico</button>
         </div>
 
         <!-- Lista de Pacientes -->
@@ -57,13 +65,32 @@
             <!-- Pacientes serão carregados aqui dinamicamente -->
         </div>
 
-        <!-- Botão Flutuante para Novo Paciente -->
-        <button class="floating-btn" id="btnNewPaciente">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </button>
+        <!-- Tela de Histórico -->
+        <div class="history-screen" id="historyScreen">
+            <div class="history-header">
+                <h2>Histórico Completo</h2>
+                <div class="history-actions">
+                    <button class="btn" id="btnExportCSV">Exportar CSV</button>
+                    <button class="btn" id="btnExportPDF">Exportar PDF</button>
+                </div>
+            </div>
+            <div class="history-filters">
+                <input type="date" id="historyDateFilter">
+                <select id="historyMedicoFilter">
+                    <option value="">Todos os profissionais</option>
+                    <option value="Dr. Carlos Silva">Dr. Carlos Silva</option>
+                    <!-- Outras opções -->
+                </select>
+                <select id="historySetorFilter">
+                    <option value="">Todos os setores</option>
+                    <option value="UTI">UTI</option>
+                    <!-- Outras opções -->
+                </select>
+            </div>
+            <div class="history-list" id="historyListContent">
+                <!-- Conteúdo do histórico -->
+            </div>
+        </div>
     </div>
 
     <!-- Área de Anotações Fixa -->
@@ -116,6 +143,42 @@
                 </button>
                 <button class="btn btn-success" id="btnSavePaciente">
                     Adicionar Paciente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Paciente -->
+    <div class="modal" id="editPacienteModal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2 class="modal-title">Editar Paciente</h2>
+            </div>
+            
+            <div class="form-group">
+                <label>Nome Completo</label>
+                <input type="text" class="form-control" id="editPacienteName">
+                <div class="error-message" id="editPacienteNameError">Informe o nome do paciente</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Leito</label>
+                <input type="text" class="form-control" id="editPacienteLeito">
+                <div class="error-message" id="editPacienteLeitoError">Informe o número do leito</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Tags (opcional)</label>
+                <input type="text" class="form-control" id="editPacienteTags" placeholder="Ex: UTI, Emergência">
+                <div class="hint">Separe com vírgulas</div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn" id="btnCancelEdit" style="background: rgba(0,0,0,0.08); color: var(--dark);">
+                    Cancelar
+                </button>
+                <button class="btn btn-success" id="btnUpdatePaciente">
+                    Atualizar Paciente
                 </button>
             </div>
         </div>
@@ -205,17 +268,51 @@
         </div>
     </div>
 
-    <!-- Modal de Histórico -->
-    <div class="modal" id="historyModal">
+    <!-- Modal Nova Pendência -->
+    <div class="modal" id="newPendenciaModal">
         <div class="modal-content card">
             <div class="modal-header">
-                <h2 class="modal-title">Histórico de Atividades</h2>
+                <h2 class="modal-title">Nova Pendência</h2>
             </div>
-            <div class="history-list" id="historyList">
-                <!-- Itens de histórico serão carregados aqui -->
+            
+            <div class="form-group">
+                <label>Descrição</label>
+                <textarea class="form-control" id="pendenciaDesc" rows="3" placeholder="Descreva a pendência..."></textarea>
             </div>
+            
+            <div class="form-group">
+                <label>Associar a</label>
+                <select class="form-control" id="pendenciaAssociar">
+                    <option value="">Selecionar paciente</option>
+                    <!-- Opções preenchidas via JS -->
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Setor</label>
+                <select class="form-control" id="pendenciaSetor">
+                    <option value="UTI">UTI</option>
+                    <option value="Emergência">Emergência</option>
+                    <option value="Enfermaria">Enfermaria</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Prioridade</label>
+                <select class="form-control" id="pendenciaPrioridade">
+                    <option value="alta">Alta</option>
+                    <option value="media">Média</option>
+                    <option value="baixa">Baixa</option>
+                </select>
+            </div>
+            
             <div class="modal-footer">
-                <button class="btn" id="btnCloseHistory">Fechar</button>
+                <button class="btn" id="btnCancelPendencia" style="background: rgba(0,0,0,0.08); color: var(--dark);">
+                    Cancelar
+                </button>
+                <button class="btn btn-success" id="btnSavePendencia">
+                    Salvar Pendência
+                </button>
             </div>
         </div>
     </div>

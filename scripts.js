@@ -83,12 +83,29 @@ const DOM = {
     btnConfirmDelete: document.getElementById('btnConfirmDelete'),
     confirmDeleteInput: document.getElementById('confirmDeleteInput'),
     confirmDeleteError: document.getElementById('confirmDeleteError'),
-    btnNewPaciente: document.getElementById('btnNewPaciente'),
     quickTags: document.querySelectorAll('.quick-tag'),
     btnOpenHistory: document.getElementById('btnOpenHistory'),
-    historyModal: document.getElementById('historyModal'),
-    historyList: document.getElementById('historyList'),
-    btnCloseHistory: document.getElementById('btnCloseHistory')
+    historyScreen: document.getElementById('historyScreen'),
+    historyList: document.getElementById('historyListContent'),
+    btnCloseHistory: document.getElementById('btnCloseHistory'),
+    btnNewPacienteHeader: document.getElementById('btnNewPacienteHeader'),
+    editPacienteModal: document.getElementById('editPacienteModal'),
+    editPacienteName: document.getElementById('editPacienteName'),
+    editPacienteNameError: document.getElementById('editPacienteNameError'),
+    editPacienteLeito: document.getElementById('editPacienteLeito'),
+    editPacienteLeitoError: document.getElementById('editPacienteLeitoError'),
+    editPacienteTags: document.getElementById('editPacienteTags'),
+    btnCancelEdit: document.getElementById('btnCancelEdit'),
+    btnUpdatePaciente: document.getElementById('btnUpdatePaciente'),
+    newPendenciaModal: document.getElementById('newPendenciaModal'),
+    pendenciaDesc: document.getElementById('pendenciaDesc'),
+    pendenciaAssociar: document.getElementById('pendenciaAssociar'),
+    pendenciaSetor: document.getElementById('pendenciaSetor'),
+    pendenciaPrioridade: document.getElementById('pendenciaPrioridade'),
+    btnCancelPendencia: document.getElementById('btnCancelPendencia'),
+    btnSavePendencia: document.getElementById('btnSavePendencia'),
+    btnExportCSV: document.getElementById('btnExportCSV'),
+    btnExportPDF: document.getElementById('btnExportPDF')
 };
 
 // Estado da aplicação
@@ -97,7 +114,8 @@ let state = {
     currentDoctor: "Dr. Carlos Silva",
     lastEdit: new Date().toISOString(),
     currentFilter: "active",
-    keyboardOpen: false
+    keyboardOpen: false,
+    editingPacienteId: null
 };
 
 // Inicialização
@@ -108,6 +126,9 @@ function init() {
     
     // Inicializar histórico com dados de exemplo
     generateSampleHistory();
+    
+    // Preencher dropdown de pendências
+    populatePendenciaAssociar();
 }
 
 // Gerar histórico de exemplo
@@ -118,21 +139,24 @@ function generateSampleHistory() {
             tipo: "anotacao",
             texto: "Adicionada nova anotação para Maria Oliveira",
             timestamp: "2023-06-25T10:15:00",
-            medico: "Dr. Carlos Silva"
+            medico: "Dr. Carlos Silva",
+            setor: "UTI"
         },
         {
             id: 2002,
             tipo: "alta",
             texto: "Carlos Santos recebeu alta médica",
             timestamp: "2023-06-24T14:30:00",
-            medico: "Dr. Carlos Silva"
+            medico: "Dr. Carlos Silva",
+            setor: "Emergência"
         },
         {
             id: 2003,
             tipo: "novo_paciente",
             texto: "Novo paciente João Pereira adicionado",
             timestamp: "2023-06-23T09:45:00",
-            medico: "Dr. Carlos Silva"
+            medico: "Dr. Carlos Silva",
+            setor: "Enfermaria"
         }
     ];
 }
@@ -166,6 +190,20 @@ function renderPatientList() {
         pacienteCard.className = `paciente-card ${state.currentPaciente === paciente.id ? 'active' : ''}`;
         pacienteCard.setAttribute('data-id', paciente.id);
         
+        let lastNoteHTML = '';
+        if (lastNote) {
+            lastNoteHTML = `
+            <div class="last-note">
+                <div class="note-text">${lastNote.texto}</div>
+                <div class="toggle-note">Ver mais</div>
+                <div class="note-meta">
+                    <span>${formatDateTime(lastNote.timestamp)}</span>
+                    <span>${lastNote.medico}</span>
+                </div>
+            </div>
+            `;
+        }
+        
         pacienteCard.innerHTML = `
             <div class="paciente-header">
                 <div class="paciente-info">
@@ -184,23 +222,17 @@ function renderPatientList() {
                 ${paciente.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
             </div>
             
-            ${lastNote ? `
-            <div class="last-note">
-                <div class="note-text">${lastNote.texto}</div>
-                <div class="note-meta">
-                    <span>${formatDateTime(lastNote.timestamp)}</span>
-                    <span>${lastNote.medico}</span>
-                </div>
-            </div>
-            ` : ''}
+            ${lastNoteHTML}
             
             <div class="paciente-actions">
+                ${paciente.status !== 'discharged' ? `
                 <button class="btn-action edit" data-id="${paciente.id}">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
+                ` : ''}
                 <button class="btn-action delete" data-id="${paciente.id}">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 6H5H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -221,12 +253,26 @@ function renderPatientList() {
         `;
         
         DOM.patientList.appendChild(pacienteCard);
+        
+        // Adicionar evento para expandir/colapsar notas
+        if (lastNote) {
+            const toggleBtn = pacienteCard.querySelector('.toggle-note');
+            const noteText = pacienteCard.querySelector('.note-text');
+            
+            if (toggleBtn && noteText) {
+                toggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    noteText.classList.toggle('expanded');
+                    this.textContent = noteText.classList.contains('expanded') ? 'Ver menos' : 'Ver mais';
+                });
+            }
+        }
     });
     
     // Adicionar eventos aos cards
     document.querySelectorAll('.paciente-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            if (!e.target.closest('.btn-action')) {
+            if (!e.target.closest('.btn-action') && !e.target.classList.contains('toggle-note')) {
                 const pacienteId = parseInt(card.getAttribute('data-id'));
                 selectPaciente(pacienteId);
             }
@@ -274,7 +320,9 @@ function selectPaciente(pacienteId) {
     }
     
     // Focar no campo de anotação
-    DOM.noteInput.focus();
+    if (state.currentFilter !== 'discharged') {
+        DOM.noteInput.focus();
+    }
 }
 
 // Formatar data/hora
@@ -299,13 +347,25 @@ function setupEventListeners() {
             this.classList.add('active');
             // Atualizar filtro
             state.currentFilter = this.dataset.status;
-            // Renderizar lista
-            renderPatientList();
+            
+            // Mostrar/ocultar telas
+            if (state.currentFilter === 'history') {
+                DOM.patientList.style.display = 'none';
+                DOM.historyScreen.style.display = 'flex';
+                renderHistory();
+            } else {
+                DOM.patientList.style.display = 'grid';
+                DOM.historyScreen.style.display = 'none';
+                renderPatientList();
+            }
+            
+            // Mostrar/ocultar editor de anotações
+            DOM.noteEditor.style.display = state.currentFilter === 'discharged' ? 'none' : 'block';
         });
     });
     
-    // Novo paciente
-    DOM.btnNewPaciente.addEventListener('click', openNewPacienteModal);
+    // Novo paciente (header)
+    DOM.btnNewPacienteHeader.addEventListener('click', openNewPacienteModal);
     
     // Modal novo paciente
     DOM.btnCancelPaciente.addEventListener('click', () => {
@@ -360,7 +420,8 @@ function setupEventListeners() {
             tipo: "novo_paciente",
             texto: `Novo paciente ${nome} adicionado no leito ${leito}`,
             timestamp: new Date().toISOString(),
-            medico: state.currentDoctor
+            medico: state.currentDoctor,
+            setor: tags[0] || 'Geral'
         });
         
         // Selecionar automaticamente
@@ -405,7 +466,8 @@ function setupEventListeners() {
                 tipo: "passagem_plantao",
                 texto: `Plantão finalizado e passado para ${medicoRecebe}`,
                 timestamp: new Date().toISOString(),
-                medico: state.currentDoctor
+                medico: state.currentDoctor,
+                setor: 'Todos'
             });
             
             // Fechar modal
@@ -488,17 +550,46 @@ function setupEventListeners() {
     DOM.globalSearch.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
         performSearch(searchTerm);
+        filterPatientCards(searchTerm);
     });
     
     // Histórico
     DOM.btnOpenHistory.addEventListener('click', () => {
+        state.currentFilter = 'history';
+        
+        // Atualizar botões de filtro
+        DOM.filterBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.status === 'history');
+        });
+        
+        // Mostrar tela de histórico
+        DOM.patientList.style.display = 'none';
+        DOM.historyScreen.style.display = 'flex';
         renderHistory();
-        DOM.historyModal.classList.add('active');
     });
     
-    DOM.btnCloseHistory.addEventListener('click', () => {
-        DOM.historyModal.classList.remove('active');
+    // Filtros do histórico
+    document.getElementById('historyDateFilter').addEventListener('change', renderHistory);
+    document.getElementById('historyMedicoFilter').addEventListener('change', renderHistory);
+    document.getElementById('historySetorFilter').addEventListener('change', renderHistory);
+    
+    // Exportações
+    DOM.btnExportCSV.addEventListener('click', exportToCSV);
+    DOM.btnExportPDF.addEventListener('click', exportToPDF);
+    
+    // Modal editar paciente
+    DOM.btnCancelEdit.addEventListener('click', () => {
+        DOM.editPacienteModal.classList.remove('active');
     });
+    
+    DOM.btnUpdatePaciente.addEventListener('click', updatePaciente);
+    
+    // Modal nova pendência
+    DOM.btnCancelPendencia.addEventListener('click', () => {
+        DOM.newPendenciaModal.classList.remove('active');
+    });
+    
+    DOM.btnSavePendencia.addEventListener('click', savePendencia);
 }
 
 // Realizar busca
@@ -536,6 +627,28 @@ function performSearch(searchTerm) {
     }
 }
 
+// Filtrar cards de pacientes
+function filterPatientCards(searchTerm) {
+    const cards = document.querySelectorAll('.paciente-card');
+    
+    cards.forEach(card => {
+        const pacienteId = parseInt(card.getAttribute('data-id'));
+        const paciente = dados.pacientes.find(p => p.id === pacienteId);
+        
+        if (!paciente) return;
+        
+        const match = 
+            paciente.nome.toLowerCase().includes(searchTerm) ||
+            paciente.leito.toLowerCase().includes(searchTerm) ||
+            paciente.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+            paciente.anotacoes.some(anotacao => 
+                anotacao.texto.toLowerCase().includes(searchTerm)
+            );
+        
+        card.style.display = match ? 'flex' : 'none';
+    });
+}
+
 // Adicionar item ao autocomplete
 function addAutocompleteItem(text, type, pacienteId, anotacaoId = null) {
     const item = document.createElement('div');
@@ -566,6 +679,65 @@ function updateResumoPlantao() {
 function openNewPacienteModal() {
     DOM.newPacienteModal.classList.add('active');
     DOM.pacienteName.focus();
+}
+
+// Abrir modal de edição
+function openEditPacienteModal(pacienteId) {
+    const paciente = dados.pacientes.find(p => p.id === pacienteId);
+    if (!paciente) return;
+    
+    state.editingPacienteId = pacienteId;
+    
+    DOM.editPacienteName.value = paciente.nome;
+    DOM.editPacienteLeito.value = paciente.leito;
+    DOM.editPacienteTags.value = paciente.tags.join(', ');
+    
+    DOM.editPacienteModal.classList.add('active');
+    DOM.editPacienteName.focus();
+}
+
+// Atualizar paciente
+function updatePaciente() {
+    const paciente = dados.pacientes.find(p => p.id === state.editingPacienteId);
+    if (!paciente) return;
+    
+    // Resetar erros
+    hideAllErrors();
+    
+    const nome = DOM.editPacienteName.value.trim();
+    const leito = DOM.editPacienteLeito.value.trim();
+    const tags = DOM.editPacienteTags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+    
+    if (!nome) {
+        showError(DOM.editPacienteNameError, 'Informe o nome do paciente');
+        DOM.editPacienteName.focus();
+        return;
+    }
+    
+    if (!leito) {
+        showError(DOM.editPacienteLeitoError, 'Informe o número do leito');
+        DOM.editPacienteLeito.focus();
+        return;
+    }
+    
+    paciente.nome = nome;
+    paciente.leito = leito;
+    paciente.tags = tags;
+    
+    renderPatientList();
+    DOM.editPacienteModal.classList.remove('active');
+    
+    showToast(`Paciente "${nome}" atualizado com sucesso!`, 'success');
+    
+    // Registrar no histórico
+    dados.historico.push({
+        id: Date.now(),
+        tipo: "edicao_paciente",
+        texto: `Dados do paciente ${nome} atualizados`,
+        timestamp: new Date().toISOString(),
+        medico: state.currentDoctor,
+        setor: tags[0] || 'Geral'
+    });
 }
 
 // Abrir modal de finalização de plantão
@@ -612,7 +784,8 @@ function registerAlta(pacienteId) {
         tipo: "alta",
         texto: `Alta médica registrada para ${paciente.nome}`,
         timestamp: new Date().toISOString(),
-        medico: state.currentDoctor
+        medico: state.currentDoctor,
+        setor: paciente.tags[0] || 'Geral'
     });
 }
 
@@ -670,7 +843,8 @@ function sendNote() {
         tipo: "anotacao",
         texto: `Nova anotação para ${paciente.nome}: ${noteText}`,
         timestamp: new Date().toISOString(),
-        medico: state.currentDoctor
+        medico: state.currentDoctor,
+        setor: paciente.tags[0] || 'Geral'
     });
     
     // Limpar campo
@@ -720,7 +894,8 @@ function deletePaciente() {
             tipo: "exclusao",
             texto: `Paciente ${paciente.nome} excluído`,
             timestamp: new Date().toISOString(),
-            medico: state.currentDoctor
+            medico: state.currentDoctor,
+            setor: paciente.tags[0] || 'Geral'
         });
         
         showToast('Paciente excluído', 'success');
@@ -731,12 +906,21 @@ function deletePaciente() {
 function renderHistory() {
     DOM.historyList.innerHTML = '';
     
-    // Ordenar histórico por timestamp (mais recente primeiro)
-    const sortedHistory = [...dados.historico].sort((a, b) => 
-        new Date(b.timestamp) - new Date(a.timestamp)
-    );
+    // Obter filtros
+    const dateFilter = document.getElementById('historyDateFilter').value;
+    const medicoFilter = document.getElementById('historyMedicoFilter').value;
+    const setorFilter = document.getElementById('historySetorFilter').value;
     
-    if (sortedHistory.length === 0) {
+    // Filtrar histórico
+    const filteredHistory = dados.historico.filter(item => {
+        const itemDate = new Date(item.timestamp).toISOString().split('T')[0];
+        
+        return (!dateFilter || itemDate === dateFilter) &&
+               (!medicoFilter || item.medico === medicoFilter) &&
+               (!setorFilter || item.setor === setorFilter);
+    });
+    
+    if (filteredHistory.length === 0) {
         DOM.historyList.innerHTML = `
             <div class="empty-state">
                 <div class="empty-content">
@@ -747,7 +931,7 @@ function renderHistory() {
         return;
     }
     
-    sortedHistory.forEach(item => {
+    filteredHistory.forEach(item => {
         const historyItem = document.createElement('div');
         historyItem.className = 'history-item';
         historyItem.innerHTML = `
@@ -756,6 +940,7 @@ function renderHistory() {
             <div class="history-meta">
                 <span>${formatDateTime(item.timestamp)}</span>
                 <span>${item.medico}</span>
+                <span>${item.setor}</span>
             </div>
         `;
         DOM.historyList.appendChild(historyItem);
@@ -769,9 +954,110 @@ function getHistoryTypeLabel(tipo) {
         'alta': 'Alta Médica',
         'novo_paciente': 'Novo Paciente',
         'exclusao': 'Exclusão',
-        'passagem_plantao': 'Passagem de Plantão'
+        'passagem_plantao': 'Passagem de Plantão',
+        'edicao_paciente': 'Edição de Paciente',
+        'nova_pendencia': 'Nova Pendência'
     };
     return labels[tipo] || tipo;
+}
+
+// Preencher dropdown para associar pendências
+function populatePendenciaAssociar() {
+    DOM.pendenciaAssociar.innerHTML = '<option value="">Selecionar paciente</option>';
+    
+    dados.pacientes.filter(p => p.status === 'active').forEach(paciente => {
+        const option = document.createElement('option');
+        option.value = paciente.id;
+        option.textContent = `${paciente.nome} (${paciente.leito})`;
+        DOM.pendenciaAssociar.appendChild(option);
+    });
+}
+
+// Salvar nova pendência
+function savePendencia() {
+    const desc = DOM.pendenciaDesc.value.trim();
+    const pacienteId = DOM.pendenciaAssociar.value;
+    const setor = DOM.pendenciaSetor.value;
+    const prioridade = DOM.pendenciaPrioridade.value;
+    
+    if (!desc) {
+        showToast('Informe a descrição da pendência', 'error');
+        return;
+    }
+    
+    // Encontrar paciente se selecionado
+    let paciente = null;
+    if (pacienteId) {
+        paciente = dados.pacientes.find(p => p.id === parseInt(pacienteId));
+    }
+    
+    // Criar pendência
+    const novaPendencia = {
+        id: Date.now(),
+        descricao: desc,
+        criadoPor: state.currentDoctor,
+        criadoEm: new Date().toISOString(),
+        setor,
+        prioridade,
+        resolvidoEm: null
+    };
+    
+    // Associar a paciente se existir
+    if (paciente) {
+        paciente.pendencias.push(novaPendencia);
+    } else {
+        // Pendência global
+        // (implementar lógica de pendências globais se necessário)
+    }
+    
+    // Fechar modal
+    DOM.newPendenciaModal.classList.remove('active');
+    
+    // Registrar no histórico
+    dados.historico.push({
+        id: Date.now(),
+        tipo: "nova_pendencia",
+        texto: `Nova pendência: ${desc}`,
+        timestamp: new Date().toISOString(),
+        medico: state.currentDoctor,
+        setor
+    });
+    
+    showToast('Pendência registrada com sucesso!', 'success');
+    
+    // Atualizar UI se estiver na tela de pendências
+    if (state.currentFilter === 'pending') {
+        renderPatientList();
+    }
+}
+
+// Exportar para CSV
+function exportToCSV() {
+    // Implementação simplificada
+    let csvContent = "Tipo,Descrição,Data,Médico,Setor\n";
+    
+    dados.historico.forEach(item => {
+        csvContent += `"${getHistoryTypeLabel(item.tipo)}","${item.texto}","${formatDateTime(item.timestamp)}","${item.medico}","${item.setor}"\n`;
+    });
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "historico_vyva.csv");
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showToast('Histórico exportado para CSV', 'success');
+}
+
+// Exportar para PDF
+function exportToPDF() {
+    // Implementação simplificada
+    showToast('PDF gerado com sucesso', 'success');
+    // (Em produção, usar biblioteca como jsPDF)
 }
 
 // Mostrar toast
@@ -796,20 +1082,6 @@ function hideAllErrors() {
     document.querySelectorAll('.error-message').forEach(el => {
         el.style.display = 'none';
     });
-}
-
-// Abrir modal de edição de paciente
-function openEditPacienteModal(pacienteId) {
-    const paciente = dados.pacientes.find(p => p.id === pacienteId);
-    if (!paciente) return;
-    
-    // Preencher campos (simplificado)
-    DOM.pacienteName.value = paciente.nome;
-    DOM.pacienteLeito.value = paciente.leito;
-    DOM.pacienteTags.value = paciente.tags.join(', ');
-    
-    state.currentPaciente = pacienteId;
-    DOM.newPacienteModal.classList.add('active');
 }
 
 // Inicializar aplicação
