@@ -8,9 +8,7 @@ const dados = {
 const DOM = {
     patientList: document.getElementById('patientList'),
     globalSearch: document.getElementById('globalSearch'),
-    globalSearchMobile: document.getElementById('globalSearchMobile'),
     autocompleteContainer: document.getElementById('autocompleteContainer'),
-    autocompleteContainerMobile: document.getElementById('autocompleteContainerMobile'),
     toast: document.getElementById('toast'),
     toastMessage: document.getElementById('toast-message'),
     newPacienteModal: document.getElementById('newPacienteModal'),
@@ -26,7 +24,6 @@ const DOM = {
     btnSavePaciente: document.getElementById('btnSavePaciente'),
     passPlantaoModal: document.getElementById('passPlantaoModal'),
     btnFinalizarPlantao: document.getElementById('btnFinalizarPlantao'),
-    btnFinalizarPlantaoMobile: document.getElementById('btnFinalizarPlantaoMobile'),
     btnCancelPass: document.getElementById('btnCancelPass'),
     btnConfirmPass: document.getElementById('btnConfirmPass'),
     medicoRecebe: document.getElementById('medicoRecebe'),
@@ -61,11 +58,8 @@ const DOM = {
     noteEditor: document.getElementById('noteEditor'),
     btnNewPacienteFab: document.getElementById('btnNewPacienteFab'),
     searchToggle: document.getElementById('searchToggle'),
-    searchToggleMobile: document.getElementById('searchToggleMobile'),
     container: document.querySelector('.container'),
     searchContainer: document.getElementById('searchContainer'),
-    mobileSearchContainer: document.getElementById('mobileSearchContainer'),
-    filtersContainer: document.querySelector('.filters-container'),
     filters: document.getElementById('filters')
 };
 
@@ -84,12 +78,10 @@ function init() {
     setupEventListeners();
     updateResumoPlantao();
     
-    // Setar o filtro de data do histórico para hoje
     const today = new Date();
     const formattedToday = today.toISOString().split('T')[0];
     document.getElementById('historyDateFilter').value = formattedToday;
     
-    // Mostrar note-editor na tela de Ativos
     if (state.currentFilter === 'active') {
         DOM.noteEditor.style.display = 'block';
         document.querySelector('.fab-container').style.display = 'block';
@@ -101,12 +93,10 @@ function init() {
 function renderPatientList() {
     DOM.patientList.innerHTML = '';
     
-    // Filtrar pacientes pelo status selecionado
     let filteredPacientes = dados.pacientes.filter(paciente => 
         paciente.status === state.currentFilter
     );
     
-    // Ordenar por lastUpdated (mais recente primeiro)
     filteredPacientes.sort((a, b) => 
         new Date(b.lastUpdated) - new Date(a.lastUpdated)
     );
@@ -168,14 +158,14 @@ function renderPatientList() {
             
             <div class="paciente-actions">
                 ${paciente.status !== 'discharged' ? `
-                <button class="btn-action edit" data-id="${paciente.id}" aria-label="Editar paciente">
+                <button class="btn-action edit" data-id="${paciente.id}">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
                 ` : ''}
-                <button class="btn-action delete" data-id="${paciente.id}" aria-label="Excluir paciente">
+                <button class="btn-action delete" data-id="${paciente.id}">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 6H5H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -184,7 +174,7 @@ function renderPatientList() {
                     </svg>
                 </button>
                 ${paciente.status !== 'discharged' ? `
-                <button class="btn-action alta" data-id="${paciente.id}" aria-label="Dar alta">
+                <button class="btn-action alta" data-id="${paciente.id}">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9 10L12 13L22 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -196,7 +186,6 @@ function renderPatientList() {
         
         DOM.patientList.appendChild(pacienteCard);
         
-        // Adicionar evento para expandir/colapsar notas
         if (lastNote && lastNote.texto.length > 100) {
             const toggleBtn = pacienteCard.querySelector('.toggle-note');
             const noteText = pacienteCard.querySelector('.note-text');
@@ -256,7 +245,6 @@ function renderPatientList() {
 function selectPaciente(pacienteId) {
     state.currentPaciente = pacienteId;
     
-    // Atualizar UI
     document.querySelectorAll('.paciente-card').forEach(card => {
         card.classList.remove('active');
     });
@@ -265,16 +253,13 @@ function selectPaciente(pacienteId) {
     if (selectedCard) {
         selectedCard.classList.add('active');
         
-        // Rolagem suave para o card selecionado
         if (window.innerWidth < 768) {
             selectedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     }
     
-    // Habilitar/desabilitar botão de enviar
     DOM.btnSendNote.disabled = !pacienteId;
     
-    // Focar no campo de anotação
     if (state.currentFilter === 'active') {
         setTimeout(() => {
             DOM.noteInput.focus();
@@ -293,21 +278,16 @@ function setupEventListeners() {
     // Filtros de status
     DOM.filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            // Remover classe active de todos
             DOM.filterBtns.forEach(b => b.classList.remove('active'));
-            // Adicionar ao botão clicado
             this.classList.add('active');
-            // Atualizar filtro
             state.currentFilter = this.dataset.status;
             
-            // Atualizar classe para espaço do editor
             if (state.currentFilter === 'active') {
                 DOM.container.classList.add('active-screen');
             } else {
                 DOM.container.classList.remove('active-screen');
             }
             
-            // Mostrar/ocultar telas
             if (state.currentFilter === 'history') {
                 DOM.patientList.style.display = 'none';
                 DOM.historyScreen.style.display = 'flex';
@@ -319,7 +299,6 @@ function setupEventListeners() {
                 DOM.historyScreen.style.display = 'none';
                 renderPatientList();
                 
-                // Mostrar/ocultar editor de anotações e FAB
                 if (state.currentFilter === 'active') {
                     DOM.noteEditor.style.display = 'block';
                     document.querySelector('.fab-container').style.display = 'block';
@@ -340,7 +319,6 @@ function setupEventListeners() {
     });
     
     DOM.btnSavePaciente.addEventListener('click', () => {
-        // Resetar erros
         hideAllErrors();
         
         const nome = DOM.pacienteName.value.trim();
@@ -376,11 +354,10 @@ function setupEventListeners() {
             lastUpdated: new Date().toISOString()
         };
         
-        dados.pacientes.unshift(novoPaciente); // Adicionar no início
+        dados.pacientes.unshift(novoPaciente);
         renderPatientList();
         DOM.newPacienteModal.classList.remove('active');
         
-        // Resetar campos
         DOM.pacienteName.value = '';
         DOM.pacienteAtendimento.value = '';
         DOM.pacienteSexo.value = '';
@@ -390,7 +367,6 @@ function setupEventListeners() {
         
         showToast(`Paciente "${nome}" adicionado com sucesso!`, 'success');
         
-        // Registrar no histórico
         dados.historico.push({
             id: Date.now(),
             tipo: "novo_paciente",
@@ -401,13 +377,11 @@ function setupEventListeners() {
             setor: setor || 'Geral'
         });
         
-        // Selecionar automaticamente
         selectPaciente(novoPaciente.id);
     });
     
     // Finalizar plantão
     DOM.btnFinalizarPlantao.addEventListener('click', openPassPlantaoModal);
-    DOM.btnFinalizarPlantaoMobile.addEventListener('click', openPassPlantaoModal);
     
     DOM.btnCancelPass.addEventListener('click', () => {
         DOM.passPlantaoModal.classList.remove('active');
@@ -420,20 +394,15 @@ function setupEventListeners() {
             return;
         }
         
-        // Mostrar feedback visual
         DOM.btnConfirmPass.innerHTML = '<span class="loader"></span> Processando...';
         DOM.btnConfirmPass.disabled = true;
         
         setTimeout(() => {
             showToast(`Plantão finalizado e passado para ${medicoRecebe} com sucesso!`, 'success');
             
-            // Resetar dados (somente pacientes ativos permanecem)
             dados.pacientes = dados.pacientes.filter(p => p.status === 'active');
-            
-            // Atualizar UI
             renderPatientList();
             
-            // Registrar no histórico
             dados.historico.push({
                 id: Date.now(),
                 tipo: "passagem_plantao",
@@ -444,7 +413,6 @@ function setupEventListeners() {
                 setor: 'Todos'
             });
             
-            // Fechar modal
             DOM.passPlantaoModal.classList.remove('active');
             DOM.btnConfirmPass.innerHTML = 'Confirmar';
             DOM.btnConfirmPass.disabled = false;
@@ -462,12 +430,10 @@ function setupEventListeners() {
         }
     });
 
-    // Habilitar/desabilitar botão de enviar
     DOM.noteInput.addEventListener('input', function() {
         const hasText = this.value.trim() !== '';
         DOM.btnSendNote.disabled = !hasText || !state.currentPaciente;
         
-        // Ajustar altura do textarea
         this.style.height = 'auto';
         this.style.height = Math.min(this.scrollHeight, 150) + 'px';
     });
@@ -479,15 +445,12 @@ function setupEventListeners() {
     
     DOM.btnConfirmDelete.addEventListener('click', deletePaciente);
     
-    // Validação do campo de confirmação de exclusão
     DOM.confirmDeleteInput.addEventListener('input', function() {
         const confirmText = this.value.trim().toLowerCase();
         const isConfirmed = confirmText === 'excluir';
         
-        // Atualizar estado do botão
         DOM.btnConfirmDelete.disabled = !isConfirmed;
         
-        // Atualizar estilo
         if (isConfirmed) {
             DOM.btnConfirmDelete.classList.remove('btn-delete-disabled');
             DOM.btnConfirmDelete.classList.add('btn-delete');
@@ -496,7 +459,6 @@ function setupEventListeners() {
             DOM.btnConfirmDelete.classList.add('btn-delete-disabled');
         }
         
-        // Mostrar/ocultar mensagem de erro
         if (confirmText !== '' && !isConfirmed) {
             DOM.confirmDeleteError.style.display = 'block';
         } else {
@@ -504,35 +466,23 @@ function setupEventListeners() {
         }
     });
     
-    // Busca global (desktop)
+    // Busca global
     DOM.globalSearch.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
         
         if (state.currentFilter === 'history') {
             filterHistory(searchTerm);
         } else {
-            performSearch(searchTerm, 'desktop');
-            filterPatientCards(searchTerm);
-        }
-    });
-    
-    // Busca global (mobile)
-    DOM.globalSearchMobile.addEventListener('input', function() {
-        const searchTerm = this.value.trim().toLowerCase();
-        
-        if (state.currentFilter === 'history') {
-            filterHistory(searchTerm);
-        } else {
-            performSearch(searchTerm, 'mobile');
+            performSearch(searchTerm);
             filterPatientCards(searchTerm);
         }
     });
     
     // Toggle de busca mobile
-    DOM.searchToggleMobile.addEventListener('click', function() {
-        DOM.mobileSearchContainer.classList.toggle('active');
-        if (DOM.mobileSearchContainer.classList.contains('active')) {
-            DOM.globalSearchMobile.focus();
+    DOM.searchToggle.addEventListener('click', function() {
+        DOM.searchContainer.classList.toggle('active');
+        if (DOM.searchContainer.classList.contains('active')) {
+            DOM.globalSearch.focus();
         }
     });
     
@@ -556,57 +506,49 @@ function setupEventListeners() {
     // Fechar menu ao clicar fora
     document.addEventListener('click', (e) => {
         if (!DOM.mobileMenu.contains(e.target) && 
-            !DOM.hamburgerMenu.contains(e.target) &&
-            !e.target.classList.contains('edit-user')) {
+            !DOM.hamburgerMenu.contains(e.target)) {
             DOM.mobileMenu.classList.remove('active');
         }
     });
     
-    // Fechar busca ao clicar fora (mobile)
+    // Fechar busca ao clicar fora
     document.addEventListener('click', (e) => {
-        if (!DOM.mobileSearchContainer.contains(e.target) && 
-            !DOM.searchToggleMobile.contains(e.target)) {
-            DOM.mobileSearchContainer.classList.remove('active');
+        if (!DOM.searchContainer.contains(e.target) && 
+            !DOM.searchToggle.contains(e.target)) {
+            DOM.searchContainer.classList.remove('active');
         }
     });
 }
 
 // Realizar busca
-function performSearch(searchTerm, platform) {
-    const container = platform === 'mobile' ? 
-        DOM.autocompleteContainerMobile : 
-        DOM.autocompleteContainer;
-    
-    container.innerHTML = '';
+function performSearch(searchTerm) {
+    DOM.autocompleteContainer.innerHTML = '';
     
     if (searchTerm.length < 2) {
-        container.classList.remove('visible');
+        DOM.autocompleteContainer.classList.remove('visible');
         return;
     }
     
-    // Buscar pacientes
     dados.pacientes.forEach(paciente => {
-        // Verificar se o termo está no nome, leito, setor ou anotações
         if (paciente.nome.toLowerCase().includes(searchTerm)) {
-            addAutocompleteItem(paciente.nome, 'paciente', paciente.id, container);
+            addAutocompleteItem(paciente.nome, 'paciente', paciente.id, DOM.autocompleteContainer);
         } else if (paciente.leito.toLowerCase().includes(searchTerm)) {
-            addAutocompleteItem(`Leito ${paciente.leito}: ${paciente.nome}`, 'leito', paciente.id, container);
+            addAutocompleteItem(`Leito ${paciente.leito}: ${paciente.nome}`, 'leito', paciente.id, DOM.autocompleteContainer);
         } else if (paciente.setor && paciente.setor.toLowerCase().includes(searchTerm)) {
-            addAutocompleteItem(`${paciente.nome} (${paciente.setor})`, 'setor', paciente.id, container);
+            addAutocompleteItem(`${paciente.nome} (${paciente.setor})`, 'setor', paciente.id, DOM.autocompleteContainer);
         }
         
-        // Buscar nas anotações do paciente
         paciente.anotacoes.forEach(anotacao => {
             if (anotacao.texto.toLowerCase().includes(searchTerm)) {
-                addAutocompleteItem(anotacao.texto, 'anotacao', paciente.id, container, anotacao.id);
+                addAutocompleteItem(anotacao.texto, 'anotacao', paciente.id, DOM.autocompleteContainer, anotacao.id);
             }
         });
     });
     
-    if (container.children.length > 0) {
-        container.classList.add('visible');
+    if (DOM.autocompleteContainer.children.length > 0) {
+        DOM.autocompleteContainer.classList.add('visible');
     } else {
-        container.classList.remove('visible');
+        DOM.autocompleteContainer.classList.remove('visible');
     }
 }
 
@@ -655,12 +597,9 @@ function addAutocompleteItem(text, type, pacienteId, container, anotacaoId = nul
     item.className = 'autocomplete-item';
     item.innerHTML = text;
     item.addEventListener('click', () => {
-        // Ao clicar, selecionar o paciente e fechar o autocomplete
         selectPaciente(pacienteId);
         container.classList.remove('visible');
-        container === DOM.autocompleteContainerMobile ?
-            (DOM.globalSearchMobile.value = '') :
-            (DOM.globalSearch.value = '');
+        DOM.globalSearch.value = '';
         container.parentElement.classList.remove('active');
     });
     container.appendChild(item);
@@ -680,7 +619,7 @@ function openNewPacienteModal() {
     DOM.newPacienteModal.classList.add('active');
     DOM.pacienteName.focus();
     DOM.mobileMenu.classList.remove('active');
-    DOM.mobileSearchContainer.classList.remove('active');
+    DOM.searchContainer.classList.remove('active');
 }
 
 // Abrir modal de edição
@@ -699,7 +638,7 @@ function openEditPacienteModal(pacienteId) {
     
     DOM.editPacienteModal.classList.add('active');
     DOM.editPacienteName.focus();
-    DOM.mobileSearchContainer.classList.remove('active');
+    DOM.searchContainer.classList.remove('active');
 }
 
 // Atualizar paciente
@@ -707,7 +646,6 @@ function updatePaciente() {
     const paciente = dados.pacientes.find(p => p.id === state.editingPacienteId);
     if (!paciente) return;
     
-    // Resetar erros
     hideAllErrors();
     
     const nome = DOM.editPacienteName.value.trim();
@@ -735,14 +673,13 @@ function updatePaciente() {
     paciente.setor = setor;
     paciente.atendimento = atendimento;
     paciente.sexo = sexo;
-    paciente.lastUpdated = new Date().toISOString(); // Atualizar timestamp
+    paciente.lastUpdated = new Date().toISOString();
     
     renderPatientList();
     DOM.editPacienteModal.classList.remove('active');
     
     showToast(`Paciente "${nome}" atualizado com sucesso!`, 'success');
     
-    // Registrar no histórico
     dados.historico.push({
         id: Date.now(),
         tipo: "edicao_paciente",
@@ -761,13 +698,12 @@ function openPassPlantaoModal() {
     const timeStr = now.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
     DOM.assinatura.value = `${state.currentDoctor} - ${dateStr} ${timeStr}`;
     
-    // Atualizar resumo
     updateResumoPlantao();
     
     DOM.passPlantaoModal.classList.add('active');
     DOM.medicoRecebe.focus();
     DOM.mobileMenu.classList.remove('active');
-    DOM.mobileSearchContainer.classList.remove('active');
+    DOM.searchContainer.classList.remove('active');
 }
 
 // Registrar alta
@@ -780,9 +716,8 @@ function registerAlta(pacienteId) {
         timestamp: new Date().toISOString(),
         medico: state.currentDoctor
     };
-    paciente.lastUpdated = new Date().toISOString(); // Atualizar timestamp
+    paciente.lastUpdated = new Date().toISOString();
     
-    // Adicionar anotação automática
     paciente.anotacoes.push({
         id: Date.now(),
         texto: "Alta médica registrada",
@@ -790,11 +725,9 @@ function registerAlta(pacienteId) {
         medico: state.currentDoctor
     });
     
-    // Atualizar UI
     renderPatientList();
     showToast('Alta registrada com sucesso', 'success');
     
-    // Registrar no histórico
     dados.historico.push({
         id: Date.now(),
         tipo: "alta",
@@ -816,11 +749,9 @@ function sendNote() {
     const noteText = DOM.noteInput.value.trim();
     if (!noteText) return;
     
-    // Encontrar paciente
     const paciente = dados.pacientes.find(p => p.id === state.currentPaciente);
     if (!paciente) return;
     
-    // Adicionar anotação
     const novaAnotacao = {
         id: Date.now(),
         texto: noteText,
@@ -829,13 +760,11 @@ function sendNote() {
     };
     
     paciente.anotacoes.push(novaAnotacao);
-    paciente.lastUpdated = new Date().toISOString(); // Atualizar timestamp
+    paciente.lastUpdated = new Date().toISOString();
     
-    // Atualizar UI
     renderPatientList();
     updateResumoPlantao();
     
-    // Registrar no histórico
     dados.historico.push({
         id: Date.now(),
         tipo: "anotacao",
@@ -846,7 +775,6 @@ function sendNote() {
         setor: paciente.setor || 'Geral'
     });
     
-    // Limpar campo
     DOM.noteInput.value = '';
     DOM.btnSendNote.disabled = true;
     DOM.noteInput.style.height = 'auto';
@@ -862,18 +790,16 @@ function openDeleteConfirmationModal(pacienteId) {
     state.currentPaciente = pacienteId;
     DOM.patientNameToDelete.textContent = paciente.nome;
     
-    // Resetar campo de confirmação
     DOM.confirmDeleteInput.value = '';
     DOM.btnConfirmDelete.disabled = true;
     DOM.confirmDeleteError.style.display = 'none';
     
-    // Resetar estilo do botão
     DOM.btnConfirmDelete.classList.remove('btn-delete');
     DOM.btnConfirmDelete.classList.add('btn-delete-disabled');
     
     DOM.confirmDeleteModal.classList.add('active');
     DOM.confirmDeleteInput.focus();
-    DOM.mobileSearchContainer.classList.remove('active');
+    DOM.searchContainer.classList.remove('active');
 }
 
 // Excluir paciente
@@ -888,7 +814,6 @@ function deletePaciente() {
         DOM.confirmDeleteModal.classList.remove('active');
         state.currentPaciente = null;
         
-        // Registrar no histórico
         dados.historico.push({
             id: Date.now(),
             tipo: "exclusao",
@@ -907,12 +832,10 @@ function deletePaciente() {
 function renderHistory(filteredItems = null) {
     DOM.historyList.innerHTML = '';
     
-    // Obter filtros
     const dateFilter = document.getElementById('historyDateFilter').value;
     const medicoFilter = document.getElementById('historyMedicoFilter').value;
     const setorFilter = document.getElementById('historySetorFilter').value;
     
-    // Filtrar histórico
     let historyToRender = filteredItems || dados.historico;
     
     historyToRender = historyToRender.filter(item => {
@@ -923,7 +846,6 @@ function renderHistory(filteredItems = null) {
                (!setorFilter || item.setor === setorFilter);
     });
     
-    // Ordenar por data (mais recentes primeiro)
     historyToRender.sort((a, b) => 
         new Date(b.timestamp) - new Date(a.timestamp)
     );

@@ -21,7 +21,7 @@
         
         <div class="header-actions">
             <!-- Botão de busca global -->
-            <div class="search-container desktop-only" id="searchContainer">
+            <div class="search-container" id="searchContainer">
                 <div class="search-box">
                     <button class="search-icon" id="searchToggle">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,20 +29,18 @@
                         </svg>
                     </button>
                     <input type="text" id="globalSearch" placeholder="Buscar pacientes ou anotações...">
-                    <div class="autocomplete-container" id="autocompleteContainer">
-                        <!-- Resultados do autocomplete serão exibidos aqui -->
-                    </div>
+                    <div class="autocomplete-container" id="autocompleteContainer"></div>
                 </div>
             </div>
             
             <div class="header-info">
-                <div class="user-info desktop-only">
+                <div class="user-info">
                     <span>Dr. Carlos Silva</span>
                 </div>
-                <button class="btn desktop-only" id="btnFinalizarPlantao">
+                <button class="btn" id="btnFinalizarPlantao">
                     Finalizar Plantão
                 </button>
-                <button class="hamburger-menu mobile-only" id="hamburgerMenu">
+                <button class="hamburger-menu" id="hamburgerMenu">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -57,16 +55,7 @@
     <div class="mobile-menu" id="mobileMenu">
         <div class="user-info-mobile">
             <span>Dr. Carlos Silva</span>
-            <button class="edit-user">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
         </div>
-        <button class="btn" id="btnFinalizarPlantaoMobile">
-            Finalizar Plantão
-        </button>
     </div>
 
     <!-- Filtros de status fixos -->
@@ -78,52 +67,28 @@
         </div>
     </div>
 
-    <!-- Mobile Search Container -->
-    <div class="search-container mobile-only" id="mobileSearchContainer">
-        <div class="search-box">
-            <button class="search-icon" id="searchToggleMobile">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-            <input type="text" id="globalSearchMobile" placeholder="Buscar pacientes ou anotações...">
-            <div class="autocomplete-container" id="autocompleteContainerMobile">
-                <!-- Resultados do autocomplete serão exibidos aqui -->
-            </div>
-        </div>
-    </div>
-
     <div class="container">
         <!-- Lista de Pacientes -->
-        <div class="patient-list" id="patientList">
-            <!-- Pacientes serão carregados aqui dinamicamente -->
-        </div>
+        <div class="patient-list" id="patientList"></div>
 
         <!-- Tela de Histórico -->
         <div class="history-screen" id="historyScreen">
-            <div class="history-header">
-                <div class="history-actions"></div>
-            </div>
             <div class="history-filters">
                 <input type="date" id="historyDateFilter">
                 <select id="historyMedicoFilter">
                     <option value="">Todos os profissionais</option>
                     <option value="Dr. Carlos Silva">Dr. Carlos Silva</option>
-                    <!-- Outras opções -->
                 </select>
                 <select id="historySetorFilter">
                     <option value="">Todos os setores</option>
                     <option value="UTI">UTI</option>
-                    <!-- Outras opções -->
                 </select>
             </div>
-            <div class="history-list" id="historyListContent">
-                <!-- Conteúdo do histórico -->
-            </div>
+            <div class="history-list" id="historyListContent"></div>
         </div>
     </div>
 
-    <!-- Área de Anotações Fixa (só aparece em Ativos) -->
+    <!-- Área de Anotações Fixa -->
     <div class="note-editor" id="noteEditor">
         <div class="note-input-container">
             <textarea class="note-input" id="noteInput" placeholder="Digite uma nova anotação..." rows="1"></textarea>
@@ -159,29 +124,33 @@
                     <div id="pacienteNameError" class="error-message"></div>
                 </div>
                 <div class="form-group">
-                    <label for="pacienteSexo">Sexo</label>
-                    <select id="pacienteSexo" class="form-control">
-                        <option value="">Selecione</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="pacienteIdade">Idade</label>
-                    <input type="number" id="pacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
-                </div>
-                <div class="form-group">
                     <label for="pacienteLeito">Leito</label>
                     <input type="text" id="pacienteLeito" class="form-control" placeholder="Número do leito">
                     <div id="pacienteLeitoError" class="error-message"></div>
                 </div>
-                <div class="form-group">
-                    <label for="pacienteAtendimento">Nº Atendimento</label>
-                    <input type="text" id="pacienteAtendimento" class="form-control" placeholder="Número de atendimento">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="pacienteSexo">Sexo</label>
+                        <select id="pacienteSexo" class="form-control">
+                            <option value="">Selecione</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pacienteIdade">Idade</label>
+                        <input type="number" id="pacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="pacienteSetor">Setor</label>
-                    <input type="text" id="pacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="pacienteAtendimento">Nº Atendimento</label>
+                        <input type="text" id="pacienteAtendimento" class="form-control" placeholder="Número de atendimento">
+                    </div>
+                    <div class="form-group">
+                        <label for="pacienteSetor">Setor</label>
+                        <input type="text" id="pacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -204,29 +173,33 @@
                     <div id="editPacienteNameError" class="error-message"></div>
                 </div>
                 <div class="form-group">
-                    <label for="editPacienteSexo">Sexo</label>
-                    <select id="editPacienteSexo" class="form-control">
-                        <option value="">Selecione</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="editPacienteIdade">Idade</label>
-                    <input type="number" id="editPacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
-                </div>
-                <div class="form-group">
                     <label for="editPacienteLeito">Leito</label>
                     <input type="text" id="editPacienteLeito" class="form-control" placeholder="Número do leito">
                     <div id="editPacienteLeitoError" class="error-message"></div>
                 </div>
-                <div class="form-group">
-                    <label for="editPacienteAtendimento">Nº Atendimento</label>
-                    <input type="text" id="editPacienteAtendimento" class="form-control" placeholder="Número de atendimento">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="editPacienteSexo">Sexo</label>
+                        <select id="editPacienteSexo" class="form-control">
+                            <option value="">Selecione</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPacienteIdade">Idade</label>
+                        <input type="number" id="editPacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="editPacienteSetor">Setor</label>
-                    <input type="text" id="editPacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="editPacienteAtendimento">Nº Atendimento</label>
+                        <input type="text" id="editPacienteAtendimento" class="form-control" placeholder="Número de atendimento">
+                    </div>
+                    <div class="form-group">
+                        <label for="editPacienteSetor">Setor</label>
+                        <input type="text" id="editPacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -270,7 +243,7 @@
         </div>
     </div>
 
-    <!-- Modal de Confirmação de Exclusão de Paciente -->
+    <!-- Modal de Confirmação de Exclusão -->
     <div class="modal" id="confirmDeleteModal">
         <div class="delete-modal-content">
             <div class="delete-modal-header">
