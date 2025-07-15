@@ -80,8 +80,7 @@ const DOM = {
     confirmDeleteError: document.getElementById('confirmDeleteError'),
     historyScreen: document.getElementById('historyScreen'),
     historyList: document.getElementById('historyListContent'),
-    btnNewPacienteHeader: document.getElementById('btnNewPacienteHeader'),
-    btnNewPacienteMobile: document.getElementById('btnNewPacienteMobile'),
+    btnFinalizarPlantaoMobile: document.getElementById('btnFinalizarPlantaoMobile'),
     editPacienteModal: document.getElementById('editPacienteModal'),
     editPacienteName: document.getElementById('editPacienteName'),
     editPacienteNameError: document.getElementById('editPacienteNameError'),
@@ -92,7 +91,9 @@ const DOM = {
     btnUpdatePaciente: document.getElementById('btnUpdatePaciente'),
     hamburgerMenu: document.getElementById('hamburgerMenu'),
     mobileMenu: document.getElementById('mobileMenu'),
-    noteEditor: document.getElementById('noteEditor')
+    noteEditor: document.getElementById('noteEditor'),
+    btnNewPacienteFab: document.getElementById('btnNewPacienteFab'),
+    searchToggle: document.getElementById('searchToggle')
 };
 
 // Estado da aplicação
@@ -332,20 +333,27 @@ function setupEventListeners() {
                 DOM.patientList.style.display = 'none';
                 DOM.historyScreen.style.display = 'flex';
                 renderHistory();
+                DOM.noteEditor.style.display = 'none';
+                document.querySelector('.fab-container').style.display = 'none';
             } else {
                 DOM.patientList.style.display = 'grid';
                 DOM.historyScreen.style.display = 'none';
                 renderPatientList();
+                
+                // Mostrar/ocultar editor de anotações e FAB
+                if (state.currentFilter === 'active') {
+                    DOM.noteEditor.style.display = 'block';
+                    document.querySelector('.fab-container').style.display = 'block';
+                } else {
+                    DOM.noteEditor.style.display = 'none';
+                    document.querySelector('.fab-container').style.display = 'none';
+                }
             }
-            
-            // Mostrar/ocultar editor de anotações
-            DOM.noteEditor.style.display = state.currentFilter === 'active' ? 'block' : 'none';
         });
     });
     
-    // Novo paciente (header)
-    DOM.btnNewPacienteHeader.addEventListener('click', openNewPacienteModal);
-    DOM.btnNewPacienteMobile.addEventListener('click', openNewPacienteModal);
+    // Novo paciente (FAB)
+    DOM.btnNewPacienteFab.addEventListener('click', openNewPacienteModal);
     
     // Modal novo paciente
     DOM.btnCancelPaciente.addEventListener('click', () => {
@@ -528,6 +536,11 @@ function setupEventListeners() {
         }
     });
     
+    // Toggle de busca mobile
+    DOM.searchToggle.addEventListener('click', function() {
+        DOM.globalSearch.focus();
+    });
+    
     // Filtros do histórico
     document.getElementById('historyDateFilter').addEventListener('change', renderHistory);
     document.getElementById('historyMedicoFilter').addEventListener('change', renderHistory);
@@ -543,6 +556,14 @@ function setupEventListeners() {
     // Menu mobile
     DOM.hamburgerMenu.addEventListener('click', () => {
         DOM.mobileMenu.classList.toggle('active');
+    });
+    
+    // Fechar menu ao clicar fora
+    document.addEventListener('click', (e) => {
+        if (!DOM.mobileMenu.contains(e.target) && 
+            !DOM.hamburgerMenu.contains(e.target)) {
+            DOM.mobileMenu.classList.remove('active');
+        }
     });
 }
 

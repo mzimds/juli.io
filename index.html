@@ -23,6 +23,11 @@
             <!-- Botão de busca global -->
             <div class="search-container">
                 <div class="search-box">
+                    <button class="search-icon" id="searchToggle">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
                     <input type="text" id="globalSearch" placeholder="Buscar pacientes ou anotações...">
                     <div class="autocomplete-container" id="autocompleteContainer">
                         <!-- Resultados do autocomplete serão exibidos aqui -->
@@ -31,13 +36,6 @@
             </div>
             
             <div class="header-info">
-                <button class="btn desktop-only" id="btnNewPacienteHeader">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    Novo Paciente
-                </button>
                 <button class="btn desktop-only" id="btnFinalizarPlantao">
                     Finalizar Plantão
                 </button>
@@ -57,13 +55,6 @@
 
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
-        <button class="btn" id="btnNewPacienteMobile">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Novo Paciente
-        </button>
         <button class="btn" id="btnFinalizarPlantaoMobile">
             Finalizar Plantão
         </button>
@@ -110,8 +101,8 @@
 
     <!-- Área de Anotações Fixa (só aparece em Ativos) -->
     <div class="note-editor" id="noteEditor">
-        <textarea class="note-input" id="noteInput" placeholder="Digite uma nova anotação..." rows="1"></textarea>
-        <div class="editor-actions">
+        <div class="note-input-container">
+            <textarea class="note-input" id="noteInput" placeholder="Digite uma nova anotação..." rows="1"></textarea>
             <button class="btn-send" id="btnSendNote">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -119,6 +110,16 @@
                 </svg>
             </button>
         </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab" id="btnNewPacienteFab">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
     </div>
 
     <!-- Modal Novo Paciente -->
