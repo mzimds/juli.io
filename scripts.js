@@ -7,8 +7,8 @@ const dados = {
 // Elementos DOM
 const DOM = {
     patientList: document.getElementById('patientList'),
-    globalSearch: document.getElementById('globalSearch'),
-    autocompleteContainer: document.getElementById('autocompleteContainer'),
+    globalSearch: document.getElementById('globalSearchMobile'), // Usar a busca móvel
+    autocompleteContainer: document.getElementById('autocompleteContainerMobile'),
     toast: document.getElementById('toast'),
     toastMessage: document.getElementById('toast-message'),
     newPacienteModal: document.getElementById('newPacienteModal'),
@@ -58,7 +58,7 @@ const DOM = {
     mobileMenu: document.getElementById('mobileMenu'),
     noteEditor: document.getElementById('noteEditor'),
     btnNewPacienteFab: document.getElementById('btnNewPacienteFab'),
-    searchToggle: document.getElementById('searchToggle'),
+    searchToggle: document.getElementById('searchToggleMobile'),
     container: document.querySelector('.container')
 };
 
@@ -275,7 +275,7 @@ function formatDateTime(datetime) {
         day: '2-digit',
         month: '2-digit',
         hour: '2-digit',
-        minute: '2-digit'
+        minute:'2-digit'
     });
 }
 
@@ -493,7 +493,7 @@ function setupEventListeners() {
         }
     });
     
-    // Busca global
+    // Busca global (Mobile)
     DOM.globalSearch.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
         

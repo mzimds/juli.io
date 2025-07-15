@@ -77,6 +77,32 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    justify-content: center; /* Centraliza os botões */
+}
+
+.filter-btn {
+    padding: 6px 14px;
+    background: var(--light-gray);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    min-height: 36px;
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: transparent;
+}
+
 .header-actions {
     display: flex;
     flex: 1;
@@ -211,35 +237,11 @@ header {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 140px); /* Ajuste de altura */
+    padding-top: 60px; /* Espaço para a barra de busca móvel */
 }
 
 .container.active-screen {
     padding-bottom: 84px; /* Espaço para o editor de notas */
-}
-
-.filters {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-}
-
-.filter-btn {
-    padding: 6px 14px;
-    background: var(--light-gray);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    min-height: 36px;
-}
-
-.filter-btn.active {
-    background: var(--primary);
-    color: white;
-    border-color: transparent;
 }
 
 .patient-list {
@@ -249,6 +251,7 @@ header {
     overflow-y: auto;
     flex: 1;
     max-height: 100%;
+    padding-top: 10px; /* Espaço para a barra de busca móvel */
 }
 
 .paciente-card {
@@ -536,13 +539,6 @@ header {
     margin-bottom: 15px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-    color: var(--dark);
-}
-
 .form-control {
     width: 100%;
     padding: 10px 12px;
@@ -778,9 +774,31 @@ header {
     background: var(--primary-dark);
 }
 
+.mobile-search-container {
+    display: none;
+    position: fixed;
+    top: 110px; /* Header (60px) + Filtros (50px) */
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 40;
+    padding: 10px 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 @media (max-width: 768px) {
+    .mobile-search-container {
+        display: block;
+    }
+    
     .patient-list {
         grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
+        padding-top: 60px; /* Espaço para a barra de busca */
+    }
+    
+    .container {
+        padding-top: 0;
+        height: calc(100vh - 170px); /* Ajuste para nova altura */
     }
     
     .header-actions {
@@ -792,10 +810,7 @@ header {
     }
     
     .search-container {
-        max-width: none;
-        flex: 1 100%;
-        order: 3;
-        margin-top: 10px;
+        display: none; /* Esconde a busca no header no mobile */
     }
     
     .header-info {
@@ -834,15 +849,6 @@ header {
     .hamburger-menu {
         display: block;
         min-height: 40px;
-    }
-
-    .search-icon {
-        display: flex;
-    }
-    
-    .search-box input {
-        width: 100% !important; /* Sempre expandido no mobile */
-        padding-left: 40px;
     }
     
     .mobile-menu {
@@ -886,6 +892,10 @@ header {
     
     .hamburger-menu {
         display: none;
+    }
+    
+    .mobile-search-container {
+        display: none !important;
     }
 }
 
@@ -936,6 +946,10 @@ header {
     .container {
         height: calc(100vh - 130px);
     }
+    
+    .mobile-search-container {
+        top: 105px; /* Ajuste fino para telas menores */
+    }
 }
 
 .error-message {
@@ -943,12 +957,6 @@ header {
     font-size: 0.8rem;
     margin-top: 5px;
     display: none;
-}
-
-.hint {
-    font-size: 0.8rem;
-    color: var(--gray);
-    margin-top: 5px;
 }
 
 .delete-modal-content {
