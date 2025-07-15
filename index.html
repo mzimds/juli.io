@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Vyva - Go beyond notes</title>
+  <title>INJECT - Don't Dess Your Notes</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -16,7 +16,7 @@
     <!-- Header -->
     <header>
         <div class="logo">
-            Vyva
+            INJECT
         </div>
         
         <div class="header-actions">
@@ -31,25 +31,43 @@
             </div>
             
             <div class="header-info">
-                <button class="btn" id="btnNewPacienteHeader">
+                <button class="btn desktop-only" id="btnNewPacienteHeader">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     </svg>
                     Novo Paciente
                 </button>
-                <button class="btn" id="btnOpenHistory">
-                    Histórico
-                </button>
-                <button class="btn" id="btnFinalizarPlantao">
+                <button class="btn desktop-only" id="btnFinalizarPlantao">
                     Finalizar Plantão
                 </button>
                 <div class="user-info">
                     <span>Dr. Carlos Silva</span>
                 </div>
+                <button class="hamburger-menu" id="hamburgerMenu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="btn" id="btnNewPacienteMobile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Novo Paciente
+        </button>
+        <button class="btn" id="btnFinalizarPlantaoMobile">
+            Finalizar Plantão
+        </button>
+    </div>
 
     <div class="container">
         <!-- Filtros de status -->
@@ -95,7 +113,7 @@
 
     <!-- Área de Anotações Fixa -->
     <div class="note-editor" id="noteEditor">
-        <textarea class="note-input" id="noteInput" placeholder="Digite uma nova anotação... (Use # para tags como #evolucao, #prescricao)" rows="1"></textarea>
+        <textarea class="note-input" id="noteInput" placeholder="Digite uma nova anotação..." rows="1"></textarea>
         <div class="editor-actions">
             <div class="quick-tags">
                 <div class="quick-tag" data-tag="#evolucao">#evolucao</div>
@@ -141,7 +159,7 @@
                 <button class="btn" id="btnCancelPaciente" style="background: rgba(0,0,0,0.08); color: var(--dark);">
                     Cancelar
                 </button>
-                <button class="btn btn-success" id="btnSavePaciente">
+                <button class="btn" id="btnSavePaciente">
                     Adicionar Paciente
                 </button>
             </div>
@@ -177,7 +195,7 @@
                 <button class="btn" id="btnCancelEdit" style="background: rgba(0,0,0,0.08); color: var(--dark);">
                     Cancelar
                 </button>
-                <button class="btn btn-success" id="btnUpdatePaciente">
+                <button class="btn" id="btnUpdatePaciente">
                     Atualizar Paciente
                 </button>
             </div>
@@ -227,7 +245,7 @@
                 <button class="btn" id="btnCancelPass" style="background: rgba(0,0,0,0.08); color: var(--dark);">
                     Cancelar
                 </button>
-                <button class="btn btn-success" id="btnConfirmPass">
+                <button class="btn" id="btnConfirmPass">
                     Confirmar
                 </button>
             </div>
@@ -255,7 +273,7 @@
                 </div>
             </div>
             <div class="delete-modal-footer">
-                <button class="btn btn-secondary" id="btnCancelDelete">
+                <button class="btn" id="btnCancelDelete">
                     Cancelar
                 </button>
                 <button class="btn" id="btnIsAlta" style="background: white; color: var(--dark); border: 1px solid var(--dark);">
@@ -310,7 +328,7 @@
                 <button class="btn" id="btnCancelPendencia" style="background: rgba(0,0,0,0.08); color: var(--dark);">
                     Cancelar
                 </button>
-                <button class="btn btn-success" id="btnSavePendencia">
+                <button class="btn" id="btnSavePendencia">
                     Salvar Pendência
                 </button>
             </div>

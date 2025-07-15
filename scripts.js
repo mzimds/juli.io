@@ -65,6 +65,7 @@ const DOM = {
     btnSavePaciente: document.getElementById('btnSavePaciente'),
     passPlantaoModal: document.getElementById('passPlantaoModal'),
     btnFinalizarPlantao: document.getElementById('btnFinalizarPlantao'),
+    btnFinalizarPlantaoMobile: document.getElementById('btnFinalizarPlantaoMobile'),
     btnCancelPass: document.getElementById('btnCancelPass'),
     btnConfirmPass: document.getElementById('btnConfirmPass'),
     medicoRecebe: document.getElementById('medicoRecebe'),
@@ -84,11 +85,10 @@ const DOM = {
     confirmDeleteInput: document.getElementById('confirmDeleteInput'),
     confirmDeleteError: document.getElementById('confirmDeleteError'),
     quickTags: document.querySelectorAll('.quick-tag'),
-    btnOpenHistory: document.getElementById('btnOpenHistory'),
     historyScreen: document.getElementById('historyScreen'),
     historyList: document.getElementById('historyListContent'),
-    btnCloseHistory: document.getElementById('btnCloseHistory'),
     btnNewPacienteHeader: document.getElementById('btnNewPacienteHeader'),
+    btnNewPacienteMobile: document.getElementById('btnNewPacienteMobile'),
     editPacienteModal: document.getElementById('editPacienteModal'),
     editPacienteName: document.getElementById('editPacienteName'),
     editPacienteNameError: document.getElementById('editPacienteNameError'),
@@ -105,7 +105,9 @@ const DOM = {
     btnCancelPendencia: document.getElementById('btnCancelPendencia'),
     btnSavePendencia: document.getElementById('btnSavePendencia'),
     btnExportCSV: document.getElementById('btnExportCSV'),
-    btnExportPDF: document.getElementById('btnExportPDF')
+    btnExportPDF: document.getElementById('btnExportPDF'),
+    hamburgerMenu: document.getElementById('hamburgerMenu'),
+    mobileMenu: document.getElementById('mobileMenu')
 };
 
 // Estado da aplicação
@@ -359,13 +361,20 @@ function setupEventListeners() {
                 renderPatientList();
             }
             
-            // Mostrar/ocultar editor de anotações
-            DOM.noteEditor.style.display = state.currentFilter === 'discharged' ? 'none' : 'block';
+            // Mostrar/ocultar editor de anotações e botão novo paciente
+            if (state.currentFilter === 'active') {
+                DOM.noteEditor.style.display = 'block';
+                DOM.btnNewPacienteHeader.style.display = 'flex';
+            } else {
+                DOM.noteEditor.style.display = 'none';
+                DOM.btnNewPacienteHeader.style.display = 'none';
+            }
         });
     });
     
     // Novo paciente (header)
     DOM.btnNewPacienteHeader.addEventListener('click', openNewPacienteModal);
+    DOM.btnNewPacienteMobile.addEventListener('click', openNewPacienteModal);
     
     // Modal novo paciente
     DOM.btnCancelPaciente.addEventListener('click', () => {
@@ -430,6 +439,7 @@ function setupEventListeners() {
     
     // Finalizar plantão
     DOM.btnFinalizarPlantao.addEventListener('click', openPassPlantaoModal);
+    DOM.btnFinalizarPlantaoMobile.addEventListener('click', openPassPlantaoModal);
     
     DOM.btnCancelPass.addEventListener('click', () => {
         DOM.passPlantaoModal.classList.remove('active');
@@ -523,9 +533,9 @@ function setupEventListeners() {
         // Atualizar estilo
         if (isConfirmed) {
             DOM.btnConfirmDelete.classList.remove('btn-delete-disabled');
-            DOM.btnConfirmDelete.classList.add('btn-danger');
+            DOM.btnConfirmDelete.classList.add('btn-delete');
         } else {
-            DOM.btnConfirmDelete.classList.remove('btn-danger');
+            DOM.btnConfirmDelete.classList.remove('btn-delete');
             DOM.btnConfirmDelete.classList.add('btn-delete-disabled');
         }
         
@@ -549,23 +559,13 @@ function setupEventListeners() {
     // Busca global
     DOM.globalSearch.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
-        performSearch(searchTerm);
-        filterPatientCards(searchTerm);
-    });
-    
-    // Histórico
-    DOM.btnOpenHistory.addEventListener('click', () => {
-        state.currentFilter = 'history';
         
-        // Atualizar botões de filtro
-        DOM.filterBtns.forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.status === 'history');
-        });
-        
-        // Mostrar tela de histórico
-        DOM.patientList.style.display = 'none';
-        DOM.historyScreen.style.display = 'flex';
-        renderHistory();
+        if (state.currentFilter === 'history') {
+            filterHistory(searchTerm);
+        } else {
+            performSearch(searchTerm);
+            filterPatientCards(searchTerm);
+        }
     });
     
     // Filtros do histórico
@@ -590,6 +590,11 @@ function setupEventListeners() {
     });
     
     DOM.btnSavePendencia.addEventListener('click', savePendencia);
+    
+    // Menu mobile
+    DOM.hamburgerMenu.addEventListener('click', () => {
+        DOM.mobileMenu.classList.toggle('active');
+    });
 }
 
 // Realizar busca
@@ -649,6 +654,22 @@ function filterPatientCards(searchTerm) {
     });
 }
 
+// Filtrar histórico
+function filterHistory(searchTerm) {
+    if (!searchTerm) {
+        renderHistory();
+        return;
+    }
+    
+    const filteredHistory = dados.historico.filter(item => 
+        item.texto.toLowerCase().includes(searchTerm) ||
+        item.medico.toLowerCase().includes(searchTerm) ||
+        item.setor.toLowerCase().includes(searchTerm)
+    );
+    
+    renderHistory(filteredHistory);
+}
+
 // Adicionar item ao autocomplete
 function addAutocompleteItem(text, type, pacienteId, anotacaoId = null) {
     const item = document.createElement('div');
@@ -679,6 +700,7 @@ function updateResumoPlantao() {
 function openNewPacienteModal() {
     DOM.newPacienteModal.classList.add('active');
     DOM.pacienteName.focus();
+    DOM.mobileMenu.classList.remove('active');
 }
 
 // Abrir modal de edição
@@ -752,6 +774,7 @@ function openPassPlantaoModal() {
     
     DOM.passPlantaoModal.classList.add('active');
     DOM.medicoRecebe.focus();
+    DOM.mobileMenu.classList.remove('active');
 }
 
 // Registrar alta
@@ -869,7 +892,7 @@ function openDeleteConfirmationModal(pacienteId) {
     DOM.confirmDeleteError.style.display = 'none';
     
     // Resetar estilo do botão
-    DOM.btnConfirmDelete.classList.remove('btn-danger');
+    DOM.btnConfirmDelete.classList.remove('btn-delete');
     DOM.btnConfirmDelete.classList.add('btn-delete-disabled');
     
     DOM.confirmDeleteModal.classList.add('active');
@@ -903,7 +926,7 @@ function deletePaciente() {
 }
 
 // Renderizar histórico
-function renderHistory() {
+function renderHistory(filteredItems = null) {
     DOM.historyList.innerHTML = '';
     
     // Obter filtros
@@ -912,7 +935,9 @@ function renderHistory() {
     const setorFilter = document.getElementById('historySetorFilter').value;
     
     // Filtrar histórico
-    const filteredHistory = dados.historico.filter(item => {
+    let historyToRender = filteredItems || dados.historico;
+    
+    historyToRender = historyToRender.filter(item => {
         const itemDate = new Date(item.timestamp).toISOString().split('T')[0];
         
         return (!dateFilter || itemDate === dateFilter) &&
@@ -920,7 +945,7 @@ function renderHistory() {
                (!setorFilter || item.setor === setorFilter);
     });
     
-    if (filteredHistory.length === 0) {
+    if (historyToRender.length === 0) {
         DOM.historyList.innerHTML = `
             <div class="empty-state">
                 <div class="empty-content">
@@ -931,7 +956,7 @@ function renderHistory() {
         return;
     }
     
-    filteredHistory.forEach(item => {
+    historyToRender.forEach(item => {
         const historyItem = document.createElement('div');
         historyItem.className = 'history-item';
         historyItem.innerHTML = `
