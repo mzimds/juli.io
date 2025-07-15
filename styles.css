@@ -62,6 +62,9 @@ header {
     font-family: 'Inter', sans-serif;
     font-weight: 800;
     color: var(--darker);
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 /* Container de filtros fixo */
@@ -80,17 +83,22 @@ header {
     justify-content: space-between;
     align-items: center;
     gap: 15px;
+    height: 100%;
 }
 
 .search-container {
     flex: 1;
     max-width: 500px;
+    display: flex;
+    align-items: center;
 }
 
 .search-box {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
+    height: 40px;
 }
 
 .search-icon {
@@ -101,6 +109,9 @@ header {
     cursor: pointer;
     z-index: 10;
     display: none;
+    height: 40px;
+    display: flex;
+    align-items: center;
 }
 
 .search-box input {
@@ -115,6 +126,7 @@ header {
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
     box-shadow: var(--shadow-sm);
+    height: 40px;
 }
 
 .search-box input:focus {
@@ -161,6 +173,7 @@ header {
     gap: 15px;
     font-size: 0.9rem;
     color: var(--dark);
+    height: 40px;
 }
 
 .btn {
@@ -177,6 +190,7 @@ header {
     display: flex;
     align-items: center;
     gap: 5px;
+    height: 40px;
 }
 
 .btn:hover {
@@ -244,10 +258,11 @@ header {
     display: flex;
     flex-direction: column;
     word-break: break-word;
-    height: 200px; /* Altura fixa */
-    min-height: 200px;
-    max-height: 200px;
+    height: 220px;
+    min-height: 220px;
+    max-height: 220px;
     overflow: hidden;
+    position: relative;
 }
 
 .paciente-card.active {
@@ -344,11 +359,6 @@ header {
     word-break: break-word;
 }
 
-.note-text.expanded {
-    max-height: 500px;
-    overflow-y: auto;
-}
-
 .toggle-note {
     color: var(--primary);
     font-size: 0.7rem;
@@ -373,8 +383,9 @@ header {
 .paciente-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
-    margin-top: 5px;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 10px;
 }
 
 .btn-action {
@@ -768,6 +779,7 @@ header {
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
+        height: auto;
     }
     
     .search-container {
@@ -816,7 +828,7 @@ header {
     }
 
     .search-icon {
-        display: block;
+        display: flex;
     }
     
     .search-box input {
@@ -851,6 +863,10 @@ header {
         font-weight: 500;
         border-bottom: 1px solid var(--border);
         margin-bottom: 5px;
+    }
+
+    .paciente-card {
+        height: 220px;
     }
 }
 
@@ -889,9 +905,9 @@ header {
     }
 
     .paciente-card {
-        height: 200px;
-        min-height: 200px;
-        max-height: 200px;
+        height: 220px;
+        min-height: 220px;
+        max-height: 220px;
         padding: 12px;
     }
 
@@ -1031,7 +1047,7 @@ header {
 }
 
 .hamburger-menu {
-    display: none;
+    display: block;
     background: none;
     border: none;
     cursor: pointer;

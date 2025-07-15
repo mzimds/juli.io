@@ -14,6 +14,8 @@ const DOM = {
     newPacienteModal: document.getElementById('newPacienteModal'),
     pacienteName: document.getElementById('pacienteName'),
     pacienteNameError: document.getElementById('pacienteNameError'),
+    pacienteAtendimento: document.getElementById('pacienteAtendimento'),
+    pacienteSexo: document.getElementById('pacienteSexo'),
     pacienteLeito: document.getElementById('pacienteLeito'),
     pacienteLeitoError: document.getElementById('pacienteLeitoError'),
     pacienteTags: document.getElementById('pacienteTags'),
@@ -35,7 +37,6 @@ const DOM = {
     confirmDeleteModal: document.getElementById('confirmDeleteModal'),
     patientNameToDelete: document.getElementById('patientNameToDelete'),
     btnCancelDelete: document.getElementById('btnCancelDelete'),
-    btnIsAlta: document.getElementById('btnIsAlta'),
     btnConfirmDelete: document.getElementById('btnConfirmDelete'),
     confirmDeleteInput: document.getElementById('confirmDeleteInput'),
     confirmDeleteError: document.getElementById('confirmDeleteError'),
@@ -44,6 +45,8 @@ const DOM = {
     editPacienteModal: document.getElementById('editPacienteModal'),
     editPacienteName: document.getElementById('editPacienteName'),
     editPacienteNameError: document.getElementById('editPacienteNameError'),
+    editPacienteAtendimento: document.getElementById('editPacienteAtendimento'),
+    editPacienteSexo: document.getElementById('editPacienteSexo'),
     editPacienteLeito: document.getElementById('editPacienteLeito'),
     editPacienteLeitoError: document.getElementById('editPacienteLeitoError'),
     editPacienteTags: document.getElementById('editPacienteTags'),
@@ -119,10 +122,13 @@ function renderPatientList() {
         
         let lastNoteHTML = '';
         if (lastNote) {
+            const showToggle = lastNote.texto.length > 100;
+            const truncatedText = showToggle ? lastNote.texto.substring(0, 100) + '...' : lastNote.texto;
+            
             lastNoteHTML = `
             <div class="last-note">
-                <div class="note-text">${lastNote.texto}</div>
-                <div class="toggle-note">Ver mais</div>
+                <div class="note-text">${showToggle ? truncatedText : lastNote.texto}</div>
+                ${showToggle ? '<div class="toggle-note">Ver mais</div>' : ''}
                 <div class="note-meta">
                     <span>${formatDateTime(lastNote.timestamp)}</span>
                     <span>${lastNote.medico}</span>
@@ -180,15 +186,20 @@ function renderPatientList() {
         DOM.patientList.appendChild(pacienteCard);
         
         // Adicionar evento para expandir/colapsar notas
-        if (lastNote) {
+        if (lastNote && lastNote.texto.length > 100) {
             const toggleBtn = pacienteCard.querySelector('.toggle-note');
             const noteText = pacienteCard.querySelector('.note-text');
             
             if (toggleBtn && noteText) {
                 toggleBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    noteText.classList.toggle('expanded');
-                    this.textContent = noteText.classList.contains('expanded') ? 'Ver menos' : 'Ver mais';
+                    if (noteText.textContent.length > 100) {
+                        noteText.textContent = lastNote.texto;
+                        this.textContent = 'Ver menos';
+                    } else {
+                        noteText.textContent = lastNote.texto.substring(0, 100) + '...';
+                        this.textContent = 'Ver mais';
+                    }
                 });
             }
         }
@@ -315,6 +326,8 @@ function setupEventListeners() {
         const nome = DOM.pacienteName.value.trim();
         const leito = DOM.pacienteLeito.value.trim();
         const tags = DOM.pacienteTags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+        const atendimento = DOM.pacienteAtendimento.value.trim();
+        const sexo = DOM.pacienteSexo.value;
         
         if (!nome) {
             showError(DOM.pacienteNameError, 'Informe o nome do paciente');
@@ -331,6 +344,8 @@ function setupEventListeners() {
         const novoPaciente = {
             id: Date.now(),
             nome,
+            atendimento,
+            sexo,
             leito,
             tags,
             status: "active",
@@ -345,6 +360,8 @@ function setupEventListeners() {
         
         // Resetar campos
         DOM.pacienteName.value = '';
+        DOM.pacienteAtendimento.value = '';
+        DOM.pacienteSexo.value = '';
         DOM.pacienteLeito.value = '';
         DOM.pacienteTags.value = '';
         
@@ -620,6 +637,8 @@ function openEditPacienteModal(pacienteId) {
     state.editingPacienteId = pacienteId;
     
     DOM.editPacienteName.value = paciente.nome;
+    DOM.editPacienteAtendimento.value = paciente.atendimento || '';
+    DOM.editPacienteSexo.value = paciente.sexo || '';
     DOM.editPacienteLeito.value = paciente.leito;
     DOM.editPacienteTags.value = paciente.tags.join(', ');
     
@@ -638,6 +657,8 @@ function updatePaciente() {
     const nome = DOM.editPacienteName.value.trim();
     const leito = DOM.editPacienteLeito.value.trim();
     const tags = DOM.editPacienteTags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+    const atendimento = DOM.editPacienteAtendimento.value.trim();
+    const sexo = DOM.editPacienteSexo.value;
     
     if (!nome) {
         showError(DOM.editPacienteNameError, 'Informe o nome do paciente');
@@ -654,6 +675,8 @@ function updatePaciente() {
     paciente.nome = nome;
     paciente.leito = leito;
     paciente.tags = tags;
+    paciente.atendimento = atendimento;
+    paciente.sexo = sexo;
     paciente.lastUpdated = new Date().toISOString(); // Atualizar timestamp
     
     renderPatientList();
@@ -835,6 +858,11 @@ function renderHistory(filteredItems = null) {
                (!medicoFilter || item.medico === medicoFilter) &&
                (!setorFilter || item.setor === setorFilter);
     });
+    
+    // Ordenar por data (mais recentes primeiro)
+    historyToRender.sort((a, b) => 
+        new Date(b.timestamp) - new Date(a.timestamp)
+    );
     
     if (historyToRender.length === 0) {
         DOM.historyList.innerHTML = `
