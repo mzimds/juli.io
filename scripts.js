@@ -1,47 +1,6 @@
-// Dados de exemplo para demonstração
+// Dados vazios para inicialização
 const dados = {
-    pacientes: [
-        {
-            id: 101,
-            nome: "Maria Oliveira",
-            leito: "12A",
-            tags: ["UTI", "Cardio"],
-            status: "active",
-            anotacoes: [
-                {
-                    id: 1001,
-                    texto: "Paciente relata dor torácica intensa e falta de ar.",
-                    timestamp: "2023-06-25T10:15:00",
-                    medico: "Dr. Carlos Silva"
-                },
-                {
-                    id: 1002,
-                    texto: "PA: 150/90 mmHg | FC: 110 bpm | FR: 24 rpm | Temp: 37.2°C",
-                    timestamp: "2023-06-25T10:20:00",
-                    medico: "Dr. Carlos Silva"
-                }
-            ],
-            alta: null,
-            lastUpdated: "2023-06-25T10:20:00" // Novo campo
-        },
-        {
-            id: 102,
-            nome: "Carlos Santos",
-            leito: "15B",
-            tags: ["Emergência"],
-            status: "active",
-            anotacoes: [
-                {
-                    id: 1003,
-                    texto: "Paciente refere tosse produtiva e febre há 3 dias.",
-                    timestamp: "2023-06-25T10:30:00",
-                    medico: "Dr. Carlos Silva"
-                }
-            ],
-            alta: null,
-            lastUpdated: "2023-06-25T10:30:00" // Novo campo
-        }
-    ],
+    pacientes: [],
     historico: []
 };
 
@@ -82,7 +41,6 @@ const DOM = {
     confirmDeleteError: document.getElementById('confirmDeleteError'),
     historyScreen: document.getElementById('historyScreen'),
     historyList: document.getElementById('historyListContent'),
-    btnFinalizarPlantaoMobile: document.getElementById('btnFinalizarPlantaoMobile'),
     editPacienteModal: document.getElementById('editPacienteModal'),
     editPacienteName: document.getElementById('editPacienteName'),
     editPacienteNameError: document.getElementById('editPacienteNameError'),
@@ -112,37 +70,12 @@ function init() {
     renderPatientList();
     setupEventListeners();
     updateResumoPlantao();
-    generateSampleHistory();
-}
-
-// Gerar histórico de exemplo
-function generateSampleHistory() {
-    dados.historico = [
-        {
-            id: 2001,
-            tipo: "anotacao",
-            texto: "Adicionada nova anotação para Maria Oliveira",
-            timestamp: "2023-06-25T10:15:00",
-            medico: "Dr. Carlos Silva",
-            setor: "UTI"
-        },
-        {
-            id: 2002,
-            tipo: "alta",
-            texto: "Carlos Santos recebeu alta médica",
-            timestamp: "2023-06-24T14:30:00",
-            medico: "Dr. Carlos Silva",
-            setor: "Emergência"
-        },
-        {
-            id: 2003,
-            tipo: "novo_paciente",
-            texto: "Novo paciente João Pereira adicionado",
-            timestamp: "2023-06-23T09:45:00",
-            medico: "Dr. Carlos Silva",
-            setor: "Enfermaria"
-        }
-    ];
+    
+    // Mostrar note-editor na tela de Ativos
+    if (state.currentFilter === 'active') {
+        DOM.noteEditor.style.display = 'block';
+        document.querySelector('.fab-container').style.display = 'block';
+    }
 }
 
 // Renderizar lista de pacientes
@@ -306,6 +239,9 @@ function selectPaciente(pacienteId) {
         selectedCard.classList.add('active');
     }
     
+    // Habilitar/desabilitar botão de enviar
+    DOM.btnSendNote.disabled = !pacienteId;
+    
     // Focar no campo de anotação
     if (state.currentFilter === 'active') {
         DOM.noteInput.focus();
@@ -395,7 +331,7 @@ function setupEventListeners() {
             status: "active",
             anotacoes: [],
             alta: null,
-            lastUpdated: new Date().toISOString() // Novo campo
+            lastUpdated: new Date().toISOString()
         };
         
         dados.pacientes.unshift(novoPaciente); // Adicionar no início
@@ -496,13 +432,6 @@ function setupEventListeners() {
     // Modal de exclusão de paciente
     DOM.btnCancelDelete.addEventListener('click', () => {
         DOM.confirmDeleteModal.classList.remove('active');
-    });
-    
-    DOM.btnIsAlta.addEventListener('click', () => {
-        DOM.confirmDeleteModal.classList.remove('active');
-        if (state.currentPaciente) {
-            registerAlta(state.currentPaciente);
-        }
     });
     
     DOM.btnConfirmDelete.addEventListener('click', deletePaciente);
