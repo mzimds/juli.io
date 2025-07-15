@@ -51,6 +51,15 @@
                 </button>
             </div>
         </div>
+
+        <!-- Filtros de status fixos -->
+        <div class="filters-container">
+            <div class="filters">
+                <button class="filter-btn active" data-status="active">Ativos</button>
+                <button class="filter-btn" data-status="discharged">Alta</button>
+                <button class="filter-btn" data-status="history">Histórico</button>
+            </div>
+        </div>
     </header>
 
     <!-- Mobile Menu -->
@@ -61,15 +70,6 @@
     </div>
 
     <div class="container">
-        <!-- Filtros de status fixos -->
-        <div class="filters-container">
-            <div class="filters">
-                <button class="filter-btn active" data-status="active">Ativos</button>
-                <button class="filter-btn" data-status="discharged">Alta</button>
-                <button class="filter-btn" data-status="history">Histórico</button>
-            </div>
-        </div>
-
         <!-- Lista de Pacientes -->
         <div class="patient-list" id="patientList">
             <!-- Pacientes serão carregados aqui dinamicamente -->
@@ -124,22 +124,127 @@
 
     <!-- Modal Novo Paciente -->
     <div class="modal" id="newPacienteModal">
-        <!-- Conteúdo mantido -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Novo Paciente</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="pacienteName">Nome do Paciente</label>
+                    <input type="text" id="pacienteName" class="form-control" placeholder="Nome completo">
+                    <div id="pacienteNameError" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="pacienteLeito">Número do Leito</label>
+                    <input type="text" id="pacienteLeito" class="form-control" placeholder="Número do leito">
+                    <div id="pacienteLeitoError" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="pacienteTags">Tags (separadas por vírgula)</label>
+                    <input type="text" id="pacienteTags" class="form-control" placeholder="Ex: UTI, Cardio">
+                    <div class="hint">Use tags para organizar os pacientes</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelPaciente" class="btn btn-secondary">Cancelar</button>
+                <button id="btnSavePaciente" class="btn">Salvar Paciente</button>
+            </div>
+        </div>
     </div>
 
     <!-- Modal Editar Paciente -->
     <div class="modal" id="editPacienteModal">
-        <!-- Conteúdo mantido -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Editar Paciente</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="editPacienteName">Nome do Paciente</label>
+                    <input type="text" id="editPacienteName" class="form-control">
+                    <div id="editPacienteNameError" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="editPacienteLeito">Número do Leito</label>
+                    <input type="text" id="editPacienteLeito" class="form-control">
+                    <div id="editPacienteLeitoError" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="editPacienteTags">Tags (separadas por vírgula)</label>
+                    <input type="text" id="editPacienteTags" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelEdit" class="btn btn-secondary">Cancelar</button>
+                <button id="btnUpdatePaciente" class="btn">Atualizar</button>
+            </div>
+        </div>
     </div>
 
     <!-- Modal Passar Plantão -->
     <div class="modal" id="passPlantaoModal">
-        <!-- Conteúdo mantido -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Finalizar Plantão</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="medicoRecebe">Passar plantão para:</label>
+                    <select id="medicoRecebe" class="form-control">
+                        <option value="">Selecione o médico</option>
+                        <option value="Dra. Ana Souza">Dra. Ana Souza</option>
+                        <option value="Dr. Marcos Oliveira">Dr. Marcos Oliveira</option>
+                        <option value="Dra. Camila Lima">Dra. Camila Lima</option>
+                    </select>
+                    <div id="medicoRecebeError" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="assinatura">Assinatura</label>
+                    <input type="text" id="assinatura" class="form-control" readonly>
+                </div>
+                <div class="resumo-plantao">
+                    <h4>Resumo do Plantão</h4>
+                    <div class="resumo-item">
+                        <span>Pacientes atendidos:</span>
+                        <span id="resumoPacientes">0</span>
+                    </div>
+                    <div class="resumo-item">
+                        <span>Anotações realizadas:</span>
+                        <span id="resumoAnotacoes">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancelPass" class="btn btn-secondary">Cancelar</button>
+                <button id="btnConfirmPass" class="btn">Confirmar</button>
+            </div>
+        </div>
     </div>
 
     <!-- Modal de Confirmação de Exclusão de Paciente -->
     <div class="modal" id="confirmDeleteModal">
-        <!-- Conteúdo mantido -->
+        <div class="modal-content delete-modal-content">
+            <div class="delete-modal-header">
+                <h3 class="delete-modal-title">Excluir Paciente</h3>
+            </div>
+            <div class="delete-modal-body">
+                <p>Tem certeza que deseja excluir o paciente <strong id="patientNameToDelete">[Nome]</strong>?</p>
+                <div class="delete-warning">
+                    <p><strong>Atenção!</strong></p>
+                    <p>Esta ação é irreversível e excluirá todas as anotações relacionadas a este paciente.</p>
+                </div>
+                <div class="form-group">
+                    <label for="confirmDeleteInput">Digite "EXCLUIR" para confirmar:</label>
+                    <input type="text" id="confirmDeleteInput" class="form-control">
+                    <div id="confirmDeleteError" class="error-message">O texto digitado não corresponde</div>
+                </div>
+            </div>
+            <div class="delete-modal-footer">
+                <button id="btnIsAlta" class="btn btn-secondary">Registrar Alta</button>
+                <button id="btnCancelDelete" class="btn btn-secondary">Cancelar</button>
+                <button id="btnConfirmDelete" class="btn btn-delete btn-delete-disabled" disabled>Excluir</button>
+            </div>
+        </div>
     </div>
 
     <script src="scripts.js"></script>
