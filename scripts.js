@@ -60,7 +60,8 @@ const DOM = {
     searchToggle: document.getElementById('searchToggle'),
     container: document.querySelector('.container'),
     searchContainer: document.getElementById('searchContainer'),
-    filters: document.getElementById('filters')
+    filters: document.getElementById('filters'),
+    btnFinalizarPlantaoMobile: document.getElementById('btnFinalizarPlantaoMobile')
 };
 
 // Estado da aplicação
@@ -382,6 +383,7 @@ function setupEventListeners() {
     
     // Finalizar plantão
     DOM.btnFinalizarPlantao.addEventListener('click', openPassPlantaoModal);
+    DOM.btnFinalizarPlantaoMobile.addEventListener('click', openPassPlantaoModal);
     
     DOM.btnCancelPass.addEventListener('click', () => {
         DOM.passPlantaoModal.classList.remove('active');
@@ -499,7 +501,8 @@ function setupEventListeners() {
     DOM.btnUpdatePaciente.addEventListener('click', updatePaciente);
     
     // Menu mobile
-    DOM.hamburgerMenu.addEventListener('click', () => {
+    DOM.hamburgerMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
         DOM.mobileMenu.classList.toggle('active');
     });
     

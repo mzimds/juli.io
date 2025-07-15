@@ -55,6 +55,15 @@ header {
     gap: 15px;
 }
 
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    min-height: 40px;
+}
+
 .logo {
     font-weight: 700;
     font-size: 1.8rem;
@@ -895,15 +904,6 @@ header {
     pointer-events: none;
 }
 
-.hamburger-menu {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    min-height: 40px;
-}
-
 .container {
     overflow-x: hidden;
 }
@@ -918,16 +918,12 @@ button:focus, input:focus, textarea:focus {
 }
 
 @media (max-width: 768px) {
-    .header-info .user-info {
-        display: none;
-    }
-
-    .header-info .btn {
-        display: none;
-    }
-
     .hamburger-menu {
         display: block;
+    }
+    
+    .header-info .btn {
+        display: none;
     }
 
     .search-container {
@@ -979,9 +975,18 @@ button:focus, input:focus, textarea:focus {
         align-items: center;
     }
 
+    .mobile-search input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+    }
+
     .patient-list {
         grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        gap: 6px;
     }
     
     .paciente-card {
@@ -1033,6 +1038,7 @@ button:focus, input:focus, textarea:focus {
 @media (max-width: 480px) {
     .patient-list {
         grid-template-columns: 1fr;
+        gap: 8px;
     }
     
     .paciente-card {
