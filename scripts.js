@@ -513,6 +513,7 @@ function setupEventListeners() {
     
     // Menu mobile
     DOM.hamburgerMenu.addEventListener('click', (e) => {
+        DOM.hamburgerMenu.classList.toggle('open');
         e.stopPropagation();
         DOM.mobileMenu.classList.toggle('active');
     });
@@ -522,6 +523,7 @@ function setupEventListeners() {
         if (!DOM.mobileMenu.contains(e.target) && 
             !DOM.hamburgerMenu.contains(e.target)) {
             DOM.mobileMenu.classList.remove('active');
+        DOM.hamburgerMenu.classList.remove('open');
         }
     });
     
@@ -650,6 +652,7 @@ function openNewPacienteModal() {
     DOM.newPacienteModal.classList.add('active');
     DOM.pacienteName.focus();
     DOM.mobileMenu.classList.remove('active');
+        DOM.hamburgerMenu.classList.remove('open');
     DOM.searchContainer.classList.remove('active');
 }
 
@@ -735,6 +738,7 @@ function openPassPlantaoModal() {
     DOM.passPlantaoModal.classList.add('active');
     DOM.medicoRecebe.focus();
     DOM.mobileMenu.classList.remove('active');
+        DOM.hamburgerMenu.classList.remove('open');
     DOM.searchContainer.classList.remove('active');
 }
 
