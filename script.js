@@ -66,6 +66,10 @@ function renderPatients(tab) {
   const container = document.getElementById("patientList");
   container.innerHTML = "";
 
+ // Mostra ou esconde a barra de busca conforme a aba
+  const showSearch = tab !== "config";
+  document.getElementById("searchContainer").classList.toggle("hidden", !showSearch);
+
   if (tab === "config") return renderConfig();
 
   if (tab === "historico") {
