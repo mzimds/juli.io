@@ -1079,3 +1079,9 @@ button:focus, input:focus, textarea:focus {
         max-height: 120px;
     }
 }
+
+@media (min-width: 769px) {
+  .mobile-menu {
+    display: none !important;
+  }
+}
