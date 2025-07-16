@@ -1,5 +1,3 @@
-/* CSS completo com responsividade, cards com resumo clínico, FAB condicional e modal de histórico */
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -92,15 +90,18 @@ body {
   margin-right: 4px;
 }
 
-.card .btn-alta {
-  background: #111;
-  color: #fff;
-  border: none;
+.card button {
+  margin-right: 4px;
   padding: 4px 8px;
   font-size: 0.8rem;
   border-radius: 4px;
-  margin-top: 6px;
   cursor: pointer;
+  border: none;
+}
+
+.card .btn-alta {
+  background: #111;
+  color: #fff;
 }
 
 .fab {
@@ -128,6 +129,7 @@ body {
   display: none;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 }
 
 .modal-content {
@@ -160,7 +162,7 @@ body {
   cursor: pointer;
 }
 
-#salvarPaciente {
+#salvarPaciente, #salvarNota {
   background-color: black;
   color: white;
 }
@@ -196,6 +198,10 @@ body {
 .log-list li {
   padding: 0.5rem 0;
   border-bottom: 1px solid #eee;
+}
+
+#modalNota textarea {
+  height: 100px;
 }
 
 @media (min-width: 768px) {

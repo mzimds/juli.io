@@ -22,16 +22,14 @@
     <input type="text" id="searchInput" placeholder="Buscar paciente..." />
   </div>
 
-  <main class="patient-list" id="patientList">
-    <!-- Cards renderizados via JS -->
-  </main>
+  <main class="patient-list" id="patientList"></main>
 
   <button class="fab" id="addPatientBtn">+</button>
 
-  <!-- Modal: Adicionar Paciente -->
+  <!-- Modal: Adicionar/Editar Paciente -->
   <div class="modal" id="modal">
     <div class="modal-content">
-      <h2>Novo Paciente</h2>
+      <h2 id="modalTitulo">Novo Paciente</h2>
       <input type="text" id="nomePaciente" placeholder="Nome do paciente" />
       <input type="text" id="setorPaciente" placeholder="Setor" />
       <select id="statusPaciente">
@@ -46,20 +44,27 @@
     </div>
   </div>
 
-  <!-- Modal: Histórico (mock) -->
+  <!-- Modal: Anotação -->
+  <div class="modal" id="modalNota">
+    <div class="modal-content">
+      <h2>Nova Anotação</h2>
+      <textarea id="novaNota" placeholder="Descreva a nova anotação clínica..."></textarea>
+      <div class="modal-actions">
+        <button id="salvarNota">Salvar</button>
+        <button onclick="fecharNota()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Histórico dinâmico -->
   <div class="modal" id="modalHistorico">
     <div class="modal-content">
-      <h2>Histórico de Paciente</h2>
-      <ul class="log-list">
-        <li><strong>João da Silva:</strong> Alta registrada em 16/07/2025 - por Dr. Ana</li>
-        <li><strong>Maria Souza:</strong> Anotação clínica adicionada em 15/07/2025 - por Dr. Bruno</li>
-        <li><strong>Carlos Lima:</strong> Exclusão do prontuário em 14/07/2025 - por admin</li>
-      </ul>
+      <h2>Histórico de Ações</h2>
+      <ul class="log-list" id="logList"></ul>
       <button id="fecharHistorico">Fechar</button>
     </div>
   </div>
 
-  <!-- Toast -->
   <div id="toast" class="toast hidden">Paciente adicionado</div>
 
   <script src="script.js"></script>
