@@ -29,40 +29,44 @@ let pacientes = [
 
 let plantaoHistorico = [];
 
+let medicos = [
+  { nome: "Dr. Ana", tipo: "medico", aprovado: true },
+  { nome: "Admin", tipo: "gestor", aprovado: true },
+  { nome: "Dr. Bruno", tipo: "medico", aprovado: false }
+];
+
+// Login com validação de aprovação
 function login(nome, tipo) {
-  usuario = nome;
-  perfil = tipo;
+  const user = medicos.find((m) => m.nome === nome && m.tipo === tipo);
+  if (!user) return alert("Usuário não encontrado.");
+  if (!user.aprovado) return alert("Acesso pendente de aprovação.");
+
+  perfil = user.tipo;
+  usuario = user.nome;
 
   document.getElementById("loginSection").classList.add("hidden");
   document.getElementById("tabs").classList.remove("hidden");
   document.getElementById("searchContainer").classList.remove("hidden");
   document.getElementById("addPatientBtn").classList.remove("hidden");
-
-  if (perfil === "medico") {
+  if (perfil === "medico" || perfil === "gestor")
     document.getElementById("encerrarBtn").classList.remove("hidden");
-  }
 
   renderPatients("ativos");
 }
 
+// Alternar tema claro/escuro
+function alternarTema() {
+  temaAtual = temaAtual === "light" ? "dark" : "light";
+  document.body.className = temaAtual;
+  renderPatients("config");
+}
+
+// Renderização principal por aba
 function renderPatients(tab) {
   const container = document.getElementById("patientList");
   container.innerHTML = "";
 
-  if (tab === "config") {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <h2>Perfil do Usuário</h2>
-      <p><strong>Nome:</strong> ${usuario}</p>
-      <p><strong>Tipo:</strong> ${perfil}</p>
-      <hr />
-      <h3>Preferências</h3>
-      <button onclick="alternarTema()">Tema: ${temaAtual === "dark" ? "🌙 Escuro" : "☀️ Claro"}</button>
-    `;
-    container.appendChild(card);
-    return;
-  }
+  if (tab === "config") return renderConfig();
 
   if (tab === "historico") {
     if (plantaoHistorico.length === 0) {
@@ -117,11 +121,11 @@ function renderPatients(tab) {
       <div class="card-descricao">${p.descricao}</div>
       ${anotacoesHTML}
       ${
-        p.status === "ativos" && perfil === "medico"
+        p.status === "ativos" && (perfil === "medico" || perfil === "gestor")
           ? `
         <button onclick="abrirNota('${p.nome}')">Nova Anotação</button>
         <button onclick="editarPaciente('${p.nome}')">Editar</button>
-        <button class="btn-alta" onclick="darAlta('${p.nome}')">Dar Alta</button>
+        <button onclick="darAlta('${p.nome}')">Dar Alta</button>
       `
           : ""
       }
@@ -130,34 +134,25 @@ function renderPatients(tab) {
   });
 }
 
-function alternarTema() {
-  temaAtual = temaAtual === "light" ? "dark" : "light";
-  document.body.className = temaAtual;
-  renderPatients("config");
-}
-
-function renderCurrentTab() {
-  const aba = document.querySelector(".tab.active").dataset.tab;
-  renderPatients(aba);
-}
-
-document.querySelectorAll(".tab").forEach((tab) => {
+// Tabs
+document.querySelectorAll(".tab").forEach((tab) =>
   tab.addEventListener("click", () => {
     document.querySelectorAll(".tab").forEach((t) =>
       t.classList.remove("active")
     );
     tab.classList.add("active");
-    renderCurrentTab();
-  });
-});
+    renderPatients(tab.dataset.tab);
+  })
+);
 
+// Buscar pacientes
 document.getElementById("searchInput").addEventListener("input", () => {
-  renderCurrentTab();
+  renderPatients(document.querySelector(".tab.active").dataset.tab);
 });
 
+// Modal paciente
 document.getElementById("addPatientBtn").addEventListener("click", () => {
-  const modal = document.getElementById("modal");
-  modal.style.display = "flex";
+  document.getElementById("modal").style.display = "flex";
   document.getElementById("modalTitulo").textContent = "Novo Paciente";
   document.getElementById("nomePaciente").value = "";
   document.getElementById("setorPaciente").value = "";
@@ -187,10 +182,11 @@ document.getElementById("salvarPaciente").addEventListener("click", () => {
   });
 
   document.getElementById("modal").style.display = "none";
-  renderCurrentTab();
+  renderPatients("ativos");
   showToast("Paciente salvo com sucesso.");
 });
 
+// Modal anotação
 function abrirNota(nome) {
   const paciente = pacientes.find((p) => p.nome === nome);
   if (!paciente) return;
@@ -198,11 +194,9 @@ function abrirNota(nome) {
   document.getElementById("novaNota").value = "";
   document.getElementById("modalNota").style.display = "flex";
 }
-
 function fecharNota() {
   document.getElementById("modalNota").style.display = "none";
 }
-
 document.getElementById("salvarNota").addEventListener("click", () => {
   const texto = document.getElementById("novaNota").value.trim();
   if (!texto || !window.anotando) return;
@@ -213,10 +207,11 @@ document.getElementById("salvarNota").addEventListener("click", () => {
   });
   window.anotando.criadoEm = Date.now();
   document.getElementById("modalNota").style.display = "none";
-  renderCurrentTab();
+  renderPatients("ativos");
   showToast("Anotação salva.");
 });
 
+// Editar paciente
 function editarPaciente(nome) {
   const paciente = pacientes.find((p) => p.nome === nome);
   if (!paciente) return;
@@ -228,40 +223,30 @@ function editarPaciente(nome) {
   document.getElementById("modal").style.display = "flex";
 }
 
+// Alta
 function darAlta(nome) {
   const paciente = pacientes.find((p) => p.nome === nome);
   if (!paciente) return;
   paciente.status = "altas";
   paciente.criadoEm = Date.now();
-  renderCurrentTab();
+  renderPatients("ativos");
   showToast("Paciente em alta.");
 }
 
-function showToast(msg) {
-  const toast = document.getElementById("toast");
-  toast.textContent = msg;
-  toast.classList.remove("hidden");
-  setTimeout(() => toast.classList.add("hidden"), 2000);
-}
-
+// Encerrar plantão
 document.getElementById("encerrarBtn").addEventListener("click", () => {
   document.getElementById("assinaturaUser").textContent = usuario;
   document.getElementById("modalEncerrar").style.display = "flex";
 });
-
 function fecharEncerrar() {
   document.getElementById("modalEncerrar").style.display = "none";
 }
-
 function confirmarEncerramento() {
   const pend = document.getElementById("checkPendencias").checked;
   const obs = document.getElementById("checkObservacoes").checked;
-  const medicoDestino = document.getElementById("medicoDestino").value;
+  const destino = document.getElementById("medicoDestino").value;
 
-  if (!pend || !obs) {
-    alert("Checklist incompleto.");
-    return;
-  }
+  if (!pend || !obs) return alert("Checklist incompleto");
 
   const altas = pacientes.filter((p) => p.status === "altas");
   plantaoHistorico.push({
@@ -273,8 +258,83 @@ function confirmarEncerramento() {
   pacientes = pacientes.filter((p) => p.status !== "altas");
 
   document.getElementById("modalEncerrar").style.display = "none";
-  renderCurrentTab();
-  showToast("Plantão encerrado e passado para " + medicoDestino);
+  renderPatients("ativos");
+  showToast("Plantão encerrado.");
 }
 
+// Toast
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.remove("hidden");
+  setTimeout(() => toast.classList.add("hidden"), 2000);
+}
+
+// Painel de configurações
+function renderConfig() {
+  const c = document.getElementById("patientList");
+  c.innerHTML = "";
+
+  const divLink = document.createElement("div");
+  divLink.className = "config-link";
+  divLink.innerHTML = `
+    <input id="inviteLink" readonly value="memo.com/SETOR123/login"/>
+    <button onclick="copiarLink()">📋</button>
+    <button onclick="compartilhar()">🔗</button>
+  `;
+  c.appendChild(divLink);
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `<h2>${usuario} (${perfil})</h2><button onclick="alternarTema()">Tema: ${temaAtual}</button>`;
+  c.appendChild(card);
+
+  if (perfil === "gestor") {
+    const ul = document.createElement("ul");
+    ul.className = "user-list";
+    medicos.forEach((m, i) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<span>${m.nome} [${m.tipo}] - ${m.aprovado ? "✔️" : "⏳"}</span>
+        <span class="user-actions">
+          ${!m.aprovado ? `<button onclick="aprovar(${i})">Aprovar</button>` : ""}
+          <button onclick="toggleRole(${i})">Role</button>
+          <button onclick="remover(${i})">Excluir</button>
+        </span>`;
+      ul.appendChild(li);
+    });
+    c.appendChild(ul);
+  }
+}
+
+function aprovar(i) {
+  medicos[i].aprovado = true;
+  renderConfig();
+  showToast("Médico aprovado");
+}
+function toggleRole(i) {
+  medicos[i].tipo = medicos[i].tipo === "medico" ? "gestor" : "medico";
+  renderConfig();
+  showToast("Função alterada");
+}
+function remover(i) {
+  if (medicos[i].nome === usuario) return alert("Você não pode se excluir.");
+  medicos.splice(i, 1);
+  renderConfig();
+  showToast("Médico excluído");
+}
+
+// Copiar e compartilhar
+function copiarLink() {
+  const txt = document.getElementById("inviteLink");
+  txt.select();
+  document.execCommand("copy");
+  showToast("Link copiado!");
+}
+function compartilhar() {
+  const url = document.getElementById("inviteLink").value;
+  navigator.share?.({ title: "Convite MEMO", url }) ||
+    alert("Navegador não suporta compartilhamento.");
+}
+
+// Inicialização
 document.body.className = temaAtual;
