@@ -1059,4 +1059,13 @@ button:focus, input:focus, textarea:focus {
         width: 44px;
         height: 44px;
     }
+    
+    .paciente-actions {
+        gap: 8px;
+    }
+    
+    .note-input {
+        min-height: 50px;
+        max-height: 120px;
+    }
 }
