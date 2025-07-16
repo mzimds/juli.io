@@ -12,16 +12,16 @@
     <p class="slogan">Don't mess my notes.</p>
   </header>
 
-  <!-- Simulação de Login -->
-  <div class="login-select">
-    <button onclick="login('medico')">Entrar como Médico</button>
-    <button onclick="login('gestor')">Entrar como Gestor</button>
+  <div class="login-select" id="loginSection">
+    <button onclick="login('Dr. Ana', 'medico')">Entrar como Médico</button>
+    <button onclick="login('Admin', 'gestor')">Entrar como Gestor</button>
   </div>
 
   <nav class="tabs hidden" id="tabs">
     <button class="tab active" data-tab="ativos">Ativos</button>
     <button class="tab" data-tab="altas">Altas</button>
     <button class="tab" data-tab="historico">Histórico</button>
+    <button class="tab" data-tab="config">Configurações</button>
   </nav>
 
   <div class="search-container hidden" id="searchContainer">

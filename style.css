@@ -25,6 +25,24 @@ body {
   color: #555;
 }
 
+.login-select {
+  text-align: center;
+  margin: 2rem auto;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.login-select button {
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 .tabs {
   display: flex;
   justify-content: space-around;
@@ -75,12 +93,6 @@ body {
   margin-bottom: 0.25rem;
 }
 
-.card p {
-  font-size: 0.9rem;
-  color: #444;
-  margin-bottom: 0.25rem;
-}
-
 .card .tag {
   display: inline-block;
   background: #eee;
@@ -88,6 +100,23 @@ body {
   border-radius: 4px;
   font-size: 0.75rem;
   margin-right: 4px;
+}
+
+.card-descricao {
+  max-height: 100px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+  white-space: pre-wrap;
+}
+
+.card .anotacoes {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  border-left: 2px solid #ccc;
 }
 
 .card button {
@@ -116,10 +145,16 @@ body {
   border-radius: 50%;
   font-size: 1.5rem;
   cursor: pointer;
+  z-index: 10;
+}
+
+.fab.encerrar {
+  bottom: 6rem;
+  background: crimson;
 }
 
 .fab.hidden {
-  display: none;
+  display: none !important;
 }
 
 .modal {
@@ -182,26 +217,15 @@ body {
   padding: 0.75rem 1rem;
   border-radius: 8px;
   opacity: 0.9;
+  z-index: 2000;
 }
 
 .toast.hidden {
   display: none;
 }
 
-.log-list {
-  list-style: none;
-  font-size: 0.9rem;
-  padding: 0;
-  margin-bottom: 1rem;
-}
-
-.log-list li {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #eee;
-}
-
-#modalNota textarea {
-  height: 100px;
+.hidden {
+  display: none !important;
 }
 
 @media (min-width: 768px) {
@@ -211,32 +235,4 @@ body {
     max-width: 600px;
     margin: 0 auto 1rem;
   }
-
-.login-select {
-  text-align: center;
-  margin: 2rem auto;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-.login-select button {
-  padding: 0.75rem 1.5rem;
-  font-weight: bold;
-  background: black;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.fab.encerrar {
-  bottom: 6rem;
-  background: crimson;
-}
-
-.hidden {
-  display: none !important;
-}
-
 }
