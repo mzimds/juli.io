@@ -77,6 +77,7 @@ let state = {
 // Inicialização
 function init() {
     renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     setupEventListeners();
     updateResumoPlantao();
     
@@ -307,6 +308,7 @@ function setupEventListeners() {
                 DOM.patientList.style.display = 'grid';
                 DOM.historyScreen.style.display = 'none';
                 renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
                 
                 if (state.currentFilter === 'active') {
                     DOM.noteEditor.style.display = 'block';
@@ -365,6 +367,7 @@ function setupEventListeners() {
         
         dados.pacientes.unshift(novoPaciente);
         renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
         DOM.newPacienteModal.classList.remove('active');
         
         DOM.pacienteName.value = '';
@@ -412,6 +415,7 @@ function setupEventListeners() {
             
             dados.pacientes = dados.pacientes.filter(p => p.status === 'active');
             renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
             
             dados.historico.push({
                 id: Date.now(),
@@ -703,6 +707,7 @@ function updatePaciente() {
     paciente.lastUpdated = new Date().toISOString();
     
     renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     DOM.editPacienteModal.classList.remove('active');
     
     showToast(`Paciente "${nome}" atualizado com sucesso!`, 'success');
@@ -753,6 +758,7 @@ function registerAlta(pacienteId) {
     });
     
     renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     showToast('Alta registrada com sucesso', 'success');
     
     dados.historico.push({
@@ -790,6 +796,7 @@ function sendNote() {
     paciente.lastUpdated = new Date().toISOString();
     
     renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     updateResumoPlantao();
     
     dados.historico.push({
@@ -838,6 +845,7 @@ function deletePaciente() {
     if (index !== -1) {
         dados.pacientes.splice(index, 1);
         renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
         DOM.confirmDeleteModal.classList.remove('active');
         state.currentPaciente = null;
         
