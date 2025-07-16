@@ -1,5 +1,10 @@
-/* Reset & Base */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* CSS completo com responsividade, cards com resumo clínico, FAB condicional e modal de histórico */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'Segoe UI', sans-serif;
@@ -8,13 +13,15 @@ body {
   color: #111;
 }
 
-header {
+.header {
   text-align: center;
   margin-bottom: 1rem;
 }
+
 .header h1 {
   font-size: 1.8rem;
 }
+
 .slogan {
   font-size: 0.9rem;
   color: #555;
@@ -25,6 +32,7 @@ header {
   justify-content: space-around;
   margin-bottom: 1rem;
 }
+
 .tab {
   flex: 1;
   padding: 0.75rem;
@@ -32,7 +40,9 @@ header {
   border: none;
   font-weight: bold;
   border-bottom: 2px solid transparent;
+  cursor: pointer;
 }
+
 .tab.active {
   border-bottom: 2px solid black;
   color: black;
@@ -41,6 +51,7 @@ header {
 .search-container {
   margin-bottom: 1rem;
 }
+
 .search-container input {
   width: 100%;
   padding: 0.5rem;
@@ -55,18 +66,23 @@ header {
 }
 
 .card {
-  background: #fff;
+  background: white;
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
+
 .card h2 {
   font-size: 1.1rem;
+  margin-bottom: 0.25rem;
 }
+
 .card p {
   font-size: 0.9rem;
   color: #444;
+  margin-bottom: 0.25rem;
 }
+
 .card .tag {
   display: inline-block;
   background: #eee;
@@ -75,6 +91,7 @@ header {
   font-size: 0.75rem;
   margin-right: 4px;
 }
+
 .card .btn-alta {
   background: #111;
   color: #fff;
@@ -86,7 +103,6 @@ header {
   cursor: pointer;
 }
 
-/* FAB */
 .fab {
   position: fixed;
   bottom: 1.5rem;
@@ -101,15 +117,19 @@ header {
   cursor: pointer;
 }
 
-/* Modal */
+.fab.hidden {
+  display: none;
+}
+
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: none;
   align-items: center;
   justify-content: center;
 }
+
 .modal-content {
   background: white;
   padding: 1rem;
@@ -117,6 +137,7 @@ header {
   max-width: 400px;
   border-radius: 8px;
 }
+
 .modal-content input,
 .modal-content textarea,
 .modal-content select {
@@ -126,25 +147,29 @@ header {
   border: 1px solid #ccc;
   border-radius: 6px;
 }
+
 .modal-actions {
   display: flex;
   justify-content: space-between;
 }
+
 .modal-actions button {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
 }
+
 #salvarPaciente {
   background-color: black;
   color: white;
 }
-#fecharModal {
+
+#fecharModal,
+#fecharHistorico {
   background-color: #ccc;
 }
 
-/* Toast */
 .toast {
   position: fixed;
   bottom: 20px;
@@ -156,11 +181,23 @@ header {
   border-radius: 8px;
   opacity: 0.9;
 }
+
 .toast.hidden {
   display: none;
 }
 
-/* Responsivo */
+.log-list {
+  list-style: none;
+  font-size: 0.9rem;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.log-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
 @media (min-width: 768px) {
   .patient-list,
   .search-container,

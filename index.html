@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MEMO - Don't Mess My Notes</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -23,7 +23,7 @@
   </div>
 
   <main class="patient-list" id="patientList">
-    <!-- Cards de pacientes serão renderizados aqui -->
+    <!-- Cards renderizados via JS -->
   </main>
 
   <button class="fab" id="addPatientBtn">+</button>
@@ -43,6 +43,19 @@
         <button id="salvarPaciente">Salvar</button>
         <button id="fecharModal">Cancelar</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal: Histórico (mock) -->
+  <div class="modal" id="modalHistorico">
+    <div class="modal-content">
+      <h2>Histórico de Paciente</h2>
+      <ul class="log-list">
+        <li><strong>João da Silva:</strong> Alta registrada em 16/07/2025 - por Dr. Ana</li>
+        <li><strong>Maria Souza:</strong> Anotação clínica adicionada em 15/07/2025 - por Dr. Bruno</li>
+        <li><strong>Carlos Lima:</strong> Exclusão do prontuário em 14/07/2025 - por admin</li>
+      </ul>
+      <button id="fecharHistorico">Fechar</button>
     </div>
   </div>
 
