@@ -45,7 +45,7 @@
                 <div class="user-info">
                     <span>Dr. Carlos Silva</span>
                 </div>
-                <button class="btn" id="btnFinalizarPlantao">
+                <button class="btn" id="btnFinalizarPlantao" aria-label="Finalizar plantão">
                     Finalizar Plantão
                 </button>
             </div>
@@ -60,7 +60,7 @@
         <div class="mobile-search">
             <input type="text" id="mobileGlobalSearch" placeholder="Buscar pacientes ou anotações..." aria-label="Busca mobile">
         </div>
-        <button class="btn" id="btnFinalizarPlantaoMobile">
+        <button class="btn" id="btnFinalizarPlantaoMobile" aria-label="Finalizar plantão">
             Finalizar Plantão
         </button>
     </div>
@@ -68,9 +68,9 @@
     <!-- Filtros de status fixos -->
     <div class="filters-container">
         <div class="filters" id="filters">
-            <button class="filter-btn active" data-status="active">Ativos</button>
-            <button class="filter-btn" data-status="discharged">Alta</button>
-            <button class="filter-btn" data-status="history">Histórico</button>
+            <button class="filter-btn active" data-status="active" aria-label="Filtrar pacientes ativos">Ativos</button>
+            <button class="filter-btn" data-status="discharged" aria-label="Filtrar pacientes com alta">Alta</button>
+            <button class="filter-btn" data-status="history" aria-label="Ver histórico">Histórico</button>
         </div>
     </div>
 
@@ -81,11 +81,7 @@
         <!-- Tela de Histórico -->
         <div class="history-screen" id="historyScreen">
             <div class="history-filters">
-                <div class="date-range">
-                    <input type="date" id="historyStartDate" aria-label="Data inicial">
-                    <span>até</span>
-                    <input type="date" id="historyEndDate" aria-label="Data final">
-                </div>
+                <input type="date" id="historyDateFilter" aria-label="Filtrar por data">
                 <select id="historyMedicoFilter" aria-label="Filtrar por profissional">
                     <option value="">Todos os profissionais</option>
                     <option value="Dr. Carlos Silva">Dr. Carlos Silva</option>
@@ -116,14 +112,16 @@
                 </svg>
             </button>
         </div>
-        <div class="fab-container">
-            <button class="fab" id="btnNewPacienteFab" aria-label="Adicionar novo paciente">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
-        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab" id="btnNewPacienteFab" aria-label="Adicionar novo paciente">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
     </div>
 
     <!-- Modal Novo Paciente -->
@@ -146,7 +144,7 @@
                 <div class="form-group-row">
                     <div class="form-group">
                         <label for="pacienteSexo">Sexo</label>
-                        <select id="pacienteSexo" class="form-control">
+                        <select id="pacienteSexo" class="form-control" aria-label="Selecionar sexo">
                             <option value="">Selecione</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
@@ -154,23 +152,23 @@
                     </div>
                     <div class="form-group">
                         <label for="pacienteIdade">Idade</label>
-                        <input type="number" id="pacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
+                        <input type="number" id="pacienteIdade" class="form-control" min="0" max="120" placeholder="Idade" aria-label="Idade do paciente">
                     </div>
                 </div>
                 <div class="form-group-row">
                     <div class="form-group">
                         <label for="pacienteAtendimento">Nº Atendimento</label>
-                        <input type="text" id="pacienteAtendimento" class="form-control" placeholder="Número de atendimento">
+                        <input type="text" id="pacienteAtendimento" class="form-control" placeholder="Número de atendimento" aria-label="Número de atendimento">
                     </div>
                     <div class="form-group">
                         <label for="pacienteSetor">Setor</label>
-                        <input type="text" id="pacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
+                        <input type="text" id="pacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio" aria-label="Setor do paciente">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="btnCancelPaciente">Cancelar</button>
-                <button class="btn" id="btnSavePaciente">Salvar</button>
+                <button class="btn btn-secondary" id="btnCancelPaciente" aria-label="Cancelar">Cancelar</button>
+                <button class="btn" id="btnSavePaciente" aria-label="Salvar paciente">Salvar</button>
             </div>
         </div>
     </div>
@@ -195,7 +193,7 @@
                 <div class="form-group-row">
                     <div class="form-group">
                         <label for="editPacienteSexo">Sexo</label>
-                        <select id="editPacienteSexo" class="form-control">
+                        <select id="editPacienteSexo" class="form-control" aria-label="Selecionar sexo">
                             <option value="">Selecione</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
@@ -203,23 +201,23 @@
                     </div>
                     <div class="form-group">
                         <label for="editPacienteIdade">Idade</label>
-                        <input type="number" id="editPacienteIdade" class="form-control" min="0" max="120" placeholder="Idade">
+                        <input type="number" id="editPacienteIdade" class="form-control" min="0" max="120" placeholder="Idade" aria-label="Idade do paciente">
                     </div>
                 </div>
                 <div class="form-group-row">
                     <div class="form-group">
                         <label for="editPacienteAtendimento">Nº Atendimento</label>
-                        <input type="text" id="editPacienteAtendimento" class="form-control" placeholder="Número de atendimento">
+                        <input type="text" id="editPacienteAtendimento" class="form-control" placeholder="Número de atendimento" aria-label="Número de atendimento">
                     </div>
                     <div class="form-group">
                         <label for="editPacienteSetor">Setor</label>
-                        <input type="text" id="editPacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio">
+                        <input type="text" id="editPacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio" aria-label="Setor do paciente">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="btnCancelEdit">Cancelar</button>
-                <button class="btn" id="btnUpdatePaciente">Atualizar</button>
+                <button class="btn btn-secondary" id="btnCancelEdit" aria-label="Cancelar">Cancelar</button>
+                <button class="btn" id="btnUpdatePaciente" aria-label="Atualizar paciente">Atualizar</button>
             </div>
         </div>
     </div>
@@ -243,17 +241,22 @@
                 </div>
                 <div class="form-group">
                     <label for="medicoRecebe">Passar plantão para:</label>
-                    <input type="text" id="medicoRecebe" class="form-control" placeholder="Nome do médico" aria-required="true">
+                    <select id="medicoRecebe" class="form-control" aria-required="true" aria-label="Selecionar médico">
+                        <option value="">Selecione um médico</option>
+                        <option value="Dr. Carlos Silva">Dr. Carlos Silva</option>
+                        <option value="Dr. Ana Souza">Dr. Ana Souza</option>
+                        <option value="Dr. Marcos Oliveira">Dr. Marcos Oliveira</option>
+                    </select>
                     <div id="medicoRecebeError" class="error-message"></div>
                 </div>
                 <div class="form-group">
                     <label for="assinatura">Assinatura</label>
-                    <input type="text" id="assinatura" class="form-control" readonly>
+                    <input type="text" id="assinatura" class="form-control" readonly aria-label="Assinatura do médico">
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="btnCancelPass">Cancelar</button>
-                <button class="btn" id="btnConfirmPass">Confirmar</button>
+                <button class="btn btn-secondary" id="btnCancelPass" aria-label="Cancelar">Cancelar</button>
+                <button class="btn" id="btnConfirmPass" aria-label="Confirmar passagem de plantão">Confirmar</button>
             </div>
         </div>
     </div>
@@ -271,13 +274,13 @@
                     <p>Para confirmar, digite <strong>EXCLUIR</strong> abaixo:</p>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="confirmDeleteInput" class="form-control" placeholder="Digite EXCLUIR" aria-required="true">
+                    <input type="text" id="confirmDeleteInput" class="form-control" placeholder="Digite EXCLUIR" aria-required="true" aria-label="Confirmar exclusão">
                     <div id="confirmDeleteError" class="error-message">O texto digitado não confere</div>
                 </div>
             </div>
             <div class="delete-modal-footer">
-                <button class="btn btn-secondary" id="btnCancelDelete">Cancelar</button>
-                <button class="btn btn-delete btn-delete-disabled" id="btnConfirmDelete" disabled>Excluir</button>
+                <button class="btn btn-secondary" id="btnCancelDelete" aria-label="Cancelar exclusão">Cancelar</button>
+                <button class="btn btn-delete btn-delete-disabled" id="btnConfirmDelete" disabled aria-label="Confirmar exclusão">Excluir</button>
             </div>
         </div>
     </div>

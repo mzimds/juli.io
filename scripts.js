@@ -62,9 +62,7 @@ const DOM = {
     container: document.querySelector('.container'),
     searchContainer: document.getElementById('searchContainer'),
     filters: document.getElementById('filters'),
-    btnFinalizarPlantaoMobile: document.getElementById('btnFinalizarPlantaoMobile'),
-    historyStartDate: document.getElementById('historyStartDate'),
-    historyEndDate: document.getElementById('historyEndDate')
+    btnFinalizarPlantaoMobile: document.getElementById('btnFinalizarPlantaoMobile')
 };
 
 // Estado da aplicação
@@ -85,28 +83,28 @@ function init() {
     
     const today = new Date();
     const formattedToday = today.toISOString().split('T')[0];
-    DOM.historyStartDate.value = formattedToday;
-    DOM.historyEndDate.value = formattedToday;
+    document.getElementById('historyDateFilter').value = formattedToday;
     
     if (state.currentFilter === 'active') {
         DOM.noteEditor.style.display = 'block';
+        document.querySelector('.fab-container').style.display = 'block';
         DOM.container.classList.add('active-screen');
     }
 }
 
 // Renderizar lista de pacientes
-function renderPatientList() {
+function renderPatientList(pacientesToRender = null) {
     DOM.patientList.innerHTML = '';
     
-    let filteredPacientes = dados.pacientes.filter(paciente => 
+    let pacientes = pacientesToRender || dados.pacientes.filter(paciente => 
         paciente.status === state.currentFilter
     );
     
-    filteredPacientes.sort((a, b) => 
+    pacientes.sort((a, b) => 
         new Date(b.lastUpdated) - new Date(a.lastUpdated)
     );
     
-    if (filteredPacientes.length === 0) {
+    if (pacientes.length === 0) {
         DOM.patientList.innerHTML = `
             <div class="empty-state">
                 <div class="empty-content">
@@ -117,7 +115,7 @@ function renderPatientList() {
         return;
     }
     
-    filteredPacientes.forEach(paciente => {
+    pacientes.forEach(paciente => {
         const lastNote = paciente.anotacoes.length > 0 
             ? paciente.anotacoes[paciente.anotacoes.length - 1] 
             : null;
@@ -125,6 +123,7 @@ function renderPatientList() {
         const pacienteCard = document.createElement('div');
         pacienteCard.className = `paciente-card ${state.currentPaciente === paciente.id ? 'active' : ''}`;
         pacienteCard.setAttribute('data-id', paciente.id);
+        pacienteCard.setAttribute('aria-label', `Paciente ${paciente.nome}, leito ${paciente.leito}`);
         
         let lastNoteHTML = '';
         if (lastNote) {
@@ -134,7 +133,7 @@ function renderPatientList() {
             lastNoteHTML = `
             <div class="last-note">
                 <div class="note-text">${showToggle ? truncatedText : lastNote.texto}</div>
-                ${showToggle ? '<div class="toggle-note">Ver mais</div>' : ''}
+                ${showToggle ? '<div class="toggle-note" aria-label="Expandir anotação">Ver mais</div>' : ''}
                 <div class="note-meta">
                     <span>${formatDateTimeFull(lastNote.timestamp)}</span>
                     <span>${lastNote.medico}</span>
@@ -143,15 +142,11 @@ function renderPatientList() {
             `;
         }
         
-        // Novo layout compacto para informações do paciente
         pacienteCard.innerHTML = `
             <div class="paciente-header">
                 <div class="paciente-info">
-                    <div class="paciente-name">${paciente.nome}</div>
-                    <div class="paciente-meta">
-                        <span class="paciente-leito">${paciente.leito}</span>
-                        <span class="paciente-setor">${paciente.setor || 'Geral'}</span>
-                    </div>
+                    <div class="paciente-name" aria-label="Nome do paciente">${paciente.nome}</div>
+                    <div class="paciente-leito" aria-label="Número do leito">${paciente.leito}</div>
                 </div>
                 <div class="paciente-status">
                     ${paciente.status === 'discharged' ? 
@@ -159,19 +154,8 @@ function renderPatientList() {
                 </div>
             </div>
             
-            <div class="paciente-details">
-                <div class="paciente-detail">
-                    <span>Idade:</span>
-                    <span>${paciente.idade || '-'}</span>
-                </div>
-                <div class="paciente-detail">
-                    <span>Sexo:</span>
-                    <span>${paciente.sexo || '-'}</span>
-                </div>
-                <div class="paciente-detail">
-                    <span>Atendimento:</span>
-                    <span>${paciente.atendimento || '-'}</span>
-                </div>
+            <div class="paciente-tags">
+                <span class="tag">${paciente.setor || 'Geral'}</span>
             </div>
             
             ${lastNoteHTML}
@@ -216,9 +200,11 @@ function renderPatientList() {
                     if (noteText.textContent.length > 100) {
                         noteText.textContent = lastNote.texto;
                         this.textContent = 'Ver menos';
+                        this.setAttribute('aria-label', 'Recolher anotação');
                     } else {
                         noteText.textContent = lastNote.texto.substring(0, 100) + '...';
                         this.textContent = 'Ver mais';
+                        this.setAttribute('aria-label', 'Expandir anotação');
                     }
                 });
             }
@@ -228,6 +214,14 @@ function renderPatientList() {
     // Adicionar eventos aos cards
     document.querySelectorAll('.paciente-card').forEach(card => {
         card.addEventListener('click', (e) => {
+            const pacienteId = parseInt(card.getAttribute('data-id'));
+            const paciente = dados.pacientes.find(p => p.id === pacienteId);
+            
+            // Bloquear seleção para pacientes com alta
+            if (paciente && paciente.status === 'discharged') {
+                return;
+            }
+            
             // Verificar se o clique foi em um elemento clicável
             const isActionElement = e.target.closest('.btn-action') || 
                                     e.target.classList.contains('toggle-note') ||
@@ -236,7 +230,6 @@ function renderPatientList() {
                                     e.target.tagName === 'SELECT';
             
             if (!isActionElement) {
-                const pacienteId = parseInt(card.getAttribute('data-id'));
                 selectPaciente(pacienteId);
             }
         });
@@ -270,6 +263,9 @@ function renderPatientList() {
 
 // Selecionar paciente
 function selectPaciente(pacienteId) {
+    const paciente = dados.pacientes.find(p => p.id === pacienteId);
+    if (!paciente || paciente.status === 'discharged') return;
+    
     state.currentPaciente = pacienteId;
     
     document.querySelectorAll('.paciente-card').forEach(card => {
@@ -311,20 +307,26 @@ function setupEventListeners() {
             
             if (state.currentFilter === 'active') {
                 DOM.container.classList.add('active-screen');
-                DOM.noteEditor.style.display = 'block';
             } else {
                 DOM.container.classList.remove('active-screen');
-                DOM.noteEditor.style.display = 'none';
             }
             
             if (state.currentFilter === 'history') {
                 DOM.patientList.style.display = 'none';
                 DOM.historyScreen.style.display = 'flex';
                 renderHistory();
+                DOM.noteEditor.style.display = 'none';
+                document.querySelector('.fab-container').style.display = 'none';
             } else {
                 DOM.patientList.style.display = 'grid';
                 DOM.historyScreen.style.display = 'none';
                 renderPatientList();
+                if (state.currentFilter !== 'active') {
+                    DOM.noteEditor.style.display = 'none';
+                } else {
+                    DOM.noteEditor.style.display = 'block';
+                    document.querySelector('.fab-container').style.display = 'block';
+                }
             }
         });
     });
@@ -375,6 +377,7 @@ function setupEventListeners() {
         
         dados.pacientes.unshift(novoPaciente);
         renderPatientList();
+        if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
         DOM.newPacienteModal.classList.remove('active');
         
         DOM.pacienteName.value = '';
@@ -420,8 +423,19 @@ function setupEventListeners() {
         setTimeout(() => {
             showToast(`Plantão finalizado e passado para ${medicoRecebe} com sucesso!`, 'success');
             
-            dados.pacientes = dados.pacientes.filter(p => p.status === 'active');
+            // Corrigido: Não remover pacientes com alta
             renderPatientList();
+            
+            dados.historico.push({
+                id: Date.now(),
+                tipo: "passagem_plantao",
+                texto: `Plantão finalizado e passado para ${medicoRecebe}`,
+                timestamp: new Date().toISOString(),
+                medico: state.currentDoctor,
+                paciente: '',
+                setor: 'Todos'
+            });
+            
             DOM.passPlantaoModal.classList.remove('active');
             DOM.btnConfirmPass.innerHTML = 'Confirmar';
             DOM.btnConfirmPass.disabled = false;
@@ -495,8 +509,7 @@ function setupEventListeners() {
     });
     
     // Filtros do histórico
-    DOM.historyStartDate.addEventListener('change', renderHistory);
-    DOM.historyEndDate.addEventListener('change', renderHistory);
+    document.getElementById('historyDateFilter').addEventListener('change', renderHistory);
     document.getElementById('historyMedicoFilter').addEventListener('change', renderHistory);
     document.getElementById('historySetorFilter').addEventListener('change', renderHistory);
     
@@ -538,6 +551,7 @@ function performSearch(searchTerm) {
     
     if (searchTerm.length < 2) {
         DOM.autocompleteContainer.classList.remove('visible');
+        filterPatientList('');
         return;
     }
     
@@ -576,28 +590,36 @@ function performSearch(searchTerm) {
     } else {
         DOM.autocompleteContainer.classList.remove('visible');
     }
+    
+    // Filtrar a lista principal
+    filterPatientList(searchTerm);
 }
 
-// Filtrar cards de pacientes
-function filterPatientCards(searchTerm) {
-    const cards = document.querySelectorAll('.paciente-card');
+// Filtrar lista de pacientes
+function filterPatientList(searchTerm) {
+    if (!searchTerm) {
+        renderPatientList();
+        return;
+    }
     
-    cards.forEach(card => {
-        const pacienteId = parseInt(card.getAttribute('data-id'));
-        const paciente = dados.pacientes.find(p => p.id === pacienteId);
+    const searchLower = searchTerm.toLowerCase();
+    
+    let filteredPacientes = dados.pacientes.filter(paciente => {
+        // Verificar se o paciente deve ser exibido com base no filtro atual
+        if (paciente.status !== state.currentFilter && state.currentFilter !== 'history') {
+            return false;
+        }
         
-        if (!paciente) return;
-        
-        const match = 
-            paciente.nome.toLowerCase().includes(searchTerm) ||
-            paciente.leito.toLowerCase().includes(searchTerm) ||
-            (paciente.setor && paciente.setor.toLowerCase().includes(searchTerm)) ||
-            paciente.anotacoes.some(anotacao => 
-                anotacao.texto.toLowerCase().includes(searchTerm)
-            );
-        
-        card.style.display = match ? 'flex' : 'none';
+        // Verificar se o termo de busca corresponde aos dados do paciente
+        return paciente.nome.toLowerCase().includes(searchLower) ||
+               paciente.leito.toLowerCase().includes(searchLower) ||
+               (paciente.setor && paciente.setor.toLowerCase().includes(searchLower)) ||
+               paciente.anotacoes.some(anotacao => 
+                   anotacao.texto.toLowerCase().includes(searchLower)
+               );
     });
+    
+    renderPatientList(filteredPacientes);
 }
 
 // Filtrar histórico
@@ -706,6 +728,7 @@ function updatePaciente() {
     paciente.lastUpdated = new Date().toISOString();
     
     renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     DOM.editPacienteModal.classList.remove('active');
     
     showToast(`Paciente "${nome}" atualizado com sucesso!`, 'success');
@@ -757,6 +780,7 @@ function registerAlta(pacienteId) {
     });
     
     renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     showToast('Alta registrada com sucesso', 'success');
     
     dados.historico.push({
@@ -794,6 +818,7 @@ function sendNote() {
     paciente.lastUpdated = new Date().toISOString();
     
     renderPatientList();
+    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     updateResumoPlantao();
     
     dados.historico.push({
@@ -842,6 +867,7 @@ function deletePaciente() {
     if (index !== -1) {
         dados.pacientes.splice(index, 1);
         renderPatientList();
+        if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
         DOM.confirmDeleteModal.classList.remove('active');
         state.currentPaciente = null;
         
@@ -863,8 +889,7 @@ function deletePaciente() {
 function renderHistory(filteredItems = null) {
     DOM.historyList.innerHTML = '';
     
-    const startDate = DOM.historyStartDate.value;
-    const endDate = DOM.historyEndDate.value;
+    const dateFilter = document.getElementById('historyDateFilter').value;
     const medicoFilter = document.getElementById('historyMedicoFilter').value;
     const setorFilter = document.getElementById('historySetorFilter').value;
     
@@ -873,8 +898,7 @@ function renderHistory(filteredItems = null) {
     historyToRender = historyToRender.filter(item => {
         const itemDate = new Date(item.timestamp).toISOString().split('T')[0];
         
-        return (!startDate || itemDate >= startDate) &&
-               (!endDate || itemDate <= endDate) &&
+        return (!dateFilter || itemDate === dateFilter) &&
                (!medicoFilter || item.medico === medicoFilter) &&
                (!setorFilter || item.setor === setorFilter);
     });
