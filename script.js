@@ -1,6 +1,6 @@
 let perfil = null;
 let usuario = null;
-let temaAtual = "light"; // padrão
+let temaAtual = "light";
 
 let pacientes = [
   {
@@ -37,9 +37,11 @@ function login(nome, tipo) {
   document.getElementById("tabs").classList.remove("hidden");
   document.getElementById("searchContainer").classList.remove("hidden");
   document.getElementById("addPatientBtn").classList.remove("hidden");
+
   if (perfil === "medico") {
     document.getElementById("encerrarBtn").classList.remove("hidden");
   }
+
   renderPatients("ativos");
 }
 
@@ -215,6 +217,17 @@ document.getElementById("salvarNota").addEventListener("click", () => {
   showToast("Anotação salva.");
 });
 
+function editarPaciente(nome) {
+  const paciente = pacientes.find((p) => p.nome === nome);
+  if (!paciente) return;
+  document.getElementById("modalTitulo").textContent = "Editar Paciente";
+  document.getElementById("nomePaciente").value = paciente.nome;
+  document.getElementById("setorPaciente").value = paciente.setor;
+  document.getElementById("statusPaciente").value = paciente.status;
+  document.getElementById("descricaoPaciente").value = paciente.descricao;
+  document.getElementById("modal").style.display = "flex";
+}
+
 function darAlta(nome) {
   const paciente = pacientes.find((p) => p.nome === nome);
   if (!paciente) return;
@@ -231,7 +244,6 @@ function showToast(msg) {
   setTimeout(() => toast.classList.add("hidden"), 2000);
 }
 
-// Botão Encerrar Plantão (simplificado)
 document.getElementById("encerrarBtn").addEventListener("click", () => {
   document.getElementById("assinaturaUser").textContent = usuario;
   document.getElementById("modalEncerrar").style.display = "flex";
@@ -265,5 +277,4 @@ function confirmarEncerramento() {
   showToast("Plantão encerrado e passado para " + medicoDestino);
 }
 
-// Inicialização de layout
 document.body.className = temaAtual;

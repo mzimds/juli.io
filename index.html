@@ -13,8 +13,8 @@
   </header>
 
   <div class="login-select" id="loginSection">
-    <button onclick="login('Dr. Ana', 'medico')">Médico</button>
-    <button onclick="login('Admin', 'gestor')">Gestor</button>
+    <button onclick="login('Dr. Ana', 'medico')">Entrar como Médico</button>
+    <button onclick="login('Admin', 'gestor')">Entrar como Gestor</button>
   </div>
 
   <nav class="tabs hidden" id="tabs">
@@ -31,7 +31,7 @@
   <main class="patient-list" id="patientList"></main>
 
   <button class="fab hidden" id="addPatientBtn">+</button>
-  <button class="fab encerrar hidden" id="encerrarBtn">⏱</button>
+  <button class="fab encerrar hidden" id="encerrarBtn" title="Encerrar Plantão">⏱</button>
 
   <!-- Modal: Adicionar/Editar Paciente -->
   <div class="modal" id="modal">
@@ -67,15 +67,16 @@
   <div class="modal" id="modalEncerrar">
     <div class="modal-content">
       <h2>Encerrar Plantão</h2>
-      <label><input type="checkbox" id="checkPendencias" /> Todas as pendências foram resolvidas</label>
-      <label><input type="checkbox" id="checkObservacoes" /> Observações registradas</label>
-      <label>Médico que receberá:
-        <select id="medicoDestino">
-          <option>Dr. Ana</option>
-          <option>Dr. Bruno</option>
-        </select>
-      </label>
-      <p>Assinatura: <strong id="assinaturaUser"></strong></p>
+      <div class="check-group">
+        <label><input type="checkbox" id="checkPendencias" /> Todas as pendências foram resolvidas</label>
+        <label><input type="checkbox" id="checkObservacoes" /> Observações registradas</label>
+      </div>
+      <label for="medicoDestino">Médico que receberá:</label>
+      <select id="medicoDestino">
+        <option>Dr. Ana</option>
+        <option>Dr. Bruno</option>
+      </select>
+      <p class="assinatura">Assinatura: <strong id="assinaturaUser"></strong></p>
       <div class="modal-actions">
         <button onclick="confirmarEncerramento()">Confirmar</button>
         <button onclick="fecharEncerrar()">Cancelar</button>
