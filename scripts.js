@@ -62,7 +62,9 @@ const DOM = {
     container: document.querySelector('.container'),
     searchContainer: document.getElementById('searchContainer'),
     filters: document.getElementById('filters'),
-    btnFinalizarPlantaoMobile: document.getElementById('btnFinalizarPlantaoMobile')
+    btnFinalizarPlantaoMobile: document.getElementById('btnFinalizarPlantaoMobile'),
+    historyStartDate: document.getElementById('historyStartDate'),
+    historyEndDate: document.getElementById('historyEndDate')
 };
 
 // Estado da aplicação
@@ -83,11 +85,11 @@ function init() {
     
     const today = new Date();
     const formattedToday = today.toISOString().split('T')[0];
-    document.getElementById('historyDateFilter').value = formattedToday;
+    DOM.historyStartDate.value = formattedToday;
+    DOM.historyEndDate.value = formattedToday;
     
     if (state.currentFilter === 'active') {
         DOM.noteEditor.style.display = 'block';
-        document.querySelector('.fab-container').style.display = 'block';
         DOM.container.classList.add('active-screen');
     }
 }
@@ -141,11 +143,15 @@ function renderPatientList() {
             `;
         }
         
+        // Novo layout compacto para informações do paciente
         pacienteCard.innerHTML = `
             <div class="paciente-header">
                 <div class="paciente-info">
                     <div class="paciente-name">${paciente.nome}</div>
-                    <div class="paciente-leito">${paciente.leito}</div>
+                    <div class="paciente-meta">
+                        <span class="paciente-leito">${paciente.leito}</span>
+                        <span class="paciente-setor">${paciente.setor || 'Geral'}</span>
+                    </div>
                 </div>
                 <div class="paciente-status">
                     ${paciente.status === 'discharged' ? 
@@ -153,8 +159,19 @@ function renderPatientList() {
                 </div>
             </div>
             
-            <div class="paciente-tags">
-                <span class="tag">${paciente.setor || 'Geral'}</span>
+            <div class="paciente-details">
+                <div class="paciente-detail">
+                    <span>Idade:</span>
+                    <span>${paciente.idade || '-'}</span>
+                </div>
+                <div class="paciente-detail">
+                    <span>Sexo:</span>
+                    <span>${paciente.sexo || '-'}</span>
+                </div>
+                <div class="paciente-detail">
+                    <span>Atendimento:</span>
+                    <span>${paciente.atendimento || '-'}</span>
+                </div>
             </div>
             
             ${lastNoteHTML}
@@ -294,29 +311,20 @@ function setupEventListeners() {
             
             if (state.currentFilter === 'active') {
                 DOM.container.classList.add('active-screen');
+                DOM.noteEditor.style.display = 'block';
             } else {
                 DOM.container.classList.remove('active-screen');
+                DOM.noteEditor.style.display = 'none';
             }
             
             if (state.currentFilter === 'history') {
                 DOM.patientList.style.display = 'none';
                 DOM.historyScreen.style.display = 'flex';
                 renderHistory();
-                DOM.noteEditor.style.display = 'none';
-                document.querySelector('.fab-container').style.display = 'none';
             } else {
                 DOM.patientList.style.display = 'grid';
                 DOM.historyScreen.style.display = 'none';
                 renderPatientList();
-    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
-                
-                if (state.currentFilter === 'active') {
-                    DOM.noteEditor.style.display = 'block';
-                    document.querySelector('.fab-container').style.display = 'block';
-                } else {
-                    DOM.noteEditor.style.display = 'none';
-                    document.querySelector('.fab-container').style.display = 'none';
-                }
             }
         });
     });
@@ -367,7 +375,6 @@ function setupEventListeners() {
         
         dados.pacientes.unshift(novoPaciente);
         renderPatientList();
-    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
         DOM.newPacienteModal.classList.remove('active');
         
         DOM.pacienteName.value = '';
@@ -415,18 +422,6 @@ function setupEventListeners() {
             
             dados.pacientes = dados.pacientes.filter(p => p.status === 'active');
             renderPatientList();
-    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
-            
-            dados.historico.push({
-                id: Date.now(),
-                tipo: "passagem_plantao",
-                texto: `Plantão finalizado e passado para ${medicoRecebe}`,
-                timestamp: new Date().toISOString(),
-                medico: state.currentDoctor,
-                paciente: '',
-                setor: 'Todos'
-            });
-            
             DOM.passPlantaoModal.classList.remove('active');
             DOM.btnConfirmPass.innerHTML = 'Confirmar';
             DOM.btnConfirmPass.disabled = false;
@@ -500,7 +495,8 @@ function setupEventListeners() {
     });
     
     // Filtros do histórico
-    document.getElementById('historyDateFilter').addEventListener('change', renderHistory);
+    DOM.historyStartDate.addEventListener('change', renderHistory);
+    DOM.historyEndDate.addEventListener('change', renderHistory);
     document.getElementById('historyMedicoFilter').addEventListener('change', renderHistory);
     document.getElementById('historySetorFilter').addEventListener('change', renderHistory);
     
@@ -523,7 +519,7 @@ function setupEventListeners() {
         if (!DOM.mobileMenu.contains(e.target) && 
             !DOM.hamburgerMenu.contains(e.target)) {
             DOM.mobileMenu.classList.remove('active');
-        DOM.hamburgerMenu.classList.remove('open');
+            DOM.hamburgerMenu.classList.remove('open');
         }
     });
     
@@ -652,7 +648,7 @@ function openNewPacienteModal() {
     DOM.newPacienteModal.classList.add('active');
     DOM.pacienteName.focus();
     DOM.mobileMenu.classList.remove('active');
-        DOM.hamburgerMenu.classList.remove('open');
+    DOM.hamburgerMenu.classList.remove('open');
     DOM.searchContainer.classList.remove('active');
 }
 
@@ -710,7 +706,6 @@ function updatePaciente() {
     paciente.lastUpdated = new Date().toISOString();
     
     renderPatientList();
-    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     DOM.editPacienteModal.classList.remove('active');
     
     showToast(`Paciente "${nome}" atualizado com sucesso!`, 'success');
@@ -738,7 +733,7 @@ function openPassPlantaoModal() {
     DOM.passPlantaoModal.classList.add('active');
     DOM.medicoRecebe.focus();
     DOM.mobileMenu.classList.remove('active');
-        DOM.hamburgerMenu.classList.remove('open');
+    DOM.hamburgerMenu.classList.remove('open');
     DOM.searchContainer.classList.remove('active');
 }
 
@@ -762,7 +757,6 @@ function registerAlta(pacienteId) {
     });
     
     renderPatientList();
-    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     showToast('Alta registrada com sucesso', 'success');
     
     dados.historico.push({
@@ -800,7 +794,6 @@ function sendNote() {
     paciente.lastUpdated = new Date().toISOString();
     
     renderPatientList();
-    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
     updateResumoPlantao();
     
     dados.historico.push({
@@ -849,7 +842,6 @@ function deletePaciente() {
     if (index !== -1) {
         dados.pacientes.splice(index, 1);
         renderPatientList();
-    if (state.currentFilter !== 'active') DOM.noteEditor.style.display = 'none';
         DOM.confirmDeleteModal.classList.remove('active');
         state.currentPaciente = null;
         
@@ -871,7 +863,8 @@ function deletePaciente() {
 function renderHistory(filteredItems = null) {
     DOM.historyList.innerHTML = '';
     
-    const dateFilter = document.getElementById('historyDateFilter').value;
+    const startDate = DOM.historyStartDate.value;
+    const endDate = DOM.historyEndDate.value;
     const medicoFilter = document.getElementById('historyMedicoFilter').value;
     const setorFilter = document.getElementById('historySetorFilter').value;
     
@@ -880,7 +873,8 @@ function renderHistory(filteredItems = null) {
     historyToRender = historyToRender.filter(item => {
         const itemDate = new Date(item.timestamp).toISOString().split('T')[0];
         
-        return (!dateFilter || itemDate === dateFilter) &&
+        return (!startDate || itemDate >= startDate) &&
+               (!endDate || itemDate <= endDate) &&
                (!medicoFilter || item.medico === medicoFilter) &&
                (!setorFilter || item.setor === setorFilter);
     });

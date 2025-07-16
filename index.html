@@ -81,7 +81,11 @@
         <!-- Tela de Histórico -->
         <div class="history-screen" id="historyScreen">
             <div class="history-filters">
-                <input type="date" id="historyDateFilter" aria-label="Filtrar por data">
+                <div class="date-range">
+                    <input type="date" id="historyStartDate" aria-label="Data inicial">
+                    <span>até</span>
+                    <input type="date" id="historyEndDate" aria-label="Data final">
+                </div>
                 <select id="historyMedicoFilter" aria-label="Filtrar por profissional">
                     <option value="">Todos os profissionais</option>
                     <option value="Dr. Carlos Silva">Dr. Carlos Silva</option>
@@ -112,16 +116,14 @@
                 </svg>
             </button>
         </div>
-    </div>
-
-    <!-- Floating Action Button -->
-    <div class="fab-container">
-        <button class="fab" id="btnNewPacienteFab" aria-label="Adicionar novo paciente">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </button>
+        <div class="fab-container">
+            <button class="fab" id="btnNewPacienteFab" aria-label="Adicionar novo paciente">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <!-- Modal Novo Paciente -->
@@ -281,25 +283,5 @@
     </div>
 
     <script src="scripts.js"></script>
-
-    <div class="mobile-menu" id="mobileMenu">
-      <div class="user-info-mobile">
-        <span>Dr. Carlos Silva</span>
-      </div>
-      <div class="mobile-search">
-        <input type="text" id="mobileGlobalSearch" placeholder="Buscar pacientes ou anotações..." aria-label="Busca mobile">
-      </div>
-      <button class="btn" id="btnFinalizarPlantaoMobile">Finalizar Plantão</button>
-    </div>
-    
-</html>
-  <div class="mobile-menu" id="mobileMenu">
-    <div class="user-info-mobile">
-      <span>Dr. Carlos Silva</span>
-    </div>
-    <div class="mobile-search">
-      <input type="text" id="mobileGlobalSearch" placeholder="Buscar pacientes ou anotações..." aria-label="Busca mobile">
-    </div>
-    <button class="btn" id="btnFinalizarPlantaoMobile">Finalizar Plantão</button>
-  </div>
 </body>
+</html>
