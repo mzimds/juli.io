@@ -1,5 +1,6 @@
 let perfil = null;
 let usuario = null;
+let temaAtual = "light"; // padrão
 
 let pacientes = [
   {
@@ -26,57 +27,47 @@ let pacientes = [
   }
 ];
 
-let logs = [];
 let plantaoHistorico = [];
-let editando = null;
-let anotando = null;
-
-const tabs = document.querySelectorAll(".tab");
-const patientList = document.getElementById("patientList");
-const searchInput = document.getElementById("searchInput");
-const modal = document.getElementById("modal");
-const modalNota = document.getElementById("modalNota");
-const novaNota = document.getElementById("novaNota");
-const salvarNota = document.getElementById("salvarNota");
-const toast = document.getElementById("toast");
 
 function login(nome, tipo) {
-  perfil = tipo;
   usuario = nome;
+  perfil = tipo;
+
   document.getElementById("loginSection").classList.add("hidden");
   document.getElementById("tabs").classList.remove("hidden");
   document.getElementById("searchContainer").classList.remove("hidden");
   document.getElementById("addPatientBtn").classList.remove("hidden");
-  if (perfil === "medico")
+  if (perfil === "medico") {
     document.getElementById("encerrarBtn").classList.remove("hidden");
+  }
   renderPatients("ativos");
 }
 
-tabs.forEach((tab) => {
-  tab.addEventListener("click", () => {
-    tabs.forEach((t) => t.classList.remove("active"));
-    tab.classList.add("active");
-    renderCurrentTab();
-  });
-});
+function renderPatients(tab) {
+  const container = document.getElementById("patientList");
+  container.innerHTML = "";
 
-searchInput.addEventListener("input", () => {
-  renderCurrentTab();
-});
+  if (tab === "config") {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h2>Perfil do Usuário</h2>
+      <p><strong>Nome:</strong> ${usuario}</p>
+      <p><strong>Tipo:</strong> ${perfil}</p>
+      <hr />
+      <h3>Preferências</h3>
+      <button onclick="alternarTema()">Tema: ${temaAtual === "dark" ? "🌙 Escuro" : "☀️ Claro"}</button>
+    `;
+    container.appendChild(card);
+    return;
+  }
 
-function renderCurrentTab() {
-  const aba = document.querySelector(".tab.active").dataset.tab;
-  renderPatients(aba, searchInput.value);
-}
-
-function renderPatients(status, filtro = "") {
-  patientList.innerHTML = "";
-
-  if (status === "historico") {
+  if (tab === "historico") {
     if (plantaoHistorico.length === 0) {
-      patientList.innerHTML = "<p>Nenhum plantão encerrado.</p>";
+      container.innerHTML = "<p>Nenhum plantão encerrado.</p>";
       return;
     }
+
     plantaoHistorico.forEach((plantao, i) => {
       const bloco = document.createElement("div");
       bloco.className = "card";
@@ -89,42 +80,23 @@ function renderPatients(status, filtro = "") {
             ${p.anotacoes
               .map(
                 (a) =>
-                  `<li><strong>${a.autor}</strong> em ${a.data}: ${a.texto}</li>`
+                  `<li><strong>${a.autor}</strong> (${a.data}): ${a.texto}</li>`
               )
               .join("")}
           </ul>
         `;
       });
-      patientList.appendChild(bloco);
+      container.appendChild(bloco);
     });
     return;
   }
 
-  if (status === "config") {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <h2>Perfil do Usuário</h2>
-      <p><strong>Nome:</strong> ${usuario}</p>
-      <p><strong>Tipo:</strong> ${perfil}</p>
-      <hr />
-      <h3>Preferências</h3>
-      <p>Tema: Claro (mock)</p>
-    `;
-    patientList.appendChild(card);
-    return;
-  }
-
   const lista = pacientes
-    .filter(
-      (p) =>
-        p.status === status &&
-        p.nome.toLowerCase().includes(filtro.toLowerCase())
-    )
+    .filter((p) => p.status === tab)
     .sort((a, b) => b.criadoEm - a.criadoEm);
 
   if (lista.length === 0) {
-    patientList.innerHTML = "<p>Nenhum paciente encontrado.</p>";
+    container.innerHTML = "<p>Nenhum paciente encontrado.</p>";
     return;
   }
 
@@ -152,14 +124,39 @@ function renderPatients(status, filtro = "") {
           : ""
       }
     `;
-    patientList.appendChild(card);
+    container.appendChild(card);
   });
 }
 
+function alternarTema() {
+  temaAtual = temaAtual === "light" ? "dark" : "light";
+  document.body.className = temaAtual;
+  renderPatients("config");
+}
+
+function renderCurrentTab() {
+  const aba = document.querySelector(".tab.active").dataset.tab;
+  renderPatients(aba);
+}
+
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((t) =>
+      t.classList.remove("active")
+    );
+    tab.classList.add("active");
+    renderCurrentTab();
+  });
+});
+
+document.getElementById("searchInput").addEventListener("input", () => {
+  renderCurrentTab();
+});
+
 document.getElementById("addPatientBtn").addEventListener("click", () => {
-  document.getElementById("modalTitulo").textContent = "Novo Paciente";
+  const modal = document.getElementById("modal");
   modal.style.display = "flex";
-  editando = null;
+  document.getElementById("modalTitulo").textContent = "Novo Paciente";
   document.getElementById("nomePaciente").value = "";
   document.getElementById("setorPaciente").value = "";
   document.getElementById("statusPaciente").value = "ativos";
@@ -167,7 +164,7 @@ document.getElementById("addPatientBtn").addEventListener("click", () => {
 });
 
 document.getElementById("fecharModal").addEventListener("click", () => {
-  modal.style.display = "none";
+  document.getElementById("modal").style.display = "none";
 });
 
 document.getElementById("salvarPaciente").addEventListener("click", () => {
@@ -178,73 +175,63 @@ document.getElementById("salvarPaciente").addEventListener("click", () => {
 
   if (!nome || !setor || !desc) return alert("Preencha todos os campos.");
 
-  if (editando) {
-    editando.nome = nome;
-    editando.setor = setor;
-    editando.status = status;
-    editando.descricao = desc;
-    editando.criadoEm = Date.now();
-  } else {
-    pacientes.push({
-      nome,
-      setor,
-      status,
-      descricao: desc,
-      criadoEm: Date.now(),
-      anotacoes: []
-    });
-  }
+  pacientes.push({
+    nome,
+    setor,
+    status,
+    descricao: desc,
+    criadoEm: Date.now(),
+    anotacoes: []
+  });
 
-  modal.style.display = "none";
+  document.getElementById("modal").style.display = "none";
   renderCurrentTab();
   showToast("Paciente salvo com sucesso.");
 });
 
-function editarPaciente(nome) {
+function abrirNota(nome) {
   const paciente = pacientes.find((p) => p.nome === nome);
   if (!paciente) return;
-  editando = paciente;
-  document.getElementById("modalTitulo").textContent = "Editar Paciente";
-  document.getElementById("nomePaciente").value = paciente.nome;
-  document.getElementById("setorPaciente").value = paciente.setor;
-  document.getElementById("statusPaciente").value = paciente.status;
-  document.getElementById("descricaoPaciente").value = paciente.descricao;
-  modal.style.display = "flex";
-}
-
-function abrirNota(nome) {
-  anotando = pacientes.find((p) => p.nome === nome);
-  novaNota.value = "";
-  modalNota.style.display = "flex";
+  window.anotando = paciente;
+  document.getElementById("novaNota").value = "";
+  document.getElementById("modalNota").style.display = "flex";
 }
 
 function fecharNota() {
-  modalNota.style.display = "none";
+  document.getElementById("modalNota").style.display = "none";
 }
 
-salvarNota.addEventListener("click", () => {
-  const texto = novaNota.value.trim();
-  if (!texto || !anotando) return;
-  anotando.anotacoes.push({
+document.getElementById("salvarNota").addEventListener("click", () => {
+  const texto = document.getElementById("novaNota").value.trim();
+  if (!texto || !window.anotando) return;
+  window.anotando.anotacoes.push({
     texto,
     autor: usuario,
     data: new Date().toLocaleString("pt-BR")
   });
-  anotando.criadoEm = Date.now();
-  modalNota.style.display = "none";
+  window.anotando.criadoEm = Date.now();
+  document.getElementById("modalNota").style.display = "none";
   renderCurrentTab();
   showToast("Anotação salva.");
 });
 
 function darAlta(nome) {
-  const p = pacientes.find((p) => p.nome === nome);
-  if (!p) return;
-  p.status = "altas";
-  p.criadoEm = Date.now();
+  const paciente = pacientes.find((p) => p.nome === nome);
+  if (!paciente) return;
+  paciente.status = "altas";
+  paciente.criadoEm = Date.now();
   renderCurrentTab();
   showToast("Paciente em alta.");
 }
 
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.remove("hidden");
+  setTimeout(() => toast.classList.add("hidden"), 2000);
+}
+
+// Botão Encerrar Plantão (simplificado)
 document.getElementById("encerrarBtn").addEventListener("click", () => {
   document.getElementById("assinaturaUser").textContent = usuario;
   document.getElementById("modalEncerrar").style.display = "flex";
@@ -271,7 +258,6 @@ function confirmarEncerramento() {
     altas: JSON.parse(JSON.stringify(altas))
   });
 
-  // Remove os pacientes de "altas", mas mantém os "ativos"
   pacientes = pacientes.filter((p) => p.status !== "altas");
 
   document.getElementById("modalEncerrar").style.display = "none";
@@ -279,11 +265,5 @@ function confirmarEncerramento() {
   showToast("Plantão encerrado e passado para " + medicoDestino);
 }
 
-function showToast(msg) {
-  toast.textContent = msg;
-  toast.classList.remove("hidden");
-  setTimeout(() => toast.classList.add("hidden"), 2000);
-}
-
-// Inicialização
-renderPatients("ativos");
+// Inicialização de layout
+document.body.className = temaAtual;

@@ -1,14 +1,24 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+:root {
+  --bg: #f7f7f7;
+  --text: #111;
+  --card: #fff;
+  --accent: #111;
+  --border: #ccc;
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #f0f0f0;
+  --card: #1e1e1e;
+  --accent: #f0f0f0;
+  --border: #444;
 }
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #f7f7f7;
+  background: var(--bg);
+  color: var(--text);
   padding: 1rem;
-  color: #111;
 }
 
 .header {
@@ -16,13 +26,9 @@ body {
   margin-bottom: 1rem;
 }
 
-.header h1 {
-  font-size: 1.8rem;
-}
-
 .slogan {
   font-size: 0.9rem;
-  color: #555;
+  color: var(--text);
 }
 
 .login-select {
@@ -36,8 +42,8 @@ body {
 .login-select button {
   padding: 0.75rem 1.5rem;
   font-weight: bold;
-  background: black;
-  color: white;
+  background: var(--accent);
+  color: var(--bg);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -60,8 +66,8 @@ body {
 }
 
 .tab.active {
-  border-bottom: 2px solid black;
-  color: black;
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent);
 }
 
 .search-container {
@@ -72,7 +78,9 @@ body {
   width: 100%;
   padding: 0.5rem;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
 }
 
 .patient-list {
@@ -82,10 +90,10 @@ body {
 }
 
 .card {
-  background: white;
+  background: var(--card);
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .card h2 {
@@ -95,7 +103,7 @@ body {
 
 .card .tag {
   display: inline-block;
-  background: #eee;
+  background: var(--border);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.75rem;
@@ -106,17 +114,17 @@ body {
   max-height: 100px;
   overflow-y: auto;
   font-size: 0.9rem;
-  color: #444;
+  color: var(--text);
   margin-bottom: 0.5rem;
   white-space: pre-wrap;
 }
 
 .card .anotacoes {
   font-size: 0.8rem;
-  color: #555;
+  color: var(--text);
   margin-top: 0.5rem;
   padding-left: 1rem;
-  border-left: 2px solid #ccc;
+  border-left: 2px solid var(--border);
 }
 
 .card button {
@@ -126,26 +134,23 @@ body {
   border-radius: 4px;
   cursor: pointer;
   border: none;
-}
-
-.card .btn-alta {
-  background: #111;
-  color: #fff;
+  background: var(--accent);
+  color: var(--bg);
 }
 
 .fab {
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  background-color: black;
-  color: white;
-  border: none;
+  background-color: var(--accent);
+  color: var(--bg);
   width: 48px;
   height: 48px;
   border-radius: 50%;
   font-size: 1.5rem;
   cursor: pointer;
   z-index: 10;
+  border: none;
 }
 
 .fab.encerrar {
@@ -168,7 +173,8 @@ body {
 }
 
 .modal-content {
-  background: white;
+  background: var(--card);
+  color: var(--text);
   padding: 1rem;
   width: 90%;
   max-width: 400px;
@@ -181,8 +187,10 @@ body {
   width: 100%;
   margin-bottom: 0.5rem;
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .modal-actions {
@@ -195,16 +203,8 @@ body {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-}
-
-#salvarPaciente, #salvarNota {
-  background-color: black;
-  color: white;
-}
-
-#fecharModal,
-#fecharHistorico {
-  background-color: #ccc;
+  background: var(--accent);
+  color: var(--bg);
 }
 
 .toast {
@@ -212,8 +212,8 @@ body {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: black;
-  color: white;
+  background: var(--accent);
+  color: var(--bg);
   padding: 0.75rem 1rem;
   border-radius: 8px;
   opacity: 0.9;
