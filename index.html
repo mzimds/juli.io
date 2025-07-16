@@ -1,290 +1,33 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>MEMO - Don't Mess Your Notes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEMO - Don't Mess My Notes</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- Toast Container -->
-    <div class="toast" id="toast">
-        <span id="toast-message">Operação realizada com sucesso!</span>
-    </div>
+  <header class="header">
+    <h1>🧠 MEMO</h1>
+    <p class="slogan">Don't mess my notes.</p>
+  </header>
 
-    <!-- Header -->
-    <header>
-        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Abrir menu">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 12H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M3 6H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </button>
-        
-        <div class="logo" style="font-weight: bold; font-style: italic;">
-            MEMO
-        </div>
-        
-        <div class="header-actions">
-            <!-- Botão de busca global -->
-            <div class="search-container" id="searchContainer">
-                <div class="search-box">
-                    <button class="search-icon" id="searchToggle" aria-label="Buscar">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <input type="text" id="globalSearch" placeholder="Buscar pacientes ou anotações..." aria-label="Campo de busca">
-                    <div class="autocomplete-container" id="autocompleteContainer"></div>
-                </div>
-            </div>
-            
-            <div class="header-info">
-                <div class="user-info">
-                    <span>Dr. Carlos Silva</span>
-                </div>
-                <button class="btn" id="btnFinalizarPlantao" aria-label="Finalizar plantão">
-                    Finalizar Plantão
-                </button>
-            </div>
-        </div>
-    </header>
+  <nav class="tabs">
+    <button class="tab active" data-tab="ativos">Ativos</button>
+    <button class="tab" data-tab="altas">Altas</button>
+    <button class="tab" data-tab="historico">Histórico</button>
+  </nav>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <div class="user-info-mobile">
-            <span>Dr. Carlos Silva</span>
-        </div>
-        <div class="mobile-search">
-            <input type="text" id="mobileGlobalSearch" placeholder="Buscar pacientes ou anotações..." aria-label="Busca mobile">
-        </div>
-        <button class="btn" id="btnFinalizarPlantaoMobile" aria-label="Finalizar plantão">
-            Finalizar Plantão
-        </button>
-    </div>
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Buscar paciente..." />
+  </div>
 
-    <!-- Filtros de status fixos -->
-    <div class="filters-container">
-        <div class="filters" id="filters">
-            <button class="filter-btn active" data-status="active" aria-label="Filtrar pacientes ativos">Ativos</button>
-            <button class="filter-btn" data-status="discharged" aria-label="Filtrar pacientes com alta">Alta</button>
-            <button class="filter-btn" data-status="history" aria-label="Ver histórico">Histórico</button>
-        </div>
-    </div>
+  <main class="patient-list" id="patientList">
+    <!-- Pacientes serão renderizados aqui -->
+  </main>
 
-    <div class="container">
-        <!-- Lista de Pacientes -->
-        <div class="patient-list" id="patientList"></div>
+  <button class="fab" id="addPatientBtn">+</button>
 
-        <!-- Tela de Histórico -->
-        <div class="history-screen" id="historyScreen">
-            <div class="history-filters">
-                <input type="date" id="historyDateFilter" aria-label="Filtrar por data">
-                <select id="historyMedicoFilter" aria-label="Filtrar por profissional">
-                    <option value="">Todos os profissionais</option>
-                    <option value="Dr. Carlos Silva">Dr. Carlos Silva</option>
-                </select>
-                <select id="historySetorFilter" aria-label="Filtrar por setor">
-                    <option value="">Todos os setores</option>
-                    <option value="UTI">UTI</option>
-                </select>
-            </div>
-            <div class="history-list" id="historyListContent"></div>
-        </div>
-    </div>
-
-    <!-- Área de Anotações Fixa -->
-    <div class="note-editor" id="noteEditor">
-        <div class="note-input-container">
-            <textarea 
-                class="note-input" 
-                id="noteInput" 
-                placeholder="Digite uma nova anotação..." 
-                rows="1"
-                aria-label="Campo de anotação"
-            ></textarea>
-            <button class="btn-send" id="btnSendNote" disabled aria-label="Enviar anotação">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </div>
-    </div>
-
-    <!-- Floating Action Button -->
-    <div class="fab-container">
-        <button class="fab" id="btnNewPacienteFab" aria-label="Adicionar novo paciente">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 5V19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-        </button>
-    </div>
-
-    <!-- Modal Novo Paciente -->
-    <div class="modal" id="newPacienteModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Novo Paciente</h3>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="pacienteName">Nome</label>
-                    <input type="text" id="pacienteName" class="form-control" placeholder="Nome completo" aria-required="true">
-                    <div id="pacienteNameError" class="error-message"></div>
-                </div>
-                <div class="form-group">
-                    <label for="pacienteLeito">Leito</label>
-                    <input type="text" id="pacienteLeito" class="form-control" placeholder="Número do leito" aria-required="true">
-                    <div id="pacienteLeitoError" class="error-message"></div>
-                </div>
-                <div class="form-group-row">
-                    <div class="form-group">
-                        <label for="pacienteSexo">Sexo</label>
-                        <select id="pacienteSexo" class="form-control" aria-label="Selecionar sexo">
-                            <option value="">Selecione</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Feminino">Feminino</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="pacienteIdade">Idade</label>
-                        <input type="number" id="pacienteIdade" class="form-control" min="0" max="120" placeholder="Idade" aria-label="Idade do paciente">
-                    </div>
-                </div>
-                <div class="form-group-row">
-                    <div class="form-group">
-                        <label for="pacienteAtendimento">Nº Atendimento</label>
-                        <input type="text" id="pacienteAtendimento" class="form-control" placeholder="Número de atendimento" aria-label="Número de atendimento">
-                    </div>
-                    <div class="form-group">
-                        <label for="pacienteSetor">Setor</label>
-                        <input type="text" id="pacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio" aria-label="Setor do paciente">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="btnCancelPaciente" aria-label="Cancelar">Cancelar</button>
-                <button class="btn" id="btnSavePaciente" aria-label="Salvar paciente">Salvar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Editar Paciente -->
-    <div class="modal" id="editPacienteModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Editar Paciente</h3>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="editPacienteName">Nome</label>
-                    <input type="text" id="editPacienteName" class="form-control" placeholder="Nome completo" aria-required="true">
-                    <div id="editPacienteNameError" class="error-message"></div>
-                </div>
-                <div class="form-group">
-                    <label for="editPacienteLeito">Leito</label>
-                    <input type="text" id="editPacienteLeito" class="form-control" placeholder="Número do leito" aria-required="true">
-                    <div id="editPacienteLeitoError" class="error-message"></div>
-                </div>
-                <div class="form-group-row">
-                    <div class="form-group">
-                        <label for="editPacienteSexo">Sexo</label>
-                        <select id="editPacienteSexo" class="form-control" aria-label="Selecionar sexo">
-                            <option value="">Selecione</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Feminino">Feminino</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editPacienteIdade">Idade</label>
-                        <input type="number" id="editPacienteIdade" class="form-control" min="0" max="120" placeholder="Idade" aria-label="Idade do paciente">
-                    </div>
-                </div>
-                <div class="form-group-row">
-                    <div class="form-group">
-                        <label for="editPacienteAtendimento">Nº Atendimento</label>
-                        <input type="text" id="editPacienteAtendimento" class="form-control" placeholder="Número de atendimento" aria-label="Número de atendimento">
-                    </div>
-                    <div class="form-group">
-                        <label for="editPacienteSetor">Setor</label>
-                        <input type="text" id="editPacienteSetor" class="form-control" placeholder="Ex: UTI, Cardio" aria-label="Setor do paciente">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="btnCancelEdit" aria-label="Cancelar">Cancelar</button>
-                <button class="btn" id="btnUpdatePaciente" aria-label="Atualizar paciente">Atualizar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Passar Plantão -->
-    <div class="modal" id="passPlantaoModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Finalizar Plantão</h3>
-            </div>
-            <div class="modal-body">
-                <div class="resumo-plantao">
-                    <div class="resumo-item">
-                        <span>Pacientes atendidos:</span>
-                        <span id="resumoPacientes">0</span>
-                    </div>
-                    <div class="resumo-item">
-                        <span>Anotações realizadas:</span>
-                        <span id="resumoAnotacoes">0</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="medicoRecebe">Passar plantão para:</label>
-                    <select id="medicoRecebe" class="form-control" aria-required="true" aria-label="Selecionar médico">
-                        <option value="">Selecione um médico</option>
-                        <option value="Dr. Carlos Silva">Dr. Carlos Silva</option>
-                        <option value="Dr. Ana Souza">Dr. Ana Souza</option>
-                        <option value="Dr. Marcos Oliveira">Dr. Marcos Oliveira</option>
-                    </select>
-                    <div id="medicoRecebeError" class="error-message"></div>
-                </div>
-                <div class="form-group">
-                    <label for="assinatura">Assinatura</label>
-                    <input type="text" id="assinatura" class="form-control" readonly aria-label="Assinatura do médico">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="btnCancelPass" aria-label="Cancelar">Cancelar</button>
-                <button class="btn" id="btnConfirmPass" aria-label="Confirmar passagem de plantão">Confirmar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Confirmação de Exclusão -->
-    <div class="modal" id="confirmDeleteModal">
-        <div class="delete-modal-content">
-            <div class="delete-modal-header">
-                <h3 class="delete-modal-title">Excluir Paciente</h3>
-            </div>
-            <div class="delete-modal-body">
-                <p>Tem certeza que deseja excluir o paciente <strong id="patientNameToDelete"></strong>?</p>
-                <div class="delete-warning">
-                    <p>Esta ação não pode ser desfeita!</p>
-                    <p>Para confirmar, digite <strong>EXCLUIR</strong> abaixo:</p>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="confirmDeleteInput" class="form-control" placeholder="Digite EXCLUIR" aria-required="true" aria-label="Confirmar exclusão">
-                    <div id="confirmDeleteError" class="error-message">O texto digitado não confere</div>
-                </div>
-            </div>
-            <div class="delete-modal-footer">
-                <button class="btn btn-secondary" id="btnCancelDelete" aria-label="Cancelar exclusão">Cancelar</button>
-                <button class="btn btn-delete btn-delete-disabled" id="btnConfirmDelete" disabled aria-label="Confirmar exclusão">Excluir</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="scripts.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
