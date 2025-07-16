@@ -211,4 +211,32 @@ body {
     max-width: 600px;
     margin: 0 auto 1rem;
   }
+
+.login-select {
+  text-align: center;
+  margin: 2rem auto;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.login-select button {
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.fab.encerrar {
+  bottom: 6rem;
+  background: crimson;
+}
+
+.hidden {
+  display: none !important;
+}
+
 }
