@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MEMO - Don't Mess My Notes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>🧠 MEMO</h1>
+    <p class="slogan">Don't mess my notes.</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="ativos">Ativos</button>
+    <button class="tab" data-tab="altas">Altas</button>
+    <button class="tab" data-tab="historico">Histórico</button>
+  </nav>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Buscar paciente..." />
+  </div>
+
+  <main class="patient-list" id="patientList">
+    <!-- Cards de pacientes serão renderizados aqui -->
+  </main>
+
+  <button class="fab" id="addPatientBtn">+</button>
+
+  <!-- Modal: Adicionar Paciente -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h2>Novo Paciente</h2>
+      <input type="text" id="nomePaciente" placeholder="Nome do paciente" />
+      <input type="text" id="setorPaciente" placeholder="Setor" />
+      <select id="statusPaciente">
+        <option value="ativos">Ativo</option>
+        <option value="altas">Alta</option>
+      </select>
+      <textarea id="descricaoPaciente" placeholder="Resumo clínico..."></textarea>
+      <div class="modal-actions">
+        <button id="salvarPaciente">Salvar</button>
+        <button id="fecharModal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden">Paciente adicionado</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
