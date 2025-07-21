@@ -7,6 +7,7 @@
   --sidebar-bg: #2c3e50;
   --sidebar-text: #ecf0f1;
   --badge-bg: #e74c3c;
+  --success: #2ecc71;
 }
 
 body.dark {
@@ -581,6 +582,40 @@ input:checked + .slider:before {
   margin-bottom: 1.5rem;
 }
 
+.codigo-convite {
+  background: rgba(52, 152, 219, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.codigo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.codigo-container span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  padding: 0.5rem 1rem;
+  background: white;
+  border-radius: 6px;
+  color: var(--text);
+}
+
+.codigo-container button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
 .btn-assinatura {
   padding: 0.8rem 1.5rem;
   background: #3498db;
@@ -590,6 +625,7 @@ input:checked + .slider:before {
   cursor: pointer;
   margin-top: 1rem;
   font-weight: 500;
+  width: 100%;
 }
 
 .planos-container {
@@ -638,92 +674,18 @@ input:checked + .slider:before {
 .plano-card li:before {
   content: "✓";
   margin-right: 0.5rem;
-  color: #2ecc71;
+  color: var(--success);
 }
 
 .plano-card button {
   padding: 0.7rem;
-  background: #2ecc71;
+  background: var(--success);
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
   margin-top: auto;
-}
-
-.pagamento-container {
-  background: var(--card);
-  padding: 1.5rem;
-  border-radius: 10px;
-  margin: 1.5rem 0;
-}
-
-.cartao-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
-.cartao-info {
-  display: flex;
-  gap: 1rem;
-}
-
-.cartao-info input {
-  flex: 1;
-}
-
-.btn-pagamento {
-  padding: 0.8rem;
-  background: #3498db;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.historico-faturas {
-  background: var(--card);
-  padding: 1.5rem;
-  border-radius: 10px;
-  margin: 1.5rem 0;
-}
-
-.cancelamento-container {
-  background: var(--card);
-  padding: 1.5rem;
-  border-radius: 10px;
-  margin: 1.5rem 0;
-}
-
-.btn-cancelar {
-  padding: 0.8rem;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  width: 100%;
-}
-
-.confirmacao-cancelamento {
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
-.btn-confirmar {
-  padding: 0.8rem 1.5rem;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  margin: 0.5rem;
 }
 
 .hidden {
@@ -750,5 +712,18 @@ input:checked + .slider:before {
   .user-actions {
     width: 100%;
     justify-content: flex-end;
+  }
+  
+  .config-link {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .config-link button {
+    width: 100%;
+  }
+  
+  .codigo-container {
+    flex-direction: column;
   }
 }

@@ -31,24 +31,63 @@ let pacientes = [
 let plantaoHistorico = [];
 
 let medicos = [
-  { nome: "Dr. Ana", tipo: "medico", email: "ana@exemplo.com", senha: "senha123", crm: "12345", especialidade: "Cardiologia", telefone: "(11) 9999-8888", aprovado: true },
-  { nome: "Admin", tipo: "gestor", email: "admin@exemplo.com", senha: "admin123", telefone: "(11) 7777-6666", aprovado: true },
-  { nome: "Dr. Bruno", tipo: "medico", email: "bruno@exemplo.com", senha: "senha123", crm: "54321", especialidade: "Ortopedia", telefone: "(11) 5555-4444", aprovado: false }
+  { 
+    nome: "Dr. Ana", 
+    tipo: "medico", 
+    email: "ana@exemplo.com", 
+    senha: "senha123", 
+    crm: "12345", 
+    especialidade: "Cardiologia", 
+    telefone: "(11) 9999-8888", 
+    aprovado: true 
+  },
+  { 
+    nome: "Admin", 
+    tipo: "gestor", 
+    email: "admin@exemplo.com", 
+    senha: "admin123", 
+    telefone: "(11) 7777-6666", 
+    aprovado: true,
+    codigoConvite: "G8H3K9P2" // Código gerado automaticamente
+  }
 ];
 
 // Funções de Login e Conta
 function mostrarCriarConta() {
   document.getElementById("loginForm").classList.add("hidden");
   document.getElementById("criarContaForm").classList.remove("hidden");
+  // Resetar campos
+  document.getElementById("nomeCompleto").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("password").value = "";
+  document.getElementById("telefone").value = "";
+  document.getElementById("inviteCode").value = "";
+  document.getElementById("crm").value = "";
+  document.getElementById("especialidade").value = "";
+  toggleRoleFields(true);
 }
 
 function mostrarLogin() {
   document.getElementById("criarContaForm").classList.add("hidden");
   document.getElementById("loginForm").classList.remove("hidden");
+  // Resetar campos
+  document.getElementById("loginEmail").value = "";
+  document.getElementById("loginPassword").value = "";
 }
 
-function toggleMedicoFields(show) {
-  document.getElementById("medicoFields").classList.toggle("hidden", !show);
+function toggleRoleFields(isMedico) {
+  document.getElementById("medicoFields").classList.toggle("hidden", !isMedico);
+  document.getElementById("conviteContainer").classList.toggle("hidden", !isMedico);
+}
+
+// Gerar código único para gestor
+function gerarCodigoConvite() {
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let codigo = '';
+  for (let i = 0; i < 8; i++) {
+    codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+  }
+  return codigo;
 }
 
 function criarConta() {
@@ -57,14 +96,10 @@ function criarConta() {
   const senha = document.getElementById("password").value.trim();
   const tipo = document.querySelector('input[name="role"]:checked').value;
   const telefone = document.getElementById("telefone").value.trim();
-  const codigo = document.getElementById("inviteCode").value.trim();
   
-  if (!nome || !email || !senha || !telefone || !codigo) {
+  // Campos obrigatórios comuns
+  if (!nome || !email || !senha || !telefone) {
     return showToast("Preencha todos os campos obrigatórios");
-  }
-  
-  if (codigo !== "SETOR123") {
-    return showToast("Código de convite inválido");
   }
   
   let novoUsuario = {
@@ -79,23 +114,40 @@ function criarConta() {
   if (tipo === "medico") {
     const crm = document.getElementById("crm").value.trim();
     const especialidade = document.getElementById("especialidade").value.trim();
+    const codigo = document.getElementById("inviteCode").value.trim();
     
-    if (!crm || !especialidade) {
-      return showToast("Preencha CRM e Especialidade");
+    if (!crm || !especialidade || !codigo) {
+      return showToast("Preencha todos os campos obrigatórios");
+    }
+    
+    // Verificar se o código é válido
+    const gestorValido = medicos.some(m => m.tipo === "gestor" && m.codigoConvite === codigo);
+    if (!gestorValido) {
+      return showToast("Código de convite inválido");
     }
     
     novoUsuario.crm = crm;
     novoUsuario.especialidade = especialidade;
+  } else if (tipo === "gestor") {
+    // Gerar código único para novo gestor
+    novoUsuario.codigoConvite = gerarCodigoConvite();
   }
   
   medicos.push(novoUsuario);
-  showToast("Conta criada com sucesso! Aguarde aprovação.");
+  showToast(tipo === "gestor" ? 
+    "Conta de gestor criada com sucesso!" : 
+    "Conta criada com sucesso! Aguarde aprovação."
+  );
   mostrarLogin();
 }
 
 function fazerLogin() {
   const email = document.getElementById("loginEmail").value.trim();
   const senha = document.getElementById("loginPassword").value.trim();
+  
+  if (!email || !senha) {
+    return showToast("Preencha email e senha");
+  }
   
   const user = medicos.find(u => u.email === email && u.senha === senha);
   
@@ -450,16 +502,6 @@ function renderConfig() {
   const c = document.getElementById("patientList");
   c.innerHTML = "";
 
-  const divLink = document.createElement("div");
-  divLink.className = "config-link";
-  divLink.innerHTML = `
-    <h3>Convite para o Setor</h3>
-    <input id="inviteLink" readonly value="memo.com/SETOR123/login"/>
-    <button onclick="copiarLink()">📋 Copiar</button>
-    <button onclick="compartilhar()">🔗 Compartilhar</button>
-  `;
-  c.appendChild(divLink);
-
   const card = document.createElement("div");
   card.className = "card config-card";
   card.innerHTML = `
@@ -475,6 +517,19 @@ function renderConfig() {
   `;
   c.appendChild(card);
 
+  // Mostrar código de convite se for gestor
+  if (perfil === "gestor" && usuarioAtual.codigoConvite) {
+    const divCodigo = document.createElement("div");
+    divCodigo.className = "config-link";
+    divCodigo.innerHTML = `
+      <h3>Código de Convite do Setor</h3>
+      <input id="inviteLink" readonly value="${usuarioAtual.codigoConvite}"/>
+      <button onclick="copiarCodigo()">📋 Copiar</button>
+      <button onclick="compartilharCodigo()">🔗 Compartilhar</button>
+    `;
+    c.appendChild(divCodigo);
+  }
+
   if (perfil === "gestor") {
     const h3 = document.createElement("h3");
     h3.textContent = "Gerenciar Usuários";
@@ -483,6 +538,9 @@ function renderConfig() {
     const ul = document.createElement("ul");
     ul.className = "user-list";
     medicos.forEach((m, i) => {
+      // Não mostrar o próprio usuário
+      if (m.email === usuarioAtual.email) return;
+      
       const li = document.createElement("li");
       li.innerHTML = `
         <div class="user-info">
@@ -499,6 +557,26 @@ function renderConfig() {
       ul.appendChild(li);
     });
     c.appendChild(ul);
+  }
+}
+
+function copiarCodigo() {
+  const txt = document.getElementById("inviteLink");
+  txt.select();
+  document.execCommand("copy");
+  showToast("Código copiado!");
+}
+
+function compartilharCodigo() {
+  const codigo = document.getElementById("inviteLink").value;
+  const texto = `Junte-se ao meu setor no MEMO usando o código: ${codigo}`;
+  if (navigator.share) {
+    navigator.share({
+      title: "Convite MEMO",
+      text: texto
+    });
+  } else {
+    showToast("Copie o código e compartilhe manualmente");
   }
 }
 
@@ -519,20 +597,6 @@ function remover(i) {
   medicos.splice(i, 1);
   renderConfig();
   showToast("Médico excluído");
-}
-
-// Copiar e compartilhar
-function copiarLink() {
-  const txt = document.getElementById("inviteLink");
-  txt.select();
-  document.execCommand("copy");
-  showToast("Link copiado!");
-}
-
-function compartilhar() {
-  const url = document.getElementById("inviteLink").value;
-  navigator.share?.({ title: "Convite MEMO", text: "Junte-se ao nosso setor no MEMO", url }) ||
-    showToast("Navegador não suporta compartilhamento.");
 }
 
 // Perfil do usuário
@@ -591,6 +655,10 @@ document.getElementById("salvarPerfil").addEventListener("click", () => {
 
 // Assinatura
 function abrirAssinatura() {
+  // Atualizar código de convite no modal
+  if (usuarioAtual.codigoConvite) {
+    document.getElementById("codigoConvite").textContent = usuarioAtual.codigoConvite;
+  }
   document.getElementById("modalAssinatura").style.display = "flex";
 }
 
@@ -602,17 +670,10 @@ function abrirPlanos() {
   document.getElementById("planosContainer").classList.remove("hidden");
 }
 
-function mostrarConfirmacaoCancelamento() {
-  document.getElementById("confirmacaoCancelamento").classList.remove("hidden");
-}
-
-function ocultarConfirmacaoCancelamento() {
-  document.getElementById("confirmacaoCancelamento").classList.add("hidden");
-}
-
-function cancelarAssinatura() {
-  showToast("Assinatura cancelada com sucesso");
-  fecharAssinatura();
+function copiarCodigo() {
+  const codigo = document.getElementById("codigoConvite").textContent;
+  navigator.clipboard.writeText(codigo);
+  showToast("Código copiado!");
 }
 
 // Inicialização

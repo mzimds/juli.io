@@ -26,31 +26,33 @@
   <div class="login-select" id="loginSection">
     <h2>MEMO</h2>
     <div id="loginForm" class="login-form">
-      <input type="email" id="loginEmail" placeholder="Email" />
-      <input type="password" id="loginPassword" placeholder="Senha" />
+      <input type="email" id="loginEmail" placeholder="Email *" required />
+      <input type="password" id="loginPassword" placeholder="Senha *" required />
       <button onclick="fazerLogin()">Entrar</button>
       <p>OU</p>
       <button onclick="mostrarCriarConta()">Criar conta</button>
     </div>
 
     <div id="criarContaForm" class="login-form hidden">
-      <input type="text" id="inviteCode" placeholder="Código de Convite" />
-      <input type="text" id="nomeCompleto" placeholder="Nome Completo" />
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Senha" />
+      <div id="conviteContainer" class="hidden">
+        <input type="text" id="inviteCode" placeholder="Código de Convite *" />
+      </div>
+      <input type="text" id="nomeCompleto" placeholder="Nome Completo *" required />
+      <input type="email" id="email" placeholder="Email *" required />
+      <input type="password" id="password" placeholder="Senha *" required />
       <div class="role-switch">
         <label>
-          <input type="radio" name="role" value="medico" checked onchange="toggleMedicoFields(true)"> Médico
+          <input type="radio" name="role" value="medico" checked onchange="toggleRoleFields(true)"> Médico
         </label>
         <label>
-          <input type="radio" name="role" value="gestor" onchange="toggleMedicoFields(false)"> Gestor
+          <input type="radio" name="role" value="gestor" onchange="toggleRoleFields(false)"> Gestor
         </label>
       </div>
       <div id="medicoFields">
-        <input type="text" id="crm" placeholder="CRM" />
-        <input type="text" id="especialidade" placeholder="Especialidade" />
+        <input type="text" id="crm" placeholder="CRM *" />
+        <input type="text" id="especialidade" placeholder="Especialidade *" />
       </div>
-      <input type="tel" id="telefone" placeholder="Telefone" />
+      <input type="tel" id="telefone" placeholder="Telefone *" required />
       <button onclick="criarConta()">Criar Conta</button>
       <button onclick="mostrarLogin()">Voltar para Login</button>
     </div>
@@ -76,13 +78,13 @@
   <div class="modal" id="modal">
     <div class="modal-content">
       <h2 id="modalTitulo">Novo Paciente</h2>
-      <input type="text" id="nomePaciente" placeholder="Nome completo (obrigatório)" />
-      <input type="text" id="setorPaciente" placeholder="Setor (obrigatório)" />
+      <input type="text" id="nomePaciente" placeholder="Nome completo *" required />
+      <input type="text" id="setorPaciente" placeholder="Setor *" required />
       <select id="statusPaciente">
         <option value="ativos">Ativo</option>
         <option value="altas">Alta</option>
       </select>
-      <textarea id="descricaoPaciente" placeholder="Descrição clínica (obrigatório)..."></textarea>
+      <textarea id="descricaoPaciente" placeholder="Descrição clínica *" required></textarea>
       <div class="modal-actions">
         <button id="salvarPaciente">Salvar</button>
         <button id="fecharModal">Cancelar</button>
@@ -96,7 +98,7 @@
       <h2>Nova Anotação</h2>
       <p>Paciente: <span id="notaPacienteNome"></span></p>
       <p>Data: <span id="notaData"></span> | Médico: <span id="notaMedico"></span></p>
-      <textarea id="novaNota" placeholder="Registre observações, evolução ou condutas..."></textarea>
+      <textarea id="novaNota" placeholder="Registre observações, evolução ou condutas..." required></textarea>
       <div class="modal-actions">
         <button id="salvarNota">Salvar</button>
         <button onclick="fecharNota()">Cancelar</button>
@@ -129,13 +131,13 @@
   <div class="modal" id="modalPerfil">
     <div class="modal-content">
       <h2>Editar Perfil</h2>
-      <input type="text" id="perfilNome" placeholder="Nome Completo" />
+      <input type="text" id="perfilNome" placeholder="Nome Completo *" required />
       <div id="perfilMedicoFields">
-        <input type="text" id="perfilCRM" placeholder="CRM" />
-        <input type="text" id="perfilEspecialidade" placeholder="Especialidade" />
+        <input type="text" id="perfilCRM" placeholder="CRM *" />
+        <input type="text" id="perfilEspecialidade" placeholder="Especialidade *" />
       </div>
-      <input type="email" id="perfilEmail" placeholder="Email" />
-      <input type="tel" id="perfilTelefone" placeholder="Telefone" />
+      <input type="email" id="perfilEmail" placeholder="Email *" required />
+      <input type="tel" id="perfilTelefone" placeholder="Telefone *" required />
       <div class="modal-actions">
         <button id="salvarPerfil">Salvar Alterações</button>
         <button onclick="fecharPerfil()">Cancelar</button>
@@ -153,6 +155,14 @@
         <p>Plano: <strong id="planoNome">Básico</strong></p>
         <p>Renovação: <strong id="planoRenovacao">15/08/2025</strong></p>
         <p>Limites: <strong id="planoLimites">10 médicos, 100 pacientes</strong></p>
+        <div class="codigo-convite">
+          <h4>Seu Código de Convite:</h4>
+          <div class="codigo-container">
+            <span id="codigoConvite">G8H3K9P2</span>
+            <button onclick="copiarCodigo()">📋 Copiar</button>
+          </div>
+          <p>Compartilhe este código com médicos para se juntarem ao seu setor</p>
+        </div>
         <button class="btn-assinatura" onclick="abrirPlanos()">Gerenciar Assinatura</button>
       </div>
       
@@ -178,34 +188,6 @@
             <li>Relatórios avançados</li>
           </ul>
           <button>Assinar</button>
-        </div>
-      </div>
-      
-      <div class="pagamento-container hidden" id="pagamentoContainer">
-        <h3>Pagamento</h3>
-        <div class="cartao-form">
-          <input type="text" placeholder="Número do cartão" />
-          <div class="cartao-info">
-            <input type="text" placeholder="MM/AA" />
-            <input type="text" placeholder="CVV" />
-          </div>
-          <input type="text" placeholder="Nome impresso no cartão" />
-        </div>
-        <button class="btn-pagamento">Atualizar Pagamento</button>
-      </div>
-      
-      <div class="historico-faturas">
-        <h3>Histórico de Faturas</h3>
-        <p>Nenhuma fatura disponível</p>
-      </div>
-      
-      <div class="cancelamento-container">
-        <h3>Cancelamento</h3>
-        <button class="btn-cancelar" onclick="mostrarConfirmacaoCancelamento()">Cancelar Assinatura</button>
-        <div class="confirmacao-cancelamento hidden" id="confirmacaoCancelamento">
-          <p>Tem certeza que deseja cancelar sua assinatura?</p>
-          <button class="btn-confirmar" onclick="cancelarAssinatura()">Confirmar Cancelamento</button>
-          <button class="btn-cancelar" onclick="ocultarConfirmacaoCancelamento()">Voltar</button>
         </div>
       </div>
       
