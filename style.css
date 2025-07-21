@@ -6,6 +6,7 @@
   --border: #ccc;
   --sidebar-bg: #2c3e50;
   --sidebar-text: #ecf0f1;
+  --badge-bg: #e74c3c;
 }
 
 body.dark {
@@ -29,88 +30,30 @@ body {
 
 .header {
   display: flex;
-  justify-content: center;
   align-items: center;
   height: 56px;
   border-bottom: 1px solid var(--border);
-  position: relative;
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
 }
 
-.menu-toggle {
-  position: absolute;
-  left: 1rem;
+#menuToggle {
   background: none;
   border: none;
   font-size: 1.5rem;
-  cursor: pointer;
   color: var(--accent);
+  cursor: pointer;
+  margin-right: 1rem;
 }
 
 .logo {
   font-size: 1.4rem;
   font-weight: bold;
   color: var(--accent);
-}
-
-.login-select {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 1rem;
-  background: var(--card);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.login-toggle {
-  display: flex;
-  margin-bottom: 1rem;
-  width: 100%;
-}
-
-.toggle-option {
-  flex: 1;
-  padding: 0.75rem;
-  background: var(--bg);
-  border: none;
-  border-bottom: 2px solid transparent;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.toggle-option.active {
-  border-bottom: 2px solid var(--accent);
-  color: var(--accent);
-}
-
-.login-form, .signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  width: 100%;
-}
-
-.login-form input, .signup-form input,
-.login-form select, .signup-form select {
-  padding: 0.75rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
-  font-size: 1rem;
-}
-
-.login-form button, .signup-form button {
-  padding: 0.75rem;
-  background: var(--accent);
-  color: var(--card);
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 0.5rem;
+  margin: 0;
 }
 
 .sidebar {
@@ -121,11 +64,12 @@ body {
   height: 100%;
   background: var(--sidebar-bg);
   color: var(--sidebar-text);
-  transition: left 0.3s ease;
+  transition: left 0.3s;
   z-index: 1000;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
-.sidebar.active {
+.sidebar.open {
   left: 0;
 }
 
@@ -136,18 +80,87 @@ body {
 
 .sidebar-menu {
   list-style: none;
-  padding: 0;
+  padding: 1rem 0;
   margin: 0;
 }
 
 .sidebar-menu li {
-  padding: 1rem;
-  cursor: pointer;
+  padding: 0;
+}
+
+.sidebar-menu a {
+  display: block;
+  padding: 0.8rem 1.5rem;
+  color: var(--sidebar-text);
+  text-decoration: none;
   transition: background 0.2s;
 }
 
-.sidebar-menu li:hover {
+.sidebar-menu a:hover {
   background: rgba(255,255,255,0.1);
+}
+
+.gestor-only {
+  display: none;
+}
+
+.gestor-only.hidden {
+  display: none !important;
+}
+
+.login-select {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.login-select h2 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.login-form input {
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.login-form button {
+  padding: 0.8rem;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.login-form button:hover {
+  opacity: 0.9;
+}
+
+.role-switch {
+  display: flex;
+  gap: 1rem;
+  margin: 0.5rem 0;
 }
 
 .tabs {
@@ -179,15 +192,11 @@ body {
 }
 
 .badge {
-  background: var(--accent);
-  color: var(--bg);
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
+  background: var(--badge-bg);
+  color: white;
+  border-radius: 10px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
 }
 
 .search-container {
@@ -198,8 +207,8 @@ body {
 
 .search-container input {
   width: 100%;
-  padding: 0.6rem;
-  border-radius: 6px;
+  padding: 0.8rem;
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--text);
@@ -215,11 +224,17 @@ body {
   margin: 0 auto 2rem;
 }
 
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #777;
+}
+
 .card {
   background: var(--card);
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  padding: 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .card h2 {
@@ -229,10 +244,10 @@ body {
 
 .card .tag {
   background: var(--border);
-  padding: 2px 6px;
+  padding: 4px 8px;
   border-radius: 4px;
-  font-size: 0.75rem;
-  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
   display: inline-block;
 }
 
@@ -240,34 +255,47 @@ body {
   max-height: 100px;
   overflow-y: auto;
   white-space: pre-wrap;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
 }
 
-.anotacoes {
-  font-size: 0.8rem;
+.anotacao {
+  font-size: 0.85rem;
   border-left: 2px solid var(--border);
-  padding-left: 0.5rem;
-  margin-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  margin: 0.75rem 0;
+  line-height: 1.4;
 }
 
-.card button {
-  padding: 4px 8px;
-  font-size: 0.8rem;
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.card-actions button {
+  padding: 0.5rem 0.8rem;
+  font-size: 0.85rem;
   border: none;
-  border-radius: 4px;
-  margin-right: 4px;
+  border-radius: 6px;
   background: var(--accent);
   color: var(--bg);
   cursor: pointer;
+  transition: opacity 0.2s;
 }
 
-.ver-detalhes {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  background: var(--accent);
-  color: var(--bg);
+.card-actions button:hover {
+  opacity: 0.9;
+}
+
+.btn-detalhes {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  background: #3498db;
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -275,20 +303,24 @@ body {
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   border: none;
   background: var(--accent);
   color: var(--bg);
   cursor: pointer;
-  z-index: 900;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
 }
 
 .fab.encerrar {
-  bottom: 6rem;
-  background: crimson;
+  bottom: 7rem;
+  background: #e74c3c;
 }
 
 .toast {
@@ -298,9 +330,10 @@ body {
   transform: translateX(-50%);
   background: var(--accent);
   color: var(--bg);
-  padding: 0.75rem 1rem;
+  padding: 0.9rem 1.5rem;
   border-radius: 8px;
   z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 .modal {
@@ -311,28 +344,34 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  overflow-y: auto;
+  padding: 1rem;
 }
 
 .modal-content {
   background: var(--card);
   color: var(--text);
-  padding: 1rem;
+  padding: 1.5rem;
   width: 90%;
   max-width: 500px;
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
   max-height: 90vh;
   overflow-y: auto;
+}
+
+.modal-content h2 {
+  margin-top: 0;
 }
 
 .modal-content input,
 .modal-content textarea,
 .modal-content select {
   width: 100%;
-  padding: 0.75rem;
-  border-radius: 6px;
+  padding: 0.9rem;
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text);
@@ -340,143 +379,367 @@ body {
 }
 
 .modal-content textarea {
-  min-height: 80px;
+  min-height: 120px;
   resize: vertical;
 }
 
 .modal-actions {
   display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .modal-actions button {
-  flex: 1;
-  padding: 0.75rem;
+  padding: 0.8rem 1.2rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 500;
+}
+
+.modal-actions button:first-child {
   background: var(--accent);
   color: var(--bg);
-  text-align: center;
 }
 
-.anotacao-header {
-  margin-bottom: 1rem;
-}
-
-.anotacao-header h2 {
-  margin: 0;
-}
-
-.anotacao-header p {
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
-  color: #666;
+.check-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
 }
 
 .check-group label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  gap: 0.75rem;
 }
 
 .assinatura {
-  font-size: 0.85rem;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
+  font-size: 0.9rem;
+  margin: 1rem 0 0;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--border);
 }
 
 .config-link {
-  display: flex;
-  gap: 0.5rem;
+  background: var(--card);
+  padding: 1.2rem;
+  border-radius: 10px;
   margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
 }
 
 .config-link input {
   flex: 1;
-  padding: 0.5rem;
+  min-width: 200px;
+  padding: 0.75rem;
+  border-radius: 6px;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.config-link button {
+  padding: 0.75rem 1rem;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.config-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.btn-config {
+  padding: 0.75rem;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+}
+
+.tema-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
 .user-list {
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .user-list li {
+  background: var(--card);
+  padding: 1rem;
+  border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.user-status {
-  font-size: 0.8rem;
+.user-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.user-name {
+  font-weight: bold;
+  display: block;
+}
+
+.user-role, .user-crm {
+  font-size: 0.85rem;
+  display: block;
   margin-top: 0.25rem;
+  color: #777;
 }
 
 .user-actions {
   display: flex;
-  gap: 0.25rem;
-}
-
-.user-actions button {
-  font-size: 0.8rem;
-  padding: 0.25rem 0.5rem;
-}
-
-.assinatura-info, .assinatura-planos {
-  margin-bottom: 1.5rem;
-}
-
-.plano-card {
-  background: var(--bg);
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 1rem 0;
-}
-
-.plano-card h4 {
-  margin: 0 0 0.5rem;
-}
-
-.plano-card button {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  background: var(--accent);
-  color: var(--bg);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-}
-
-.card-info {
-  display: flex;
   gap: 0.5rem;
 }
 
-.card-info input {
+.user-actions button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--bg);
+  cursor: pointer;
+}
+
+.assinatura-status {
+  background: var(--card);
+  padding: 1.2rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.btn-assinatura {
+  padding: 0.8rem 1.5rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.planos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.plano-card {
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.plano-card.destaque {
+  border: 2px solid #3498db;
+}
+
+.plano-card h4 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.preco {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #3498db;
+}
+
+.plano-card ul {
+  padding: 0;
+  margin: 0.5rem 0 1rem;
+  list-style: none;
+}
+
+.plano-card li {
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.plano-card li:before {
+  content: "✓";
+  margin-right: 0.5rem;
+  color: #2ecc71;
+}
+
+.plano-card button {
+  padding: 0.7rem;
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: auto;
+}
+
+.pagamento-container {
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1.5rem 0;
+}
+
+.cartao-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.cartao-info {
+  display: flex;
+  gap: 1rem;
+}
+
+.cartao-info input {
   flex: 1;
+}
+
+.btn-pagamento {
+  padding: 0.8rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.historico-faturas {
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1.5rem 0;
+}
+
+.cancelamento-container {
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1.5rem 0;
+}
+
+.btn-cancelar {
+  padding: 0.8rem;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  width: 100%;
+}
+
+.confirmacao-cancelamento {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.btn-confirmar {
+  padding: 0.8rem 1.5rem;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  margin: 0.5rem;
 }
 
 .hidden {
   display: none !important;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .tabs {
-    flex-direction: column;
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 0.5rem;
   }
   
   .tab {
-    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem;
   }
   
   .user-list li {
@@ -485,7 +748,6 @@ body {
   }
   
   .user-actions {
-    margin-top: 0.5rem;
     width: 100%;
     justify-content: flex-end;
   }

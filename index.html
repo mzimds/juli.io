@@ -7,65 +7,64 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="light">
-  <header class="header">
-    <button class="menu-toggle" id="menuToggle">☰</button>
-    <h1 class="logo">MEMO</h1>
-  </header>
-
-  <div class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h3 id="sidebarUserName">Usuário</h3>
     </div>
     <ul class="sidebar-menu">
-      <li id="menuProfile">Meu Perfil</li>
-      <li id="menuSignature" class="hidden">Minha Assinatura</li>
-      <li id="menuLogout">Sair</li>
+      <li><a href="#" onclick="abrirPerfil()">Meu Perfil</a></li>
+      <li class="gestor-only"><a href="#" onclick="abrirAssinatura()">Minha Assinatura</a></li>
+      <li><a href="#" onclick="logout()">Sair</a></li>
     </ul>
-  </div>
+  </aside>
+
+  <header class="header">
+    <button id="menuToggle">☰</button>
+    <h1 class="logo">MEMO</h1>
+  </header>
 
   <div class="login-select" id="loginSection">
-    <div class="login-toggle">
-      <button class="toggle-option active" data-option="login">Entrar</button>
-      <button class="toggle-option" data-option="signup">Criar Conta</button>
+    <h2>MEMO</h2>
+    <div id="loginForm" class="login-form">
+      <input type="email" id="loginEmail" placeholder="Email" />
+      <input type="password" id="loginPassword" placeholder="Senha" />
+      <button onclick="fazerLogin()">Entrar</button>
+      <p>OU</p>
+      <button onclick="mostrarCriarConta()">Criar conta</button>
     </div>
-    
-    <div class="login-form" id="loginForm">
-      <select id="userTypeLogin">
-        <option value="medico">Médico</option>
-        <option value="gestor">Gestor</option>
-      </select>
-      <input type="text" id="loginName" placeholder="Nome" />
-      <button onclick="login()">Entrar</button>
-    </div>
-    
-    <div class="signup-form hidden" id="signupForm">
-      <select id="userTypeSignup">
-        <option value="medico">Médico</option>
-        <option value="gestor">Gestor</option>
-      </select>
-      <input type="text" id="signupName" placeholder="Nome completo" />
-      <input type="text" id="signupCRM" placeholder="CRM (apenas médicos)" class="hidden" />
-      <input type="email" id="signupEmail" placeholder="Email" />
-      <input type="tel" id="signupPhone" placeholder="Telefone" />
-      <button onclick="signup()">Criar Conta</button>
+
+    <div id="criarContaForm" class="login-form hidden">
+      <input type="text" id="inviteCode" placeholder="Código de Convite" />
+      <input type="text" id="nomeCompleto" placeholder="Nome Completo" />
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Senha" />
+      <div class="role-switch">
+        <label>
+          <input type="radio" name="role" value="medico" checked onchange="toggleMedicoFields(true)"> Médico
+        </label>
+        <label>
+          <input type="radio" name="role" value="gestor" onchange="toggleMedicoFields(false)"> Gestor
+        </label>
+      </div>
+      <div id="medicoFields">
+        <input type="text" id="crm" placeholder="CRM" />
+        <input type="text" id="especialidade" placeholder="Especialidade" />
+      </div>
+      <input type="tel" id="telefone" placeholder="Telefone" />
+      <button onclick="criarConta()">Criar Conta</button>
+      <button onclick="mostrarLogin()">Voltar para Login</button>
     </div>
   </div>
 
   <nav class="tabs hidden" id="tabs">
-    <button class="tab active" data-tab="ativos">
-      Ativos <span class="badge" id="ativosBadge">0</span>
-    </button>
-    <button class="tab" data-tab="altas">
-      Altas <span class="badge" id="altasBadge">0</span>
-    </button>
-    <button class="tab" data-tab="historico">
-      Histórico <span class="badge" id="historicoBadge">0</span>
-    </button>
+    <button class="tab active" data-tab="ativos">Ativos <span id="badgeAtivos" class="badge">0</span></button>
+    <button class="tab" data-tab="altas">Altas <span id="badgeAltas" class="badge">0</span></button>
+    <button class="tab" data-tab="historico">Histórico</button>
     <button class="tab" data-tab="config">Configurações</button>
   </nav>
 
   <div class="search-container hidden" id="searchContainer">
-    <input type="text" id="searchInput" placeholder="Buscar paciente, setor, médico..." />
+    <input type="text" id="searchInput" placeholder="Buscar paciente, setor, informações..." />
   </div>
 
   <main class="patient-list" id="patientList"></main>
@@ -78,12 +77,12 @@
     <div class="modal-content">
       <h2 id="modalTitulo">Novo Paciente</h2>
       <input type="text" id="nomePaciente" placeholder="Nome completo (obrigatório)" />
-      <input type="text" id="setorPaciente" placeholder="Setor" />
+      <input type="text" id="setorPaciente" placeholder="Setor (obrigatório)" />
       <select id="statusPaciente">
         <option value="ativos">Ativo</option>
         <option value="altas">Alta</option>
       </select>
-      <textarea id="descricaoPaciente" placeholder="Descrição clínica..."></textarea>
+      <textarea id="descricaoPaciente" placeholder="Descrição clínica (obrigatório)..."></textarea>
       <div class="modal-actions">
         <button id="salvarPaciente">Salvar</button>
         <button id="fecharModal">Cancelar</button>
@@ -94,11 +93,9 @@
   <!-- Modal: Nova Anotação -->
   <div class="modal" id="modalNota">
     <div class="modal-content">
-      <div class="anotacao-header">
-        <h2 id="anotacaoNomePaciente">Paciente</h2>
-        <p id="anotacaoData"></p>
-        <p id="anotacaoMedico"></p>
-      </div>
+      <h2>Nova Anotação</h2>
+      <p>Paciente: <span id="notaPacienteNome"></span></p>
+      <p>Data: <span id="notaData"></span> | Médico: <span id="notaMedico"></span></p>
       <textarea id="novaNota" placeholder="Registre observações, evolução ou condutas..."></textarea>
       <div class="modal-actions">
         <button id="salvarNota">Salvar</button>
@@ -118,10 +115,9 @@
       </div>
       <label for="medicoDestino">Médico que receberá:</label>
       <select id="medicoDestino">
-        <option>Dr. Ana</option>
-        <option>Dr. Bruno</option>
+        <!-- Options will be populated by JS -->
       </select>
-      <p class="assinatura">Assinatura: <strong id="assinaturaUser"></strong> - <span id="assinaturaData"></span></p>
+      <p class="assinatura">Assinatura digital: <strong id="assinaturaUser"></strong> em <span id="dataEncerramento"></span></p>
       <div class="modal-actions">
         <button onclick="confirmarEncerramento()">Confirmar Encerramento</button>
         <button onclick="fecharEncerrar()">Cancelar</button>
@@ -129,69 +125,92 @@
     </div>
   </div>
 
-  <!-- Modal: Perfil -->
+  <!-- Modal: Editar Perfil -->
   <div class="modal" id="modalPerfil">
     <div class="modal-content">
-      <h2>Meu Perfil</h2>
-      <input type="text" id="perfilNome" placeholder="Nome completo" />
-      <input type="text" id="perfilCRM" placeholder="CRM (apenas médicos)" />
-      <input type="text" id="perfilEspecialidade" placeholder="Especialidade" />
+      <h2>Editar Perfil</h2>
+      <input type="text" id="perfilNome" placeholder="Nome Completo" />
+      <div id="perfilMedicoFields">
+        <input type="text" id="perfilCRM" placeholder="CRM" />
+        <input type="text" id="perfilEspecialidade" placeholder="Especialidade" />
+      </div>
       <input type="email" id="perfilEmail" placeholder="Email" />
       <input type="tel" id="perfilTelefone" placeholder="Telefone" />
       <div class="modal-actions">
-        <button onclick="salvarPerfil()">Salvar Alterações</button>
+        <button id="salvarPerfil">Salvar Alterações</button>
         <button onclick="fecharPerfil()">Cancelar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal: Assinatura -->
+  <!-- Modal: Minha Assinatura -->
   <div class="modal" id="modalAssinatura">
     <div class="modal-content">
       <h2>Minha Assinatura</h2>
-      <div class="assinatura-info">
-        <h3>Plano Atual</h3>
-        <p><strong>Plano Profissional</strong></p>
-        <p>Próxima renovação: 30/08/2025</p>
-        <p>Limites: 10 médicos, 100 pacientes</p>
-        <button onclick="gerenciarAssinatura()">Gerenciar Assinatura</button>
+      
+      <div class="assinatura-status">
+        <h3>Status Atual</h3>
+        <p>Plano: <strong id="planoNome">Básico</strong></p>
+        <p>Renovação: <strong id="planoRenovacao">15/08/2025</strong></p>
+        <p>Limites: <strong id="planoLimites">10 médicos, 100 pacientes</strong></p>
+        <button class="btn-assinatura" onclick="abrirPlanos()">Gerenciar Assinatura</button>
       </div>
       
-      <div class="assinatura-planos">
+      <div class="planos-container hidden" id="planosContainer">
         <h3>Planos Disponíveis</h3>
         <div class="plano-card">
           <h4>Básico</h4>
-          <p>R$ 99/mês</p>
+          <p class="preco">R$ 99/mês</p>
           <ul>
             <li>5 médicos</li>
-            <li>50 pacientes</li>
+            <li>50 pacientes ativos</li>
+            <li>Suporte básico</li>
           </ul>
           <button>Assinar</button>
         </div>
-        <div class="plano-card">
+        <div class="plano-card destaque">
           <h4>Profissional</h4>
-          <p>R$ 199/mês</p>
+          <p class="preco">R$ 199/mês</p>
           <ul>
-            <li>10 médicos</li>
-            <li>100 pacientes</li>
+            <li>15 médicos</li>
+            <li>Pacientes ilimitados</li>
+            <li>Suporte prioritário</li>
+            <li>Relatórios avançados</li>
           </ul>
-          <button>Atual</button>
+          <button>Assinar</button>
         </div>
       </div>
       
-      <div class="assinatura-pagamento hidden" id="pagamentoSection">
+      <div class="pagamento-container hidden" id="pagamentoContainer">
         <h3>Pagamento</h3>
-        <input type="text" placeholder="Número do cartão" />
-        <input type="text" placeholder="Nome no cartão" />
-        <div class="card-info">
-          <input type="text" placeholder="Validade" />
-          <input type="text" placeholder="CVV" />
+        <div class="cartao-form">
+          <input type="text" placeholder="Número do cartão" />
+          <div class="cartao-info">
+            <input type="text" placeholder="MM/AA" />
+            <input type="text" placeholder="CVV" />
+          </div>
+          <input type="text" placeholder="Nome impresso no cartão" />
         </div>
-        <button>Confirmar Pagamento</button>
+        <button class="btn-pagamento">Atualizar Pagamento</button>
       </div>
       
-      <div class="assinatura-cancelamento">
-        <button onclick="cancelarAssinatura()">Cancelar Assinatura</button>
+      <div class="historico-faturas">
+        <h3>Histórico de Faturas</h3>
+        <p>Nenhuma fatura disponível</p>
+      </div>
+      
+      <div class="cancelamento-container">
+        <h3>Cancelamento</h3>
+        <button class="btn-cancelar" onclick="mostrarConfirmacaoCancelamento()">Cancelar Assinatura</button>
+        <div class="confirmacao-cancelamento hidden" id="confirmacaoCancelamento">
+          <p>Tem certeza que deseja cancelar sua assinatura?</p>
+          <button class="btn-confirmar" onclick="cancelarAssinatura()">Confirmar Cancelamento</button>
+          <button class="btn-cancelar" onclick="ocultarConfirmacaoCancelamento()">Voltar</button>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button onclick="fecharAssinatura()">Voltar</button>
       </div>
     </div>
   </div>
