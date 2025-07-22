@@ -7,66 +7,24 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="light">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <h3 id="sidebarUserName">Usuário</h3>
-    </div>
-    <ul class="sidebar-menu">
-      <li><a href="#" onclick="abrirPerfil()">Meu Perfil</a></li>
-      <li class="gestor-only"><a href="#" onclick="abrirAssinatura()">Minha Assinatura</a></li>
-      <li><a href="#" onclick="logout()">Sair</a></li>
-    </ul>
-  </aside>
-
   <header class="header">
-    <button id="menuToggle">☰</button>
     <h1 class="logo">MEMO</h1>
   </header>
 
   <div class="login-select" id="loginSection">
-    <h2>MEMO</h2>
-    <div id="loginForm" class="login-form">
-      <input type="email" id="loginEmail" placeholder="Email *" required />
-      <input type="password" id="loginPassword" placeholder="Senha *" required />
-      <button onclick="fazerLogin()">Entrar</button>
-      <p>OU</p>
-      <button onclick="mostrarCriarConta()">Criar conta</button>
-    </div>
-
-    <div id="criarContaForm" class="login-form hidden">
-      <div id="conviteContainer" class="hidden">
-        <input type="text" id="inviteCode" placeholder="Código de Convite *" />
-      </div>
-      <input type="text" id="nomeCompleto" placeholder="Nome Completo *" required />
-      <input type="email" id="email" placeholder="Email *" required />
-      <input type="password" id="password" placeholder="Senha *" required />
-      <div class="role-switch">
-        <label>
-          <input type="radio" name="role" value="medico" checked onchange="toggleRoleFields(true)"> Médico
-        </label>
-        <label>
-          <input type="radio" name="role" value="gestor" onchange="toggleRoleFields(false)"> Gestor
-        </label>
-      </div>
-      <div id="medicoFields">
-        <input type="text" id="crm" placeholder="CRM *" />
-        <input type="text" id="especialidade" placeholder="Especialidade *" />
-      </div>
-      <input type="tel" id="telefone" placeholder="Telefone *" required />
-      <button onclick="criarConta()">Criar Conta</button>
-      <button onclick="mostrarLogin()">Voltar para Login</button>
-    </div>
+    <button onclick="login('Dr. Ana', 'medico')">Entrar como Médico</button>
+    <button onclick="login('Admin', 'gestor')">Entrar como Gestor</button>
   </div>
 
   <nav class="tabs hidden" id="tabs">
-    <button class="tab active" data-tab="ativos">Ativos <span id="badgeAtivos" class="badge">0</span></button>
-    <button class="tab" data-tab="altas">Altas <span id="badgeAltas" class="badge">0</span></button>
+    <button class="tab active" data-tab="ativos">Ativos</button>
+    <button class="tab" data-tab="altas">Altas</button>
     <button class="tab" data-tab="historico">Histórico</button>
     <button class="tab" data-tab="config">Configurações</button>
   </nav>
 
   <div class="search-container hidden" id="searchContainer">
-    <input type="text" id="searchInput" placeholder="Buscar paciente, setor, informações..." />
+    <input type="text" id="searchInput" placeholder="Buscar paciente..." />
   </div>
 
   <main class="patient-list" id="patientList"></main>
@@ -78,13 +36,13 @@
   <div class="modal" id="modal">
     <div class="modal-content">
       <h2 id="modalTitulo">Novo Paciente</h2>
-      <input type="text" id="nomePaciente" placeholder="Nome completo *" required />
-      <input type="text" id="setorPaciente" placeholder="Setor *" required />
+      <input type="text" id="nomePaciente" placeholder="Nome do paciente" />
+      <input type="text" id="setorPaciente" placeholder="Setor" />
       <select id="statusPaciente">
         <option value="ativos">Ativo</option>
         <option value="altas">Alta</option>
       </select>
-      <textarea id="descricaoPaciente" placeholder="Descrição clínica *" required></textarea>
+      <textarea id="descricaoPaciente" placeholder="Resumo clínico..."></textarea>
       <div class="modal-actions">
         <button id="salvarPaciente">Salvar</button>
         <button id="fecharModal">Cancelar</button>
@@ -96,9 +54,7 @@
   <div class="modal" id="modalNota">
     <div class="modal-content">
       <h2>Nova Anotação</h2>
-      <p>Paciente: <span id="notaPacienteNome"></span></p>
-      <p>Data: <span id="notaData"></span> | Médico: <span id="notaMedico"></span></p>
-      <textarea id="novaNota" placeholder="Registre observações, evolução ou condutas..." required></textarea>
+      <textarea id="novaNota" placeholder="Descreva a nova anotação clínica..."></textarea>
       <div class="modal-actions">
         <button id="salvarNota">Salvar</button>
         <button onclick="fecharNota()">Cancelar</button>
@@ -113,86 +69,16 @@
       <div class="check-group">
         <label><input type="checkbox" id="checkPendencias" /> Todas as pendências foram resolvidas</label>
         <label><input type="checkbox" id="checkObservacoes" /> Observações registradas</label>
-        <label><input type="checkbox" id="checkLaudos" /> Laudos assinados</label>
       </div>
       <label for="medicoDestino">Médico que receberá:</label>
       <select id="medicoDestino">
-        <!-- Options will be populated by JS -->
+        <option>Dr. Ana</option>
+        <option>Dr. Bruno</option>
       </select>
-      <p class="assinatura">Assinatura digital: <strong id="assinaturaUser"></strong> em <span id="dataEncerramento"></span></p>
+      <p class="assinatura">Assinatura: <strong id="assinaturaUser"></strong></p>
       <div class="modal-actions">
-        <button onclick="confirmarEncerramento()">Confirmar Encerramento</button>
+        <button onclick="confirmarEncerramento()">Confirmar</button>
         <button onclick="fecharEncerrar()">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Editar Perfil -->
-  <div class="modal" id="modalPerfil">
-    <div class="modal-content">
-      <h2>Editar Perfil</h2>
-      <input type="text" id="perfilNome" placeholder="Nome Completo *" required />
-      <div id="perfilMedicoFields">
-        <input type="text" id="perfilCRM" placeholder="CRM *" />
-        <input type="text" id="perfilEspecialidade" placeholder="Especialidade *" />
-      </div>
-      <input type="email" id="perfilEmail" placeholder="Email *" required />
-      <input type="tel" id="perfilTelefone" placeholder="Telefone *" required />
-      <div class="modal-actions">
-        <button id="salvarPerfil">Salvar Alterações</button>
-        <button onclick="fecharPerfil()">Cancelar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Minha Assinatura -->
-  <div class="modal" id="modalAssinatura">
-    <div class="modal-content">
-      <h2>Minha Assinatura</h2>
-      
-      <div class="assinatura-status">
-        <h3>Status Atual</h3>
-        <p>Plano: <strong id="planoNome">Básico</strong></p>
-        <p>Renovação: <strong id="planoRenovacao">15/08/2025</strong></p>
-        <p>Limites: <strong id="planoLimites">10 médicos, 100 pacientes</strong></p>
-        <div class="codigo-convite">
-          <h4>Seu Código de Convite:</h4>
-          <div class="codigo-container">
-            <span id="codigoConvite">G8H3K9P2</span>
-            <button onclick="copiarCodigo()">📋 Copiar</button>
-          </div>
-          <p>Compartilhe este código com médicos para se juntarem ao seu setor</p>
-        </div>
-        <button class="btn-assinatura" onclick="abrirPlanos()">Gerenciar Assinatura</button>
-      </div>
-      
-      <div class="planos-container hidden" id="planosContainer">
-        <h3>Planos Disponíveis</h3>
-        <div class="plano-card">
-          <h4>Básico</h4>
-          <p class="preco">R$ 99/mês</p>
-          <ul>
-            <li>5 médicos</li>
-            <li>50 pacientes ativos</li>
-            <li>Suporte básico</li>
-          </ul>
-          <button>Assinar</button>
-        </div>
-        <div class="plano-card destaque">
-          <h4>Profissional</h4>
-          <p class="preco">R$ 199/mês</p>
-          <ul>
-            <li>15 médicos</li>
-            <li>Pacientes ilimitados</li>
-            <li>Suporte prioritário</li>
-            <li>Relatórios avançados</li>
-          </ul>
-          <button>Assinar</button>
-        </div>
-      </div>
-      
-      <div class="modal-actions">
-        <button onclick="fecharAssinatura()">Voltar</button>
       </div>
     </div>
   </div>
