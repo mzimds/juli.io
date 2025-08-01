@@ -490,6 +490,16 @@
       background: #e67e22;
     }
 
+    .btn-neutral {
+      background: var(--light-gray);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-neutral:hover {
+      background: var(--medium-gray);
+    }
+
     .btn-icon {
       padding: 0.5rem;
       width: 32px;
@@ -1037,12 +1047,32 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="nomePaciente" class="form-label">Nome do Paciente</label>
-            <input type="text" id="nomePaciente" class="form-input" placeholder="Nome completo" />
+            <input type="text" id="nomePaciente" class="form-input" placeholder="Nome completo" required />
           </div>
           
           <div class="form-group">
             <label for="setorPaciente" class="form-label">Setor</label>
-            <input type="text" id="setorPaciente" class="form-input" placeholder="Ex: Clínica Médica, UTI" />
+            <input type="text" id="setorPaciente" class="form-input" placeholder="Ex: Clínica Médica, UTI" required />
+          </div>
+          
+          <div class="form-group">
+            <label for="sexoPaciente" class="form-label">Sexo</label>
+            <select id="sexoPaciente" class="form-input" required>
+              <option value="">Selecione</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Feminino">Feminino</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="leitoPaciente" class="form-label">Leito</label>
+            <input type="text" id="leitoPaciente" class="form-input" placeholder="Número do leito" required />
+          </div>
+          
+          <div class="form-group">
+            <label for="numeroAtendimento" class="form-label">Número do Atendimento</label>
+            <input type="text" id="numeroAtendimento" class="form-input" placeholder="Número do atendimento" required />
           </div>
           
           <div class="form-group">
@@ -1055,7 +1085,7 @@
           
           <div class="form-group">
             <label for="descricaoPaciente" class="form-label">Resumo Clínico</label>
-            <textarea id="descricaoPaciente" class="form-input" placeholder="Descreva o quadro clínico do paciente..." rows="4"></textarea>
+            <textarea id="descricaoPaciente" class="form-input" placeholder="Descreva o quadro clínico do paciente..." rows="4" required></textarea>
           </div>
         </div>
         <div class="modal-actions">
@@ -1132,17 +1162,25 @@
 
     let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [
       {
+        id: Date.now().toString(),
         nome: "João da Silva",
         status: "ativos",
         setor: "Clínica Médica",
+        sexo: "Masculino",
+        leito: "102A",
+        numeroAtendimento: "ATD20230001",
         descricao: "Paciente com dor abdominal crônica. Monitorar sinais vitais a cada 4 horas. Dieta líquida.",
         criadoEm: Date.now() - 60000,
         anotacoes: []
       },
       {
+        id: (Date.now() + 1).toString(),
         nome: "Maria Souza",
         status: "altas",
         setor: "UTI",
+        sexo: "Feminino",
+        leito: "UTI-03",
+        numeroAtendimento: "ATD20230002",
         descricao: "Alta após cirurgia cardíaca bem-sucedida. Recomendado repouso e acompanhamento ambulatorial.",
         criadoEm: Date.now() - 300000,
         anotacoes: [
@@ -1154,9 +1192,13 @@
         ]
       },
       {
+        id: (Date.now() + 2).toString(),
         nome: "Carlos Mendes",
         status: "ativos",
         setor: "Pediatria",
+        sexo: "Masculino",
+        leito: "PED-15",
+        numeroAtendimento: "ATD20230003",
         descricao: "Criança com quadro de pneumonia. Em tratamento com antibióticos. Monitorar saturação de O2.",
         criadoEm: Date.now() - 120000,
         anotacoes: [
@@ -1243,7 +1285,7 @@
       let codigo = null;
       if (role === "gestor") {
         // Gerar código único para gestores
-        codigo = 'HOSP' + Math.random().toString(36).substring(2, 6).toUpperCase();
+        codigo = 'SETOR-' + Math.random().toString(36).substring(2, 8).toUpperCase();
       } else if (role === "medico") {
         // Obter código do campo para médicos
         codigo = document.getElementById("registerCode").value.trim();
@@ -1320,6 +1362,7 @@
             <p><strong>Destino:</strong> ${plantao.destino}</p>
             <p><strong>Pacientes ativos:</strong> ${plantao.pacientesAtivos}</p>
             <p><strong>Pacientes com alta:</strong> ${plantao.altas.length}</p>
+            <p><strong>Checklist:</strong> ${plantao.checklistPreenchido ? 'Sim' : 'Não'}</p>
             <h3 class="notes-title">Altas Realizadas</h3>
           `;
           
@@ -1335,14 +1378,12 @@
             `;
           });
           
-          if (plantao.observacoes) {
-            bloco.innerHTML += `
-              <h3 class="notes-title">Observações</h3>
-              <div class="note">
-                <div class="note-content">${plantao.observacoes}</div>
-              </div>
-            `;
-          }
+          bloco.innerHTML += `
+            <button class="btn btn-sm btn-outline mt-3" 
+                    onclick="verHistoricoCompleto(${i})">
+              Ver histórico completo
+            </button>
+          `;
           
           container.appendChild(bloco);
         });
@@ -1388,13 +1429,13 @@
         
         const actionsHTML = p.status === "ativos" && (perfil === "medico" || perfil === "gestor") ? `
           <div class="card-actions">
-            <button class="btn btn-sm btn-outline" onclick="abrirNota('${p.nome}')">
+            <button class="btn btn-sm btn-outline" onclick="abrirNota('${p.id}')">
               Anotação
             </button>
-            <button class="btn btn-sm btn-outline" onclick="editarPaciente('${p.nome}')">
+            <button class="btn btn-sm btn-outline" onclick="editarPaciente('${p.id}')">
               Editar
             </button>
-            <button class="btn btn-sm btn-success" onclick="darAlta('${p.nome}')">
+            <button class="btn btn-sm btn-success" onclick="darAlta('${p.id}')">
               Alta
             </button>
           </div>
@@ -1410,7 +1451,12 @@
           <div class="card-subtitle">
             ${new Date(p.criadoEm).toLocaleString("pt-BR")}
           </div>
-          <div class="card-content">${p.descricao}</div>
+          <div class="card-content">
+            <p><strong>Sexo:</strong> ${p.sexo}</p>
+            <p><strong>Leito:</strong> ${p.leito}</p>
+            <p><strong>Atendimento:</strong> ${p.numeroAtendimento}</p>
+            ${p.descricao}
+          </div>
           ${anotacoesHTML}
           ${actionsHTML}
         `;
@@ -1440,8 +1486,12 @@
       document.getElementById("modalTitulo").textContent = "Novo Paciente";
       document.getElementById("nomePaciente").value = "";
       document.getElementById("setorPaciente").value = "";
+      document.getElementById("sexoPaciente").value = "";
+      document.getElementById("leitoPaciente").value = "";
+      document.getElementById("numeroAtendimento").value = "";
       document.getElementById("statusPaciente").value = "ativos";
       document.getElementById("descricaoPaciente").value = "";
+      window.editandoPaciente = null;
     });
 
     document.querySelectorAll(".btn-close").forEach(btn => {
@@ -1457,21 +1507,51 @@
     document.getElementById("salvarPaciente").addEventListener("click", () => {
       const nome = document.getElementById("nomePaciente").value.trim();
       const setor = document.getElementById("setorPaciente").value.trim();
+      const sexo = document.getElementById("sexoPaciente").value;
+      const leito = document.getElementById("leitoPaciente").value.trim();
+      const numeroAtendimento = document.getElementById("numeroAtendimento").value.trim();
       const status = document.getElementById("statusPaciente").value;
       const desc = document.getElementById("descricaoPaciente").value.trim();
 
-      if (!nome || !setor || !desc) {
+      if (!nome || !setor || !sexo || !leito || !numeroAtendimento || !desc) {
         return showToast("Preencha todos os campos", "error");
       }
 
-      pacientes.push({
-        nome,
-        setor,
-        status,
-        descricao: desc,
-        criadoEm: Date.now(),
-        anotacoes: []
-      });
+      // Verificar duplicata (mesmo nome no mesmo setor)
+      const existeDuplicata = pacientes.some(p => 
+        p.nome === nome && p.setor === setor && p.id !== window.editandoPaciente
+      );
+      
+      if (existeDuplicata) {
+        return showToast("Já existe paciente com este nome neste setor", "error");
+      }
+
+      if (window.editandoPaciente) {
+        // Atualizar paciente existente
+        const paciente = pacientes.find(p => p.id === window.editandoPaciente);
+        paciente.nome = nome;
+        paciente.setor = setor;
+        paciente.sexo = sexo;
+        paciente.leito = leito;
+        paciente.numeroAtendimento = numeroAtendimento;
+        paciente.status = status;
+        paciente.descricao = desc;
+        paciente.criadoEm = Date.now();
+      } else {
+        // Criar novo paciente
+        pacientes.push({
+          id: Date.now().toString(),
+          nome,
+          setor,
+          sexo,
+          leito,
+          numeroAtendimento,
+          status,
+          descricao: desc,
+          criadoEm: Date.now(),
+          anotacoes: []
+        });
+      }
 
       saveData();
       document.getElementById("modal").style.display = "none";
@@ -1480,8 +1560,8 @@
     });
 
     // Modal anotação
-    function abrirNota(nome) {
-      const paciente = pacientes.find((p) => p.nome === nome);
+    function abrirNota(id) {
+      const paciente = pacientes.find((p) => p.id === id);
       if (!paciente) return;
       window.anotando = paciente;
       document.getElementById("novaNota").value = "";
@@ -1514,21 +1594,25 @@
     });
 
     // Editar paciente
-    function editarPaciente(nome) {
-      const paciente = pacientes.find((p) => p.nome === nome);
+    function editarPaciente(id) {
+      const paciente = pacientes.find((p) => p.id === id);
       if (!paciente) return;
       
       document.getElementById("modal").style.display = "flex";
       document.getElementById("modalTitulo").textContent = "Editar Paciente";
       document.getElementById("nomePaciente").value = paciente.nome;
       document.getElementById("setorPaciente").value = paciente.setor;
+      document.getElementById("sexoPaciente").value = paciente.sexo;
+      document.getElementById("leitoPaciente").value = paciente.leito;
+      document.getElementById("numeroAtendimento").value = paciente.numeroAtendimento;
       document.getElementById("statusPaciente").value = paciente.status;
       document.getElementById("descricaoPaciente").value = paciente.descricao;
+      window.editandoPaciente = paciente.id;
     }
 
     // Alta
-    function darAlta(nome) {
-      const paciente = pacientes.find((p) => p.nome === nome);
+    function darAlta(id) {
+      const paciente = pacientes.find((p) => p.id === id);
       if (!paciente) return;
       
       paciente.status = "altas";
@@ -1553,26 +1637,15 @@
       const obs = document.getElementById("checkObservacoes").checked;
       const destino = document.getElementById("medicoDestino").value;
 
-      if (!pend || !obs) {
-        return showToast("Complete o checklist", "error");
-      }
-
       const altas = pacientes.filter((p) => p.status === "altas");
       
-      if (altas.length === 0) {
-        return showToast("Nenhum paciente para dar alta", "warning");
-      }
-
-      // Observações finais
-      const observacoes = prompt("Observações finais do plantão:");
-
       plantaoHistorico.push({
         data: new Date().toLocaleString("pt-BR"),
         medico: usuario,
         destino: destino,
         altas: JSON.parse(JSON.stringify(altas)),
         pacientesAtivos: pacientes.filter(p => p.status === "ativos").length,
-        observacoes: observacoes || "Nenhuma observação adicional"
+        checklistPreenchido: pend && obs
       });
 
       pacientes = pacientes.filter((p) => p.status !== "altas");
@@ -1580,6 +1653,50 @@
       document.getElementById("modalEncerrar").style.display = "none";
       renderPatients("ativos");
       showToast("Plantão encerrado com sucesso", "success");
+    }
+
+    // Visualizar histórico completo
+    function verHistoricoCompleto(index) {
+      const plantao = plantaoHistorico[index];
+      
+      let historicoHTML = `
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2>Histórico Completo do Plantão</h2>
+            <button class="btn-close" onclick="document.getElementById('modal').style.display='none'">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p><strong>Data:</strong> ${plantao.data}</p>
+            <p><strong>Médico:</strong> ${plantao.medico}</p>
+            <p><strong>Destino:</strong> ${plantao.destino}</p>
+            <p><strong>Checklist:</strong> ${plantao.checklistPreenchido ? 'Sim' : 'Não'}</p>
+            
+            <h3 class="notes-title">Pacientes com Alta</h3>
+      `;
+      
+      plantao.altas.forEach(p => {
+        historicoHTML += `
+          <div class="card">
+            <div class="card-header">
+              <h3>${p.nome}</h3>
+              <span class="tag">${p.setor}</span>
+            </div>
+            <p><strong>Sexo:</strong> ${p.sexo}</p>
+            <p><strong>Leito:</strong> ${p.leito}</p>
+            <p><strong>Atendimento:</strong> ${p.numeroAtendimento}</p>
+            <div class="card-content">${p.descricao}</div>
+          </div>
+        `;
+      });
+      
+      historicoHTML += `
+          </div>
+        </div>
+      `;
+      
+      const modal = document.getElementById("modal");
+      modal.style.display = "flex";
+      modal.innerHTML = historicoHTML;
     }
 
     // Toast
@@ -1663,7 +1780,7 @@
               <div class="code-container">
                 <div class="code-value">${currentUser.codigoSetor}</div>
                 <button class="btn-copy" onclick="copiarCodigo('${currentUser.codigoSetor}')">
-                  <i class="fas fa-copy"></i>
+                  <i class="fas fa-copy"></i> Copiar
                 </button>
               </div>
               <p class="mt-2"><small>Compartilhe este código com seus colegas para permitir o acesso ao sistema</small></p>
@@ -1702,15 +1819,15 @@
             </div>
             <div class="card-actions">
               ${!m.aprovado ? `
-                <button class="btn btn-icon btn-success" onclick="aprovar(${i})" title="Aprovar">
+                <button class="btn btn-icon btn-neutral" onclick="aprovar(${i})" title="Aprovar">
                   <i class="fas fa-check"></i>
                 </button>
               ` : ''}
-              <button class="btn btn-icon btn-warning" onclick="toggleRole(${i})" title="Alterar Função">
-                <i class="fas fa-sync-alt"></i>
+              <button class="btn btn-icon btn-neutral" onclick="toggleRole(${i})" title="Alterar Função">
+                <i class="fas fa-exchange-alt"></i>
               </button>
-              <button class="btn btn-icon btn-danger" onclick="remover(${i})" title="Excluir">
-                <i class="fas fa-trash-alt"></i>
+              <button class="btn btn-icon btn-neutral" onclick="remover(${i})" title="Excluir">
+                <i class="fas fa-trash"></i>
               </button>
             </div>
           `;
