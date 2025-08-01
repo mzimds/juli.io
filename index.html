@@ -3,87 +3,1666 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MEMO</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>MEMO - Sistema Médico</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #4f46e5;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --light: #f8fafc;
+      --dark: #0f172a;
+      --gray: #64748b;
+      --light-gray: #e2e8f0;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --transition: all 0.3s ease;
+      
+      --bg: #f7f7f7;
+      --text: #111;
+      --card: #fff;
+      --accent: #111;
+      --border: #ccc;
+    }
+
+    body.dark {
+      --bg: #121212;
+      --text: #f0f0f0;
+      --card: #1e1e1e;
+      --accent: #f0f0f0;
+      --border: #444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+      padding: 0 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      font-size: 1.8rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .user-name {
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .btn-logout {
+      background: none;
+      border: none;
+      color: var(--gray);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .btn-logout:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--danger);
+    }
+
+    /* Auth Pages */
+    .auth-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 64px);
+      padding: 2rem 1rem;
+    }
+
+    .auth-card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      width: 100%;
+      max-width: 420px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .auth-subtitle {
+      color: var(--gray);
+      font-size: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--light-gray);
+      color: var(--dark);
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--primary);
+      padding: 0;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+    
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+    
+    .mt-3 {
+      margin-top: 1rem;
+    }
+    
+    .mt-4 {
+      margin-top: 1.5rem;
+    }
+
+    .error-message {
+      color: var(--danger);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--bg);
+      position: sticky;
+      top: 64px;
+      z-index: 90;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .tab {
+      flex: none;
+      padding: 0.6rem 1.25rem;
+      background: var(--card);
+      color: var(--text);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Main Content */
+    .search-container {
+      margin: 0 auto 1.5rem;
+      max-width: 800px;
+      padding: 0 1rem;
+      position: sticky;
+      top: 130px;
+      z-index: 80;
+      background: var(--bg);
+      padding-top: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+
+    .patient-list {
+      display: grid;
+      gap: 1.25rem;
+      padding: 0 1rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--gray);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      padding: 1.25rem;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+
+    .tag {
+      background: var(--light-gray);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .tag.primary {
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .tag.success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .card-content {
+      max-height: 120px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      margin-bottom: 1rem;
+      padding-right: 0.5rem;
+    }
+
+    .card-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .card-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .card-content::-webkit-scrollbar-thumb {
+      background: var(--light-gray);
+      border-radius: 3px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      border-radius: 6px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #0da271;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background: #e59409;
+    }
+
+    .btn-icon {
+      padding: 0.5rem;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Anotações */
+    .notes-container {
+      margin-top: 1rem;
+      border-top: 1px dashed var(--border);
+      padding-top: 1rem;
+    }
+
+    .notes-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .note {
+      font-size: 0.875rem;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .note-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+
+    .note-author {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .note-date {
+      color: var(--gray);
+      font-size: 0.75rem;
+    }
+
+    .note-content {
+      white-space: pre-wrap;
+    }
+
+    /* FAB Buttons */
+    .fab-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 50;
+    }
+
+    .fab {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      border: none;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+      transition: var(--transition);
+    }
+
+    .fab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .fab.encerrar {
+      background: var(--danger);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: var(--card);
+      color: var(--text);
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      padding: 0.25rem;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--dark);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: var(--success);
+    }
+
+    .toast.error {
+      background: var(--danger);
+    }
+
+    .toast.warning {
+      background: var(--warning);
+    }
+
+    .toast.info {
+      background: var(--info);
+    }
+
+    /* Profile Page */
+    .profile-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .profile-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin: 0 auto 1rem;
+    }
+
+    .profile-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .profile-role {
+      color: var(--gray);
+      font-size: 1rem;
+      background: var(--light-gray);
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+    }
+
+    .profile-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .card-list {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .card-list-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      background: var(--card);
+      border-radius: 8px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .card-list-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
+
+    .card-list-content {
+      flex: 1;
+    }
+
+    .card-list-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-list-subtitle {
+      color: var(--gray);
+      font-size: 0.875rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .tabs {
+        flex-wrap: wrap;
+      }
+      
+      .tab {
+        flex: 1 0 calc(50% - 0.5rem);
+      }
+      
+      .patient-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .card-actions {
+        flex-direction: column;
+      }
+      
+      .btn-sm {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .user-name {
+        display: none;
+      }
+      
+      .auth-card {
+        padding: 1.5rem;
+      }
+      
+      .modal-content {
+        padding: 1rem;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 <body class="light">
   <header class="header">
-    <h1 class="logo">MEMO</h1>
+    <div class="logo">
+      <i class="fas fa-stethoscope"></i>
+      <span>MEMO</span>
+    </div>
+    
+    <div class="user-info hidden" id="userInfo">
+      <div class="user-avatar" id="userAvatar">A</div>
+      <div class="user-name" id="userName">Dr. Ana</div>
+      <button class="btn-logout" id="logoutBtn" title="Sair">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
   </header>
 
-  <div class="login-select" id="loginSection">
-    <button onclick="login('Dr. Ana', 'medico')">Entrar como Médico</button>
-    <button onclick="login('Admin', 'gestor')">Entrar como Gestor</button>
+  <!-- Área de Autenticação -->
+  <div class="auth-container" id="authContainer">
+    <div class="auth-card" id="loginCard">
+      <div class="auth-header">
+        <h2 class="auth-title">Acessar o Sistema</h2>
+        <p class="auth-subtitle">Entre com suas credenciais</p>
+      </div>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail" class="form-label">E-mail</label>
+          <input type="email" id="loginEmail" class="form-input" placeholder="seu@email.com" required />
+          <div class="error-message" id="loginEmailError">Por favor, insira um e-mail válido</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="loginPassword" class="form-label">Senha</label>
+          <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required />
+          <div class="error-message" id="loginPasswordError">A senha deve ter pelo menos 6 caracteres</div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-sign-in-alt"></i> Entrar
+        </button>
+        
+        <div class="text-center mt-3">
+          <p>Não tem uma conta? <button type="button" class="btn-link" id="showRegisterBtn">Cadastre-se</button></p>
+        </div>
+      </form>
+    </div>
+    
+    <div class="auth-card hidden" id="registerCard">
+      <div class="auth-header">
+        <h2 class="auth-title">Criar Conta</h2>
+        <p class="auth-subtitle">Preencha os campos abaixo</p>
+      </div>
+      
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="registerName" class="form-label">Nome Completo</label>
+          <input type="text" id="registerName" class="form-input" placeholder="Seu nome completo" required />
+          <div class="error-message" id="registerNameError">Por favor, insira seu nome completo</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="registerEmail" class="form-label">E-mail</label>
+          <input type="email" id="registerEmail" class="form-input" placeholder="seu@email.com" required />
+          <div class="error-message" id="registerEmailError">Por favor, insira um e-mail válido</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="registerPassword" class="form-label">Senha</label>
+          <input type="password" id="registerPassword" class="form-input" placeholder="••••••••" required />
+          <div class="error-message" id="registerPasswordError">A senha deve ter pelo menos 6 caracteres</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="registerConfirmPassword" class="form-label">Confirmar Senha</label>
+          <input type="password" id="registerConfirmPassword" class="form-input" placeholder="••••••••" required />
+          <div class="error-message" id="registerConfirmPasswordError">As senhas não coincidem</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="registerRole" class="form-label">Função</label>
+          <select id="registerRole" class="form-input" required>
+            <option value="">Selecione sua função</option>
+            <option value="medico">Médico</option>
+            <option value="gestor">Gestor</option>
+          </select>
+          <div class="error-message" id="registerRoleError">Por favor, selecione sua função</div>
+        </div>
+        
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="backToLoginBtn">
+            <i class="fas fa-arrow-left"></i> Voltar
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-user-plus"></i> Cadastrar
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <nav class="tabs hidden" id="tabs">
-    <button class="tab active" data-tab="ativos">Ativos</button>
-    <button class="tab" data-tab="altas">Altas</button>
-    <button class="tab" data-tab="historico">Histórico</button>
-    <button class="tab" data-tab="config">Configurações</button>
-  </nav>
+  <!-- Sistema Principal (após login) -->
+  <div id="appContainer" class="hidden">
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="ativos">
+        <i class="fas fa-user-injured"></i> Ativos
+      </button>
+      <button class="tab" data-tab="altas">
+        <i class="fas fa-user-check"></i> Altas
+      </button>
+      <button class="tab" data-tab="historico">
+        <i class="fas fa-history"></i> Histórico
+      </button>
+      <button class="tab" data-tab="config">
+        <i class="fas fa-cog"></i> Configurações
+      </button>
+    </nav>
 
-  <div class="search-container hidden" id="searchContainer">
-    <input type="text" id="searchInput" placeholder="Buscar paciente..." />
-  </div>
+    <div class="search-container" id="searchContainer">
+      <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar paciente..." />
+      </div>
+    </div>
 
-  <main class="patient-list" id="patientList"></main>
+    <main class="patient-list" id="patientList"></main>
 
-  <button class="fab hidden" id="addPatientBtn">+</button>
-  <button class="fab encerrar hidden" id="encerrarBtn" title="Encerrar Plantão">⏱</button>
+    <div class="fab-container">
+      <button class="fab encerrar" id="encerrarBtn" title="Encerrar Plantão">
+        <i class="fas fa-stopwatch"></i>
+      </button>
+      <button class="fab" id="addPatientBtn" title="Adicionar Paciente">
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
 
-  <!-- Modal: Adicionar/Editar Paciente -->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <h2 id="modalTitulo">Novo Paciente</h2>
-      <input type="text" id="nomePaciente" placeholder="Nome do paciente" />
-      <input type="text" id="setorPaciente" placeholder="Setor" />
-      <select id="statusPaciente">
-        <option value="ativos">Ativo</option>
-        <option value="altas">Alta</option>
-      </select>
-      <textarea id="descricaoPaciente" placeholder="Resumo clínico..."></textarea>
-      <div class="modal-actions">
-        <button id="salvarPaciente">Salvar</button>
-        <button id="fecharModal">Cancelar</button>
+    <!-- Modal: Adicionar/Editar Paciente -->
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modalTitulo">Novo Paciente</h2>
+          <button class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nomePaciente" class="form-label">Nome do Paciente</label>
+            <input type="text" id="nomePaciente" class="form-input" placeholder="Nome completo" />
+          </div>
+          
+          <div class="form-group">
+            <label for="setorPaciente" class="form-label">Setor</label>
+            <input type="text" id="setorPaciente" class="form-input" placeholder="Ex: Clínica Médica, UTI" />
+          </div>
+          
+          <div class="form-group">
+            <label for="statusPaciente" class="form-label">Status</label>
+            <select id="statusPaciente" class="form-input">
+              <option value="ativos">Ativo</option>
+              <option value="altas">Alta</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="descricaoPaciente" class="form-label">Resumo Clínico</label>
+            <textarea id="descricaoPaciente" class="form-input" placeholder="Descreva o quadro clínico do paciente..." rows="4"></textarea>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="fecharModal">Cancelar</button>
+          <button class="btn btn-primary" id="salvarPaciente">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Nova Anotação -->
+    <div class="modal" id="modalNota">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Nova Anotação</h2>
+          <button class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <textarea id="novaNota" class="form-input" placeholder="Descreva a nova anotação clínica..." rows="6"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="fecharNota">Cancelar</button>
+          <button class="btn btn-primary" id="salvarNota">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Encerrar Plantão -->
+    <div class="modal" id="modalEncerrar">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Encerrar Plantão</h2>
+          <button class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="check-group">
+            <label class="form-label"><input type="checkbox" id="checkPendencias" /> Todas as pendências foram resolvidas</label>
+            <label class="form-label"><input type="checkbox" id="checkObservacoes" /> Observações registradas</label>
+          </div>
+          
+          <div class="form-group">
+            <label for="medicoDestino" class="form-label">Médico que receberá:</label>
+            <select id="medicoDestino" class="form-input">
+              <option>Dr. Ana</option>
+              <option>Dr. Bruno</option>
+              <option>Dra. Carla</option>
+              <option>Dr. Daniel</option>
+            </select>
+          </div>
+          
+          <p class="assinatura">Assinatura: <strong id="assinaturaUser"></strong></p>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" onclick="fecharEncerrar()">Cancelar</button>
+          <button class="btn btn-primary" onclick="confirmarEncerramento()">Confirmar</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal: Nova Anotação -->
-  <div class="modal" id="modalNota">
-    <div class="modal-content">
-      <h2>Nova Anotação</h2>
-      <textarea id="novaNota" placeholder="Descreva a nova anotação clínica..."></textarea>
-      <div class="modal-actions">
-        <button id="salvarNota">Salvar</button>
-        <button onclick="fecharNota()">Cancelar</button>
-      </div>
-    </div>
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle"></i>
+    <span>Mensagem</span>
   </div>
+  
+  <script>
+    // Dados iniciais e configuração
+    let perfil = null;
+    let usuario = null;
+    let temaAtual = "light";
+    let currentUser = null;
 
-  <!-- Modal: Encerrar Plantão -->
-  <div class="modal" id="modalEncerrar">
-    <div class="modal-content">
-      <h2>Encerrar Plantão</h2>
-      <div class="check-group">
-        <label><input type="checkbox" id="checkPendencias" /> Todas as pendências foram resolvidas</label>
-        <label><input type="checkbox" id="checkObservacoes" /> Observações registradas</label>
-      </div>
-      <label for="medicoDestino">Médico que receberá:</label>
-      <select id="medicoDestino">
-        <option>Dr. Ana</option>
-        <option>Dr. Bruno</option>
-      </select>
-      <p class="assinatura">Assinatura: <strong id="assinaturaUser"></strong></p>
-      <div class="modal-actions">
-        <button onclick="confirmarEncerramento()">Confirmar</button>
-        <button onclick="fecharEncerrar()">Cancelar</button>
-      </div>
-    </div>
-  </div>
+    let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [
+      {
+        nome: "João da Silva",
+        status: "ativos",
+        setor: "Clínica Médica",
+        descricao: "Paciente com dor abdominal crônica. Monitorar sinais vitais a cada 4 horas. Dieta líquida.",
+        criadoEm: Date.now() - 60000,
+        anotacoes: []
+      },
+      {
+        nome: "Maria Souza",
+        status: "altas",
+        setor: "UTI",
+        descricao: "Alta após cirurgia cardíaca bem-sucedida. Recomendado repouso e acompanhamento ambulatorial.",
+        criadoEm: Date.now() - 300000,
+        anotacoes: [
+          {
+            texto: "Paciente em recuperação, retirar pontos amanhã.",
+            autor: "Dr. Ana",
+            data: new Date(Date.now() - 290000).toLocaleString("pt-BR")
+          }
+        ]
+      },
+      {
+        nome: "Carlos Mendes",
+        status: "ativos",
+        setor: "Pediatria",
+        descricao: "Criança com quadro de pneumonia. Em tratamento com antibióticos. Monitorar saturação de O2.",
+        criadoEm: Date.now() - 120000,
+        anotacoes: [
+          {
+            texto: "Temperatura estável desde a última medicação.",
+            autor: "Dr. Bruno",
+            data: new Date(Date.now() - 80000).toLocaleString("pt-BR")
+          }
+        ]
+      }
+    ];
 
-  <div id="toast" class="toast hidden">Mensagem</div>
-  <script src="script.js"></script>
+    let plantaoHistorico = JSON.parse(localStorage.getItem('plantaoHistorico')) || [];
+
+    // Sistema de usuários com localStorage
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [
+      { id: 1, nome: "Dr. Ana", email: "ana@hospital.com", senha: "senha123", tipo: "medico", aprovado: true },
+      { id: 2, nome: "Admin", email: "admin@hospital.com", senha: "admin123", tipo: "gestor", aprovado: true },
+      { id: 3, nome: "Dr. Bruno", email: "bruno@hospital.com", senha: "senha123", tipo: "medico", aprovado: false }
+    ];
+
+    // Salvar dados iniciais no localStorage
+    function saveData() {
+      localStorage.setItem('pacientes', JSON.stringify(pacientes));
+      localStorage.setItem('plantaoHistorico', JSON.stringify(plantaoHistorico));
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+    }
+
+    // Sistema de autenticação
+    function initAuth() {
+      const loggedInUser = localStorage.getItem('currentUser');
+      if (loggedInUser) {
+        const user = JSON.parse(loggedInUser);
+        login(user.nome, user.tipo);
+      }
+    }
+
+    function login(nome, tipo) {
+      const user = usuarios.find(u => u.nome === nome);
+      if (!user) return showToast("Usuário não encontrado", "error");
+      if (!user.aprovado) return showToast("Acesso pendente de aprovação", "warning");
+
+      perfil = tipo;
+      usuario = nome;
+      currentUser = user;
+
+      // Salvar usuário na sessão
+      localStorage.setItem('currentUser', JSON.stringify(user));
+
+      // Atualizar UI
+      document.getElementById("authContainer").classList.add("hidden");
+      document.getElementById("appContainer").classList.remove("hidden");
+      document.getElementById("userInfo").classList.remove("hidden");
+      document.getElementById("userName").textContent = user.nome;
+      document.getElementById("userAvatar").textContent = user.nome.charAt(0);
+      
+      document.getElementById("tabs").classList.remove("hidden");
+      document.getElementById("searchContainer").classList.remove("hidden");
+      document.getElementById("addPatientBtn").classList.remove("hidden");
+      
+      if (perfil === "medico" || perfil === "gestor") {
+        document.getElementById("encerrarBtn").classList.remove("hidden");
+      }
+
+      renderPatients("ativos");
+    }
+
+    function logout() {
+      localStorage.removeItem('currentUser');
+      document.getElementById("appContainer").classList.add("hidden");
+      document.getElementById("authContainer").classList.remove("hidden");
+      document.getElementById("loginCard").classList.remove("hidden");
+      document.getElementById("registerCard").classList.add("hidden");
+      document.getElementById("userInfo").classList.add("hidden");
+      currentUser = null;
+    }
+
+    function register(name, email, password, role) {
+      // Verificar se e-mail já existe
+      if (usuarios.some(u => u.email === email)) {
+        return showToast("Este e-mail já está cadastrado", "error");
+      }
+      
+      const newUser = {
+        id: Date.now(),
+        nome: name,
+        email: email,
+        senha: password,
+        tipo: role,
+        aprovado: role === "gestor" // Aprova automaticamente gestores
+      };
+      
+      usuarios.push(newUser);
+      saveData();
+      
+      showToast("Cadastro realizado com sucesso! Aguarde aprovação.", "success");
+      document.getElementById("backToLoginBtn").click();
+    }
+
+    // Alternar tema claro/escuro
+    function alternarTema() {
+      temaAtual = temaAtual === "light" ? "dark" : "light";
+      document.body.className = temaAtual;
+      localStorage.setItem('tema', temaAtual);
+      renderPatients("config");
+    }
+
+    // Renderização principal por aba
+    function renderPatients(tab) {
+      const container = document.getElementById("patientList");
+      container.innerHTML = "";
+
+      // Mostra ou esconde a barra de busca conforme a aba
+      const showSearch = tab !== "config";
+      document.getElementById("searchContainer").classList.toggle("hidden", !showSearch);
+
+      if (tab === "config") return renderConfig();
+
+      if (tab === "historico") {
+        if (plantaoHistorico.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-history"></i>
+              <h3>Nenhum plantão encerrado</h3>
+              <p>Os plantões encerrados aparecerão aqui.</p>
+            </div>
+          `;
+          return;
+        }
+
+        plantaoHistorico.forEach((plantao, i) => {
+          const bloco = document.createElement("div");
+          bloco.className = "card";
+          bloco.innerHTML = `
+            <div class="card-header">
+              <h2 class="card-title">Plantão #${i + 1}</h2>
+              <span class="tag">${plantao.data}</span>
+            </div>
+            <p><strong>Médico:</strong> ${plantao.medico}</p>
+            <p><strong>Destino:</strong> ${plantao.destino}</p>
+            <h3 class="notes-title">Altas Realizadas</h3>
+          `;
+          
+          plantao.altas.forEach((p) => {
+            bloco.innerHTML += `
+              <div class="note">
+                <div class="note-header">
+                  <span class="note-author">${p.nome}</span>
+                  <span class="note-date">${p.setor}</span>
+                </div>
+                <div class="note-content">${p.descricao}</div>
+              </div>
+            `;
+          });
+          container.appendChild(bloco);
+        });
+        return;
+      }
+
+      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+      const lista = pacientes
+        .filter((p) => p.status === tab && p.nome.toLowerCase().includes(searchTerm))
+        .sort((a, b) => b.criadoEm - a.criadoEm);
+
+      if (lista.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-user-injured"></i>
+            <h3>Nenhum paciente encontrado</h3>
+            <p>${tab === "ativos" ? "Adicione um novo paciente usando o botão +" : "Nenhum paciente nesta categoria"}</p>
+          </div>
+        `;
+        return;
+      }
+
+      lista.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        
+        const anotacoesHTML = p.anotacoes.length > 0 ? `
+          <div class="notes-container">
+            <h3 class="notes-title"><i class="fas fa-notes-medical"></i> Anotações</h3>
+            ${p.anotacoes.map(
+              (a) => `
+                <div class="note">
+                  <div class="note-header">
+                    <span class="note-author">${a.autor}</span>
+                    <span class="note-date">${a.data}</span>
+                  </div>
+                  <div class="note-content">${a.texto}</div>
+                </div>
+              `
+            ).join("")}
+          </div>
+        ` : '';
+        
+        const actionsHTML = p.status === "ativos" && (perfil === "medico" || perfil === "gestor") ? `
+          <div class="card-actions">
+            <button class="btn btn-sm btn-outline" onclick="abrirNota('${p.nome}')">
+              <i class="fas fa-plus"></i> Anotação
+            </button>
+            <button class="btn btn-sm btn-outline" onclick="editarPaciente('${p.nome}')">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn btn-sm btn-success" onclick="darAlta('${p.nome}')">
+              <i class="fas fa-check"></i> Alta
+            </button>
+          </div>
+        ` : '';
+        
+        card.innerHTML = `
+          <div class="card-header">
+            <h2 class="card-title">${p.nome}</h2>
+            <span class="tag ${tab === 'ativos' ? 'primary' : 'success'}">
+              ${tab === 'ativos' ? '<i class="fas fa-bed"></i>' : '<i class="fas fa-user-check"></i>'}
+              ${p.setor}
+            </span>
+          </div>
+          <div class="card-subtitle">
+            <i class="fas fa-calendar"></i> ${new Date(p.criadoEm).toLocaleString("pt-BR")}
+          </div>
+          <div class="card-content">${p.descricao}</div>
+          ${anotacoesHTML}
+          ${actionsHTML}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Tabs
+    document.querySelectorAll(".tab").forEach((tab) =>
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach((t) =>
+          t.classList.remove("active")
+        );
+        tab.classList.add("active");
+        renderPatients(tab.dataset.tab);
+      })
+    );
+
+    // Buscar pacientes
+    document.getElementById("searchInput").addEventListener("input", () => {
+      renderPatients(document.querySelector(".tab.active").dataset.tab);
+    });
+
+    // Modal paciente
+    document.getElementById("addPatientBtn").addEventListener("click", () => {
+      document.getElementById("modal").style.display = "flex";
+      document.getElementById("modalTitulo").textContent = "Novo Paciente";
+      document.getElementById("nomePaciente").value = "";
+      document.getElementById("setorPaciente").value = "";
+      document.getElementById("statusPaciente").value = "ativos";
+      document.getElementById("descricaoPaciente").value = "";
+    });
+
+    document.querySelectorAll(".btn-close").forEach(btn => {
+      btn.addEventListener("click", function() {
+        this.closest(".modal").style.display = "none";
+      });
+    });
+
+    document.getElementById("fecharModal").addEventListener("click", () => {
+      document.getElementById("modal").style.display = "none";
+    });
+
+    document.getElementById("salvarPaciente").addEventListener("click", () => {
+      const nome = document.getElementById("nomePaciente").value.trim();
+      const setor = document.getElementById("setorPaciente").value.trim();
+      const status = document.getElementById("statusPaciente").value;
+      const desc = document.getElementById("descricaoPaciente").value.trim();
+
+      if (!nome || !setor || !desc) {
+        return showToast("Preencha todos os campos", "error");
+      }
+
+      pacientes.push({
+        nome,
+        setor,
+        status,
+        descricao: desc,
+        criadoEm: Date.now(),
+        anotacoes: []
+      });
+
+      saveData();
+      document.getElementById("modal").style.display = "none";
+      renderPatients("ativos");
+      showToast("Paciente salvo com sucesso", "success");
+    });
+
+    // Modal anotação
+    function abrirNota(nome) {
+      const paciente = pacientes.find((p) => p.nome === nome);
+      if (!paciente) return;
+      window.anotando = paciente;
+      document.getElementById("novaNota").value = "";
+      document.getElementById("modalNota").style.display = "flex";
+    }
+    
+    function fecharNota() {
+      document.getElementById("modalNota").style.display = "none";
+    }
+    
+    document.getElementById("fecharNota").addEventListener("click", fecharNota);
+    
+    document.getElementById("salvarNota").addEventListener("click", () => {
+      const texto = document.getElementById("novaNota").value.trim();
+      if (!texto || !window.anotando) {
+        return showToast("Digite uma anotação", "error");
+      }
+      
+      window.anotando.anotacoes.push({
+        texto,
+        autor: usuario,
+        data: new Date().toLocaleString("pt-BR")
+      });
+      
+      window.anotando.criadoEm = Date.now();
+      saveData();
+      document.getElementById("modalNota").style.display = "none";
+      renderPatients("ativos");
+      showToast("Anotação salva", "success");
+    });
+
+    // Editar paciente
+    function editarPaciente(nome) {
+      const paciente = pacientes.find((p) => p.nome === nome);
+      if (!paciente) return;
+      
+      document.getElementById("modal").style.display = "flex";
+      document.getElementById("modalTitulo").textContent = "Editar Paciente";
+      document.getElementById("nomePaciente").value = paciente.nome;
+      document.getElementById("setorPaciente").value = paciente.setor;
+      document.getElementById("statusPaciente").value = paciente.status;
+      document.getElementById("descricaoPaciente").value = paciente.descricao;
+    }
+
+    // Alta
+    function darAlta(nome) {
+      const paciente = pacientes.find((p) => p.nome === nome);
+      if (!paciente) return;
+      
+      paciente.status = "altas";
+      paciente.criadoEm = Date.now();
+      saveData();
+      renderPatients("ativos");
+      showToast("Paciente recebeu alta", "success");
+    }
+
+    // Encerrar plantão
+    document.getElementById("encerrarBtn").addEventListener("click", () => {
+      document.getElementById("assinaturaUser").textContent = usuario;
+      document.getElementById("modalEncerrar").style.display = "flex";
+    });
+    
+    function fecharEncerrar() {
+      document.getElementById("modalEncerrar").style.display = "none";
+    }
+    
+    function confirmarEncerramento() {
+      const pend = document.getElementById("checkPendencias").checked;
+      const obs = document.getElementById("checkObservacoes").checked;
+      const destino = document.getElementById("medicoDestino").value;
+
+      if (!pend || !obs) {
+        return showToast("Complete o checklist", "error");
+      }
+
+      const altas = pacientes.filter((p) => p.status === "altas");
+      
+      if (altas.length === 0) {
+        return showToast("Nenhum paciente para dar alta", "warning");
+      }
+
+      plantaoHistorico.push({
+        data: new Date().toLocaleString("pt-BR"),
+        medico: usuario,
+        destino: destino,
+        altas: JSON.parse(JSON.stringify(altas))
+      });
+
+      pacientes = pacientes.filter((p) => p.status !== "altas");
+      saveData();
+      document.getElementById("modalEncerrar").style.display = "none";
+      renderPatients("ativos");
+      showToast("Plantão encerrado com sucesso", "success");
+    }
+
+    // Toast
+    function showToast(msg, type = "info") {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.className = `toast ${type} show`;
+      
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
+    // Painel de configurações
+    function renderConfig() {
+      const c = document.getElementById("patientList");
+      c.innerHTML = "";
+
+      // Informações do usuário
+      const profileCard = document.createElement("div");
+      profileCard.className = "card";
+      profileCard.innerHTML = `
+        <div class="profile-header">
+          <div class="profile-avatar">${currentUser.nome.charAt(0)}</div>
+          <h2 class="profile-name">${currentUser.nome}</h2>
+          <span class="profile-role">${currentUser.tipo === "medico" ? "Médico" : "Gestor"}</span>
+          
+          <div class="profile-actions">
+            <button class="btn btn-secondary" onclick="alternarTema()">
+              <i class="fas fa-moon"></i> ${temaAtual === "light" ? "Modo Escuro" : "Modo Claro"}
+            </button>
+          </div>
+        </div>
+        
+        <div class="card-list">
+          <div class="card-list-item">
+            <div class="card-list-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="card-list-content">
+              <div class="card-list-title">E-mail</div>
+              <div class="card-list-subtitle">${currentUser.email}</div>
+            </div>
+          </div>
+          
+          <div class="card-list-item">
+            <div class="card-list-icon">
+              <i class="fas fa-user-tag"></i>
+            </div>
+            <div class="card-list-content">
+              <div class="card-list-title">Função</div>
+              <div class="card-list-subtitle">${currentUser.tipo === "medico" ? "Médico" : "Gestor"}</div>
+            </div>
+          </div>
+          
+          <div class="card-list-item">
+            <div class="card-list-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="card-list-content">
+              <div class="card-list-title">Status da Conta</div>
+              <div class="card-list-subtitle">${currentUser.aprovado ? "Ativa" : "Aguardando aprovação"}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      c.appendChild(profileCard);
+
+      if (perfil === "gestor") {
+        const heading = document.createElement("h2");
+        heading.className = "card-title";
+        heading.style.margin = "2rem 0 1rem";
+        heading.textContent = "Gerenciar Usuários";
+        c.appendChild(heading);
+
+        const ul = document.createElement("ul");
+        ul.className = "card-list";
+        
+        usuarios.forEach((m, i) => {
+          const li = document.createElement("li");
+          li.className = "card-list-item";
+          li.innerHTML = `
+            <div class="card-list-icon">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <div class="card-list-content">
+              <div class="card-list-title">${m.nome}</div>
+              <div class="card-list-subtitle">
+                ${m.email} • ${m.tipo === "medico" ? "Médico" : "Gestor"} 
+                • ${m.aprovado ? "Ativo" : "Pendente"}
+              </div>
+            </div>
+            <div class="card-actions">
+              ${!m.aprovado ? `
+                <button class="btn btn-icon btn-success" onclick="aprovar(${i})" title="Aprovar">
+                  <i class="fas fa-check"></i>
+                </button>
+              ` : ''}
+              <button class="btn btn-icon btn-warning" onclick="toggleRole(${i})" title="Alterar Função">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+              <button class="btn btn-icon btn-danger" onclick="remover(${i})" title="Excluir">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          `;
+          ul.appendChild(li);
+        });
+        c.appendChild(ul);
+      }
+    }
+
+    // Gestão de usuários (apenas para gestores)
+    function aprovar(i) {
+      usuarios[i].aprovado = true;
+      saveData();
+      renderConfig();
+      showToast("Médico aprovado", "success");
+    }
+    
+    function toggleRole(i) {
+      if (usuarios[i].id === currentUser.id) {
+        return showToast("Você não pode alterar sua própria função", "error");
+      }
+      
+      usuarios[i].tipo = usuarios[i].tipo === "medico" ? "gestor" : "medico";
+      saveData();
+      renderConfig();
+      showToast("Função alterada", "success");
+    }
+    
+    function remover(i) {
+      if (usuarios[i].id === currentUser.id) {
+        return showToast("Você não pode excluir sua própria conta", "error");
+      }
+      
+      usuarios.splice(i, 1);
+      saveData();
+      renderConfig();
+      showToast("Usuário excluído", "success");
+    }
+
+    // Event Listeners para autenticação
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      
+      const user = usuarios.find(u => u.email === email && u.senha === password);
+      
+      if (user) {
+        login(user.nome, user.tipo);
+      } else {
+        showToast("Credenciais inválidas", "error");
+      }
+    });
+    
+    document.getElementById("registerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById("registerName").value;
+      const email = document.getElementById("registerEmail").value;
+      const password = document.getElementById("registerPassword").value;
+      const confirmPassword = document.getElementById("registerConfirmPassword").value;
+      const role = document.getElementById("registerRole").value;
+      
+      // Validações básicas
+      if (password !== confirmPassword) {
+        return showToast("As senhas não coincidem", "error");
+      }
+      
+      if (password.length < 6) {
+        return showToast("A senha deve ter pelo menos 6 caracteres", "error");
+      }
+      
+      register(name, email, password, role);
+    });
+    
+    document.getElementById("showRegisterBtn").addEventListener("click", function() {
+      document.getElementById("loginCard").classList.add("hidden");
+      document.getElementById("registerCard").classList.remove("hidden");
+    });
+    
+    document.getElementById("backToLoginBtn").addEventListener("click", function() {
+      document.getElementById("registerCard").classList.add("hidden");
+      document.getElementById("loginCard").classList.remove("hidden");
+    });
+    
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+    
+    // Inicialização
+    document.addEventListener("DOMContentLoaded", function() {
+      // Carregar tema salvo
+      const savedTheme = localStorage.getItem('tema');
+      if (savedTheme) {
+        temaAtual = savedTheme;
+        document.body.className = temaAtual;
+      }
+      
+      // Inicializar autenticação
+      initAuth();
+      
+      // Salvar dados iniciais
+      saveData();
+    });
+  </script>
 </body>
 </html>
