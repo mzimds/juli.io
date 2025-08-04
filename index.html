@@ -29,15 +29,6 @@
       --border: #ecf0f1;
     }
 
-    body.dark {
-      --bg: #121212;
-      --text: #ecf0f1;
-      --card: #1e1e1e;
-      --accent: #f5f5f5;
-      --border: #34495e;
-      --light-gray: #2c3e50;
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -131,23 +122,12 @@
     .auth-card {
       background: var(--card);
       border-radius: 12px;
-      box-shadow: var(--card-shadow);
       width: 100%;
       max-width: 420px;
       padding: 2rem;
       position: relative;
       overflow: hidden;
       border: 1px solid var(--border);
-    }
-
-    .auth-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--primary);
     }
 
     .auth-header {
@@ -259,6 +239,10 @@
     
     .mt-4 {
       margin-top: 1.5rem;
+    }
+    
+    .mt-6 {
+      margin-top: 2rem;
     }
 
     .mb-2 {
@@ -690,35 +674,36 @@
     /* Profile Page */
     .profile-header {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+      margin-top: 0.5rem;
     }
 
     .profile-avatar {
-      width: 96px;
-      height: 96px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       background: var(--primary);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 600;
-      margin: 0 auto 1rem;
+      margin: 0 auto 0.75rem;
     }
 
     .profile-name {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: 0.25rem;
     }
 
     .profile-role {
       color: var(--gray);
-      font-size: 1rem;
+      font-size: 0.9rem;
       background: var(--light-gray);
       display: inline-block;
-      padding: 0.25rem 0.75rem;
+      padding: 0.2rem 0.6rem;
       border-radius: 20px;
       border: 1px solid var(--border);
     }
@@ -727,7 +712,7 @@
       display: flex;
       justify-content: center;
       gap: 1rem;
-      margin-top: 1.5rem;
+      margin-top: 1.25rem;
     }
 
     .card-list {
@@ -809,6 +794,11 @@
       background: var(--primary-dark);
     }
 
+    /* Configurações */
+    .config-container {
+      margin-top: 2rem;
+    }
+
     /* Responsividade */
     @media (max-width: 768px) {
       .tabs {
@@ -838,6 +828,19 @@
       }
     }
 
+    @media (min-width: 992px) {
+      .config-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: flex-start;
+      }
+      
+      .config-section {
+        margin-bottom: 0;
+      }
+    }
+
     @media (max-width: 480px) {
       .user-name {
         display: none;
@@ -864,6 +867,12 @@
         width: 48px;
         height: 48px;
         font-size: 1.2rem;
+      }
+
+      .profile-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 1.75rem;
       }
     }
 
@@ -936,9 +945,198 @@
       background: rgba(231, 76, 60, 0.2);
       color: #e74c3c;
     }
+    
+    .config-section {
+      margin-bottom: 2rem;
+    }
+    
+    .config-section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* NOVOS ESTILOS PARA HISTÓRICO */
+    .plantao-card {
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .plantao-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      padding: 1rem;
+    }
+    
+    .plantao-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .plantao-content {
+      padding: 0 1rem 1rem;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+    
+    .plantao-card.expanded .plantao-content {
+      display: block;
+    }
+    
+    .plantao-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .stat-card {
+      background: var(--light-gray);
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--gray);
+    }
+    
+    .pacientes-container {
+      margin-top: 1.5rem;
+    }
+    
+    .paciente-item {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .paciente-item:hover {
+      background: rgba(44, 62, 80, 0.05);
+    }
+    
+    .paciente-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .paciente-status {
+      font-size: 0.8rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    
+    .status-ativo {
+      background: rgba(39, 174, 96, 0.1);
+      color: var(--success);
+    }
+    
+    .status-alta {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--danger);
+    }
+    
+    .log-container {
+      margin-top: 1.5rem;
+    }
+    
+    .log-item {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .log-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--light-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .log-content {
+      flex: 1;
+    }
+    
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+    
+    .log-paciente {
+      font-weight: 600;
+    }
+    
+    .log-details {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    .log-action {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    
+    .log-timestamp {
+      font-size: 0.75rem;
+      color: var(--gray);
+    }
+    
+    .action-criacao { color: var(--success); }
+    .action-edicao { color: var(--warning); }
+    .action-anotacao { color: var(--info); }
+    .action-alta { color: var(--danger); }
+    
+    .checklist-container {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    
+    .checklist-icon {
+      color: var(--success);
+      margin-top: 0.25rem;
+    }
   </style>
 </head>
-<body class="light">
+<body>
   <header class="header">
     <div class="logo">
       <span>MEMO</span>
@@ -964,14 +1162,20 @@
       <form id="loginForm">
         <div class="form-group">
           <label for="loginEmail" class="form-label">E-mail</label>
-          <input type="email" id="loginEmail" class="form-input" placeholder="seu@email.com" required />
+          <input type="email" id="loginEmail" class="form-input" placeholder="Digite seu e-mail" required />
           <div class="error-message" id="loginEmailError">Por favor, insira um e-mail válido</div>
         </div>
         
         <div class="form-group">
           <label for="loginPassword" class="form-label">Senha</label>
-          <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required />
+          <input type="password" id="loginPassword" class="form-input" placeholder="Digite sua senha" required />
           <div class="error-message" id="loginPasswordError">A senha deve ter pelo menos 6 caracteres</div>
+        </div>
+        
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="manterConectado"> Manter conectado
+          </label>
         </div>
         
         <button type="submit" class="btn btn-primary">
@@ -993,25 +1197,25 @@
       <form id="registerForm">
         <div class="form-group">
           <label for="registerName" class="form-label">Nome Completo</label>
-          <input type="text" id="registerName" class="form-input" placeholder="Seu nome completo" required />
+          <input type="text" id="registerName" class="form-input" placeholder="Nome completo" required />
           <div class="error-message" id="registerNameError">Por favor, insira seu nome completo</div>
         </div>
         
         <div class="form-group">
           <label for="registerEmail" class="form-label">E-mail</label>
-          <input type="email" id="registerEmail" class="form-input" placeholder="seu@email.com" required />
+          <input type="email" id="registerEmail" class="form-input" placeholder="exemplo@email.com" required />
           <div class="error-message" id="registerEmailError">Por favor, insira um e-mail válido</div>
         </div>
         
         <div class="form-group">
           <label for="registerPassword" class="form-label">Senha</label>
-          <input type="password" id="registerPassword" class="form-input" placeholder="••••••••" required />
+          <input type="password" id="registerPassword" class="form-input" placeholder="Digite sua senha" required />
           <div class="error-message" id="registerPasswordError">A senha deve ter pelo menos 6 caracteres</div>
         </div>
         
         <div class="form-group">
           <label for="registerConfirmPassword" class="form-label">Confirmar Senha</label>
-          <input type="password" id="registerConfirmPassword" class="form-input" placeholder="••••••••" required />
+          <input type="password" id="registerConfirmPassword" class="form-input" placeholder="Digite sua senha" required />
           <div class="error-message" id="registerConfirmPasswordError">As senhas não coincidem</div>
         </div>
         
@@ -1027,7 +1231,7 @@
         
         <div class="form-group hidden" id="codeField">
           <label for="registerCode" class="form-label">Código do Setor</label>
-          <input type="text" id="registerCode" class="form-input" placeholder="Código fornecido pelo gestor" />
+          <input type="text" id="registerCode" class="form-input" placeholder="Código" />
           <div class="error-message" id="registerCodeError">Por favor, insira um código válido</div>
         </div>
         
@@ -1088,12 +1292,12 @@
         <div class="modal-body">
           <div class="form-group">
             <label for="nomePaciente" class="form-label">Nome do Paciente*</label>
-            <input type="text" id="nomePaciente" class="form-input" placeholder="Nome completo" required />
+            <input type="text" id="nomePaciente" class="form-input" required />
           </div>
           
           <div class="form-group">
             <label for="setorPaciente" class="form-label">Setor*</label>
-            <input type="text" id="setorPaciente" class="form-input" placeholder="Ex: Clínica Médica, UTI" required />
+            <input type="text" id="setorPaciente" class="form-input" placeholder="Ex: Clínica Médica" required />
           </div>
           
           <div class="form-group">
@@ -1102,18 +1306,17 @@
               <option value="">Selecione</option>
               <option value="Masculino">Masculino</option>
               <option value="Feminino">Feminino</option>
-              <option value="Outro">Outro</option>
             </select>
           </div>
           
           <div class="form-group">
             <label for="leitoPaciente" class="form-label">Leito*</label>
-            <input type="text" id="leitoPaciente" class="form-input" placeholder="Número do leito" required />
+            <input type="text" id="leitoPaciente" class="form-input" placeholder="Número" required />
           </div>
           
           <div class="form-group">
             <label for="atendimentoPaciente" class="form-label">Número do Atendimento*</label>
-            <input type="text" id="atendimentoPaciente" class="form-input" placeholder="Número do atendimento" required />
+            <input type="text" id="atendimentoPaciente" class="form-input" required />
           </div>
           
           <div class="form-group">
@@ -1126,7 +1329,7 @@
           
           <div class="form-group">
             <label for="descricaoPaciente" class="form-label">Resumo Clínico</label>
-            <textarea id="descricaoPaciente" class="form-input" placeholder="Descreva o quadro clínico do paciente..." rows="4"></textarea>
+            <textarea id="descricaoPaciente" class="form-input" placeholder="Resumo clínico..." rows="4"></textarea>
           </div>
         </div>
         <div class="modal-actions">
@@ -1144,7 +1347,7 @@
           <button class="btn-close">&times;</button>
         </div>
         <div class="modal-body">
-          <textarea id="novaNota" class="form-input" placeholder="Descreva a nova anotação clínica..." rows="6"></textarea>
+          <textarea id="novaNota" class="form-input" placeholder="Descreva a anotação..." rows="6"></textarea>
         </div>
         <div class="modal-actions">
           <button class="btn btn-secondary" id="fecharNota">Cancelar</button>
@@ -1171,49 +1374,72 @@
             </select>
           </div>
           
+          <div class="checklist-container mt-4">
+            <h4>Checklist de Encerramento</h4>
+            <div class="checklist-grid" id="checklistContainer"></div>
+          </div>
+          
           <p class="assinatura mt-3">Assinatura: <strong id="assinaturaUser"></strong></p>
         </div>
         <div class="modal-actions">
-          <button class="btn btn-secondary" onclick="fecharEncerrar()">Cancelar</button>
-          <button class="btn btn-primary" onclick="confirmarEncerramento()">Confirmar</button>
+          <button class="btn btn-secondary" id="fecharEncerrar">Cancelar</button>
+          <button class="btn btn-primary" id="confirmarEncerramento">Confirmar</button>
         </div>
       </div>
     </div>
 
-    <!-- Modal: Histórico do Paciente (NOVO) -->
-    <div class="modal" id="modalHistorico">
+    <!-- Modal: Histórico Completo do Plantão (NOVO) -->
+    <div class="modal" id="modalPlantaoCompleto">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>Histórico Completo</h2>
+          <h2>Histórico Completo do Plantão</h2>
           <button class="btn-close">&times;</button>
         </div>
         <div class="modal-body">
           <div class="info-section">
-            <h3 id="historicoNome" class="mb-2"></h3>
+            <h3 id="plantaoTitulo" class="mb-2"></h3>
             <div class="info-grid">
-              <div>Setor:</div>
-              <div id="historicoSetor"></div>
-              <div>Leito:</div>
-              <div id="historicoLeito"></div>
-              <div>Atendimento:</div>
-              <div id="historicoAtendimento"></div>
-              <div>Sexo:</div>
-              <div id="historicoSexo"></div>
-              <div>Status:</div>
-              <div id="historicoStatus"></div>
-              <div>Checklist:</div>
-              <div id="historicoChecklist">Não preenchido</div>
+              <div>Médico:</div>
+              <div id="plantaoMedico"></div>
+              <div>Destino:</div>
+              <div id="plantaoDestino"></div>
+              <div>Duração:</div>
+              <div id="plantaoDuracao"></div>
+            </div>
+          </div>
+          
+          <div class="plantao-stats">
+            <div class="stat-card">
+              <div class="stat-value" id="plantaoAtivos">0</div>
+              <div class="stat-label">Pacientes Ativos</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="plantaoAltas">0</div>
+              <div class="stat-label">Altas Concedidas</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="plantaoAnotacoes">0</div>
+              <div class="stat-label">Anotações</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="plantaoAcoes">0</div>
+              <div class="stat-label">Ações Registradas</div>
             </div>
           </div>
           
           <div class="info-section">
-            <h4>Resumo Clínico</h4>
-            <div id="historicoDescricao" class="card-content"></div>
+            <h4>Pacientes</h4>
+            <div id="plantaoPacientes" class="pacientes-container"></div>
           </div>
           
-          <div class="info-section" id="historicoAnotacoesSection">
-            <h4>Anotações</h4>
-            <div id="historicoAnotacoes"></div>
+          <div class="info-section">
+            <h4>Log de Ações</h4>
+            <div id="plantaoLog" class="log-container"></div>
+          </div>
+          
+          <div class="info-section" id="plantaoChecklistSection">
+            <h4>Checklist de Encerramento</h4>
+            <div id="plantaoChecklist" class="checklist-container"></div>
           </div>
         </div>
       </div>
@@ -1231,20 +1457,33 @@
     // Dados iniciais ZERADOS
     let perfil = null;
     let usuario = null;
-    let temaAtual = "light";
     let currentUser = null;
-    let codigoSetor = null;
     let pacienteEditando = null;
+    let inicioPlantao = Date.now(); // Registro do início do plantão
 
     let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
     let plantaoHistorico = JSON.parse(localStorage.getItem('plantaoHistorico')) || [];
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    
+    // Sistema de log de ações
+    let logAcoes = JSON.parse(localStorage.getItem('logAcoes')) || [];
+    
+    // Checklist de encerramento
+    const checklistEncerramento = [
+      "Todos os pacientes revisados",
+      "Comunicação com equipe de recepção",
+      "Documentação completa",
+      "Medicações pendentes registradas",
+      "Equipamentos verificados"
+    ];
 
     // Sistema de autenticação
     function initAuth() {
-      const loggedInUser = localStorage.getItem('currentUser');
+      // Verifica se existe usuário logado (localStorage ou sessionStorage)
+      const loggedInUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
       if (loggedInUser) {
         const user = JSON.parse(loggedInUser);
+        inicioPlantao = Date.now(); // Reinicia o contador do plantão
         login(user.nome, user.tipo);
       }
     }
@@ -1257,8 +1496,6 @@
       perfil = tipo;
       usuario = nome;
       currentUser = user;
-
-      localStorage.setItem('currentUser', JSON.stringify(user));
 
       document.getElementById("authContainer").classList.add("hidden");
       document.getElementById("appContainer").classList.remove("hidden");
@@ -1274,17 +1511,26 @@
         document.getElementById("encerrarBtn").classList.remove("hidden");
       }
 
+      // Sempre abre na aba "Ativos"
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+      document.querySelector('[data-tab="ativos"]').classList.add("active");
       renderPatients("ativos");
     }
 
     function logout() {
+      // Limpa ambos os storages ao fazer logout
       localStorage.removeItem('currentUser');
+      sessionStorage.removeItem('currentUser');
+      
       document.getElementById("appContainer").classList.add("hidden");
       document.getElementById("authContainer").classList.remove("hidden");
       document.getElementById("loginCard").classList.remove("hidden");
       document.getElementById("registerCard").classList.add("hidden");
       document.getElementById("userInfo").classList.add("hidden");
       currentUser = null;
+      
+      // Limpa formulários ao fazer logout
+      limparFormularios();
     }
 
     function register(name, email, password, role) {
@@ -1316,15 +1562,20 @@
       saveData();
       
       showToast(role === "gestor" ? "Cadastro realizado com sucesso!" : "Cadastro realizado com sucesso! Aguarde aprovação.", "success");
+      limparFormularios();
       document.getElementById("backToLoginBtn").click();
     }
 
-    // Alternar tema claro/escuro
-    function alternarTema() {
-      temaAtual = temaAtual === "light" ? "dark" : "light";
-      document.body.className = temaAtual;
-      localStorage.setItem('tema', temaAtual);
-      renderPatients("config");
+    function limparFormularios() {
+      document.getElementById("loginEmail").value = "";
+      document.getElementById("loginPassword").value = "";
+      document.getElementById("registerName").value = "";
+      document.getElementById("registerEmail").value = "";
+      document.getElementById("registerPassword").value = "";
+      document.getElementById("registerConfirmPassword").value = "";
+      document.getElementById("registerRole").value = "";
+      document.getElementById("registerCode").value = "";
+      document.getElementById("codeField").classList.add("hidden");
     }
 
     function validarPacienteUnico(nome, setor) {
@@ -1332,6 +1583,23 @@
         p.nome.toLowerCase() === nome.toLowerCase() && 
         p.setor.toLowerCase() === setor.toLowerCase()
       );
+    }
+    
+    // Registrar ações no sistema
+    function registrarAcao(tipo, paciente, detalhes) {
+      const acao = {
+        tipo,
+        paciente,
+        detalhes,
+        autor: usuario,
+        data: new Date().toLocaleString("pt-BR"),
+        timestamp: Date.now()
+      };
+      
+      logAcoes.push(acao);
+      localStorage.setItem('logAcoes', JSON.stringify(logAcoes));
+      
+      return acao;
     }
 
     // Renderização principal por aba
@@ -1350,53 +1618,7 @@
       document.getElementById("searchContainer").classList.toggle("hidden", !showSearch);
 
       if (tab === "config") return renderConfig();
-
-      if (tab === "historico") {
-        if (plantaoHistorico.length === 0) {
-          container.innerHTML = `
-            <div class="empty-state">
-              <i class="fas fa-history"></i>
-              <h3>Nenhum plantão encerrado</h3>
-              <p>Os plantões encerrados aparecerão aqui.</p>
-            </div>
-          `;
-          return;
-        }
-
-        plantaoHistorico.forEach((plantao, i) => {
-          const bloco = document.createElement("div");
-          bloco.className = "card";
-          bloco.innerHTML = `
-            <div class="card-header">
-              <h2 class="card-title">Plantão #${plantaoHistorico.length - i}</h2>
-              <span class="tag">${plantao.data}</span>
-            </div>
-            <p><strong>Médico:</strong> ${plantao.medico}</p>
-            <p><strong>Destino:</strong> ${plantao.destino}</p>
-            <p><strong>Pacientes ativos:</strong> ${plantao.pacientesAtivos}</p>
-            <p><strong>Pacientes com alta:</strong> ${plantao.altas.length}</p>
-            <h3 class="notes-title">Altas Realizadas</h3>
-          `;
-          
-          plantao.altas.forEach((p) => {
-            bloco.innerHTML += `
-              <div class="note" onclick="verHistoricoCompleto(${JSON.stringify(p).replace(/"/g, '&quot;')})" style="cursor: pointer;">
-                <div class="note-header">
-                  <span class="note-author">${p.nome}</span>
-                  <span class="note-date">${p.setor}</span>
-                </div>
-                <div class="note-content">${p.descricao.substring(0, 100)}${p.descricao.length > 100 ? '...' : ''}</div>
-                <div class="text-right mt-1">
-                  <small>Clique para ver histórico completo</small>
-                </div>
-              </div>
-            `;
-          });
-          
-          container.appendChild(bloco);
-        });
-        return;
-      }
+      if (tab === "historico") return renderHistorico();
 
       const searchTerm = document.getElementById("searchInput").value.toLowerCase();
       const lista = pacientes
@@ -1418,10 +1640,13 @@
         const card = document.createElement("div");
         card.className = "card";
         
-        const anotacoesHTML = p.anotacoes.length > 0 ? `
+        // Ordena anotações por data (mais recente primeiro)
+        const anotacoesOrdenadas = p.anotacoes.sort((a, b) => b.timestamp - a.timestamp);
+        
+        const anotacoesHTML = anotacoesOrdenadas.length > 0 ? `
           <div class="notes-container">
             <h3 class="notes-title">Anotações</h3>
-            ${p.anotacoes.map(
+            ${anotacoesOrdenadas.map(
               (a) => `
                 <div class="note">
                   <div class="note-header">
@@ -1465,6 +1690,201 @@
         `;
         container.appendChild(card);
       });
+    }
+
+    // Renderização do histórico (NOVO)
+    function renderHistorico() {
+      const container = document.getElementById("patientList");
+      container.innerHTML = "";
+      
+      if (plantaoHistorico.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-history"></i>
+            <h3>Nenhum plantão encerrado</h3>
+            <p>Os plantões encerrados aparecerão aqui.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Mostra plantões do mais recente para o mais antigo
+      plantaoHistorico.slice().reverse().forEach((plantao, i) => {
+        const totalPacientes = plantao.pacientesAtivos.length + plantao.pacientesAltas.length;
+        const totalAnotacoes = plantao.log.filter(a => a.tipo === "anotacao").length;
+        
+        const bloco = document.createElement("div");
+        bloco.className = "card plantao-card";
+        bloco.innerHTML = `
+          <div class="plantao-header" onclick="togglePlantao(this)">
+            <div class="plantao-title">
+              <i class="fas fa-chevron-down"></i>
+              Plantão #${plantaoHistorico.length - i} - ${plantao.data}
+            </div>
+            <div class="tag">${plantao.duracao}</div>
+          </div>
+          <div class="plantao-content">
+            <div class="plantao-stats">
+              <div class="stat-card">
+                <div class="stat-value">${totalPacientes}</div>
+                <div class="stat-label">Pacientes</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">${plantao.pacientesAtivos.length}</div>
+                <div class="stat-label">Ativos</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">${plantao.pacientesAltas.length}</div>
+                <div class="stat-label">Altas</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">${totalAnotacoes}</div>
+                <div class="stat-label">Anotações</div>
+              </div>
+            </div>
+            
+            <div class="text-right mt-3">
+              <button class="btn btn-sm btn-outline" onclick="verPlantaoCompleto(${plantao.id})">
+                <i class="fas fa-file-medical"></i> Ver Relatório Completo
+              </button>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(bloco);
+      });
+    }
+
+    // Alternar visualização do plantão (NOVO)
+    function togglePlantao(element) {
+      const card = element.closest(".plantao-card");
+      card.classList.toggle("expanded");
+      
+      const icon = element.querySelector("i");
+      if (card.classList.contains("expanded")) {
+        icon.className = "fas fa-chevron-up";
+      } else {
+        icon.className = "fas fa-chevron-down";
+      }
+    }
+
+    // Visualizar plantão completo (NOVO)
+    function verPlantaoCompleto(plantaoId) {
+      const plantao = plantaoHistorico.find(p => p.id === plantaoId);
+      if (!plantao) return;
+      
+      document.getElementById("plantaoTitulo").textContent = `Plantão ${plantao.data}`;
+      document.getElementById("plantaoMedico").textContent = plantao.medico;
+      document.getElementById("plantaoDestino").textContent = plantao.destino;
+      document.getElementById("plantaoDuracao").textContent = plantao.duracao;
+      document.getElementById("plantaoAtivos").textContent = plantao.pacientesAtivos.length;
+      document.getElementById("plantaoAltas").textContent = plantao.pacientesAltas.length;
+      document.getElementById("plantaoAnotacoes").textContent = 
+        plantao.log.filter(a => a.tipo === "anotacao").length;
+      document.getElementById("plantaoAcoes").textContent = plantao.log.length;
+      
+      // Renderizar pacientes
+      const pacientesContainer = document.getElementById("plantaoPacientes");
+      pacientesContainer.innerHTML = "";
+      
+      // Pacientes ativos
+      plantao.pacientesAtivos.forEach(paciente => {
+        const anotacoesCount = paciente.anotacoes.length;
+        pacientesContainer.innerHTML += `
+          <div class="paciente-item" onclick="verHistoricoCompleto(${JSON.stringify(paciente).replace(/"/g, '&quot;')})">
+            <div class="paciente-header">
+              <div class="paciente-nome">${paciente.nome}</div>
+              <div class="paciente-status status-ativo">Ativo</div>
+            </div>
+            <div class="paciente-info">
+              <div>${paciente.setor} - Leito ${paciente.leito}</div>
+              <div class="mt-1">
+                <span class="tag">${anotacoesCount} anotação${anotacoesCount !== 1 ? 's' : ''}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      // Pacientes com alta
+      plantao.pacientesAltas.forEach(paciente => {
+        const anotacoesCount = paciente.anotacoes.length;
+        pacientesContainer.innerHTML += `
+          <div class="paciente-item" onclick="verHistoricoCompleto(${JSON.stringify(paciente).replace(/"/g, '&quot;')})">
+            <div class="paciente-header">
+              <div class="paciente-nome">${paciente.nome}</div>
+              <div class="paciente-status status-alta">Alta Médica</div>
+            </div>
+            <div class="paciente-info">
+              <div>${paciente.setor} - Leito ${paciente.leito}</div>
+              <div class="mt-1">
+                <span class="tag">${anotacoesCount} anotação${anotacoesCount !== 1 ? 's' : ''}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      // Renderizar log de ações
+      const logContainer = document.getElementById("plantaoLog");
+      logContainer.innerHTML = "";
+      
+      plantao.log.forEach(acao => {
+        let icon = "";
+        let actionClass = "";
+        
+        switch(acao.tipo) {
+          case "criacao":
+            icon = "fas fa-user-plus";
+            actionClass = "action-criacao";
+            break;
+          case "edicao":
+            icon = "fas fa-edit";
+            actionClass = "action-edicao";
+            break;
+          case "anotacao":
+            icon = "fas fa-sticky-note";
+            actionClass = "action-anotacao";
+            break;
+          case "alta":
+            icon = "fas fa-sign-out-alt";
+            actionClass = "action-alta";
+            break;
+        }
+        
+        logContainer.innerHTML += `
+          <div class="log-item">
+            <div class="log-icon">
+              <i class="${icon} ${actionClass}"></i>
+            </div>
+            <div class="log-content">
+              <div class="log-header">
+                <div class="log-paciente">${acao.paciente}</div>
+                <div class="log-timestamp">${acao.data}</div>
+              </div>
+              <div class="log-action ${actionClass}">${acao.tipo === 'anotacao' ? 'Anotação registrada' : 'Ação realizada'}</div>
+              <div class="log-details">${acao.detalhes}</div>
+            </div>
+          </div>
+        `;
+      });
+      
+      // Renderizar checklist
+      const checklistContainer = document.getElementById("plantaoChecklist");
+      checklistContainer.innerHTML = "";
+      
+      plantao.checklist.forEach(item => {
+        checklistContainer.innerHTML += `
+          <div class="checklist-item">
+            <div class="checklist-icon">
+              <i class="fas fa-${item.completado ? 'check-circle' : 'times-circle'}"></i>
+            </div>
+            <div>${item.item}</div>
+          </div>
+        `;
+      });
+      
+      document.getElementById("modalPlantaoCompleto").style.display = "flex";
     }
 
     // Tabs
@@ -1536,6 +1956,8 @@
           status,
           descricao: desc
         };
+        
+        registrarAcao("edicao", nome, `Paciente editado`);
       } else {
         pacientes.push({
           nome,
@@ -1548,6 +1970,8 @@
           criadoEm: Date.now(),
           anotacoes: []
         });
+        
+        registrarAcao("criacao", nome, `Paciente criado no setor ${setor}, leito ${leito}`);
       }
 
       saveData();
@@ -1581,10 +2005,14 @@
       window.anotando.anotacoes.push({
         texto,
         autor: usuario,
-        data: new Date().toLocaleString("pt-BR")
+        data: new Date().toLocaleString("pt-BR"),
+        timestamp: Date.now()   // Adicionado timestamp para ordenação
       });
       
       window.anotando.criadoEm = Date.now();
+      
+      registrarAcao("anotacao", window.anotando.nome, texto.substring(0, 50) + (texto.length > 50 ? "..." : ""));
+      
       saveData();
       document.getElementById("modalNota").style.display = "none";
       renderPatients("ativos");
@@ -1614,6 +2042,9 @@
       
       paciente.status = "altas";
       paciente.criadoEm = Date.now();
+      
+      registrarAcao("alta", nome, `Paciente recebeu alta`);
+      
       saveData();
       renderPatients("ativos");
       showToast("Paciente recebeu alta", "success");
@@ -1622,30 +2053,82 @@
     // Encerrar plantão
     document.getElementById("encerrarBtn").addEventListener("click", () => {
       document.getElementById("assinaturaUser").textContent = usuario;
+      
+      // Preencher checklist
+      const checklistContainer = document.getElementById("checklistContainer");
+      checklistContainer.innerHTML = "";
+      
+      checklistEncerramento.forEach(item => {
+        checklistContainer.innerHTML += `
+          <div class="checklist-item">
+            <input type="checkbox" id="check-${item.replace(/\s+/g, '-')}" checked>
+            <label for="check-${item.replace(/\s+/g, '-')}">${item}</label>
+          </div>
+        `;
+      });
+      
       document.getElementById("modalEncerrar").style.display = "flex";
     });
     
-    function fecharEncerrar() {
+    document.getElementById("fecharEncerrar").addEventListener("click", () => {
       document.getElementById("modalEncerrar").style.display = "none";
-    }
+    });
     
-    function confirmarEncerramento() {
+    document.getElementById("confirmarEncerramento").addEventListener("click", () => {
       const destino = document.getElementById("medicoDestino").value;
-
+      
+      // Captura cópia dos pacientes atuais
+      const pacientesAtivos = pacientes.filter(p => p.status === "ativos")
+        .map(p => ({ ...p, anotacoes: [...p.anotacoes] }));
+      const pacientesAltas = pacientes.filter(p => p.status === "altas")
+        .map(p => ({ ...p, anotacoes: [...p.anotacoes] }));
+      
+      // Calcula duração do plantão
+      const duracaoMs = Date.now() - inicioPlantao;
+      const horas = Math.floor(duracaoMs / 3600000);
+      const minutos = Math.floor((duracaoMs % 3600000) / 60000);
+      const duracao = horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
+      
+      // Filtra ações deste plantão
+      const logPlantao = logAcoes.filter(a => a.timestamp >= inicioPlantao);
+      
+      // Prepara checklist
+      const checklist = [];
+      checklistEncerramento.forEach(item => {
+        const id = `check-${item.replace(/\s+/g, '-')}`;
+        const checked = document.getElementById(id)?.checked || false;
+        checklist.push({
+          item,
+          completado: checked
+        });
+      });
+      
+      // Cria registro do plantão
       plantaoHistorico.push({
+        id: Date.now(),
         data: new Date().toLocaleString("pt-BR"),
         medico: usuario,
         destino: destino,
-        pacientesAtivos: pacientes.filter(p => p.status === "ativos").length,
-        altas: pacientes.filter(p => p.status === "altas")
+        duracao: duracao,
+        pacientesAtivos: pacientesAtivos,
+        pacientesAltas: pacientesAltas,
+        log: logPlantao,
+        checklist: checklist
       });
 
+      // Limpa o log para o próximo plantão
+      logAcoes = [];
+      localStorage.setItem('logAcoes', JSON.stringify(logAcoes));
+      
+      // Mantém apenas pacientes ativos
       pacientes = pacientes.filter(p => p.status !== "altas");
       
       saveData();
       document.getElementById("modalEncerrar").style.display = "none";
       renderPatients("ativos");
       showToast("Plantão encerrado com sucesso", "success");
+      
+      inicioPlantao = Date.now();
     }
 
     // Toast
@@ -1669,16 +2152,16 @@
 
     // Visualizar histórico completo
     function verHistoricoCompleto(paciente) {
-      const modal = document.getElementById("modalHistorico");
-      const nomeEl = document.getElementById("historicoNome");
-      const setorEl = document.getElementById("historicoSetor");
-      const leitoEl = document.getElementById("historicoLeito");
-      const atendimentoEl = document.getElementById("historicoAtendimento");
-      const sexoEl = document.getElementById("historicoSexo");
-      const statusEl = document.getElementById("historicoStatus");
-      const descricaoEl = document.getElementById("historicoDescricao");
-      const anotacoesEl = document.getElementById("historicoAnotacoes");
-      const anotacoesSection = document.getElementById("historicoAnotacoesSection");
+      const modal = document.getElementById("modalPlantaoCompleto");
+      const nomeEl = document.getElementById("plantaoTitulo");
+      const setorEl = document.getElementById("plantaoSetor");
+      const leitoEl = document.getElementById("plantaoLeito");
+      const atendimentoEl = document.getElementById("plantaoAtendimento");
+      const sexoEl = document.getElementById("plantaoSexo");
+      const statusEl = document.getElementById("plantaoStatus");
+      const descricaoEl = document.getElementById("plantaoDescricao");
+      const anotacoesEl = document.getElementById("plantaoAnotacoes");
+      const anotacoesSection = document.getElementById("plantaoAnotacoesSection");
       
       nomeEl.textContent = paciente.nome;
       setorEl.textContent = paciente.setor || 'N/A';
@@ -1692,7 +2175,10 @@
         anotacoesSection.style.display = 'block';
         anotacoesEl.innerHTML = '';
         
-        paciente.anotacoes.forEach(a => {
+        // Ordena anotações por timestamp (mais recente primeiro)
+        const anotacoesOrdenadas = paciente.anotacoes.sort((a, b) => b.timestamp - a.timestamp);
+        
+        anotacoesOrdenadas.forEach(a => {
           anotacoesEl.innerHTML += `
             <div class="note">
               <div class="note-header">
@@ -1714,7 +2200,15 @@
     function renderConfig() {
       const c = document.getElementById("patientList");
       c.innerHTML = "";
-
+      
+      // Container principal para desktop
+      const configContainer = document.createElement("div");
+      configContainer.className = "config-container mt-6";
+      
+      // Seção de Perfil
+      const profileSection = document.createElement("div");
+      profileSection.className = "config-section";
+      
       const profileCard = document.createElement("div");
       profileCard.className = "card";
       profileCard.innerHTML = `
@@ -1723,11 +2217,17 @@
           <h2 class="profile-name">${currentUser.nome}</h2>
           <span class="profile-role">${currentUser.tipo === "medico" ? "Médico" : "Gestor"}</span>
           
-          <div class="profile-actions">
-            <button class="btn btn-secondary" onclick="alternarTema()">
-              ${temaAtual === "light" ? "Modo Escuro" : "Modo Claro"}
-            </button>
+          ${currentUser.codigoSetor ? `
+          <div class="mt-3">
+            <div class="code-container" style="justify-content: center;">
+              <div class="code-value">${currentUser.codigoSetor}</div>
+              <button class="btn-copy" onclick="copiarCodigo('${currentUser.codigoSetor}')">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+            <p class="mt-2 text-center" style="font-size: 0.85rem;">Compartilhe este código com seus colegas</p>
           </div>
+          ` : ''}
         </div>
         
         <div class="card-list">
@@ -1760,34 +2260,21 @@
               <div class="card-list-subtitle">${currentUser.aprovado ? "Ativa" : "Aguardando aprovação"}</div>
             </div>
           </div>
-          
-          ${currentUser.codigoSetor ? `
-          <div class="card-list-item">
-            <div class="card-list-icon">
-              <i class="fas fa-key"></i>
-            </div>
-            <div class="card-list-content">
-              <div class="card-list-title">Código do Setor</div>
-              <div class="code-container">
-                <div class="code-value">${currentUser.codigoSetor}</div>
-                <button class="btn-copy" onclick="copiarCodigo('${currentUser.codigoSetor}')">
-                  <i class="fas fa-copy"></i>
-                </button>
-              </div>
-              <p class="mt-2"><small>Compartilhe este código com seus colegas para permitir o acesso ao sistema</small></p>
-            </div>
-          </div>
-          ` : ''}
         </div>
       `;
-      c.appendChild(profileCard);
+      
+      profileSection.appendChild(profileCard);
+      configContainer.appendChild(profileSection);
 
       if (perfil === "gestor") {
+        // Seção de Gerenciamento de Usuários
+        const usersSection = document.createElement("div");
+        usersSection.className = "config-section";
+        
         const heading = document.createElement("h2");
-        heading.className = "card-title";
-        heading.style.margin = "2rem 0 1rem";
+        heading.className = "config-section-title";
         heading.textContent = "Gerenciar Usuários";
-        c.appendChild(heading);
+        usersSection.appendChild(heading);
 
         const ul = document.createElement("ul");
         ul.className = "card-list";
@@ -1828,8 +2315,12 @@
           `;
           ul.appendChild(li);
         });
-        c.appendChild(ul);
+        
+        usersSection.appendChild(ul);
+        configContainer.appendChild(usersSection);
       }
+      
+      c.appendChild(configContainer);
     }
 
     // Gestão de usuários
@@ -1867,6 +2358,7 @@
       localStorage.setItem('pacientes', JSON.stringify(pacientes));
       localStorage.setItem('plantaoHistorico', JSON.stringify(plantaoHistorico));
       localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      localStorage.setItem('logAcoes', JSON.stringify(logAcoes));
     }
 
     // Event Listeners para autenticação
@@ -1875,10 +2367,19 @@
       
       const email = document.getElementById("loginEmail").value;
       const password = document.getElementById("loginPassword").value;
+      const manterConectado = document.getElementById("manterConectado").checked;
       
       const user = usuarios.find(u => u.email === email && u.senha === password);
       
       if (user) {
+        // Armazena em localStorage ou sessionStorage
+        if (manterConectado) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        } else {
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
+        }
+        
+        inicioPlantao = Date.now(); // Registra início do plantão
         login(user.nome, user.tipo);
       } else {
         showToast("Credenciais inválidas", "error");
@@ -1906,11 +2407,13 @@
     });
     
     document.getElementById("showRegisterBtn").addEventListener("click", function() {
+      limparFormularios();
       document.getElementById("loginCard").classList.add("hidden");
       document.getElementById("registerCard").classList.remove("hidden");
     });
     
     document.getElementById("backToLoginBtn").addEventListener("click", function() {
+      limparFormularios();
       document.getElementById("registerCard").classList.add("hidden");
       document.getElementById("loginCard").classList.remove("hidden");
     });
@@ -1925,14 +2428,7 @@
     
     // Inicialização
     document.addEventListener("DOMContentLoaded", function() {
-      const savedTheme = localStorage.getItem('tema');
-      if (savedTheme) {
-        temaAtual = savedTheme;
-        document.body.className = temaAtual;
-      }
-      
       initAuth();
-      
       saveData();
     });
   </script>
