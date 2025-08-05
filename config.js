@@ -16,15 +16,15 @@ export async function renderConfig() {
   profileCard.className = "card";
   profileCard.innerHTML = `
     <div class="profile-header">
-      <div class="profile-avatar">${currentUser.nome.charAt(0)}</div>
-      <h2 class="profile-name">${currentUser.nome}</h2>
-      <span class="profile-role">${currentUser.tipo === "medico" ? "Médico" : "Gestor"}</span>
+      <div class="profile-avatar">${window.currentUser.nome.charAt(0)}</div>
+      <h2 class="profile-name">${window.currentUser.nome}</h2>
+      <span class="profile-role">${window.currentUser.tipo === "medico" ? "Médico" : "Gestor"}</span>
       
-      ${currentUser.codigoSetor ? `
+      ${window.currentUser.codigoSetor ? `
       <div class="mt-3">
         <div class="code-container" style="justify-content: center;">
-          <div class="code-value">${currentUser.codigoSetor}</div>
-          <button class="btn-copy" onclick="copiarCodigo('${currentUser.codigoSetor}')">
+          <div class="code-value">${window.currentUser.codigoSetor}</div>
+          <button class="btn-copy" onclick="copiarCodigo('${window.currentUser.codigoSetor}')">
             <i class="fas fa-copy"></i>
           </button>
         </div>
@@ -40,7 +40,7 @@ export async function renderConfig() {
         </div>
         <div class="card-list-content">
           <div class="card-list-title">E-mail</div>
-          <div class="card-list-subtitle">${currentUser.email}</div>
+          <div class="card-list-subtitle">${window.currentUser.email}</div>
         </div>
       </div>
       
@@ -50,7 +50,7 @@ export async function renderConfig() {
         </div>
         <div class="card-list-content">
           <div class="card-list-title">Função</div>
-          <div class="card-list-subtitle">${currentUser.tipo === "medico" ? "Médico" : "Gestor"}</div>
+          <div class="card-list-subtitle">${window.currentUser.tipo === "medico" ? "Médico" : "Gestor"}</div>
         </div>
       </div>
       
@@ -60,7 +60,7 @@ export async function renderConfig() {
         </div>
         <div class="card-list-content">
           <div class="card-list-title">Status da Conta</div>
-          <div class="card-list-subtitle">${currentUser.aprovado ? "Ativa" : "Aguardando aprovação"}</div>
+          <div class="card-list-subtitle">${window.currentUser.aprovado ? "Ativa" : "Aguardando aprovação"}</div>
         </div>
       </div>
     </div>
@@ -69,7 +69,7 @@ export async function renderConfig() {
   profileSection.appendChild(profileCard);
   configContainer.appendChild(profileSection);
 
-  if (perfil === "gestor") {
+  if (window.perfil === "gestor") {
     const usersSection = document.createElement("div");
     usersSection.className = "config-section";
     
@@ -85,7 +85,7 @@ export async function renderConfig() {
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
     
     usuarios.forEach((m, i) => {
-      if (m.codigoSetor !== currentUser.codigoSetor) return;
+      if (m.codigoSetor !== window.currentUser.codigoSetor) return;
       
       const li = document.createElement("li");
       li.className = "card-list-item";
@@ -148,7 +148,7 @@ export function toggleRole(i) {
     // Em produção: atualizar usuário via API
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
     
-    if (usuarios[i].id === currentUser.id) {
+    if (usuarios[i].id === window.currentUser.id) {
       return showToast("Você não pode alterar sua própria função", "error");
     }
     
@@ -167,7 +167,7 @@ export function remover(i) {
     // Em produção: remover usuário via API
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
     
-    if (usuarios[i].id === currentUser.id) {
+    if (usuarios[i].id === window.currentUser.id) {
       return showToast("Você não pode excluir sua própria conta", "error");
     }
     

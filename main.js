@@ -2,7 +2,15 @@
 import { initAuth } from './auth.js';
 import { initModalPaciente } from './modalPaciente.js';
 import { initPlantao } from './plantao.js';
-import { renderPatients } from './historico.js';
+import { renderPatients, darAlta, abrirNota, salvarNota, verHistoricoCompleto } from './historico.js';
+import { aprovar, toggleRole, remover, renderConfig } from './config.js';
+import { copiarCodigo } from './utils.js';
+
+// Variáveis globais
+export let perfil = null;
+export let usuario = null;
+export let currentUser = null;
+export let inicioPlantao = Date.now();
 
 // Inicialização do sistema
 document.addEventListener("DOMContentLoaded", function() {
@@ -18,13 +26,21 @@ document.addEventListener("DOMContentLoaded", function() {
         t.classList.remove("active")
       );
       tab.classList.add("active");
-      renderPatients(tab.dataset.tab);
+      const tabName = tab.dataset.tab;
+      if (tabName === 'config') {
+        renderConfig();
+      } else {
+        renderPatients(tabName);
+      }
     })
   );
 
   // Buscar pacientes
   document.getElementById("searchInput").addEventListener("input", () => {
-    renderPatients(document.querySelector(".tab.active").dataset.tab);
+    const tabName = document.querySelector(".tab.active").dataset.tab;
+    if (tabName !== 'config') {
+      renderPatients(tabName);
+    }
   });
   
   // Evento para fechar nota
@@ -34,16 +50,9 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Evento para salvar nota
   document.getElementById("salvarNota").addEventListener("click", () => {
-    // Função definida em historico.js
     salvarNota();
   });
 });
-
-// Variáveis globais (temporárias)
-let perfil = null;
-let usuario = null;
-let currentUser = null;
-let inicioPlantao = Date.now();
 
 // Exportar funções para uso em HTML
 window.editarPaciente = editarPaciente;
