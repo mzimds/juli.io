@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MEMO - Dont't' Mess With My Notes</title>
+  <title>MEMO - Sistema Médico</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
@@ -589,7 +589,7 @@
       border-radius: 12px;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem; /* Espaçamento aumentado */
+      gap: 1rem;
       max-height: 90vh;
       overflow-y: auto;
       border: 1px solid var(--border);
@@ -620,7 +620,7 @@
     .modal-body {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem; /* Espaçamento aumentado */
+      gap: 1rem;
     }
 
     .modal-actions {
@@ -958,23 +958,99 @@
       border-bottom: 1px solid var(--border);
     }
 
-    /* Botão de exportação */
-    .export-btn {
-      background: var(--info);
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.85rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: var(--transition);
+    /* Log de ações */
+    .log-item {
+      padding: 0.75rem;
+      background: var(--light-gray);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      border-left: 3px solid var(--primary);
     }
 
-    .export-btn:hover {
-      background: #2980b9;
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+
+    .log-type {
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .log-timestamp {
+      color: var(--gray);
+      font-size: 0.75rem;
+    }
+
+    .log-details {
+      color: var(--text);
+      font-size: 0.875rem;
+    }
+
+    .log-paciente {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* Histórico do plantão */
+    .plantao-header {
+      background: var(--light-gray);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .plantao-pacientes {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .plantao-paciente {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border);
+    }
+
+    .plantao-paciente-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+    }
+
+    .plantao-paciente-content {
+      display: none;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .plantao-paciente.open .plantao-paciente-content {
+      display: block;
+    }
+
+    .plantao-log {
+      margin-top: 2rem;
+    }
+
+    .log-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Accordion */
+    .accordion-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .plantao-paciente.open .accordion-icon {
+      transform: rotate(180deg);
     }
   </style>
 </head>
@@ -1198,7 +1274,7 @@
       </div>
     </div>
 
-    <!-- Modal: Encerrar Plantão (SIMPLIFICADO) -->
+    <!-- Modal: Encerrar Plantão -->
     <div class="modal" id="modalEncerrar">
       <div class="modal-content">
         <div class="modal-header">
@@ -1216,22 +1292,35 @@
             </select>
           </div>
           
-          <p class="assinatura mt-3">Assinatura: <strong id="assinaturaUser"></strong></p>
-          
-          <div class="mt-4">
-            <button class="export-btn" id="exportarPlantaoBtn">
-              <i class="fas fa-file-export"></i> Exportar Plantão para CSV
-            </button>
+          <div class="form-group">
+            <h3>Checklist</h3>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="checklist1"> Todos os pacientes foram revisados
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="checklist2"> Todas as pendências foram resolvidas
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="checklist3"> Documentação completa
+              </label>
+            </div>
           </div>
+          
+          <p class="assinatura mt-3">Assinatura: <strong id="assinaturaUser"></strong></p>
         </div>
         <div class="modal-actions">
-          <button class="btn btn-secondary" onclick="fecharEncerrar()">Cancelar</button>
-          <button class="btn btn-primary" onclick="confirmarEncerramento()">Confirmar</button>
+          <button class="btn btn-secondary" id="fecharEncerrar">Cancelar</button>
+          <button class="btn btn-primary" id="confirmarEncerramento">Confirmar</button>
         </div>
       </div>
     </div>
 
-    <!-- Modal: Histórico do Paciente (NOVO) -->
+    <!-- Modal: Histórico do Paciente -->
     <div class="modal" id="modalHistorico">
       <div class="modal-content">
         <div class="modal-header">
@@ -1252,8 +1341,6 @@
               <div id="historicoSexo"></div>
               <div>Status:</div>
               <div id="historicoStatus"></div>
-              <div>Checklist:</div>
-              <div id="historicoChecklist">Não preenchido</div>
             </div>
           </div>
           
@@ -1269,6 +1356,42 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal: Histórico do Plantão -->
+    <div class="modal" id="modalPlantao">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Histórico do Plantão</h2>
+          <button class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="plantao-header">
+            <div class="info-grid">
+              <div>Data:</div>
+              <div id="plantaoData"></div>
+              <div>Médico:</div>
+              <div id="plantaoMedico"></div>
+              <div>Destino:</div>
+              <div id="plantaoDestino"></div>
+              <div>Pacientes:</div>
+              <div id="plantaoPacientesCount"></div>
+              <div>Altas:</div>
+              <div id="plantaoAltasCount"></div>
+            </div>
+          </div>
+          
+          <div class="info-section">
+            <h3>Pacientes</h3>
+            <div class="plantao-pacientes" id="plantaoPacientes"></div>
+          </div>
+          
+          <div class="plantao-log">
+            <h3 class="log-title">Log de Ações</h3>
+            <div id="plantaoLog"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="toast" class="toast">
@@ -1279,152 +1402,21 @@
   <div id="copiedMessage" class="copied-message">Código copiado!</div>
   
   <script>
-    // =============================================
-    // Módulo de API - Comunicação com Backend
-    // =============================================
-    const api = (() => {
-      // Configuração base da API
-      const BASE_URL = 'https://api.seusistema.com';
-      let authToken = null;
-
-      // Função para configurar o token de autenticação
-      const setAuthToken = (token) => {
-        authToken = token;
-      };
-
-      // Função para fazer requisições HTTP
-      const request = async (method, endpoint, data = null) => {
-        const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': authToken ? `Bearer ${authToken}` : ''
-        };
-
-        const config = {
-          method: method,
-          headers: headers
-        };
-
-        if (data) {
-          config.body = JSON.stringify(data);
-        }
-
-        try {
-          const response = await fetch(`${BASE_URL}${endpoint}`, config);
-          
-          if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`);
-          }
-
-          return await response.json();
-        } catch (error) {
-          console.error('Erro na requisição:', error);
-          throw error;
-        }
-      };
-
-      // Métodos da API
-      return {
-        // Autenticação
-        login: (email, password) => request('POST', '/auth/login', { email, password }),
-        register: (userData) => request('POST', '/auth/register', userData),
-        
-        // Pacientes
-        getPacientes: () => request('GET', '/pacientes'),
-        savePaciente: (paciente) => request('POST', '/pacientes', paciente),
-        updatePaciente: (id, paciente) => request('PUT', `/pacientes/${id}`, paciente),
-        deletePaciente: (id) => request('DELETE', `/pacientes/${id}`),
-        
-        // Anotações
-        addAnotacao: (pacienteId, anotacao) => request('POST', `/pacientes/${pacienteId}/anotacoes`, anotacao),
-        
-        // Plantões
-        encerrarPlantao: (plantaoData) => request('POST', '/plantoes', plantaoData),
-        getPlantaoHistorico: () => request('GET', '/plantoes'),
-        
-        // Usuários
-        getUsuarios: () => request('GET', '/usuarios'),
-        aprovarUsuario: (id) => request('PATCH', `/usuarios/${id}/aprovar`),
-        atualizarUsuario: (id, userData) => request('PUT', `/usuarios/${id}`, userData),
-        removerUsuario: (id) => request('DELETE', `/usuarios/${id}`),
-        
-        // Exportação
-        exportarPlantaoCSV: (plantaoId) => request('GET', `/plantoes/${plantaoId}/export`),
-        
-        // Configuração
-        setAuthToken
-      };
-    })();
-
-    // =============================================
-    // Módulo de Utilitários
-    // =============================================
-    const utils = {
-      // Mostrar toast
-      showToast: (msg, type = "info") => {
-        const toast = document.getElementById("toast");
-        toast.textContent = msg;
-        toast.className = `toast ${type} show`;
-        
-        setTimeout(() => {
-          toast.classList.remove("show");
-        }, 3000);
-      },
-
-      // Copiar código
-      copiarCodigo: (codigo) => {
-        navigator.clipboard.writeText(codigo);
-        const msg = document.getElementById("copiedMessage");
-        msg.classList.add("show");
-        setTimeout(() => msg.classList.remove("show"), 2000);
-      },
-
-      // Exportar dados para CSV
-      exportarParaCSV: (dados, nomeArquivo) => {
-        const cabecalho = Object.keys(dados[0]).join(',');
-        const linhas = dados.map(objeto => 
-          Object.values(objeto).map(valor => 
-            `"${String(valor).replace(/"/g, '""')}"`
-          ).join(',')
-        );
-        
-        const csvContent = [cabecalho, ...linhas].join('\n');
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        
-        const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', nomeArquivo);
-        link.style.visibility = 'hidden';
-        
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      },
-
-      // Formatar data
-      formatarData: (timestamp) => {
-        return new Date(timestamp).toLocaleString("pt-BR");
-      }
-    };
-
-    // =============================================
-    // Dados da Aplicação
-    // =============================================
+    // Dados iniciais
     let perfil = null;
     let usuario = null;
     let currentUser = null;
     let pacienteEditando = null;
-    let inicioPlantao = Date.now();
+    let inicioPlantao = Date.now(); // Registro do início do plantão
+    let plantoesOrdenados = []; // Para acesso aos plantões ordenados
 
-    // Dados iniciais (temporário até migração completa)
     let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
     let plantaoHistorico = JSON.parse(localStorage.getItem('plantaoHistorico')) || [];
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    
+    // Sistema de log de ações
     let logAcoes = JSON.parse(localStorage.getItem('logAcoes')) || [];
 
-    // =============================================
-    // Funções da Aplicação
-    // =============================================
     // Sistema de autenticação
     function initAuth() {
       const loggedInUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
@@ -1437,8 +1429,8 @@
 
     function login(nome, tipo) {
       const user = usuarios.find(u => u.nome === nome);
-      if (!user) return utils.showToast("Usuário não encontrado", "error");
-      if (!user.aprovado) return utils.showToast("Acesso pendente de aprovação", "warning");
+      if (!user) return showToast("Usuário não encontrado", "error");
+      if (!user.aprovado) return showToast("Acesso pendente de aprovação", "warning");
 
       perfil = tipo;
       usuario = nome;
@@ -1473,13 +1465,12 @@
       document.getElementById("registerCard").classList.add("hidden");
       document.getElementById("userInfo").classList.add("hidden");
       currentUser = null;
-      
       limparFormularios();
     }
 
     function register(name, email, password, role) {
       if (usuarios.some(u => u.email === email)) {
-        return utils.showToast("Este e-mail já está cadastrado", "error");
+        return showToast("Este e-mail já está cadastrado", "error");
       }
       
       let codigo = null;
@@ -1488,7 +1479,7 @@
       } else if (role === "medico") {
         codigo = document.getElementById("registerCode").value.trim();
         if (!codigo) {
-          return utils.showToast("Por favor, insira o código do setor", "error");
+          return showToast("Por favor, insira o código do setor", "error");
         }
       }
       
@@ -1505,7 +1496,7 @@
       usuarios.push(newUser);
       saveData();
       
-      utils.showToast(role === "gestor" ? "Cadastro realizado com sucesso!" : "Cadastro realizado com sucesso! Aguarde aprovação.", "success");
+      showToast(role === "gestor" ? "Cadastro realizado com sucesso!" : "Cadastro realizado com sucesso! Aguarde aprovação.", "success");
       limparFormularios();
       document.getElementById("backToLoginBtn").click();
     }
@@ -1571,84 +1562,29 @@
           return;
         }
 
-        plantaoHistorico.slice().reverse().forEach((plantao, i) => {
+        // Ordenar plantões por data (mais recente primeiro)
+        plantoesOrdenados = plantaoHistorico.slice().sort((a, b) => b.timestamp - a.timestamp);
+        
+        plantoesOrdenados.forEach((plantao, i) => {
           const bloco = document.createElement("div");
           bloco.className = "card";
           bloco.innerHTML = `
             <div class="card-header">
-              <h2 class="card-title">Plantão #${plantaoHistorico.length - i}</h2>
+              <h2 class="card-title">Plantão #${plantoesOrdenados.length - i}</h2>
               <span class="tag">${plantao.data}</span>
             </div>
             <p><strong>Médico:</strong> ${plantao.medico}</p>
             <p><strong>Destino:</strong> ${plantao.destino}</p>
-            <p><strong>Pacientes ativos:</strong> ${plantao.pacientesAtivos}</p>
-            <p><strong>Pacientes com alta:</strong> ${plantao.altas.length}</p>
-            
-            <h3 class="notes-title">Altas Realizadas</h3>
+            <p><strong>Pacientes:</strong> ${plantao.pacientes.length}</p>
+            <p><strong>Altas:</strong> ${plantao.altas}</p>
+            <div class="text-right mt-3">
+              <button class="btn btn-sm btn-primary">Ver Detalhes</button>
+            </div>
           `;
           
-          plantao.altas.forEach((p) => {
-            bloco.innerHTML += `
-              <div class="note" onclick="verHistoricoCompleto(${JSON.stringify(p).replace(/"/g, '&quot;')})" style="cursor: pointer;">
-                <div class="note-header">
-                  <span class="note-author">${p.nome}</span>
-                  <span class="note-date">${p.setor}</span>
-                </div>
-                <div class="note-content">${p.descricao.substring(0, 100)}${p.descricao.length > 100 ? '...' : ''}</div>
-                <div class="text-right mt-1">
-                  <small>Clique para ver histórico completo</small>
-                </div>
-              </div>
-            `;
-          });
-          
-          if (plantao.log && plantao.log.length > 0) {
-            bloco.innerHTML += `
-              <h3 class="notes-title">Log de Ações</h3>
-              <div class="notes-container">
-            `;
-            
-            plantao.log.forEach(a => {
-              let icon = "";
-              let color = "var(--gray)";
-              
-              switch(a.tipo) {
-                case "criacao":
-                  icon = "fas fa-user-plus";
-                  color = "var(--success)";
-                  break;
-                case "edicao":
-                  icon = "fas fa-edit";
-                  color = "var(--warning)";
-                  break;
-                case "anotacao":
-                  icon = "fas fa-sticky-note";
-                  color = "var(--info)";
-                  break;
-                case "alta":
-                  icon = "fas fa-sign-out-alt";
-                  color = "var(--danger)";
-                  break;
-              }
-              
-              bloco.innerHTML += `
-                <div class="note">
-                  <div class="note-header">
-                    <span>
-                      <i class="${icon}" style="color: ${color}; margin-right: 0.5rem;"></i>
-                      <span class="note-author">${a.autor}</span>
-                    </span>
-                    <span class="note-date">${a.data}</span>
-                  </div>
-                  <div class="note-content">
-                    <strong>${a.paciente}</strong>: ${a.detalhes}
-                  </div>
-                </div>
-              `;
-            });
-            
-            bloco.innerHTML += `</div>`;
-          }
+          // Botão para ver detalhes do plantão
+          const btn = bloco.querySelector("button");
+          btn.addEventListener("click", () => verDetalhesPlantao(i));
           
           container.appendChild(bloco);
         });
@@ -1716,7 +1652,7 @@
             </span>
           </div>
           <div class="card-subtitle">
-            ${utils.formatarData(p.criadoEm)}
+            ${new Date(p.criadoEm).toLocaleString("pt-BR")}
           </div>
           <div class="card-content">${p.descricao}</div>
           ${anotacoesHTML}
@@ -1724,6 +1660,385 @@
         `;
         container.appendChild(card);
       });
+    }
+
+    // Tabs
+    document.querySelectorAll(".tab").forEach((tab) =>
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach((t) =>
+          t.classList.remove("active")
+        );
+        tab.classList.add("active");
+        renderPatients(tab.dataset.tab);
+      })
+    );
+
+    // Buscar pacientes
+    document.getElementById("searchInput").addEventListener("input", () => {
+      renderPatients(document.querySelector(".tab.active").dataset.tab);
+    });
+
+    // Modal paciente
+    document.getElementById("addPatientBtn").addEventListener("click", () => {
+      pacienteEditando = null;
+      document.getElementById("modal").style.display = "flex";
+      document.getElementById("modalTitulo").textContent = "Novo Paciente";
+      document.getElementById("nomePaciente").value = "";
+      document.getElementById("setorPaciente").value = "";
+      document.getElementById("sexoPaciente").value = "";
+      document.getElementById("leitoPaciente").value = "";
+      document.getElementById("atendimentoPaciente").value = "";
+      document.getElementById("statusPaciente").value = "ativos";
+      document.getElementById("descricaoPaciente").value = "";
+    });
+
+    document.querySelectorAll(".btn-close").forEach(btn => {
+      btn.addEventListener("click", function() {
+        this.closest(".modal").style.display = "none";
+      });
+    });
+
+    document.getElementById("fecharModal").addEventListener("click", () => {
+      document.getElementById("modal").style.display = "none";
+      pacienteEditando = null;
+    });
+
+    document.getElementById("salvarPaciente").addEventListener("click", () => {
+      const nome = document.getElementById("nomePaciente").value.trim();
+      const setor = document.getElementById("setorPaciente").value.trim();
+      const sexo = document.getElementById("sexoPaciente").value;
+      const leito = document.getElementById("leitoPaciente").value.trim();
+      const atendimento = document.getElementById("atendimentoPaciente").value.trim();
+      const status = document.getElementById("statusPaciente").value;
+      const desc = document.getElementById("descricaoPaciente").value.trim();
+
+      if (!nome || !setor || !sexo || !leito || !atendimento) {
+        return showToast("Preencha todos os campos obrigatórios", "error");
+      }
+
+      if (pacienteEditando === null && !validarPacienteUnico(nome, setor)) {
+        return showToast("Já existe um paciente com este nome no mesmo setor", "error");
+      }
+
+      if (pacienteEditando !== null) {
+        pacientes[pacienteEditando] = {
+          ...pacientes[pacienteEditando],
+          nome,
+          setor,
+          sexo,
+          leito,
+          atendimento,
+          status,
+          descricao: desc
+        };
+        
+        registrarAcao("edicao", nome, `Paciente editado`);
+      } else {
+        pacientes.push({
+          nome,
+          setor,
+          sexo,
+          leito,
+          atendimento,
+          status,
+          descricao: desc,
+          criadoEm: Date.now(),
+          anotacoes: []
+        });
+        
+        registrarAcao("criacao", nome, `Paciente criado no setor ${setor}, leito ${leito}`);
+      }
+
+      saveData();
+      document.getElementById("modal").style.display = "none";
+      pacienteEditando = null;
+      renderPatients("ativos");
+      showToast("Paciente salvo com sucesso", "success");
+    });
+
+    // Modal anotação
+    function abrirNota(nome) {
+      const paciente = pacientes.find((p) => p.nome === nome);
+      if (!paciente) return;
+      window.anotando = paciente;
+      document.getElementById("novaNota").value = "";
+      document.getElementById("modalNota").style.display = "flex";
+    }
+    
+    function fecharNota() {
+      document.getElementById("modalNota").style.display = "none";
+    }
+    
+    document.getElementById("fecharNota").addEventListener("click", fecharNota);
+    
+    document.getElementById("salvarNota").addEventListener("click", () => {
+      const texto = document.getElementById("novaNota").value.trim();
+      if (!texto || !window.anotando) {
+        return showToast("Digite uma anotação", "error");
+      }
+      
+      window.anotando.anotacoes.push({
+        texto,
+        autor: usuario,
+        data: new Date().toLocaleString("pt-BR"),
+        timestamp: Date.now()
+      });
+      
+      window.anotando.criadoEm = Date.now();
+      
+      registrarAcao("anotacao", window.anotando.nome, texto.substring(0, 50) + (texto.length > 50 ? "..." : ""));
+      
+      saveData();
+      document.getElementById("modalNota").style.display = "none";
+      renderPatients("ativos");
+      showToast("Anotação salva", "success");
+    });
+
+    // Editar paciente
+    function editarPaciente(nome) {
+      pacienteEditando = pacientes.findIndex(p => p.nome === nome);
+      const paciente = pacientes[pacienteEditando];
+      
+      document.getElementById("modal").style.display = "flex";
+      document.getElementById("modalTitulo").textContent = "Editar Paciente";
+      document.getElementById("nomePaciente").value = paciente.nome;
+      document.getElementById("setorPaciente").value = paciente.setor;
+      document.getElementById("sexoPaciente").value = paciente.sexo || "";
+      document.getElementById("leitoPaciente").value = paciente.leito || "";
+      document.getElementById("atendimentoPaciente").value = paciente.atendimento || "";
+      document.getElementById("statusPaciente").value = paciente.status;
+      document.getElementById("descricaoPaciente").value = paciente.descricao;
+    }
+
+    // Alta
+    function darAlta(nome) {
+      const paciente = pacientes.find((p) => p.nome === nome);
+      if (!paciente) return;
+      
+      paciente.status = "altas";
+      paciente.criadoEm = Date.now();
+      
+      registrarAcao("alta", nome, `Paciente recebeu alta`);
+      
+      saveData();
+      renderPatients("ativos");
+      showToast("Paciente recebeu alta", "success");
+    }
+
+    // Encerrar plantão
+    document.getElementById("encerrarBtn").addEventListener("click", () => {
+      document.getElementById("assinaturaUser").textContent = usuario;
+      document.getElementById("modalEncerrar").style.display = "flex";
+    });
+    
+    document.getElementById("fecharEncerrar").addEventListener("click", () => {
+      document.getElementById("modalEncerrar").style.display = "none";
+    });
+    
+    document.getElementById("confirmarEncerramento").addEventListener("click", () => {
+      const destino = document.getElementById("medicoDestino").value;
+      const checklist = {
+        revisao: document.getElementById("checklist1").checked,
+        pendencias: document.getElementById("checklist2").checked,
+        documentacao: document.getElementById("checklist3").checked
+      };
+      
+      if (!checklist.revisao || !checklist.pendencias || !checklist.documentacao) {
+        return showToast("Complete o checklist antes de encerrar", "warning");
+      }
+
+      const pacientesAtivos = pacientes.filter(p => p.status === "ativos");
+      const pacientesAlta = pacientes.filter(p => p.status === "altas");
+      const pacientesPlantao = [...pacientesAtivos, ...pacientesAlta];
+      
+      // Registrar ação de encerramento
+      registrarAcao("encerramento", null, `Plantão encerrado e repassado para ${destino}`);
+      
+      plantaoHistorico.push({
+        id: Date.now(),
+        timestamp: Date.now(),
+        data: new Date().toLocaleString("pt-BR"),
+        medico: usuario,
+        destino: destino,
+        pacientes: pacientesPlantao,
+        altas: pacientesAlta.length,
+        log: logAcoes.filter(a => a.timestamp >= inicioPlantao),
+        checklist: checklist
+      });
+
+      // Limpa o log para o próximo plantão
+      logAcoes = [];
+      localStorage.setItem('logAcoes', JSON.stringify(logAcoes));
+      
+      // Remove apenas os pacientes com alta
+      pacientes = pacientes.filter(p => p.status !== "altas");
+      
+      saveData();
+      document.getElementById("modalEncerrar").style.display = "none";
+      renderPatients("ativos");
+      showToast("Plantão encerrado com sucesso", "success");
+      
+      // Reinicia o contador do plantão
+      inicioPlantao = Date.now();
+    });
+
+    // Toast
+    function showToast(msg, type = "info") {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.className = `toast ${type} show`;
+      
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
+    // Copiar código
+    function copiarCodigo(codigo) {
+      navigator.clipboard.writeText(codigo);
+      const msg = document.getElementById("copiedMessage");
+      msg.classList.add("show");
+      setTimeout(() => msg.classList.remove("show"), 2000);
+    }
+
+    // Visualizar histórico completo do paciente
+    function verHistoricoCompleto(paciente) {
+      const modal = document.getElementById("modalHistorico");
+      const nomeEl = document.getElementById("historicoNome");
+      const setorEl = document.getElementById("historicoSetor");
+      const leitoEl = document.getElementById("historicoLeito");
+      const atendimentoEl = document.getElementById("historicoAtendimento");
+      const sexoEl = document.getElementById("historicoSexo");
+      const statusEl = document.getElementById("historicoStatus");
+      const descricaoEl = document.getElementById("historicoDescricao");
+      const anotacoesEl = document.getElementById("historicoAnotacoes");
+      const anotacoesSection = document.getElementById("historicoAnotacoesSection");
+      
+      nomeEl.textContent = paciente.nome;
+      setorEl.textContent = paciente.setor || 'N/A';
+      leitoEl.textContent = paciente.leito || 'N/A';
+      atendimentoEl.textContent = paciente.atendimento || 'N/A';
+      sexoEl.textContent = paciente.sexo || 'N/A';
+      statusEl.textContent = paciente.status === 'ativos' ? 'Ativo' : 'Alta';
+      descricaoEl.textContent = paciente.descricao || 'Nenhum resumo clínico registrado.';
+      
+      if (paciente.anotacoes && paciente.anotacoes.length > 0) {
+        anotacoesSection.style.display = 'block';
+        anotacoesEl.innerHTML = '';
+        
+        const anotacoesOrdenadas = paciente.anotacoes.sort((a, b) => b.timestamp - a.timestamp);
+        
+        anotacoesOrdenadas.forEach(a => {
+          anotacoesEl.innerHTML += `
+            <div class="note">
+              <div class="note-header">
+                <span class="note-author">${a.autor}</span>
+                <span class="note-date">${a.data}</span>
+              </div>
+              <div class="note-content">${a.texto}</div>
+            </div>
+          `;
+        });
+      } else {
+        anotacoesSection.style.display = 'none';
+      }
+      
+      modal.style.display = "flex";
+    }
+
+    // Visualizar detalhes do plantão
+    function verDetalhesPlantao(index) {
+      const plantao = plantoesOrdenados[index];
+      if (!plantao) return;
+      
+      const modal = document.getElementById("modalPlantao");
+      document.getElementById("plantaoData").textContent = plantao.data;
+      document.getElementById("plantaoMedico").textContent = plantao.medico;
+      document.getElementById("plantaoDestino").textContent = plantao.destino;
+      document.getElementById("plantaoPacientesCount").textContent = plantao.pacientes.length;
+      document.getElementById("plantaoAltasCount").textContent = plantao.altas;
+      
+      // Preencher pacientes
+      const pacientesContainer = document.getElementById("plantaoPacientes");
+      pacientesContainer.innerHTML = "";
+      
+      plantao.pacientes.forEach(paciente => {
+        const pacienteEl = document.createElement("div");
+        pacienteEl.className = "plantao-paciente";
+        pacienteEl.innerHTML = `
+          <div class="plantao-paciente-header">
+            <h3>${paciente.nome}</h3>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </div>
+          <div class="plantao-paciente-content">
+            <div class="info-grid">
+              <div>Setor:</div>
+              <div>${paciente.setor || 'N/A'}</div>
+              <div>Leito:</div>
+              <div>${paciente.leito || 'N/A'}</div>
+              <div>Atendimento:</div>
+              <div>${paciente.atendimento || 'N/A'}</div>
+              <div>Sexo:</div>
+              <div>${paciente.sexo || 'N/A'}</div>
+              <div>Status:</div>
+              <div>${paciente.status === 'ativos' ? 'Ativo' : 'Alta'}</div>
+            </div>
+            
+            <div class="mt-3">
+              <h4>Resumo Clínico</h4>
+              <p>${paciente.descricao || 'Nenhum resumo clínico.'}</p>
+            </div>
+            
+            ${paciente.anotacoes && paciente.anotacoes.length > 0 ? `
+              <div class="mt-3">
+                <h4>Anotações</h4>
+                <div class="notes-container">
+                  ${paciente.anotacoes.map(a => `
+                    <div class="note">
+                      <div class="note-header">
+                        <span class="note-author">${a.autor}</span>
+                        <span class="note-date">${a.data}</span>
+                      </div>
+                      <div class="note-content">${a.texto}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+        
+        // Accordion functionality
+        const header = pacienteEl.querySelector(".plantao-paciente-header");
+        header.addEventListener("click", () => {
+          pacienteEl.classList.toggle("open");
+        });
+        
+        pacientesContainer.appendChild(pacienteEl);
+      });
+      
+      // Preencher log de ações
+      const logContainer = document.getElementById("plantaoLog");
+      logContainer.innerHTML = "";
+      
+      plantao.log.sort((a, b) => a.timestamp - b.timestamp).forEach(acao => {
+        const logEl = document.createElement("div");
+        logEl.className = "log-item";
+        logEl.innerHTML = `
+          <div class="log-header">
+            <span class="log-type">${acao.tipo}</span>
+            <span class="log-timestamp">${acao.data}</span>
+          </div>
+          <div class="log-details">
+            <span class="log-paciente">${acao.paciente || 'Sistema'}:</span>
+            ${acao.detalhes}
+            <div><small>Por: ${acao.autor}</small></div>
+          </div>
+        `;
+        logContainer.appendChild(logEl);
+      });
+      
+      modal.style.display = "flex";
     }
 
     // Painel de configurações
@@ -1749,7 +2064,7 @@
           <div class="mt-3">
             <div class="code-container" style="justify-content: center;">
               <div class="code-value">${currentUser.codigoSetor}</div>
-              <button class="btn-copy" onclick="utils.copiarCodigo('${currentUser.codigoSetor}')">
+              <button class="btn-copy" onclick="copiarCodigo('${currentUser.codigoSetor}')">
                 <i class="fas fa-copy"></i>
               </button>
             </div>
@@ -1855,29 +2170,29 @@
       usuarios[i].aprovado = true;
       saveData();
       renderConfig();
-      utils.showToast("Médico aprovado", "success");
+      showToast("Médico aprovado", "success");
     }
     
     function toggleRole(i) {
       if (usuarios[i].id === currentUser.id) {
-        return utils.showToast("Você não pode alterar sua própria função", "error");
+        return showToast("Você não pode alterar sua própria função", "error");
       }
       
       usuarios[i].tipo = usuarios[i].tipo === "medico" ? "gestor" : "medico";
       saveData();
       renderConfig();
-      utils.showToast("Função alterada", "success");
+      showToast("Função alterada", "success");
     }
     
     function remover(i) {
       if (usuarios[i].id === currentUser.id) {
-        return utils.showToast("Você não pode excluir sua própria conta", "error");
+        return showToast("Você não pode excluir sua própria conta", "error");
       }
       
       usuarios.splice(i, 1);
       saveData();
       renderConfig();
-      utils.showToast("Usuário excluído", "success");
+      showToast("Usuário excluído", "success");
     }
 
     // Salvar dados
@@ -1888,283 +2203,7 @@
       localStorage.setItem('logAcoes', JSON.stringify(logAcoes));
     }
 
-    // Exportar dados do plantão para CSV
-    function exportarPlantaoCSV() {
-      const pacientesAtivos = pacientes.filter(p => p.status === "ativos");
-      if (pacientesAtivos.length === 0) {
-        utils.showToast("Não há pacientes ativos para exportar", "warning");
-        return;
-      }
-      
-      const dadosExportacao = pacientesAtivos.map(paciente => ({
-        Nome: paciente.nome,
-        Setor: paciente.setor,
-        Leito: paciente.leito,
-        Atendimento: paciente.atendimento,
-        Sexo: paciente.sexo,
-        Descrição: paciente.descricao,
-        'Data de Cadastro': utils.formatarData(paciente.criadoEm)
-      }));
-      
-      utils.exportarParaCSV(dadosExportacao, `plantao_${utils.formatarData(Date.now()).replace(/[/:,]/g, '_')}.csv`);
-      utils.showToast("Dados exportados com sucesso", "success");
-    }
-
-    // Visualizar histórico completo
-    function verHistoricoCompleto(paciente) {
-      const modal = document.getElementById("modalHistorico");
-      const nomeEl = document.getElementById("historicoNome");
-      const setorEl = document.getElementById("historicoSetor");
-      const leitoEl = document.getElementById("historicoLeito");
-      const atendimentoEl = document.getElementById("historicoAtendimento");
-      const sexoEl = document.getElementById("historicoSexo");
-      const statusEl = document.getElementById("historicoStatus");
-      const descricaoEl = document.getElementById("historicoDescricao");
-      const anotacoesEl = document.getElementById("historicoAnotacoes");
-      const anotacoesSection = document.getElementById("historicoAnotacoesSection");
-      
-      nomeEl.textContent = paciente.nome;
-      setorEl.textContent = paciente.setor || 'N/A';
-      leitoEl.textContent = paciente.leito || 'N/A';
-      atendimentoEl.textContent = paciente.atendimento || 'N/A';
-      sexoEl.textContent = paciente.sexo || 'N/A';
-      statusEl.textContent = paciente.status === 'ativos' ? 'Ativo' : 'Alta';
-      descricaoEl.textContent = paciente.descricao || 'Nenhum resumo clínico registrado.';
-      
-      if (paciente.anotacoes && paciente.anotacoes.length > 0) {
-        anotacoesSection.style.display = 'block';
-        anotacoesEl.innerHTML = '';
-        
-        const anotacoesOrdenadas = paciente.anotacoes.sort((a, b) => b.timestamp - a.timestamp);
-        
-        anotacoesOrdenadas.forEach(a => {
-          anotacoesEl.innerHTML += `
-            <div class="note">
-              <div class="note-header">
-                <span class="note-author">${a.autor}</span>
-                <span class="note-date">${a.data}</span>
-              </div>
-              <div class="note-content">${a.texto}</div>
-            </div>
-          `;
-        });
-      } else {
-        anotacoesSection.style.display = 'none';
-      }
-      
-      modal.style.display = "flex";
-    }
-
-    // =============================================
-    // Inicialização e Event Listeners
-    // =============================================
-    document.addEventListener("DOMContentLoaded", function() {
-      initAuth();
-      saveData();
-    });
-
-    // Tabs
-    document.querySelectorAll(".tab").forEach((tab) =>
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach((t) =>
-          t.classList.remove("active")
-        );
-        tab.classList.add("active");
-        renderPatients(tab.dataset.tab);
-      })
-    );
-
-    // Buscar pacientes
-    document.getElementById("searchInput").addEventListener("input", () => {
-      renderPatients(document.querySelector(".tab.active").dataset.tab);
-    });
-
-    // Modal paciente
-    document.getElementById("addPatientBtn").addEventListener("click", () => {
-      pacienteEditando = null;
-      document.getElementById("modal").style.display = "flex";
-      document.getElementById("modalTitulo").textContent = "Novo Paciente";
-      document.getElementById("nomePaciente").value = "";
-      document.getElementById("setorPaciente").value = "";
-      document.getElementById("sexoPaciente").value = "";
-      document.getElementById("leitoPaciente").value = "";
-      document.getElementById("atendimentoPaciente").value = "";
-      document.getElementById("statusPaciente").value = "ativos";
-      document.getElementById("descricaoPaciente").value = "";
-    });
-
-    document.querySelectorAll(".btn-close").forEach(btn => {
-      btn.addEventListener("click", function() {
-        this.closest(".modal").style.display = "none";
-      });
-    });
-
-    document.getElementById("fecharModal").addEventListener("click", () => {
-      document.getElementById("modal").style.display = "none";
-      pacienteEditando = null;
-    });
-
-    document.getElementById("salvarPaciente").addEventListener("click", () => {
-      const nome = document.getElementById("nomePaciente").value.trim();
-      const setor = document.getElementById("setorPaciente").value.trim();
-      const sexo = document.getElementById("sexoPaciente").value;
-      const leito = document.getElementById("leitoPaciente").value.trim();
-      const atendimento = document.getElementById("atendimentoPaciente").value.trim();
-      const status = document.getElementById("statusPaciente").value;
-      const desc = document.getElementById("descricaoPaciente").value.trim();
-
-      if (!nome || !setor || !sexo || !leito || !atendimento) {
-        return utils.showToast("Preencha todos os campos obrigatórios", "error");
-      }
-
-      if (pacienteEditando === null && !validarPacienteUnico(nome, setor)) {
-        return utils.showToast("Já existe um paciente com este nome no mesmo setor", "error");
-      }
-
-      if (pacienteEditando !== null) {
-        pacientes[pacienteEditando] = {
-          ...pacientes[pacienteEditando],
-          nome,
-          setor,
-          sexo,
-          leito,
-          atendimento,
-          status,
-          descricao: desc
-        };
-        
-        registrarAcao("edicao", nome, `Paciente editado`);
-      } else {
-        pacientes.push({
-          nome,
-          setor,
-          sexo,
-          leito,
-          atendimento,
-          status,
-          descricao: desc,
-          criadoEm: Date.now(),
-          anotacoes: []
-        });
-        
-        registrarAcao("criacao", nome, `Paciente criado no setor ${setor}, leito ${leito}`);
-      }
-
-      saveData();
-      document.getElementById("modal").style.display = "none";
-      pacienteEditando = null;
-      renderPatients("ativos");
-      utils.showToast("Paciente salvo com sucesso", "success");
-    });
-
-    // Modal anotação
-    function abrirNota(nome) {
-      const paciente = pacientes.find((p) => p.nome === nome);
-      if (!paciente) return;
-      window.anotando = paciente;
-      document.getElementById("novaNota").value = "";
-      document.getElementById("modalNota").style.display = "flex";
-    }
-    
-    function fecharNota() {
-      document.getElementById("modalNota").style.display = "none";
-    }
-    
-    document.getElementById("fecharNota").addEventListener("click", fecharNota);
-    
-    document.getElementById("salvarNota").addEventListener("click", () => {
-      const texto = document.getElementById("novaNota").value.trim();
-      if (!texto || !window.anotando) {
-        return utils.showToast("Digite uma anotação", "error");
-      }
-      
-      window.anotando.anotacoes.push({
-        texto,
-        autor: usuario,
-        data: new Date().toLocaleString("pt-BR"),
-        timestamp: Date.now()
-      });
-      
-      window.anotando.criadoEm = Date.now();
-      
-      registrarAcao("anotacao", window.anotando.nome, texto.substring(0, 50) + (texto.length > 50 ? "..." : ""));
-      
-      saveData();
-      document.getElementById("modalNota").style.display = "none";
-      renderPatients("ativos");
-      utils.showToast("Anotação salva", "success");
-    });
-
-    // Editar paciente
-    function editarPaciente(nome) {
-      pacienteEditando = pacientes.findIndex(p => p.nome === nome);
-      const paciente = pacientes[pacienteEditando];
-      
-      document.getElementById("modal").style.display = "flex";
-      document.getElementById("modalTitulo").textContent = "Editar Paciente";
-      document.getElementById("nomePaciente").value = paciente.nome;
-      document.getElementById("setorPaciente").value = paciente.setor;
-      document.getElementById("sexoPaciente").value = paciente.sexo || "";
-      document.getElementById("leitoPaciente").value = paciente.leito || "";
-      document.getElementById("atendimentoPaciente").value = paciente.atendimento || "";
-      document.getElementById("statusPaciente").value = paciente.status;
-      document.getElementById("descricaoPaciente").value = paciente.descricao;
-    }
-
-    // Alta
-    function darAlta(nome) {
-      const paciente = pacientes.find((p) => p.nome === nome);
-      if (!paciente) return;
-      
-      paciente.status = "altas";
-      paciente.criadoEm = Date.now();
-      
-      registrarAcao("alta", nome, `Paciente recebeu alta`);
-      
-      saveData();
-      renderPatients("ativos");
-      utils.showToast("Paciente recebeu alta", "success");
-    }
-
-    // Encerrar plantão
-    document.getElementById("encerrarBtn").addEventListener("click", () => {
-      document.getElementById("assinaturaUser").textContent = usuario;
-      document.getElementById("modalEncerrar").style.display = "flex";
-    });
-    
-    function fecharEncerrar() {
-      document.getElementById("modalEncerrar").style.display = "none";
-    }
-    
-    function confirmarEncerramento() {
-      const destino = document.getElementById("medicoDestino").value;
-
-      plantaoHistorico.push({
-        data: new Date().toLocaleString("pt-BR"),
-        medico: usuario,
-        destino: destino,
-        pacientesAtivos: pacientes.filter(p => p.status === "ativos").length,
-        altas: pacientes.filter(p => p.status === "altas"),
-        log: logAcoes.filter(a => a.timestamp >= inicioPlantao)
-      });
-
-      logAcoes = [];
-      localStorage.setItem('logAcoes', JSON.stringify(logAcoes));
-      
-      pacientes = pacientes.filter(p => p.status !== "altas");
-      
-      saveData();
-      document.getElementById("modalEncerrar").style.display = "none";
-      renderPatients("ativos");
-      utils.showToast("Plantão encerrado com sucesso", "success");
-      
-      inicioPlantao = Date.now();
-    }
-
-    // Exportar plantão
-    document.getElementById("exportarPlantaoBtn").addEventListener("click", exportarPlantaoCSV);
-
-    // Autenticação
+    // Event Listeners para autenticação
     document.getElementById("loginForm").addEventListener("submit", function(e) {
       e.preventDefault();
       
@@ -2184,7 +2223,7 @@
         inicioPlantao = Date.now();
         login(user.nome, user.tipo);
       } else {
-        utils.showToast("Credenciais inválidas", "error");
+        showToast("Credenciais inválidas", "error");
       }
     });
     
@@ -2198,11 +2237,11 @@
       const role = document.getElementById("registerRole").value;
       
       if (password !== confirmPassword) {
-        return utils.showToast("As senhas não coincidem", "error");
+        return showToast("As senhas não coincidem", "error");
       }
       
       if (password.length < 6) {
-        return utils.showToast("A senha deve ter pelo menos 6 caracteres", "error");
+        return showToast("A senha deve ter pelo menos 6 caracteres", "error");
       }
       
       register(name, email, password, role);
@@ -2222,10 +2261,15 @@
     
     document.getElementById("logoutBtn").addEventListener("click", logout);
     
-    // Mostrar campo de código quando médico for selecionado
     document.getElementById("registerRole").addEventListener("change", function() {
       const codeField = document.getElementById("codeField");
       codeField.classList.toggle("hidden", this.value !== "medico");
+    });
+    
+    // Inicialização
+    document.addEventListener("DOMContentLoaded", function() {
+      initAuth();
+      saveData();
     });
   </script>
 </body>
