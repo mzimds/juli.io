@@ -3,9 +3,980 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MEMO - Don’t Mess With My Notes</title>
+  <title>MEMO - Sistema Médico</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --primary-dark: #1a252f;
+      --secondary: #34495e;
+      --success: #27ae60;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --info: #3498db;
+      --light: #f8fafc;
+      --dark: #0f172a;
+      --gray: #7f8c8d;
+      --light-gray: #ecf0f1;
+      --medium-gray: #bdc3c7;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --transition: all 0.3s ease;
+      
+      --bg: #ffffff;
+      --text: #2c3e50;
+      --card: #ffffff;
+      --accent: #1a252f;
+      --border: #ecf0f1;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, 'Roboto', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+      padding: 0 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--primary);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .user-name {
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .btn-logout {
+      background: none;
+      border: none;
+      color: var(--gray);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .btn-logout:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--danger);
+    }
+
+    /* Auth Pages */
+    .auth-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 64px);
+      padding: 2rem 1rem;
+    }
+
+    .auth-card {
+      background: var(--card);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 420px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .auth-subtitle {
+      color: var(--gray);
+      font-size: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--light-gray);
+      color: var(--dark);
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--primary);
+      padding: 0;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+    
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+    
+    .mt-3 {
+      margin-top: 1rem;
+    }
+    
+    .mt-4 {
+      margin-top: 1.5rem;
+    }
+    
+    .mt-6 {
+      margin-top: 2rem;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .error-message {
+      color: var(--danger);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: none;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--bg);
+      position: sticky;
+      top: 64px;
+      z-index: 90;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tab {
+      flex: none;
+      padding: 0.6rem 1.25rem;
+      background: var(--card);
+      color: var(--text);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.9rem;
+      border: 1px solid var(--border);
+    }
+
+    .tab.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Main Content */
+    .search-container {
+      margin: 0 auto 1.5rem;
+      max-width: 800px;
+      padding: 0 1rem;
+      position: sticky;
+      top: 130px;
+      z-index: 80;
+      background: var(--bg);
+      padding-top: 1rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+
+    .patient-list {
+      display: grid;
+      gap: 1.25rem;
+      padding: 0 1rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--gray);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      padding: 1.25rem;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      position: relative;
+      border: 1px solid var(--border);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+
+    .tag {
+      background: var(--light-gray);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      border: 1px solid var(--border);
+    }
+
+    .tag.primary {
+      background: rgba(44, 62, 80, 0.1);
+      color: var(--primary);
+    }
+
+    .tag.success {
+      background: rgba(39, 174, 96, 0.1);
+      color: var(--success);
+    }
+
+    .card-content {
+      max-height: 120px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      margin-bottom: 1rem;
+      padding-right: 0.5rem;
+      color: var(--text);
+    }
+
+    .card-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .card-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .card-content::-webkit-scrollbar-thumb {
+      background: var(--light-gray);
+      border-radius: 3px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      border-radius: 6px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #219653;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background: #e67e22;
+    }
+
+    .btn-icon {
+      padding: 0.5rem;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Anotações */
+    .notes-container {
+      margin-top: 1rem;
+      border-top: 1px dashed var(--border);
+      padding-top: 1rem;
+    }
+
+    .notes-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .note {
+      font-size: 0.875rem;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      border: 1px solid var(--border);
+    }
+
+    .note-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+    }
+
+    .note-author {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .note-date {
+      color: var(--gray);
+      font-size: 0.75rem;
+    }
+
+    .note-content {
+      white-space: pre-wrap;
+      color: var(--text);
+    }
+
+    /* FAB Buttons */
+    .fab-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 50;
+      transition: transform 0.3s ease;
+    }
+
+    .fab {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      border: none;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+      transition: var(--transition);
+    }
+
+    .fab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .fab.encerrar {
+      background: var(--danger);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: var(--card);
+      color: var(--text);
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem; /* Espaçamento aumentado */
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      padding: 0.25rem;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem; /* Espaçamento aumentado */
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--dark);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: var(--success);
+    }
+
+    .toast.error {
+      background: var(--danger);
+    }
+
+    .toast.warning {
+      background: var(--warning);
+    }
+
+    .toast.info {
+      background: var(--info);
+    }
+
+    /* Profile Page */
+    .profile-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 600;
+      margin: 0 auto 0.75rem;
+    }
+
+    .profile-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .profile-role {
+      color: var(--gray);
+      font-size: 0.9rem;
+      background: var(--light-gray);
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .profile-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .card-list {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .card-list-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      background: var(--card);
+      border-radius: 8px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border);
+    }
+
+    .card-list-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(44, 62, 80, 0.1);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-right: 1rem;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .card-list-content {
+      flex: 1;
+    }
+
+    .card-list-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-list-subtitle {
+      color: var(--gray);
+      font-size: 0.875rem;
+    }
+
+    /* Setor Code */
+    .code-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .code-value {
+      font-family: monospace;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      padding: 0.5rem 1rem;
+      background: var(--light-gray);
+      border-radius: 8px;
+      flex: 1;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .btn-copy {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-copy:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Configurações */
+    .config-container {
+      margin-top: 2rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .tabs {
+        flex-wrap: wrap;
+      }
+      
+      .tab {
+        flex: 1 0 calc(50% - 0.5rem);
+      }
+      
+      .patient-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .card-actions {
+        flex-direction: column;
+      }
+      
+      .btn-sm {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .fab-container {
+        bottom: 1rem;
+        right: 1rem;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .config-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: flex-start;
+      }
+      
+      .config-section {
+        margin-bottom: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .user-name {
+        display: none;
+      }
+      
+      .auth-card {
+        padding: 1.5rem;
+      }
+      
+      .modal-content {
+        padding: 1rem;
+      }
+
+      .tabs {
+        padding: 0.5rem;
+      }
+
+      .tab {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+      }
+
+      .fab {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+      }
+
+      .profile-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 1.75rem;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Copy feedback */
+    .copied-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--success);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      z-index: 3100;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .copied-message.show {
+      opacity: 1;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    /* Histórico do Paciente */
+    .info-grid {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 0.5rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-grid div:nth-child(odd) {
+      font-weight: 600;
+    }
+
+    .info-section {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    /* Badges para funções */
+    .role-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .role-medico {
+      background: rgba(52, 152, 219, 0.2);
+      color: #3498db;
+    }
+
+    .role-gestor {
+      background: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+    }
+    
+    .config-section {
+      margin-bottom: 2rem;
+    }
+    
+    .config-section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Botão de exportação */
+    .export-btn {
+      background: var(--info);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .export-btn:hover {
+      background: #2980b9;
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -227,7 +1198,7 @@
       </div>
     </div>
 
-    <!-- Modal: Encerrar Plantão -->
+    <!-- Modal: Encerrar Plantão (SIMPLIFICADO) -->
     <div class="modal" id="modalEncerrar">
       <div class="modal-content">
         <div class="modal-header">
@@ -245,35 +1216,22 @@
             </select>
           </div>
           
-          <div class="form-group">
-            <h3>Checklist</h3>
-            <div class="form-group">
-              <label>
-                <input type="checkbox" id="checklist1"> Todos os pacientes foram revisados
-              </label>
-            </div>
-            <div class="form-group">
-              <label>
-                <input type="checkbox" id="checklist2"> Todas as pendências foram resolvidas
-              </label>
-            </div>
-            <div class="form-group">
-              <label>
-                <input type="checkbox" id="checklist3"> Documentação completa
-              </label>
-            </div>
-          </div>
-          
           <p class="assinatura mt-3">Assinatura: <strong id="assinaturaUser"></strong></p>
+          
+          <div class="mt-4">
+            <button class="export-btn" id="exportarPlantaoBtn">
+              <i class="fas fa-file-export"></i> Exportar Plantão para CSV
+            </button>
+          </div>
         </div>
         <div class="modal-actions">
-          <button class="btn btn-secondary" id="fecharEncerrar">Cancelar</button>
-          <button class="btn btn-primary" id="confirmarEncerramento">Confirmar</button>
+          <button class="btn btn-secondary" onclick="fecharEncerrar()">Cancelar</button>
+          <button class="btn btn-primary" onclick="confirmarEncerramento()">Confirmar</button>
         </div>
       </div>
     </div>
 
-    <!-- Modal: Histórico do Paciente -->
+    <!-- Modal: Histórico do Paciente (NOVO) -->
     <div class="modal" id="modalHistorico">
       <div class="modal-content">
         <div class="modal-header">
@@ -294,6 +1252,8 @@
               <div id="historicoSexo"></div>
               <div>Status:</div>
               <div id="historicoStatus"></div>
+              <div>Checklist:</div>
+              <div id="historicoChecklist">Não preenchido</div>
             </div>
           </div>
           
@@ -309,42 +1269,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal: Histórico do Plantão -->
-    <div class="modal" id="modalPlantao">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">Histórico do Plantão</h2>
-          <button class="btn-close">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="plantao-header">
-            <div class="info-grid">
-              <div>Data:</div>
-              <div id="plantaoData"></div>
-              <div>Médico:</div>
-              <div id="plantaoMedico"></div>
-              <div>Destino:</div>
-              <div id="plantaoDestino"></div>
-              <div>Pacientes:</div>
-              <div id="plantaoPacientesCount"></div>
-              <div>Altas:</div>
-              <div id="plantaoAltasCount"></div>
-            </div>
-          </div>
-          
-          <div class="info-section">
-            <h3>Pacientes</h3>
-            <div class="plantao-pacientes" id="plantaoPacientes"></div>
-          </div>
-          
-          <div class="plantao-log">
-            <h3 class="log-title">Log de Ações</h3>
-            <div id="plantaoLog"></div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <div id="toast" class="toast">
@@ -354,14 +1278,955 @@
   
   <div id="copiedMessage" class="copied-message">Código copiado!</div>
   
-  <!-- Importação de módulos JavaScript -->
-<script type="module" src="api.js"></script>
-<script type="module" src="utils.js"></script>
-<script type="module" src="auth.js"></script> <!-- Adicione esta linha -->
-<script type="module" src="modalPaciente.js"></script>
-<script type="module" src="plantao.js"></script>
-<script type="module" src="historico.js"></script>
-<script type="module" src="config.js"></script>
-<script type="module" src="main.js"></script>
+  <script>
+    // =============================================
+    // Módulo de API - Comunicação com Backend
+    // =============================================
+    const api = (() => {
+      // Configuração base da API
+      const BASE_URL = 'https://api.seusistema.com';
+      let authToken = null;
+
+      // Função para configurar o token de autenticação
+      const setAuthToken = (token) => {
+        authToken = token;
+      };
+
+      // Função para fazer requisições HTTP
+      const request = async (method, endpoint, data = null) => {
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': authToken ? `Bearer ${authToken}` : ''
+        };
+
+        const config = {
+          method: method,
+          headers: headers
+        };
+
+        if (data) {
+          config.body = JSON.stringify(data);
+        }
+
+        try {
+          const response = await fetch(`${BASE_URL}${endpoint}`, config);
+          
+          if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+          }
+
+          return await response.json();
+        } catch (error) {
+          console.error('Erro na requisição:', error);
+          throw error;
+        }
+      };
+
+      // Métodos da API
+      return {
+        // Autenticação
+        login: (email, password) => request('POST', '/auth/login', { email, password }),
+        register: (userData) => request('POST', '/auth/register', userData),
+        
+        // Pacientes
+        getPacientes: () => request('GET', '/pacientes'),
+        savePaciente: (paciente) => request('POST', '/pacientes', paciente),
+        updatePaciente: (id, paciente) => request('PUT', `/pacientes/${id}`, paciente),
+        deletePaciente: (id) => request('DELETE', `/pacientes/${id}`),
+        
+        // Anotações
+        addAnotacao: (pacienteId, anotacao) => request('POST', `/pacientes/${pacienteId}/anotacoes`, anotacao),
+        
+        // Plantões
+        encerrarPlantao: (plantaoData) => request('POST', '/plantoes', plantaoData),
+        getPlantaoHistorico: () => request('GET', '/plantoes'),
+        
+        // Usuários
+        getUsuarios: () => request('GET', '/usuarios'),
+        aprovarUsuario: (id) => request('PATCH', `/usuarios/${id}/aprovar`),
+        atualizarUsuario: (id, userData) => request('PUT', `/usuarios/${id}`, userData),
+        removerUsuario: (id) => request('DELETE', `/usuarios/${id}`),
+        
+        // Exportação
+        exportarPlantaoCSV: (plantaoId) => request('GET', `/plantoes/${plantaoId}/export`),
+        
+        // Configuração
+        setAuthToken
+      };
+    })();
+
+    // =============================================
+    // Módulo de Utilitários
+    // =============================================
+    const utils = {
+      // Mostrar toast
+      showToast: (msg, type = "info") => {
+        const toast = document.getElementById("toast");
+        toast.textContent = msg;
+        toast.className = `toast ${type} show`;
+        
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3000);
+      },
+
+      // Copiar código
+      copiarCodigo: (codigo) => {
+        navigator.clipboard.writeText(codigo);
+        const msg = document.getElementById("copiedMessage");
+        msg.classList.add("show");
+        setTimeout(() => msg.classList.remove("show"), 2000);
+      },
+
+      // Exportar dados para CSV
+      exportarParaCSV: (dados, nomeArquivo) => {
+        const cabecalho = Object.keys(dados[0]).join(',');
+        const linhas = dados.map(objeto => 
+          Object.values(objeto).map(valor => 
+            `"${String(valor).replace(/"/g, '""')}"`
+          ).join(',')
+        );
+        
+        const csvContent = [cabecalho, ...linhas].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', nomeArquivo);
+        link.style.visibility = 'hidden';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
+
+      // Formatar data
+      formatarData: (timestamp) => {
+        return new Date(timestamp).toLocaleString("pt-BR");
+      }
+    };
+
+    // =============================================
+    // Dados da Aplicação
+    // =============================================
+    let perfil = null;
+    let usuario = null;
+    let currentUser = null;
+    let pacienteEditando = null;
+    let inicioPlantao = Date.now();
+
+    // Dados iniciais (temporário até migração completa)
+    let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
+    let plantaoHistorico = JSON.parse(localStorage.getItem('plantaoHistorico')) || [];
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    let logAcoes = JSON.parse(localStorage.getItem('logAcoes')) || [];
+
+    // =============================================
+    // Funções da Aplicação
+    // =============================================
+    // Sistema de autenticação
+    function initAuth() {
+      const loggedInUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+      if (loggedInUser) {
+        const user = JSON.parse(loggedInUser);
+        inicioPlantao = Date.now();
+        login(user.nome, user.tipo);
+      }
+    }
+
+    function login(nome, tipo) {
+      const user = usuarios.find(u => u.nome === nome);
+      if (!user) return utils.showToast("Usuário não encontrado", "error");
+      if (!user.aprovado) return utils.showToast("Acesso pendente de aprovação", "warning");
+
+      perfil = tipo;
+      usuario = nome;
+      currentUser = user;
+
+      document.getElementById("authContainer").classList.add("hidden");
+      document.getElementById("appContainer").classList.remove("hidden");
+      document.getElementById("userInfo").classList.remove("hidden");
+      document.getElementById("userName").textContent = user.nome;
+      document.getElementById("userAvatar").textContent = user.nome.charAt(0);
+      
+      document.getElementById("tabs").classList.remove("hidden");
+      document.getElementById("searchContainer").classList.remove("hidden");
+      document.getElementById("addPatientBtn").classList.remove("hidden");
+      
+      if (perfil === "medico" || perfil === "gestor") {
+        document.getElementById("encerrarBtn").classList.remove("hidden");
+      }
+
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+      document.querySelector('[data-tab="ativos"]').classList.add("active");
+      renderPatients("ativos");
+    }
+
+    function logout() {
+      localStorage.removeItem('currentUser');
+      sessionStorage.removeItem('currentUser');
+      
+      document.getElementById("appContainer").classList.add("hidden");
+      document.getElementById("authContainer").classList.remove("hidden");
+      document.getElementById("loginCard").classList.remove("hidden");
+      document.getElementById("registerCard").classList.add("hidden");
+      document.getElementById("userInfo").classList.add("hidden");
+      currentUser = null;
+      
+      limparFormularios();
+    }
+
+    function register(name, email, password, role) {
+      if (usuarios.some(u => u.email === email)) {
+        return utils.showToast("Este e-mail já está cadastrado", "error");
+      }
+      
+      let codigo = null;
+      if (role === "gestor") {
+        codigo = 'HOSP' + Math.random().toString(36).substring(2, 6).toUpperCase();
+      } else if (role === "medico") {
+        codigo = document.getElementById("registerCode").value.trim();
+        if (!codigo) {
+          return utils.showToast("Por favor, insira o código do setor", "error");
+        }
+      }
+      
+      const newUser = {
+        id: Date.now(),
+        nome: name,
+        email: email,
+        senha: password,
+        tipo: role,
+        aprovado: role === "gestor",
+        codigoSetor: codigo
+      };
+      
+      usuarios.push(newUser);
+      saveData();
+      
+      utils.showToast(role === "gestor" ? "Cadastro realizado com sucesso!" : "Cadastro realizado com sucesso! Aguarde aprovação.", "success");
+      limparFormularios();
+      document.getElementById("backToLoginBtn").click();
+    }
+
+    function limparFormularios() {
+      document.getElementById("loginEmail").value = "";
+      document.getElementById("loginPassword").value = "";
+      document.getElementById("registerName").value = "";
+      document.getElementById("registerEmail").value = "";
+      document.getElementById("registerPassword").value = "";
+      document.getElementById("registerConfirmPassword").value = "";
+      document.getElementById("registerRole").value = "";
+      document.getElementById("registerCode").value = "";
+      document.getElementById("codeField").classList.add("hidden");
+    }
+
+    function validarPacienteUnico(nome, setor) {
+      return !pacientes.some(p => 
+        p.nome.toLowerCase() === nome.toLowerCase() && 
+        p.setor.toLowerCase() === setor.toLowerCase()
+      );
+    }
+    
+    // Registrar ações no sistema
+    function registrarAcao(tipo, paciente, detalhes) {
+      logAcoes.push({
+        tipo,
+        paciente,
+        detalhes,
+        autor: usuario,
+        data: new Date().toLocaleString("pt-BR"),
+        timestamp: Date.now()
+      });
+      localStorage.setItem('logAcoes', JSON.stringify(logAcoes));
+    }
+
+    // Renderização principal por aba
+    function renderPatients(tab) {
+      const container = document.getElementById("patientList");
+      container.innerHTML = "";
+      
+      const fabContainer = document.getElementById("fabContainer");
+      if (tab === "config" || tab === "historico") {
+        fabContainer.classList.add("hidden");
+      } else {
+        fabContainer.classList.remove("hidden");
+      }
+
+      const showSearch = tab !== "config";
+      document.getElementById("searchContainer").classList.toggle("hidden", !showSearch);
+
+      if (tab === "config") return renderConfig();
+
+      if (tab === "historico") {
+        if (plantaoHistorico.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-history"></i>
+              <h3>Nenhum plantão encerrado</h3>
+              <p>Os plantões encerrados aparecerão aqui.</p>
+            </div>
+          `;
+          return;
+        }
+
+        plantaoHistorico.slice().reverse().forEach((plantao, i) => {
+          const bloco = document.createElement("div");
+          bloco.className = "card";
+          bloco.innerHTML = `
+            <div class="card-header">
+              <h2 class="card-title">Plantão #${plantaoHistorico.length - i}</h2>
+              <span class="tag">${plantao.data}</span>
+            </div>
+            <p><strong>Médico:</strong> ${plantao.medico}</p>
+            <p><strong>Destino:</strong> ${plantao.destino}</p>
+            <p><strong>Pacientes ativos:</strong> ${plantao.pacientesAtivos}</p>
+            <p><strong>Pacientes com alta:</strong> ${plantao.altas.length}</p>
+            
+            <h3 class="notes-title">Altas Realizadas</h3>
+          `;
+          
+          plantao.altas.forEach((p) => {
+            bloco.innerHTML += `
+              <div class="note" onclick="verHistoricoCompleto(${JSON.stringify(p).replace(/"/g, '&quot;')})" style="cursor: pointer;">
+                <div class="note-header">
+                  <span class="note-author">${p.nome}</span>
+                  <span class="note-date">${p.setor}</span>
+                </div>
+                <div class="note-content">${p.descricao.substring(0, 100)}${p.descricao.length > 100 ? '...' : ''}</div>
+                <div class="text-right mt-1">
+                  <small>Clique para ver histórico completo</small>
+                </div>
+              </div>
+            `;
+          });
+          
+          if (plantao.log && plantao.log.length > 0) {
+            bloco.innerHTML += `
+              <h3 class="notes-title">Log de Ações</h3>
+              <div class="notes-container">
+            `;
+            
+            plantao.log.forEach(a => {
+              let icon = "";
+              let color = "var(--gray)";
+              
+              switch(a.tipo) {
+                case "criacao":
+                  icon = "fas fa-user-plus";
+                  color = "var(--success)";
+                  break;
+                case "edicao":
+                  icon = "fas fa-edit";
+                  color = "var(--warning)";
+                  break;
+                case "anotacao":
+                  icon = "fas fa-sticky-note";
+                  color = "var(--info)";
+                  break;
+                case "alta":
+                  icon = "fas fa-sign-out-alt";
+                  color = "var(--danger)";
+                  break;
+              }
+              
+              bloco.innerHTML += `
+                <div class="note">
+                  <div class="note-header">
+                    <span>
+                      <i class="${icon}" style="color: ${color}; margin-right: 0.5rem;"></i>
+                      <span class="note-author">${a.autor}</span>
+                    </span>
+                    <span class="note-date">${a.data}</span>
+                  </div>
+                  <div class="note-content">
+                    <strong>${a.paciente}</strong>: ${a.detalhes}
+                  </div>
+                </div>
+              `;
+            });
+            
+            bloco.innerHTML += `</div>`;
+          }
+          
+          container.appendChild(bloco);
+        });
+        return;
+      }
+
+      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+      const lista = pacientes
+        .filter((p) => p.status === tab && p.nome.toLowerCase().includes(searchTerm))
+        .sort((a, b) => b.criadoEm - a.criadoEm);
+
+      if (lista.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-user-injured"></i>
+            <h3>Nenhum paciente encontrado</h3>
+            <p>${tab === "ativos" ? "Adicione um novo paciente usando o botão +" : "Nenhum paciente nesta categoria"}</p>
+          </div>
+        `;
+        return;
+      }
+
+      lista.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        
+        const anotacoesOrdenadas = p.anotacoes.sort((a, b) => b.timestamp - a.timestamp);
+        
+        const anotacoesHTML = anotacoesOrdenadas.length > 0 ? `
+          <div class="notes-container">
+            <h3 class="notes-title">Anotações</h3>
+            ${anotacoesOrdenadas.map(
+              (a) => `
+                <div class="note">
+                  <div class="note-header">
+                    <span class="note-author">${a.autor}</span>
+                    <span class="note-date">${a.data}</span>
+                  </div>
+                  <div class="note-content">${a.texto}</div>
+                </div>
+              `
+            ).join("")}
+          </div>
+        ` : '';
+        
+        const actionsHTML = p.status === "ativos" && (perfil === "medico" || perfil === "gestor") ? `
+          <div class="card-actions">
+            <button class="btn btn-sm btn-outline" onclick="abrirNota('${p.nome}')">
+              Anotação
+            </button>
+            <button class="btn btn-sm btn-outline" onclick="editarPaciente('${p.nome}')">
+              Editar
+            </button>
+            <button class="btn btn-sm btn-success" onclick="darAlta('${p.nome}')">
+              Alta
+            </button>
+          </div>
+        ` : '';
+        
+        card.innerHTML = `
+          <div class="card-header">
+            <h2 class="card-title">${p.nome}</h2>
+            <span class="tag ${tab === 'ativos' ? 'primary' : 'success'}">
+              ${p.setor}
+            </span>
+          </div>
+          <div class="card-subtitle">
+            ${utils.formatarData(p.criadoEm)}
+          </div>
+          <div class="card-content">${p.descricao}</div>
+          ${anotacoesHTML}
+          ${actionsHTML}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Painel de configurações
+    function renderConfig() {
+      const c = document.getElementById("patientList");
+      c.innerHTML = "";
+      
+      const configContainer = document.createElement("div");
+      configContainer.className = "config-container mt-6";
+      
+      const profileSection = document.createElement("div");
+      profileSection.className = "config-section";
+      
+      const profileCard = document.createElement("div");
+      profileCard.className = "card";
+      profileCard.innerHTML = `
+        <div class="profile-header">
+          <div class="profile-avatar">${currentUser.nome.charAt(0)}</div>
+          <h2 class="profile-name">${currentUser.nome}</h2>
+          <span class="profile-role">${currentUser.tipo === "medico" ? "Médico" : "Gestor"}</span>
+          
+          ${currentUser.codigoSetor ? `
+          <div class="mt-3">
+            <div class="code-container" style="justify-content: center;">
+              <div class="code-value">${currentUser.codigoSetor}</div>
+              <button class="btn-copy" onclick="utils.copiarCodigo('${currentUser.codigoSetor}')">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+            <p class="mt-2 text-center" style="font-size: 0.85rem;">Compartilhe este código com seus colegas</p>
+          </div>
+          ` : ''}
+        </div>
+        
+        <div class="card-list">
+          <div class="card-list-item">
+            <div class="card-list-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="card-list-content">
+              <div class="card-list-title">E-mail</div>
+              <div class="card-list-subtitle">${currentUser.email}</div>
+            </div>
+          </div>
+          
+          <div class="card-list-item">
+            <div class="card-list-icon">
+              <i class="fas fa-user-tag"></i>
+            </div>
+            <div class="card-list-content">
+              <div class="card-list-title">Função</div>
+              <div class="card-list-subtitle">${currentUser.tipo === "medico" ? "Médico" : "Gestor"}</div>
+            </div>
+          </div>
+          
+          <div class="card-list-item">
+            <div class="card-list-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="card-list-content">
+              <div class="card-list-title">Status da Conta</div>
+              <div class="card-list-subtitle">${currentUser.aprovado ? "Ativa" : "Aguardando aprovação"}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      profileSection.appendChild(profileCard);
+      configContainer.appendChild(profileSection);
+
+      if (perfil === "gestor") {
+        const usersSection = document.createElement("div");
+        usersSection.className = "config-section";
+        
+        const heading = document.createElement("h2");
+        heading.className = "config-section-title";
+        heading.textContent = "Gerenciar Usuários";
+        usersSection.appendChild(heading);
+
+        const ul = document.createElement("ul");
+        ul.className = "card-list";
+        
+        usuarios.forEach((m, i) => {
+          if (m.codigoSetor !== currentUser.codigoSetor) return;
+          
+          const li = document.createElement("li");
+          li.className = "card-list-item";
+          li.innerHTML = `
+            <div class="card-list-icon" style="background: var(--light-gray);">
+              <i class="fas fa-user-md" style="color: var(--text);"></i>
+            </div>
+            <div class="card-list-content">
+              <div class="card-list-title">
+                ${m.nome}
+                <span class="role-badge ${m.tipo === 'medico' ? 'role-medico' : 'role-gestor'}">
+                  ${m.tipo === "medico" ? "Médico" : "Gestor"}
+                </span>
+              </div>
+              <div class="card-list-subtitle">
+                ${m.email}
+              </div>
+            </div>
+            <div class="card-actions">
+              ${!m.aprovado ? `
+                <button class="btn btn-icon" style="background: var(--light-gray);" onclick="aprovar(${i})" title="Aprovar">
+                  <i class="fas fa-check" style="color: var(--text);"></i>
+                </button>
+              ` : ''}
+              <button class="btn btn-icon" style="background: var(--light-gray);" onclick="toggleRole(${i})" title="Alterar Função">
+                <i class="fas fa-sync-alt" style="color: var(--text);"></i>
+              </button>
+              <button class="btn btn-icon" style="background: var(--light-gray);" onclick="remover(${i})" title="Excluir">
+                <i class="fas fa-trash-alt" style="color: var(--text);"></i>
+              </button>
+            </div>
+          `;
+          ul.appendChild(li);
+        });
+        
+        usersSection.appendChild(ul);
+        configContainer.appendChild(usersSection);
+      }
+      
+      c.appendChild(configContainer);
+    }
+
+    // Gestão de usuários
+    function aprovar(i) {
+      usuarios[i].aprovado = true;
+      saveData();
+      renderConfig();
+      utils.showToast("Médico aprovado", "success");
+    }
+    
+    function toggleRole(i) {
+      if (usuarios[i].id === currentUser.id) {
+        return utils.showToast("Você não pode alterar sua própria função", "error");
+      }
+      
+      usuarios[i].tipo = usuarios[i].tipo === "medico" ? "gestor" : "medico";
+      saveData();
+      renderConfig();
+      utils.showToast("Função alterada", "success");
+    }
+    
+    function remover(i) {
+      if (usuarios[i].id === currentUser.id) {
+        return utils.showToast("Você não pode excluir sua própria conta", "error");
+      }
+      
+      usuarios.splice(i, 1);
+      saveData();
+      renderConfig();
+      utils.showToast("Usuário excluído", "success");
+    }
+
+    // Salvar dados
+    function saveData() {
+      localStorage.setItem('pacientes', JSON.stringify(pacientes));
+      localStorage.setItem('plantaoHistorico', JSON.stringify(plantaoHistorico));
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      localStorage.setItem('logAcoes', JSON.stringify(logAcoes));
+    }
+
+    // Exportar dados do plantão para CSV
+    function exportarPlantaoCSV() {
+      const pacientesAtivos = pacientes.filter(p => p.status === "ativos");
+      if (pacientesAtivos.length === 0) {
+        utils.showToast("Não há pacientes ativos para exportar", "warning");
+        return;
+      }
+      
+      const dadosExportacao = pacientesAtivos.map(paciente => ({
+        Nome: paciente.nome,
+        Setor: paciente.setor,
+        Leito: paciente.leito,
+        Atendimento: paciente.atendimento,
+        Sexo: paciente.sexo,
+        Descrição: paciente.descricao,
+        'Data de Cadastro': utils.formatarData(paciente.criadoEm)
+      }));
+      
+      utils.exportarParaCSV(dadosExportacao, `plantao_${utils.formatarData(Date.now()).replace(/[/:,]/g, '_')}.csv`);
+      utils.showToast("Dados exportados com sucesso", "success");
+    }
+
+    // Visualizar histórico completo
+    function verHistoricoCompleto(paciente) {
+      const modal = document.getElementById("modalHistorico");
+      const nomeEl = document.getElementById("historicoNome");
+      const setorEl = document.getElementById("historicoSetor");
+      const leitoEl = document.getElementById("historicoLeito");
+      const atendimentoEl = document.getElementById("historicoAtendimento");
+      const sexoEl = document.getElementById("historicoSexo");
+      const statusEl = document.getElementById("historicoStatus");
+      const descricaoEl = document.getElementById("historicoDescricao");
+      const anotacoesEl = document.getElementById("historicoAnotacoes");
+      const anotacoesSection = document.getElementById("historicoAnotacoesSection");
+      
+      nomeEl.textContent = paciente.nome;
+      setorEl.textContent = paciente.setor || 'N/A';
+      leitoEl.textContent = paciente.leito || 'N/A';
+      atendimentoEl.textContent = paciente.atendimento || 'N/A';
+      sexoEl.textContent = paciente.sexo || 'N/A';
+      statusEl.textContent = paciente.status === 'ativos' ? 'Ativo' : 'Alta';
+      descricaoEl.textContent = paciente.descricao || 'Nenhum resumo clínico registrado.';
+      
+      if (paciente.anotacoes && paciente.anotacoes.length > 0) {
+        anotacoesSection.style.display = 'block';
+        anotacoesEl.innerHTML = '';
+        
+        const anotacoesOrdenadas = paciente.anotacoes.sort((a, b) => b.timestamp - a.timestamp);
+        
+        anotacoesOrdenadas.forEach(a => {
+          anotacoesEl.innerHTML += `
+            <div class="note">
+              <div class="note-header">
+                <span class="note-author">${a.autor}</span>
+                <span class="note-date">${a.data}</span>
+              </div>
+              <div class="note-content">${a.texto}</div>
+            </div>
+          `;
+        });
+      } else {
+        anotacoesSection.style.display = 'none';
+      }
+      
+      modal.style.display = "flex";
+    }
+
+    // =============================================
+    // Inicialização e Event Listeners
+    // =============================================
+    document.addEventListener("DOMContentLoaded", function() {
+      initAuth();
+      saveData();
+    });
+
+    // Tabs
+    document.querySelectorAll(".tab").forEach((tab) =>
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach((t) =>
+          t.classList.remove("active")
+        );
+        tab.classList.add("active");
+        renderPatients(tab.dataset.tab);
+      })
+    );
+
+    // Buscar pacientes
+    document.getElementById("searchInput").addEventListener("input", () => {
+      renderPatients(document.querySelector(".tab.active").dataset.tab);
+    });
+
+    // Modal paciente
+    document.getElementById("addPatientBtn").addEventListener("click", () => {
+      pacienteEditando = null;
+      document.getElementById("modal").style.display = "flex";
+      document.getElementById("modalTitulo").textContent = "Novo Paciente";
+      document.getElementById("nomePaciente").value = "";
+      document.getElementById("setorPaciente").value = "";
+      document.getElementById("sexoPaciente").value = "";
+      document.getElementById("leitoPaciente").value = "";
+      document.getElementById("atendimentoPaciente").value = "";
+      document.getElementById("statusPaciente").value = "ativos";
+      document.getElementById("descricaoPaciente").value = "";
+    });
+
+    document.querySelectorAll(".btn-close").forEach(btn => {
+      btn.addEventListener("click", function() {
+        this.closest(".modal").style.display = "none";
+      });
+    });
+
+    document.getElementById("fecharModal").addEventListener("click", () => {
+      document.getElementById("modal").style.display = "none";
+      pacienteEditando = null;
+    });
+
+    document.getElementById("salvarPaciente").addEventListener("click", () => {
+      const nome = document.getElementById("nomePaciente").value.trim();
+      const setor = document.getElementById("setorPaciente").value.trim();
+      const sexo = document.getElementById("sexoPaciente").value;
+      const leito = document.getElementById("leitoPaciente").value.trim();
+      const atendimento = document.getElementById("atendimentoPaciente").value.trim();
+      const status = document.getElementById("statusPaciente").value;
+      const desc = document.getElementById("descricaoPaciente").value.trim();
+
+      if (!nome || !setor || !sexo || !leito || !atendimento) {
+        return utils.showToast("Preencha todos os campos obrigatórios", "error");
+      }
+
+      if (pacienteEditando === null && !validarPacienteUnico(nome, setor)) {
+        return utils.showToast("Já existe um paciente com este nome no mesmo setor", "error");
+      }
+
+      if (pacienteEditando !== null) {
+        pacientes[pacienteEditando] = {
+          ...pacientes[pacienteEditando],
+          nome,
+          setor,
+          sexo,
+          leito,
+          atendimento,
+          status,
+          descricao: desc
+        };
+        
+        registrarAcao("edicao", nome, `Paciente editado`);
+      } else {
+        pacientes.push({
+          nome,
+          setor,
+          sexo,
+          leito,
+          atendimento,
+          status,
+          descricao: desc,
+          criadoEm: Date.now(),
+          anotacoes: []
+        });
+        
+        registrarAcao("criacao", nome, `Paciente criado no setor ${setor}, leito ${leito}`);
+      }
+
+      saveData();
+      document.getElementById("modal").style.display = "none";
+      pacienteEditando = null;
+      renderPatients("ativos");
+      utils.showToast("Paciente salvo com sucesso", "success");
+    });
+
+    // Modal anotação
+    function abrirNota(nome) {
+      const paciente = pacientes.find((p) => p.nome === nome);
+      if (!paciente) return;
+      window.anotando = paciente;
+      document.getElementById("novaNota").value = "";
+      document.getElementById("modalNota").style.display = "flex";
+    }
+    
+    function fecharNota() {
+      document.getElementById("modalNota").style.display = "none";
+    }
+    
+    document.getElementById("fecharNota").addEventListener("click", fecharNota);
+    
+    document.getElementById("salvarNota").addEventListener("click", () => {
+      const texto = document.getElementById("novaNota").value.trim();
+      if (!texto || !window.anotando) {
+        return utils.showToast("Digite uma anotação", "error");
+      }
+      
+      window.anotando.anotacoes.push({
+        texto,
+        autor: usuario,
+        data: new Date().toLocaleString("pt-BR"),
+        timestamp: Date.now()
+      });
+      
+      window.anotando.criadoEm = Date.now();
+      
+      registrarAcao("anotacao", window.anotando.nome, texto.substring(0, 50) + (texto.length > 50 ? "..." : ""));
+      
+      saveData();
+      document.getElementById("modalNota").style.display = "none";
+      renderPatients("ativos");
+      utils.showToast("Anotação salva", "success");
+    });
+
+    // Editar paciente
+    function editarPaciente(nome) {
+      pacienteEditando = pacientes.findIndex(p => p.nome === nome);
+      const paciente = pacientes[pacienteEditando];
+      
+      document.getElementById("modal").style.display = "flex";
+      document.getElementById("modalTitulo").textContent = "Editar Paciente";
+      document.getElementById("nomePaciente").value = paciente.nome;
+      document.getElementById("setorPaciente").value = paciente.setor;
+      document.getElementById("sexoPaciente").value = paciente.sexo || "";
+      document.getElementById("leitoPaciente").value = paciente.leito || "";
+      document.getElementById("atendimentoPaciente").value = paciente.atendimento || "";
+      document.getElementById("statusPaciente").value = paciente.status;
+      document.getElementById("descricaoPaciente").value = paciente.descricao;
+    }
+
+    // Alta
+    function darAlta(nome) {
+      const paciente = pacientes.find((p) => p.nome === nome);
+      if (!paciente) return;
+      
+      paciente.status = "altas";
+      paciente.criadoEm = Date.now();
+      
+      registrarAcao("alta", nome, `Paciente recebeu alta`);
+      
+      saveData();
+      renderPatients("ativos");
+      utils.showToast("Paciente recebeu alta", "success");
+    }
+
+    // Encerrar plantão
+    document.getElementById("encerrarBtn").addEventListener("click", () => {
+      document.getElementById("assinaturaUser").textContent = usuario;
+      document.getElementById("modalEncerrar").style.display = "flex";
+    });
+    
+    function fecharEncerrar() {
+      document.getElementById("modalEncerrar").style.display = "none";
+    }
+    
+    function confirmarEncerramento() {
+      const destino = document.getElementById("medicoDestino").value;
+
+      plantaoHistorico.push({
+        data: new Date().toLocaleString("pt-BR"),
+        medico: usuario,
+        destino: destino,
+        pacientesAtivos: pacientes.filter(p => p.status === "ativos").length,
+        altas: pacientes.filter(p => p.status === "altas"),
+        log: logAcoes.filter(a => a.timestamp >= inicioPlantao)
+      });
+
+      logAcoes = [];
+      localStorage.setItem('logAcoes', JSON.stringify(logAcoes));
+      
+      pacientes = pacientes.filter(p => p.status !== "altas");
+      
+      saveData();
+      document.getElementById("modalEncerrar").style.display = "none";
+      renderPatients("ativos");
+      utils.showToast("Plantão encerrado com sucesso", "success");
+      
+      inicioPlantao = Date.now();
+    }
+
+    // Exportar plantão
+    document.getElementById("exportarPlantaoBtn").addEventListener("click", exportarPlantaoCSV);
+
+    // Autenticação
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      const manterConectado = document.getElementById("manterConectado").checked;
+      
+      const user = usuarios.find(u => u.email === email && u.senha === password);
+      
+      if (user) {
+        if (manterConectado) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        } else {
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
+        }
+        
+        inicioPlantao = Date.now();
+        login(user.nome, user.tipo);
+      } else {
+        utils.showToast("Credenciais inválidas", "error");
+      }
+    });
+    
+    document.getElementById("registerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById("registerName").value;
+      const email = document.getElementById("registerEmail").value;
+      const password = document.getElementById("registerPassword").value;
+      const confirmPassword = document.getElementById("registerConfirmPassword").value;
+      const role = document.getElementById("registerRole").value;
+      
+      if (password !== confirmPassword) {
+        return utils.showToast("As senhas não coincidem", "error");
+      }
+      
+      if (password.length < 6) {
+        return utils.showToast("A senha deve ter pelo menos 6 caracteres", "error");
+      }
+      
+      register(name, email, password, role);
+    });
+    
+    document.getElementById("showRegisterBtn").addEventListener("click", function() {
+      limparFormularios();
+      document.getElementById("loginCard").classList.add("hidden");
+      document.getElementById("registerCard").classList.remove("hidden");
+    });
+    
+    document.getElementById("backToLoginBtn").addEventListener("click", function() {
+      limparFormularios();
+      document.getElementById("registerCard").classList.add("hidden");
+      document.getElementById("loginCard").classList.remove("hidden");
+    });
+    
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+    
+    // Mostrar campo de código quando médico for selecionado
+    document.getElementById("registerRole").addEventListener("change", function() {
+      const codeField = document.getElementById("codeField");
+      codeField.classList.toggle("hidden", this.value !== "medico");
+    });
+  </script>
 </body>
 </html>
